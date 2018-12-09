@@ -4,12 +4,6 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+Simplicity Fanatic. Prefers pragmatic approach to programming, strives to write a clean, simple, intuitive, easy-to-understand OOP code, without clever hacks.
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+Author of [Vaadin-on-Kotlin](http://www.vaadinonkotlin.eu/).

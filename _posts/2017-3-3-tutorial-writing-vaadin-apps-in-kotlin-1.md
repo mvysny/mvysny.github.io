@@ -36,9 +36,9 @@ Now it may be a good idea to start versioning, so that you can play with
 the project safely and just revert the changes, should things go banana.
 Just run this in your command-line, inside the project directory (vaadin-app):
 
-```bash
+~~~ bash
 $ git init .
-```
+~~~
 
 Create a `.gitignore` with the following contents:
 

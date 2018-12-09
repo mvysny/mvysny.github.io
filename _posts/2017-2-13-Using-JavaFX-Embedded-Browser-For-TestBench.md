@@ -33,7 +33,7 @@ class. To get it up and running, just follow these steps:
 The browser even works in headless mode. You can quick-proof this by
 running the test in the Docker. First, run:
 
-```
+```bash
 docker run -it --rm -v "$PWD":/usr/src/mymaven -w /usr/src/mymaven -v "$HOME/vaadin.testbench.developer.license":/root/vaadin.testbench.developer.license maven:3.3.9-jdk-8 /bin/bash
 ```
 in the `testbench-simplest-demo` directory. Then, in the docker:

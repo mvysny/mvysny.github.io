@@ -36,13 +36,13 @@ Now it may be a good idea to start versioning, so that you can play with
 the project safely and just revert the changes, should things go banana.
 Just run this in your command-line, inside the project directory (vaadin-app):
 
-```
+```bash
 $ git init .
 ```
 
 Create a `.gitignore` with the following contents:
 
-```
+```bash
 .idea
 target
 styles.css
@@ -51,7 +51,7 @@ styles.css
 
 Then, in your console:
 
-```
+```bash
 $ git add .
 $ git commit -m "Initial import"
 ```

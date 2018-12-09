@@ -19,8 +19,8 @@ path, and when you throw in different OSes the configuration starts to get nasty
 Fortunately, there is a browser, installed on every machine with Java 8
 - the JavaFX Browser component. It's not a full-blown browser per se, but it can render html pages, is webkit-based and works regardless of OS. Luckily, there is a specialized Selenium driver based on this browser: the [JBrowserDriver](https://github.com/MachinePublishers/jBrowserDriver). We can take advantage of that.
 
-You can find the demo project here: https://github.com/mvysny/testbench-simplest-demo
-. It's a simplest project possible, with just one UI class and one testing
+You can find the demo project [testbench-simplest-demo](https://github.com/mvysny/testbench-simplest-demo).
+It's a simplest project possible, with just one UI class and one testing
 class. To get it up and running, just follow these steps:
 
 1. Obtain TestBench license at the [TestBench AddOn Page](https://vaadin.com/add-ons/testbench) - just search for "Trial license"

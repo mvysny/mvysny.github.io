@@ -60,8 +60,8 @@ Intellij will detect a git repo, just click "Add Root" in the popup dialog.
 
 Finally, let's Kotlinify the project. Open the `MyUI` class (by pressing `Ctrl+N`)
 and press `Ctrl+Alt+Shift+K` - this will automatically convert the Java
-class to Kotlin class. Intellij will show "Kotlin not configured" popup
-- click "Kotlin" (not Kotlin-Javascript), then just press OK -
+class to Kotlin class. Intellij will show "Kotlin not configured" popup -
+click "Kotlin" (not Kotlin-Javascript), then just press OK -
 the `pom.xml` will be modified automatically.
 
 **Tip:** to see the cheat-sheet with the keyboard shortcuts in IDEA, just

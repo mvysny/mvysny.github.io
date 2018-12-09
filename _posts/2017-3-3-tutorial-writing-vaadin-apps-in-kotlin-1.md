@@ -36,23 +36,25 @@ Now it may be a good idea to start versioning, so that you can play with
 the project safely and just revert the changes, should things go banana.
 Just run this in your command-line, inside the project directory (vaadin-app):
 
-~~~ bash
+```
 $ git init .
-~~~
+```
 
 Create a `.gitignore` with the following contents:
 
-~~~ gitignore
+```
 .idea
 target
 styles.css
 *.iml
-~~~
+```
 
-~~~ bash
+Then, in your console:
+
+```
 $ git add .
 $ git commit -m "Initial import"
-~~~
+```
 
 Intellij will detect a git repo, just click "Add Root" in the popup dialog.
 

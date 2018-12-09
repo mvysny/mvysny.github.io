@@ -3,8 +3,6 @@ layout: post
 title: Using JavaFX embedded browser for TestBench
 ---
 
-# Using JavaFX embedded browser for TestBench
-
 If you ever used Selenium (or [TestBench](https://vaadin.com/add-ons/testbench),
 which is based on Selenium), you know the pain of configuring the testing browser driver:
 

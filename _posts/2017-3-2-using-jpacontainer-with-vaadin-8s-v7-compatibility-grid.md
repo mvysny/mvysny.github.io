@@ -3,8 +3,6 @@ layout: post
 title: Using JPAContainer with Vaadin 8's v7 compatibility Grid
 ---
 
-# Using JPAContainer with Vaadin 8's v7 compatibility Grid
-
 When one tries to migrate her project to a newer version of a framework,
 it usually helps if the transition is smooth and the original code works
 without any modifications. This way, you can convert the code to the new

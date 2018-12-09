@@ -3,8 +3,6 @@ layout: post
 title: Tutorial - Writing Vaadin apps in Kotlin Part 1
 ---
 
-# Tutorial - Writing Vaadin apps in Kotlin Part 1
-
 Kotlin provides some very interesting language features which are immensely
 helpful when writing Vaadin apps. Let us start from scratch, building
 necessary functionality as we progress. The result of this exercise will
@@ -44,17 +42,17 @@ $ git init .
 
 Create a `.gitignore` with the following contents:
 
-```gitignore
+~~~ gitignore
 .idea
 target
 styles.css
 *.iml
-```
+~~~
 
-```bash
+~~~ bash
 $ git add .
 $ git commit -m "Initial import"
-```
+~~~
 
 Intellij will detect a git repo, just click "Add Root" in the popup dialog.
 

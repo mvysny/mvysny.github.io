@@ -105,9 +105,9 @@ Of course these settings work only if there is a leftover space. If the `Horizon
 
 Now let's expand the TextField as follows:
 ```kotlin
-            textField("Enter your name:") {
-                isExpand = true
-            }
+textField("Enter your name:") {
+    isExpand = true
+}
 ```
 
 The `isExpand` property only works inside of a `VerticalLayout` or `HorizontalLayout` and it is an alias for setting of the `flexGrow` to `1.0`. This makes the TextField expanded in a way that it will eat all available leftover space:
@@ -136,10 +136,10 @@ When the components are so tightly packed that there is no room even for their p
 
 You can override the horizontal alignment per child, by using the `verticalAlignSelf` property:
 ```kotlin
-            comboBox<String> {
-                setItems("Once per day", "Twice per day")
-                verticalAlignSelf = FlexComponent.Alignment.START
-            }
+comboBox<String> {
+    setItems("Once per day", "Twice per day")
+    verticalAlignSelf = FlexComponent.Alignment.START
+}
 ```
 
 You however can't change the vertical alignment per-child.

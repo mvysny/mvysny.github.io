@@ -59,11 +59,11 @@ class MainView : VerticalLayout() {
 
 The focus here is the `horizontalLayout`'s `content { align(left, baseline) }`. It tells the layout to align the children to the left, and vertically on the baseline:
 
-![horizontallayout-left-baseline.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/bfUQcahXRFit7NZzkfze_horizontallayout-left-baseline.png)
+![horizontallayout-left-baseline.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-left-baseline.png)
 
 The `baseline` setting keeps the components in line and aligned properly on a single line. If we were to change that setting to `top`, all components would move upwards (except the `TextField` which is the largest one and is held in-place by its label):
 
-![horizontallayout-left-top.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/QoZkDLoTRf2tIvuW0zDJ_horizontallayout-left-top.png)
+![horizontallayout-left-top.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-left-top.png)
 
 > Note how the checkbox is no longer aligned properly with the rest of the components - instead it is glued to the top.
 
@@ -76,15 +76,15 @@ Let's demonstrate the `100%` mistake. Let's set the `textField`'s width to 100% 
 
 The result is very weird: it will push other components to the right and shrinks them. I was expecting the first element to be as wide as the parent, pushing all other components to overflow; I was wrong and something else happened :)
 
-![horizontallayout-left-top-100perc.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/si6CEycnTDyOCc6EeJj6_horizontallayout-left-top-100perc.png)
+![horizontallayout-left-top-100perc.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-left-top-100perc.png)
 
 Let's now remove the `100%` width and let's continue. There are two more vertical alignments: `center`:
 
-![horizontallayout-left-middle.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/oQP0NFRWSqsSh1uBTsgv_horizontallayout-left-middle.png)
+![horizontallayout-left-middle.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-left-middle.png)
 
 And `bottom`:
 
-![horizontallayout-left-bottom.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/bKJh3DWxSimE3OA6pQz5_horizontallayout-left-bottom.png)
+![horizontallayout-left-bottom.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-left-bottom.png)
 
 This almost resembles the `baseline` setting, but the combobox looks misaligned. Therefore, if you're aligning fields, most probably you'll want to use `baseline`.
 
@@ -112,7 +112,7 @@ Now let's expand the TextField as follows:
 
 The `isExpand` property only works inside of a `VerticalLayout` or `HorizontalLayout` and it is an alias for setting of the `flexGrow` to `1.0`. This makes the TextField expanded in a way that it will eat all available leftover space:
 
-![horizontallayout-expand.png](http://user-image.logdown.io/user/24534/blog/23544/post/6855605/wgiHmaVWTQ2o4ykgNUXG_horizontallayout-expand.png)
+![horizontallayout-expand.png]({{ site.baseurl }}/images/2018-3-10/horizontallayout-expand.png)
 
 Of course you can set other components to different `flexGrow` settings; a component with the setting of `flexGrow = 2.0` should roughly take two times the space of a component expanded by `flexGrow = 1.0` (this depends also on what the inherent size of the component is).
 

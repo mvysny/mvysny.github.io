@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Open Your Dev Site On Tablet
+title: Debugging Built-in Vaadin 8 Components With SuperDevMode For Dummies
 ---
 
 When doing mobile development with Vaadin, you often develop the app on your dev machine and view the page on a tablet or a phone. Yet, entering your dev machine IP into the phone browser may be tedious and error-prone. There is a way though, to enter an URL to your phone. Via a camera, as a QR Code.

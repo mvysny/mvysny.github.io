@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Tutorial: Writing Vaadin apps in Kotlin Part 2
+title: Tutorial - Writing Vaadin apps in Kotlin Part 2
 ---
 
 Let's add some database to our hello-world. I'll use the pure-Java embedded

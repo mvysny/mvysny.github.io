@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Tutorial: Writing Vaadin apps in Kotlin Part 1
+title: Tutorial - Writing Vaadin apps in Kotlin Part 1
 ---
 
 Kotlin provides some very interesting language features which are immensely

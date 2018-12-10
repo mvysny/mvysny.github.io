@@ -102,7 +102,7 @@ The interceptor annotations such as `@Transactional` can be replaced with custom
 ```kotlin
 db { em.persist(person) }
 ```
-The `db` is just a function which starts and commits (or rollbacks) the transaction. It has some 15-20 lines, is easy to understand, and you can just Ctrl+Click on the `db` function name to navigate directly to the source code. The idea behind the `db {}` function is described in mode depth in [Writing Vaadin Apps In Kotlin part 3](http://mavi.logdown.com/posts/1493703). And you can just call this function from anywhere, as opposing of having an injector everywhere (by making all classes managed beans) and injecting @Transactional class which finally can call the database.
+The `db` is just a function which starts and commits (or rollbacks) the transaction. It has some 15-20 lines, is easy to understand, and you can just Ctrl+Click on the `db` function name to navigate directly to the source code. The idea behind the `db {}` function is described in mode depth in [Writing Vaadin Apps In Kotlin part 3](../Tutorial-Writing-Vaadin-apps-in-Kotlin-Part-3/). And you can just call this function from anywhere, as opposing of having an injector everywhere (by making all classes managed beans) and injecting @Transactional class which finally can call the database.
 
 Should the `db{}` function stop serving your needs (no XA or other reason), just fork and write your own, or use XA vendors. It's actually not that hard: the dirty little secret of XA is that it is still not 100% error proof; naive approach may work here quite well.
 

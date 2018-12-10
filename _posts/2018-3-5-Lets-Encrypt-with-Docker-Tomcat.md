@@ -3,7 +3,7 @@ layout: post
 title: Let's Encrypt with Docker Tomcat
 ---
 
-In the previous blog post [we've used self-signed certificate with Docker Tomcat](http://mavi.logdown.com/posts/6675210). However, in order to have a properly protected web site, we need to use a proper set of certificates. We'll use the Let's Encrypt authority to obtain the keys at no cost.
+In the previous blog post [we've used self-signed certificate with Docker Tomcat](../Using-self-signed-OpenSSL-pem-with-Docker-Tomcat/). However, in order to have a properly protected web site, we need to use a proper set of certificates. We'll use the Let's Encrypt authority to obtain the keys at no cost.
 
 # Preparing the server and DNS
 
@@ -43,7 +43,7 @@ services:
 
  > **Note:** we need to map the entire `/etc/letsencrypt` into the Docker container; just mapping the `/etc/letsencrypt/live/your-page.eu` folder alone is not enough since those `pem` files are symlinks which would stop working in Docker and Tomcat would fail with `FileNotFoundException`.
 
-Feel free to use the `server.xml` from the [self-signed openssl](http://mavi.logdown.com/) article, but change the appropriate connector part to:
+Feel free to use the `server.xml` from the [self-signed openssl](../Using-self-signed-OpenSSL-pem-with-Docker-Tomcat/) article, but change the appropriate connector part to:
 ```xml
    <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol"
               maxThreads="150" SSLEnabled="true" >

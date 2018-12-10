@@ -3,7 +3,7 @@ layout: post
 title: Vaadin And Kotlin Coroutines
 ---
 
-When Kotlin 1.1 brought in Coroutines, at first I wasn't impressed. I thought coroutines to be just a bit more lightweight threads: a lighter version of the OS threads we already have, perhaps easier on memory and a bit lighter on the CPU. Of course, this alone can actually make a ground-breaking difference: for example, Docker is just a light version of a VM, but it's quite a difference. It's just that I failed to see the consequences of this ground-breaking difference; also, performance-wise in Vaadin apps, it seems that there is little need to switch away from threads (read [Are Threads Obsolete With Vaadin Apps?](http://mavi.logdown.com/posts/3487539) for more info).
+When Kotlin 1.1 brought in Coroutines, at first I wasn't impressed. I thought coroutines to be just a bit more lightweight threads: a lighter version of the OS threads we already have, perhaps easier on memory and a bit lighter on the CPU. Of course, this alone can actually make a ground-breaking difference: for example, Docker is just a light version of a VM, but it's quite a difference. It's just that I failed to see the consequences of this ground-breaking difference; also, performance-wise in Vaadin apps, it seems that there is little need to switch away from threads (read [Are Threads Obsolete With Vaadin Apps?](../are-threads-obsolete-with-vaadin-apps/) for more info).
 
 So, is there something else to Coroutines with respect to Vaadin? The answer is yes.
 

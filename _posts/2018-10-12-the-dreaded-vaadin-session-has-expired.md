@@ -45,7 +45,7 @@ The important bit here is that it's apparently not possible to tie `HttpSession`
 
 The alternative would be to upgrade your web server (e.g. if you embed, say, Jetty 9.2.x into your app, you can simply upgrade that). For example, Karaf 4.2.1 with Jetty 9.4.x fails; Karaf 4.1.5 with Jetty 9.3.x still works with Vaadin 7's Atmosphere 2.2.9.vaadin2.
 
-The simplest workaround is to use HTTP Long Polling, by annotating your UI with `@Push(value = PushMode.AUTOMATIC, transport = Transport.LONG_POLLING)`. That way websockets aren't used at all, just the standard http mechanism you've already been using. To compare those two, please check the [Long Polling vs WebSocket](http://mavi.logdown.com/posts/7814158-7814158-long-polling-vs-websockets) article.
+The simplest workaround is to use HTTP Long Polling, by annotating your UI with `@Push(value = PushMode.AUTOMATIC, transport = Transport.LONG_POLLING)`. That way websockets aren't used at all, just the standard http mechanism you've already been using. To compare those two, please check the [Long Polling vs WebSocket](../long-polling-vs-websockets/) article.
 
 # Something Else
 

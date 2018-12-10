@@ -19,7 +19,7 @@ A solution has been devised, that would introduce an always-opened pipe through 
 
 By default Vaadin will use WebSockets with XHR. WebSocket connection is established by the browser, in order for the server to be able to notify the browser at any time; however when browser wants something it will send a new HTTP XHR request. This looks like quite an overhead: why doesn't Vaadin simply use pure web sockets for client request as well? The reason is that some proxies may suddenly stop your websocket traffic for no apparent reason, which would stop traffic both ways, so your Vaadin app would for example stop responding to button clicks. Therefore, it's better to use XHR - even if the websocket freezes, only the push messages from the server are affected, but your app is still responsive, client-wise. Eventually a heartbeat will be sent, which would then "repair" (re-establish) a broken WebSocket pipe.
 
-However, WebSockets have a disadvantage: they do not hold a http session. The Atmosphere library emulates the http session for WebSocket requests, but it may fail in some setups, leading to [The Dreaded "Vaadin Session has Expired"/"Cookies Disabled"](../the-dreaded-vaadin-session-has-expired).
+However, WebSockets have a disadvantage: they do not hold a http session. The Atmosphere library emulates the http session for WebSocket requests, but it may fail in some setups, leading to [The Dreaded "Vaadin Session has Expired"/"Cookies Disabled"](../the-dreaded-vaadin-session-has-expired/).
 
 ## Comparing Those Two
 

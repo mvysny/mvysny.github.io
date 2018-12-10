@@ -152,4 +152,4 @@ person.save()
 
 Pure simplicity:
 
-![vok-db.jpeg]({{ site.baseurl }}/images/vok-orm.jpeg)
+![vok-orm.jpeg]({{ site.baseurl }}/images/vok-orm.jpeg)

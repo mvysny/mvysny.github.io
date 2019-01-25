@@ -35,7 +35,7 @@ After you discover the hotspot method, you can proceed to optimize the code.
 
 ### It May Be GC
 
-However, having high CPU usage could also mean that your JVM is striving to get more memory for your app.
+However, having high CPU usage could also mean that your JVM is striving to get more JVM memory for your app.
 If your `-Xmx` is low and your app memory usage is high, then GC starts to use 100%
 of CPU, to collect garbage memory and find free memory blocks. If GC is unable to
 do so in a reasonable time (3 seconds usually), then the JVM fails with `OutOfMemoryError`.
@@ -45,27 +45,33 @@ again to find free memory (which may have been released by some thread as we spe
 and again and again, taking more than 30% of CPU.
 
 So, looking at your GC eating up 30% or more of your CPU is a sign that the
-app is running out of memory. Either increase the `-Xmx` of your server,
+app is running out of JVM memory. Either increase the `-Xmx` of your server,
 or you really need to memory-profile your server.
 
 You can use [webmon](https://github.com/mvysny/webmon) to embed a tiny JVM monitoring
 tool into your app; then you can look at the GC CPU usage, to check if it is constantly anything
-above 10-15%.
+above 10-15%. If it is, then that means unusually high GC activity which hints at
+excessive JVM memory usage by your app.
 
-## 90% Memory Usage
+## 90% OS Memory Usage
 
-If the CPU is not the main hog, let's look at the memory usage. Often the `-Xmx`
+If the CPU is not the main hog, let's look at the OS memory usage. Often the `-Xmx`
 of your JVM exceeds the physical memory of your server. When JVM grows too large,
 Linux has to start swapping JVM's memory to disk. If that starts to happen frequently and your disk
 is slow, then that could be the cause of slow responses. You can confirm excessive swapping by
 looking at `sudo iotop` and see high disk usage, or here:
 [How can I tell how much my system is swapping?](https://unix.stackexchange.com/questions/103911/how-can-i-tell-how-much-my-system-is-swapping).
-If this happens, either decrease `-Xmx` of your server, or buy more RAM.
+If this happens, either decrease `-Xmx` of your JVM, or buy more RAM.
+
+Decreasing `-Xmx` may not necessarily cause high GC usage and your app going out of memory - it will simply tell JVM
+to allocate memory more cautiously, maybe use even different memory-allocating algorithms.
+The point here is to trim down on swapping by reducing JVM memory which might have been
+too generous already to begin with.
 
 ## Excessive Disk usage
 
 If CPU usage is low but `sudo iotop` shows high numbers, then the JVM may be
-spending lots of time waiting for the disk. If the memory usage is high, then
+spending lots of time waiting for the disk. If the OS memory usage is also high, then
 it might be excessive swapping as discussed above; if not, then it's simply
 your app doing too much disk access. You can verify that by profiling your app as suggested
 above, to confirm that the majority of time is spent in disk-accessing functions.

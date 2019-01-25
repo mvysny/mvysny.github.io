@@ -17,7 +17,7 @@ The most basic resources every app uses are:
 * network
 
 These are very easy to look at, and they will give you a pretty decent initial impression what's wrong with your app. On a Linux box,
-you can simply run `htop` to see CPU and Memory and Swap, `sudo iotop` to see disk ops,
+you can simply run `htop` to see CPU and Memory and Swap, `sudo iotop` to see the disk usage,
 `sudo nethogs` to see the network usage.
 
 ## Constant 100% CPU usage
@@ -47,6 +47,10 @@ and again and again, taking more than 30% of CPU.
 So, looking at your GC eating up 30% or more of your CPU is a sign that the
 app is running out of memory. Either increase the `-Xmx` of your server,
 or you really need to memory-profile your server.
+
+You can use [webmon](https://github.com/mvysny/webmon) to embed a tiny JVM monitoring
+tool into your app; then you can look at the GC CPU usage, to check if it is constantly anything
+above 10-15%.
 
 ## 90% Memory Usage
 

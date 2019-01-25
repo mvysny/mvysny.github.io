@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Why Is My App So Slow?
+title: Why Is My JVM Server So Slow?
 ---
 
 If your server-side JVM app chokes up when serving 20 concurrent users, then there is something

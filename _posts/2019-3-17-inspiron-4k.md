@@ -19,3 +19,9 @@ xrandr --newmode "3840x2160_25.00" 278.70 3840 4056 4464 5088 2160 2161 2164 219
 xrandr --addmode HDMI-1 "3840x2160_25.00"
 xrandr --output HDMI-1 --mode "3840x2160_25.00"
 ```
+
+Note that the above only works when Ubuntu is running on Xorg. TODO Wayland.
+
+The controls are rather tiny with the default scale of 100%. You can open the Gnome "Displays" configuration and selecting the 200% upscale, to restore the proper sizes.
+The general problem with 4K resolutions is that Gnome loses its speed and the entire desktop starts behaving "choppy" which is quite annoying.
+

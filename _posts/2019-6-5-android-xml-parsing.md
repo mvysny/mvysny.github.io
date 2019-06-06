@@ -59,12 +59,14 @@ On top of that, the solution:
 
 No wonder nobody young and sane would pick Java as the language worth learning.
 
-Luckily, there is a way - the [Konsume-XML](https://gitlab.com/mvysny/konsume-xml) library,
-which allows you to call high-level functions to parse XML. And it contains ZERO annotations
-([another Java pain point](../post-annotation-programming/)).
-
-To parse the above XML, just write
+How about replacing the above monstrosity with something like this (in Kotlin):
 
 ```kotlin
 println("<foo>Hello World!</foo>".konsumeXml().childText("foo"))
 ```
+
+That's what the [Konsume-XML](https://gitlab.com/mvysny/konsume-xml) library does -
+it allows you to call high-level functions to parse XML, and it shields you from
+direct interaction with the pull
+parser (which is used under-the-hood). And no annotations
+([another Java pain point](../post-annotation-programming/)).

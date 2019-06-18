@@ -34,7 +34,7 @@ Then, just add the Jib plugin:
 ```kotlin
 plugins {
    ...
-   id("com.google.cloud.tools.jib") version "1.0.2"
+   id("com.google.cloud.tools.jib") version "1.3.0"
 }
 ```
 

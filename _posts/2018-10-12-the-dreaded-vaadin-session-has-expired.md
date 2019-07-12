@@ -34,7 +34,7 @@ To verify this, launch development tools in your Chrome (press `F12`), then
 go to *Application* tab, *Storage* / *Cookies* and simply delete all cookies
 and reload your app.
 
-## Empty Coookies
+## Session Cookie with Empty Value
 
 If the cookie is present in the browser but has empty value, it could be
 a web server misconfiguration. Please try removing/commenting out the 

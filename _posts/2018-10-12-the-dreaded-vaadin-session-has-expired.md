@@ -34,6 +34,12 @@ To verify this, launch development tools in your Chrome (press `F12`), then
 go to *Application* tab, *Storage* / *Cookies* and simply delete all cookies
 and reload your app.
 
+## Empty Coookies
+
+If the cookie is present in the browser but has empty value, it could be
+a web server misconfiguration. Please try removing/commenting out the 
+`<session-config>` element from your `web.xml`.
+
 ## Old Cruft
 
 There may be old cruft in browser's cache. Make sure the DevTools are opened(`F12`);

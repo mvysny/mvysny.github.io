@@ -9,8 +9,8 @@ This way, you can modify e.g. `VButton.java`, refresh your browser with F5
 and immediately see the changes done in Vaadin Button. This blogpost describes
 how to configure Intellij to do just that.
 
-> Note: Here I'm assuming that you're using the pre-provided pre-compiled
-`vaadin-client-compiled.jar`. If that's not the case, please read
+> Note: Here I'm assuming that you're using the pre-provided pre-compiled `com.vaadin.DefaultWidgetSet`
+widgetset located in the `vaadin-client-compiled.jar`. If that's not the case, please read
 [Debugging Your Widgetset Components With SuperDevMode For Dummies](../2019-8-20-Debugging-your-widgetset-components-with-superdevmode-for-dummies/)
 
 We will need two things:

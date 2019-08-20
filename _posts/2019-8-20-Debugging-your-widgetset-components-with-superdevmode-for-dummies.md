@@ -10,7 +10,8 @@ and immediately see the changes done in Vaadin Button. This blogpost describes
 how to configure Intellij to do just that.
 
 > Note: Here I'm assuming that you're using your own custom widgetset.
-If you're using Vaadin default pre-compiled `vaadin-client-compiled.jar` widgetset,
+If you're using Vaadin default pre-compiled `com.vaadin.DefaultWidgetSet` widgetset located in
+`vaadin-client-compiled.jar`,
 please read [Debugging Built-in Vaadin 8 Components With SuperDevMode For Dummies](../Debugging-builtin-Vaadin-8-components-with-superdevmode-for-dummies/)
 
 We will need two things:

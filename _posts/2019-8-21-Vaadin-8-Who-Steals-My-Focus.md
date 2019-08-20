@@ -29,9 +29,8 @@ You can simply place a breakpoint into the `UI.setFocusedComponent()` function,
 or you can override the function
 in your UI class and simply print the component getting the focus.
 
-You can catch all attempts to focus components from server-side, unfortunately
+You can catch all server-side attempts to focus components; however unfortunately
 you will not catch any focus changes if a JavaScript/GWT code requests a focus.
-If this fails, read on.
 
 # 3. Debug GWT client-side in superdevmode
 

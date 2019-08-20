@@ -4,7 +4,7 @@ title: Android XML Parsing
 ---
 
 If you ever tried to parse XML on Android [the encouraged way](https://developer.android.com/training/basics/network-ops/xml),
-trying to parse a simple XML `<foo>Hello World!</foo>` will yield the following code:
+trying to parse a simple XML `<foo>Hello World!</foo>` will yield the following shitty code:
 
 ```java
  import java.io.IOException;

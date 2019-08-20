@@ -10,13 +10,14 @@ component or code steals your focus.
 
 # 1. Figure out in the browser who has the focus now
 
-You can run the following command in your browser's dev tools javascript console (press F12, then select the `console` tab):
+You can run the `document.activeElement` command in your browser's dev tools javascript console (press F12, then select the `console` tab):
+
 ```
 > document.activeElement
 <div id="ember1457" class="embercom-composer-editor…text shim__composer-max" contenteditable="true">
 ```
 
-That should print the currently focused element, and the browser will even highlight the element for you
+That should print the newly focused element, and the browser will even highlight the element for you
 if you hover over the `<div...>` text in the console. Sometimes this is enough
 for you to remember that special focus hack in your Java code :)
 

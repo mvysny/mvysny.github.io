@@ -43,6 +43,6 @@ Please read
 [Debugging Your Widgetset Components With SuperDevMode For Dummies](../Debugging-your-widgetset-components-with-superdevmode-for-dummies/)
 on how to debug the GWT code of your widgetset in superdevmode.
 
-> This chapter is very short, incomplete, and just a suggestion tip. If you gather
+> This chapter is very short, incomplete, and just a general suggestion. If you gather
 more experience in this area, please let me know - I'll update this text and
 I'll reference you as a co-author.

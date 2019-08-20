@@ -25,7 +25,7 @@ for you to remember that special focus hack in your Java code :)
 
 When server-side Java code wishes to focus a component, it calls e.g.
 `TextField.focus()` which in turn goes to `UI.setFocusedComponent(Focusable)`.
-You can simply place a breakpoint into the `UI.setFocusedComponent()` function,
+You can simply place a breakpoint into the `UI.setFocusedComponent(Focusable)` function,
 or you can override the function
 in your UI class and simply print the component getting the focus.
 

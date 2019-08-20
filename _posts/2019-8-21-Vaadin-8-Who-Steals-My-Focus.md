@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin 8: Who Steals My Focus? Where did my focus go?
+title: Vaadin 8 - Who Steals My Focus? Where did my focus go?
 ---
 
 Imagine typing something into your application's `TextField`, and suddenly *bam*:

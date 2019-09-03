@@ -91,6 +91,11 @@ Now it will be possible to launch the `vaadin:run-codeserver` task, and with it,
 [INFO] The code server is ready at http://127.0.0.1:9876/
 ```
 
+> Note: Maven Vaadin plugin doesn't have a documentation page, but it inherits goals from
+the [GWT Maven Plugin](https://gwt-maven-plugin.github.io/gwt-maven-plugin). For example,
+here is the [documentation on the vaadin:run-codeserver Maven goal](https://gwt-maven-plugin.github.io/gwt-maven-plugin/run-codeserver-mojo.html)
+and here is the [documentation on all GWT Maven Plugin Goals](https://gwt-maven-plugin.github.io/gwt-maven-plugin/plugin-info.html).
+
 Now that the codeserver is running, let us use it. In your Chrome,
 navigate to [http://localhost:8080?superdevmode](http://localhost:8080?superdevmode)
 (or [http://localhost:8080?superdevmode#!someview](http://localhost:8080?superdevmode#!someview)

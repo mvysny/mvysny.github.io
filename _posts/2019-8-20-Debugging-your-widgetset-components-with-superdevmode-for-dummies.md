@@ -47,6 +47,11 @@ your widgetset sources and run this from the command-line:
 $ mvn vaadin:run-codeserver
 ```
 
+> Note: Maven Vaadin plugin doesn't have a documentation page, but it inherits goals from
+the [GWT Maven Plugin](https://gwt-maven-plugin.github.io/gwt-maven-plugin). For example,
+here is the [documentation on the vaadin:run-codeserver Maven goal](https://gwt-maven-plugin.github.io/gwt-maven-plugin/run-codeserver-mojo.html)
+and here is the [documentation on all GWT Maven Plugin Goals](https://gwt-maven-plugin.github.io/gwt-maven-plugin/plugin-info.html).
+
 The codeserver should eventually print something like this to the console:
 ```
 [INFO] --- vaadin-maven-plugin:8.1-SNAPSHOT:run-codeserver (default-cli) @ vaadin-client-compiled ---

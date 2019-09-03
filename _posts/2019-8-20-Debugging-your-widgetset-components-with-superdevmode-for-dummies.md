@@ -110,3 +110,6 @@ Then, make sure you saved the java file and hit `CTRL+F9`.
 
 ### Q: The codeserver fails to compile widgetset because of some ridiculous compilation error
 Just let me know if you find a workaround, I'll update this tutorial.
+
+### Q: Skipping over `assert`s
+Use the `-da` JVM switch: run `MAVEN_OPTS="-da" mvn vaadin:codeserver`.

@@ -146,3 +146,6 @@ with *Resolve Workspace artifacts* unchecked.
 ### Q: The codeserver fails to compile widgetset because of some ridiculous compilation error
 Make sure you are using the `<resources>` workaround above,
 with *Resolve Workspace artifacts* unchecked.
+
+### Q: Skipping over `assert`s
+Run the `vaadin:codeserver` task from Intellij with the `-da` (Disable Asserts) JVM argument.

@@ -113,3 +113,13 @@ Just let me know if you find a workaround, I'll update this tutorial.
 
 ### Q: Skipping over `assert`s
 Use the `-da` JVM switch: run `MAVEN_OPTS="-da" mvn vaadin:codeserver`.
+
+### Q: Breakpoints do not work in Safari
+
+I don't know why yet. As a workaround, you can enforce breakpoints by adding
+`GWT.debugger();` call to your java code. According to GWT docs:
+
+> Emits a JavaScript "debugger" statement on the line that called this method.
+     If the user has the browser's debugger open, the debugger will stop when the
+     GWT application executes that line. There is no effect in Dev Mode or in
+     server-side code.

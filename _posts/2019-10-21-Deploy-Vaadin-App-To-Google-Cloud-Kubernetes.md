@@ -95,7 +95,7 @@ be running.
 
 ## Updating VOK-PWA in Kubernetes Cluster
 
-To deploy VOK-PWA to Google Container Registry you first need to create a Docker
+To update a newer version of VOK-PWA to your Google Container Registry you first need to create a Docker
 image and publish it to GCR:
 
 ```bash

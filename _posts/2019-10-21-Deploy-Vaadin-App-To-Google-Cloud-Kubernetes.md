@@ -27,7 +27,7 @@ If that cannot be done because of Google APIs not being enabled, simply visit th
 Select the Default network for Private IP. Also click `Allocate and connect` button.
 
 Once the VM is created, visit the VM details page and write down the Private IP
-Address, e.g. `10.15.160.3`.
+Address, e.g. `10.97.16.3`.
 
 Don't forget to create the `vok_pwa` database after the VM is up.
 
@@ -75,7 +75,7 @@ With these env variables we configure the VOK-PWA app to properly connect to
 our Google Cloud SQL database.
 
 Replace `MYSQLIP` with the SQL Private IP Address
-as above, e.g. `10.15.160.3`. The rest of the Configuration doesn't matter -
+as above, e.g. `10.97.16.3`. The rest of the Configuration doesn't matter -
 select default Namespace, for example "VOK-PWA" as App Name; Labels are not used.
 Click the "Deploy" button.
 

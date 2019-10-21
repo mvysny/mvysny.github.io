@@ -14,37 +14,34 @@ First, clone the repo:
 $ git clone https://github.com/mvysny/karibu-helloworld-application
 ```
 
-Then, edit the `build.gradle.kts` file. Because of [Issue 591](https://github.com/GoogleContainerTools/jib/issues/591)
-we need to add the following on the top of the `build.gradle.kts` file:
-
-```kotlin
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("com.google.guava:guava:27.0.1-jre")
-    }
-}
-```
-
-Then, just add the Jib plugin:
+Then, edit the `build.gradle.kts` file and add the Jib plugin:
 
 ```kotlin
 plugins {
-   ...
-   id("com.google.cloud.tools.jib") version "1.3.0"
+   // ...
+   id("com.google.cloud.tools.jib") version "1.7.0"
 }
 ```
 
 Jib will automatically detect that the project is a WAR project and will use Jetty Docker image
 (you can read more about this at [Jib War Projects](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#war-projects)).
+However, to force a specific Jetty image just add this to `build.gradle.kts`:
+
+```kotlin
+jib {
+    from {
+        image = "jetty:9.4.18-jre11"
+    }
+    container {
+        appRoot = "/var/lib/jetty/webapps/ROOT"
+    }
+}
+```
 
 To build the Docker image locally, simply run
 
 ```bash
-$ ./gradlew jibDockerBuild --image=test/karibu-helloworld-app
+$ ./gradlew clean build jibDockerBuild --image=test/karibu-helloworld-app
 ```
 
 To run the image:

@@ -82,8 +82,8 @@ Click the "Deploy" button.
 > Note: You can now verify that the node booted up properly, by visiting
 `Workloads / VOK-PWA` and clicking the "Container Logs" link.
 
-In the "Workloads" tab, click "VOK-PWA". There will be a warning regarding the
-visiblity "To let others access your deployment, expose it to create a service " -
+In the `Workloads` tab, click "VOK-PWA". There will be a warning regarding the
+visibility "To let others access your deployment, expose it to create a service " -
 follow the warning and create a Load Balancer. Make sure to setup
 port forwarding from 80 to 8080. The Load Balancer will be created with a Static IP.
 

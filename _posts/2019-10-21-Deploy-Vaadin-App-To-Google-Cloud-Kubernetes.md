@@ -68,8 +68,8 @@ Add the following environment variables:
  
 * `VOK_PWA_JDBC_DRIVER` = `com.mysql.jdbc.Driver`
 * `VOK_PWA_JDBC_URL` = `jdbc:mysql://MYSQLIP:3306/vok_pwa?useUnicode=true`
-* `VOK_PWA_USERNAME` = `root`
-* `VOK_PWA_PASSWORD` = `PfJ739VoMMDrs`
+* `VOK_PWA_JDBC_USERNAME` = `root`
+* `VOK_PWA_JDBC_PASSWORD` = `PfJ739VoMMDrs`
 
 With these env variables we configure the VOK-PWA app to properly connect to
 our Google Cloud SQL database.

@@ -70,3 +70,12 @@ DELETE FROM 'recursive';
 Rating: 3 out of 3 facepalms + 1 additional facepalm because of having to run those two
 statements in a separate transaction, risking database corruption in case the DELETE
 fails.
+
+## 6. Unicode not enabled by default
+
+latin1 as the default charset; need to specify
+`CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci` for every table create DDL;
+need to specify `characterEncoding=UTF-8` to the JDBC driver to even transfer unicode
+characters properly.
+
+2 out of 3 facepalms

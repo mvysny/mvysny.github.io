@@ -7,7 +7,7 @@ A summary of reasons why to avoid MySQL (or MariaDB, it's the same crap) and use
 
 > Don't get me wrong - MySQL is a highly performant database. It just has those
 ridiculous "features" which cause you to share a lot of intimate wtf moments with that
-stupid bloody database crap.
+stupid bloody database.
 
 ## 1. `utf8` replaces certain characters with `?`
 
@@ -20,7 +20,7 @@ certain characters as unsupported, for optimization reasons. Thankfully, [MySQL 
 and will use `utf8mb4` which is able to represent all Unicode characters.
 
 Premature optimization. Rating: 3 out of 3 facepalms, since it causes a lot of wtf moments
-with no apparent reason.
+for no apparent reason.
 
 ## 2. table name case-sensitive, but not on Windows
 
@@ -34,24 +34,24 @@ Imagine that you have a unique index U on `owner_id` and `name`, and an index I1
 and a full-text index I2 on `name`.
  
 Running `SELECT * FROM foo where owner_id=3 and MATCH(name) against ('foo')`
-will *RANDOMLY* will match nothing and will return nothing. That's because
+will *RANDOMLY* match nothing and return nothing. That's because
 MySQL will randomly use the unique index U instead of a combination of I1 and I2, which
 is extremely hard to figure out. See [MySQL sporadic MATCH AGAINST behaviour with unique index](https://stackoverflow.com/questions/45281641/mysql-sporadic-match-against-behaviour-with-unique-index)
 for more details.
 
 Random behavior changes. Rating: 3 out of 3 facepalms. 
 
-## 4. DDLs non-transactional FlyWay
+## 4. DDLs do not run in a transaction
 
 The DDLs do not run in a transaction, can not be rolled back and therefore can not
 be considered atomic. If you use a
 database migration tool such as FlyWay and the DDL fails, FlyWay will have no way
 of knowing how many of the DDLs in the script actually passed, and it will
-mark that particular migraton as failed and you will have to [repair](https://flywaydb.org/documentation/faq.html#repair)
+mark that particular migration as failed and you will have to [repair](https://flywaydb.org/documentation/faq.html#repair)
 it manually.
 
 Alternatively, [you can have one DDL per file](https://flywaydb.org/documentation/faq.html#rollback)
-and then somehow tell FlyWay to not to mark failed DDLs as failed migration (since
+(which is annoying) and then somehow tell FlyWay to not to mark failed DDLs as failed migration (since
 now the migrations are atomic).
 
 Rating: 1 out of 3 facepalms, since running DDL in a transaction is quite hard

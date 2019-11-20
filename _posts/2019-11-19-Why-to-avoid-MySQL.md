@@ -79,3 +79,10 @@ need to specify `characterEncoding=UTF-8` to the JDBC driver to even transfer un
 characters properly.
 
 2 out of 3 facepalms
+
+## 7. It takes forever to start in Docker
+
+It takes some 30 seconds to start MySQL, as opposed to PostgreSQL, which starts in
+2-3 seconds.
+
+3 out of 3 facepalms, since MySQL is clearly inferior to PostgreSQL.

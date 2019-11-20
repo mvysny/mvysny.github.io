@@ -75,10 +75,10 @@ fails.
 
 latin1 as the default charset; need to specify
 `CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci` for every table create DDL;
-need to specify `characterEncoding=UTF-8` to the JDBC driver to even transfer unicode
-characters properly.
+need to specify `characterEncoding=UTF-8` to the JDBC driver (`useUnicode=true` is not enough)
+to even transfer unicode characters properly to the MySQL server.
 
-2 out of 3 facepalms
+2 out of 3 facepalms + 1 facepalm for `useUnicode=true` not working.
 
 ## 7. It takes forever to start in Docker
 

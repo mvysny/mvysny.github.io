@@ -1,13 +1,12 @@
 ---
 layout: post
-title: Why To Avoid MySQL
+title: Why I Tend To Avoid MySQL
 ---
 
-A summary of reasons why to avoid MySQL (or MariaDB, it's the same crap) and use PostgreSQL instead:
+A summary of reasons why I tend to avoid MySQL (or MariaDB for that matter) and use PostgreSQL instead:
 
 > Don't get me wrong - MySQL is a highly performant database. It just has those
-ridiculous "features" which cause you to share a lot of intimate wtf moments with that
-stupid bloody database.
+ridiculous "features" which cause you to share a lot of intimate wtf moments.
 
 ## 1. `utf8` replaces certain characters with `?`
 

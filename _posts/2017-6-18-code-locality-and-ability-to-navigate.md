@@ -132,9 +132,21 @@ Remember: Loose coupling directly reduces the ability to navigate and the possib
 
 *Affects: Ability to Navigate*
 
-The interceptors/aspects are immensely popular with the Dependency Injection frameworks. However, when overused, this can become a maintenance nightmare. Usually interceptors are employed by the means of annotating class/function, which hurts the ability to navigate, but is still doable - by searching all accessors of that particular annotation one can eventually learn the code that "executes" the annotation (even though this gets harder as the number of annotated components increase). However, interceptors can also be configured (in Spring XML or Guice Module) so that theyapply to certain class types (and subclasses) only, and that makes them virtually undiscoverable for any coder who just joined the project. This directly boosts the coder's frustration and the desire to leave that project, which is not what you want.
+The interceptors/aspects are immensely popular with the Dependency Injection frameworks.
+However, when overused, this can become a maintenance nightmare.
+Usually interceptors are employed by the means of annotating
+class/function, which hurts the ability to navigate,
+but is still doable - by searching all accessors of that particular
+annotation one can eventually learn the code that "executes"
+the annotation (even though this gets harder as the number of annotated
+components increase). However, interceptors can also be configured (in Spring
+XML or Guice Module) so that theyapply to certain class types (and subclasses)
+only, and that makes them virtually undiscoverable for any coder who just joined the project.
+This directly boosts the coder's frustration and the desire to leave that project,
+which is not what you want.
 
-One of the solutions may be to use functions with blocks instead, as shown with the `db {}` example.
+One of the solutions may be to use functions with blocks instead, as shown
+with the `db {}` example.
 
 ## Java Stream API
 
@@ -195,7 +207,10 @@ Instead, it is better to use Intellij's `@NotNull` annotation and traditional la
 
 *Affects: Ability to Navigate, Code Readability, Code Locality*
 
-Spring was founded as an alternative for J2EE, which in the old days contained a lot of XMLs. At that time it was lean; nowadays it has tons of modules, with varying quality of the documentation. It seems that Spring permeates everything and uses all of the above methods:
+Spring was founded as an alternative for J2EE, which in the old days contained a lot
+of XMLs. At that time it was lean; nowadays it has tons of modules, with varying
+quality of the documentation. It seems that Spring permeates everything and uses
+all of the above methods:
 
 * In a lots of projects, the wiring granularity is too high. Instead of wiring modules, it often wires classes, often with synthetic interfaces in front of those. This is basically Loose Coupling on a way too granular level, which makes the navigation in such code harder.
 * Uses interceptors/annotations heavily. Spring Data, Spring Security for example. Spring Security has became so huge that coders are avoiding it on purpose.

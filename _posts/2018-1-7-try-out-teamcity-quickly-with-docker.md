@@ -11,7 +11,7 @@ Luckily, with Docker, you can set up TeamCity very easily on any PC, without the
 version: '2'
 services:
   teamcity-server:
-    image: jetbrains/teamcity-server:2017.2.1
+    image: jetbrains/teamcity-server:2019.2
     environment:
      - TEAMCITY_SERVER_MEM_OPTS=-Xmx2g -XX:MaxPermSize=270m -XX:ReservedCodeCacheSize=350m
     ports:
@@ -99,7 +99,7 @@ To use this new Agent Image, we will simply direct the Docker Compose to build i
 version: '2'
 services:
   teamcity-server:
-    image: jetbrains/teamcity-server:2017.2.1
+    image: jetbrains/teamcity-server:2019.2
     environment:
      - TEAMCITY_SERVER_MEM_OPTS=-Xmx2g -XX:MaxPermSize=270m -XX:ReservedCodeCacheSize=350m
     ports:

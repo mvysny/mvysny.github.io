@@ -3,8 +3,6 @@ layout: post
 title: Why I Tend To Avoid MySQL
 ---
 
-# Why I Tend To Avoid MySQL
-
 A summary of reasons why I tend to avoid MySQL (or MariaDB for that matter) and use PostgreSQL instead:
 
 > Don't get me wrong - MySQL is a highly performant database. It just has those

@@ -3,8 +3,6 @@ layout: post
 title: Vaadin plugin - under the hood
 ---
 
-# Vaadin 14 Plugin: Under the hood
-
 Neither the [Vaadin Gradle Plugin](https://github.com/vaadin/vaadin-gradle-plugin/)
 and the [Vaadin Maven Plugin](https://github.com/vaadin/flow/issues/8617)
 really document what they're doing under the hood. When something goes wrong,

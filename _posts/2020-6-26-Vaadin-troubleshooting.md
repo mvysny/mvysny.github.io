@@ -12,7 +12,7 @@ follow and check out. We expect a basic knowledge of Vaadin toolchain here, plea
 read the [Vaadin: the missing guide](../Vaadin-the-missing-guide/) article
 and the [Vaadin Plugin under the hood](../Vaadin-Plugin-under-the-hood/) article first.
 
-## What to do first
+## What to verify server-side
 
 Sometimes Vaadin will fail to update `package.yaml` and `package-lock.yaml` with
 new versions of npm modules (especially after a Vaadin version update),
@@ -49,15 +49,66 @@ all breaks and issues and the Vaadin Dance will be unnecessary.
 
 ### Production issues: make sure the necessary files are present
 
-Make sure that all of the Vaadin files are present in the WAR/EAR/JAR archive:
+Make sure that all of the Vaadin files are present in the WAR/EAR/JAR archive, when
+built for production mode via the `build-frontend` Plugin task:
 
 * Most importantly, the `flow-build-info.json` file, located on classpath in the
-  `META-INF/VAADIN/package/` package.
+  `META-INF/VAADIN/config/` package.
   * In a WAR archive it's located in the
   `WEB-INF/classes/META-INF/VAADIN/config/` folder; in a SpringBoot JAR it's located
   in `BOOT-INF/classes/META-INF/VAADIN/config/` folder.
   * Make sure that it sets the following properties as follows:
   `"compatibilityMode": false, "productionMode": true, "enableDevServer": false`
+  * See [Vaadin: the missing guide](../Vaadin-the-missing-guide/) for an example of
+  how the file should look like.
+* The `stats.json` file, located on classpath right next to the `flow-build-info.json`,
+  in the same package.
+* The `META-INF/VAADIN/build/` folder is populated as follows:
 
+```
+├── vaadin-2-18d67c4ccff7e93b081a.cache.js
+├── vaadin-2-18d67c4ccff7e93b081a.cache.js.gz
+├── vaadin-3-b0147df339bf18eb7618.cache.js
+├── vaadin-3-b0147df339bf18eb7618.cache.js.gz
+├── vaadin-4-ee1d2e45569f7eca4292.cache.js
+├── vaadin-4-ee1d2e45569f7eca4292.cache.js.gz
+├── vaadin-5-5e9292474e82143d0a27.cache.js
+├── vaadin-5-5e9292474e82143d0a27.cache.js.gz
+├── vaadin-bundle-19a00eae62ad7cddd291.cache.js
+├── vaadin-bundle-19a00eae62ad7cddd291.cache.js.gz
+├── vaadin-bundle.es5-b1c1a3cc054c62ad7949.cache.js
+├── vaadin-bundle.es5-b1c1a3cc054c62ad7949.cache.js.gz
+└── webcomponentsjs
+    ├── bundles
+    │   ├── webcomponents-ce.js
+    │   ├── webcomponents-ce.js.map
+    │   ├── webcomponents-sd-ce.js
+    │   ├── webcomponents-sd-ce.js.map
+    │   ├── webcomponents-sd-ce-pf.js
+    │   ├── webcomponents-sd-ce-pf.js.map
+    │   ├── webcomponents-sd.js
+    │   └── webcomponents-sd.js.map
+    ├── custom-elements-es5-adapter.js
+    ├── LICENSE.md
+    ├── package.json
+    ├── README.md
+    ├── src
+    │   └── entrypoints
+    │       ├── custom-elements-es5-adapter-index.js
+    │       ├── webcomponents-bundle-index.js
+    │       ├── webcomponents-ce-index.js
+    │       ├── webcomponents-sd-ce-index.js
+    │       ├── webcomponents-sd-ce-pf-index.js
+    │       └── webcomponents-sd-index.js
+    ├── webcomponents-bundle.js
+    ├── webcomponents-bundle.js.map
+    └── webcomponents-loader.js
+```
+
+Important: in the development mode, only the `flow-build-info.json` needs to
+be present on the classpath. Vaadin Servlet will internally start a child `webpack`
+process and will transfer all other files internally from `webpack`.
+
+## What to verify in your browser
 
 TBD

@@ -60,4 +60,34 @@ it requires the `prepare-frontend` task to be run beforehand.
 
 You can again follow the [Vaadin Gradle plugin build-frontend task implementation](https://github.com/vaadin/vaadin-gradle-plugin/blob/master/src/main/kotlin/com/vaadin/gradle/VaadinBuildFrontendTask.kt#L68).
 
-TBD
+First, the `flow-build-info.json` file is modified. Since we are targeting production mode here,
+the Vaadin Servlet will no longer start embedded webpack and will serve precompiled
+JavaScript files instead. That's why we set `enableDevServer` to false and remove
+all npm-related settings like `npmFolder`, `generatedFolder` and `frontendFolder`.
+We can also remove `pnpm.enable` since it doesn't matter how the precompiled JavaScript
+files were produced. Also we remove `require.home.node` since in production mode
+we do not need `node.js`, `npm` nor `webpack` anymore, since the precompiled JavaScript
+files will be produced by the Plugin and packaged into the WAR/EAR/JAR archive.
+
+Next, we will run `npm install` to make sure all packages are available in `node_modules`,
+in order for webpack to be able to produce the precompiled JavaScript files (the `runNodeUpdater()` function
+in plugin's sources).
+
+Lastly, `webpack` is run, to package everything from `frontend/` and `node_modules` into
+the precompiled JavaScript files bundle.
+
+If this task succeeds, it should produce the following outputs:
+
+* `node_modules` and `package-lock`
+* The `META-INF/VAADIN/config/flow-build-info.json` file on classpath
+* The `META-INF/VAADIN/config/stats.json` file on classpath
+* The `META-INF/VAADIN/build/` folder.
+
+Please see [Vaadin: the missing guide](../Vaadin-the-missing-guide/) on the
+example contents of those files and folders.
+
+## What to read next
+
+See the [Vaadin: Troubleshooting](../Vaadin-troubleshooting/) guide when something
+goes wrong.
+

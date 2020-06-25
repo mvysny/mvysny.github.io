@@ -15,7 +15,7 @@ All Vaadin components are generally web components, following the
 
 Web Component API is supported by all ever-green browsers (Firefox, Chrome, Safari, MS Edge).
 
-> Ever-green means that the browser endlessly updates itself and you generally
+> **Note:** Ever-green means that the browser endlessly updates itself and you generally
 > use the newest version.
 
 Web Component API can be emulated, by the means of the Polyfills library - that's how
@@ -33,7 +33,7 @@ Vaadin part responsible for this is called [Vaadin Flow](https://github.com/vaad
 
 Read [Vaadin Overview](https://vaadin.com/docs/v14/flow/introduction/introduction-overview.html) for more details.
 
-> Note that you can still use non-webcomponent libraries: you simply create a `<div>`
+> **Note:** You can still use non-webcomponent libraries: you simply create a `<div>`
 > client-side, you hook the javascript library to that div and then you can control the
 > `<div>` from the server-side.
 
@@ -80,7 +80,7 @@ to do all the work:
    into the `WEB-INF/classes/META-INF/VAADIN/build/` folder and served by VaadinServlet
    from there.
 
-> In npm mode, Vaadin does not use webjars at all. However in Vaadin 14 webjars
+> **Note:** In npm mode, Vaadin does not use webjars at all. However in Vaadin 14 webjars
 > are transitive dependencies of the `vaadin` and `vaadin-core` Maven artifacts.
 > While there is no harm
 > in having webjars on classpath (Vaadin will simply ignore them), it's best to

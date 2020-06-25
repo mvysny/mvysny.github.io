@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin - The missing guide
+title: Vaadin 14 - The missing guide
 ---
 
 The [Vaadin documentation](https://vaadin.com/docs/v14/flow/Overview.html)

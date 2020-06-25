@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin plugin - under the hood
+title: Vaadin 14 Plugins - under the hood
 ---
 
 Neither the [Vaadin Gradle Plugin](https://github.com/vaadin/vaadin-gradle-plugin/)

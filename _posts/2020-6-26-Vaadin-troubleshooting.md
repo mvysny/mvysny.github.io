@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin: Troubleshooting
+title: Vaadin - Troubleshooting
 ---
 
 Sometimes Vaadin 14 fails mysteriously, which is very unfortunate: it now uses

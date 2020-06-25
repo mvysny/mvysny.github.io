@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin: The missing guide
+title: Vaadin - The missing guide
 ---
 
 Neither the [Vaadin Gradle Plugin](https://github.com/vaadin/vaadin-gradle-plugin/)

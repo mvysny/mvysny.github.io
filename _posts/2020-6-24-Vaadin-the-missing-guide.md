@@ -124,7 +124,8 @@ initialize the client-side properly.
 The most important file is the `flow-build-info.json` file: Vaadin Servlet
 reads that file and configures itself from it at runtime.
 The file resides on the classpath, in the
-`META-INF/VAADIN/config/` package. It looks like this (development mode example):
+`META-INF/VAADIN/config/` package. The file is produced by Vaadin Plugin.
+It looks like this (development mode example):
 
 ```json
 {
@@ -165,7 +166,7 @@ Production mode example:
 It's very important to have this file on classpath. If it's not, Vaadin Servlet
 will then try to auto-configure itself and sometimes wrongly so. For example when launching
 WAR in Tomcat from Intellij, the `frontendFolder` setting will be "auto-detected"
-to tomcat's bin/ folder, which will cause webpack to fail later on, because of missing files.
+to Tomcat's `bin/` folder, which will cause webpack to fail later on, because of missing files.
 
 If the file is present multiple times on the classpath (sometimes Vaadin addons
 incorrectly include the `flow-build-info.json` file in the jar file - that's a bug in the addon packaging),

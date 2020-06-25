@@ -111,4 +111,64 @@ process and will transfer all other files internally from `webpack`.
 
 ## What to verify in your browser
 
-TBD
+You should at some point learn how to use your browser's dev tools:
+
+* [Firefox Dev Tools Guide](https://developer.mozilla.org/en-US/docs/Tools)
+* [Chrome Dev Tools Guide](https://developers.google.com/web/tools/chrome-devtools)
+
+The Dev Tools is an IDE integrated into your browser which you use to:
+
+* Debug javascript if something goes wrong
+* Debug CSS layouts if something is positioned in an odd way
+* Profile javascript when something is slow (e.g. when making a bug report to Vaadin Grid)
+
+If you do not understand something in the text below, please refer to the Dev Tools
+guides above.
+
+### Quick tips
+
+Press F12 in your browser to fire up dev tools, then head to the `Network` tab and reload
+the page. It should download a bunch of files with the HTTP 200 OK result code, most importantly
+the `webcomponents-loader.js`, `vaadin-bundle-*.js` and `client-*.cache.js`:
+
+![dev_tools_network.png]({{ site.baseurl }}/images/2020-6-26/dev_tools_network.png)
+
+If those files fail to download then Vaadin Client side will not initialize at all. Most
+common incorrect HTTP codes are:
+
+* 404 NOT FOUND: VaadinServlet is mapped to a different context root, or not mapped at all, or not activated by the servlet container at all.
+* 403 FORBIDDEN: Make sure your Spring Security allows those files to pass through.
+
+If everything looks okay in the "Network" tab, go into the "Console" tab and make sure
+there are no red errors preventing Vaadin from initializing.
+
+Then, type this into the "Console" command prompt:
+
+```javascript
+customElements.get("vaadin-button")
+```
+
+It should print something like `class xyz { constructor }`: that means that the
+`vaadin-button` web component is registered properly. However, if it prints
+`undefined` then there's something very wrong going on and Vaadin hasn't been initialized
+on the client-side properly.
+
+### My component doesn't work
+
+It's a good idea to confirm that your web component was loaded properly, via the
+JavaScript Console:
+
+```javascript
+customElements.get("my-component")
+```
+
+If this prints `undefined` then:
+* Verify that at least Vaadin has loaded properly, by trying `customElements.get("vaadin-button")` as described above.
+* If yes, perhaps the webpack bundle was not rebuilt. Try:
+   * restart your server
+   * perform the Vaadin Dance
+   * try to also check that the npm module is present in `package.json`
+
+### Others
+
+Let me know and I'll add more tips.

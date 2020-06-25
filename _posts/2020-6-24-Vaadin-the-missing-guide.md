@@ -15,10 +15,6 @@ of the toolchain Vaadin uses, and the files it relies on. Therefore, this blog p
 All Vaadin components are generally web components, following the
 [Web Component](https://www.webcomponents.org/introduction) specification.
 
-> Note that you can still use non-webcomponent libraries: you simply create a `<div>`
-> client-side, you hook the javascript library to that div and then you can control the
-> `<div>` from the server-side.
-
 Web Component API is supported by all ever-green browsers (Firefox, Chrome, Safari, MS Edge).
 
 > Ever-green means that the browser endlessly updates itself and you generally
@@ -37,6 +33,10 @@ Vaadin is also able to listen on DOM events and pass them through to the server-
 Vaadin part responsible for this is called [Vaadin Flow](https://github.com/vaadin/flow/).
 
 Read [Vaadin Overview](https://vaadin.com/docs/v14/flow/introduction/introduction-overview.html) for more details.
+
+> Note that you can still use non-webcomponent libraries: you simply create a `<div>`
+> client-side, you hook the javascript library to that div and then you can control the
+> `<div>` from the server-side.
 
 ## Basic JavaScript concepts
 

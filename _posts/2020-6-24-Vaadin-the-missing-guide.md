@@ -80,7 +80,8 @@ to do all the work:
    from there.
 
 > In npm mode, Vaadin does not use webjars at all. However in Vaadin 14 webjars
-> are transitive dependencies of vaadin and vaadin-core. While there is no harm
+> are transitive dependencies of the `vaadin` and `vaadin-core` Maven artifacts.
+> While there is no harm
 > in having webjars on classpath (Vaadin will simply ignore them), it's best to
 > exclude them in order to decrease the result WAR file size. See
 > example [build.gradle.kts](https://github.com/mvysny/karibu10-helloworld-application/blob/master/build.gradle.kts)

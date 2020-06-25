@@ -3,19 +3,10 @@ layout: post
 title: Vaadin: The missing guide
 ---
 
-Neither the [Vaadin Gradle Plugin](https://github.com/vaadin/vaadin-gradle-plugin/)
-and the [Vaadin Maven Plugin](https://github.com/vaadin/flow/issues/8617)
-really document what they're doing under the hood. When something goes wrong,
-it's very hard for a server-side guy to know what's going on, especially
-since the entire JavaScript client-side landscape is pretty much a mystery to a Java
-guy. Therefore, this blog post.
-
-Both plugins do the same thing and have two goals/tasks:
-
-* `vaadin:prepare-frontend` for Maven, `vaadinPrepareFrontend` for Gradle
-* `vaadin:build-frontend` for Maven, `vaadinBuildFrontend` for Gradle
-
-But first, let's discuss the most important concepts Vaadin uses.
+The [Vaadin documentation](https://vaadin.com/docs/v14/flow/Overview.html)
+is a good source of initial info for Vaadin, but unfortunately in certain cases
+it simply doesn't go deep enough. This is especially true with respect
+of the toolchain Vaadin uses, and the files it relies on. Therefore, this blog post.
 
 ## Basic Vaadin concepts
 

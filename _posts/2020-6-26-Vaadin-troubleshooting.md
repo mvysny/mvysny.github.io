@@ -3,6 +3,8 @@ layout: post
 title: Vaadin - Troubleshooting
 ---
 
+# Vaadin 14: Troubleshooting
+
 Sometimes Vaadin 14 fails mysteriously, which is very unfortunate: it now uses
 LOTS of JavaScript code, frameworks and tools. Those things are unfamiliar to server-side
 guys, and it's really hard to tell what to do, should one of JavaScript toolchain fail.

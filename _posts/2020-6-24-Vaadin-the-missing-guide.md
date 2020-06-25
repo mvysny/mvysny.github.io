@@ -3,6 +3,8 @@ layout: post
 title: Vaadin - The missing guide
 ---
 
+# Vaadin 14: The missing guide
+
 The [Vaadin documentation](https://vaadin.com/docs/v14/flow/Overview.html)
 is a good source of initial info for Vaadin, but unfortunately in certain cases
 it simply doesn't go deep enough. This is especially true with respect

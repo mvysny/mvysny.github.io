@@ -25,7 +25,8 @@ However, Polyfills emulation is very slow and leads to 5-10 times worse performa
 also see
 [Vaadin Release Notes, section "Known Issues and Limitations" / "Performance"](https://github.com/vaadin/platform/releases/tag/14.2.1) - very well hidden Vaadin!!)
 
-Vaadin controls the web components by setting DOM HTML attributes, Polymer properties (kinda deprecated since Polymer will go away)
+Vaadin controls the web components from server side, by setting DOM HTML attributes,
+Polymer properties (kinda deprecated since Polymer will go away)
 and [Lit Properties](https://lit-element.polymer-project.org/guide/properties) (Vaadin 15+);
 Vaadin is also able to listen on DOM events and pass them through to the server-side. The
 Vaadin part responsible for this is called [Vaadin Flow](https://github.com/vaadin/flow/).
@@ -48,7 +49,7 @@ For best results, use `pnpm`.
 
 ## Compatibility VS npm mode
 
-Vaadin is able to run in two modes: so-called bower mode, and npm mode. Vaadin 13 and lower
+Vaadin is able to run in two modes: so-called _compatibility_ or _bower_ mode, and the _npm_ mode. Vaadin 13 and lower
 only supported bower mode; Vaadin 14 supports both modes; Vaadin 15+ will only support npm mode.
 
 In compatibility mode, Vaadin Servlet will use the old way of using

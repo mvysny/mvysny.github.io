@@ -18,10 +18,10 @@ Web Component API is supported by all ever-green browsers (Firefox, Chrome, Safa
 > **Note:** Ever-green means that the browser endlessly updates itself and you generally
 > use the newest version.
 
-Web Component API can be emulated, by the means of the Polyfills library - that's how
+Web Component API can be emulated, by the means of the [Polyfill](https://polyfill.io/v3/) library - that's how
 IE 11 is able to "support" Web Components even though IE 11 offers no Web Component support natively.
 However, Polyfills emulation is very slow and leads to 5-10 times worse performance
-(for example [Vaadin dropped IE11 support in Vaadin 15+](https://vaadin.com/blog/vaadin-14-is-the-last-major-version-to-support-ie11);
+(for example documented in [Vaadin dropped IE11 support in Vaadin 15+](https://vaadin.com/blog/vaadin-14-is-the-last-major-version-to-support-ie11);
 also see
 [Vaadin Release Notes, section "Known Issues and Limitations" / "Performance"](https://github.com/vaadin/platform/releases/tag/14.2.1) - very well hidden Vaadin!!)
 
@@ -48,7 +48,7 @@ Read [Vaadin Overview](https://vaadin.com/docs/v14/flow/introduction/introductio
 For best results, use `pnpm`. In the text below, `npm` will be used as a reference to both
 npm and pnpm.
 
-## Compatibility VS npm mode
+## The Compatibility/bower mode versus the npm mode
 
 Vaadin is able to run in two modes: so-called _compatibility_ or _bower_ mode, and the _npm_ mode. Vaadin 13 and lower
 only supported bower mode; Vaadin 14 supports both modes; Vaadin 15+ will only support npm mode.

@@ -25,7 +25,7 @@ Web Component API is supported by all ever-green browsers (Firefox, Chrome, Safa
 > use the newest version.
 
 Web Component API can be emulated, by the means of the Polyfills library - that's how
-IE 11 is able to "support" Web Components even though IE 11 has no Web Component support implemented.
+IE 11 is able to "support" Web Components even though IE 11 offers no Web Component support natively.
 However, Polyfills emulation is very slow and leads to 5-10 times worse performance
 (for example [Vaadin dropped IE11 support in Vaadin 15+](https://vaadin.com/blog/vaadin-14-is-the-last-major-version-to-support-ie11);
 also see

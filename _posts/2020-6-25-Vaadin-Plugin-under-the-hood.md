@@ -15,7 +15,7 @@ Both plugins do the same thing and have two goals/tasks:
 * `vaadin:prepare-frontend` for Maven, `vaadinPrepareFrontend` for Gradle
 * `vaadin:build-frontend` for Maven, `vaadinBuildFrontend` for Gradle
 
-In order to understand what's going on, please read the [Vaadin: the missing guide](../2020-6-24-Vaadin-the-missing-guide/)
+In order to understand what's going on, please read the [Vaadin: the missing guide](../Vaadin-the-missing-guide/)
 article first.
 
 ## prepare-frontend

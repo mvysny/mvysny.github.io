@@ -140,7 +140,7 @@ common incorrect HTTP codes are:
 * 403 FORBIDDEN: Make sure your Spring Security allows those files to pass through.
 
 If everything looks okay in the "Network" tab, go into the "Console" tab and make sure
-there are no red errors preventing Vaadin from initializing.
+there are no "red" errors logged in the console, preventing Vaadin from initializing.
 
 Then, type this into the "Console" command prompt:
 

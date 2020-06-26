@@ -61,8 +61,11 @@ is that it parses bower descriptor, creates a Maven `pom.xml` out of it (so that
 transitive dependencies are "working") and that's it: from your server-side perspective
 you can forget about Bower entirely and just use Maven to manage the dependencies.
 
-Well, not entirely: Bower versioning (especially the 1.x+ scheme) works differently
-than Maven one, and thus Vaadin had to introduce vaadin-bom to work around these issues.
+Well, not entirely: Bower transitive versioning resolution algorithm works
+a bit differently than the Maven one (especially for version ranges such as 1.+);
+Vaadin had to workaround these issues by fixing versions of all webjars in the
+`vaadin-bom` but this approach is error-prone and maintenance-heavy. That's why
+bower is deprecated in favor of npm/pnpm.
 
 Bower mode is deprecated and will go away in future Vaadin versions, do not use it for
 new projects - always use the npm mode.

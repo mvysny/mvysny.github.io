@@ -208,17 +208,23 @@ $0.click()
 
 Yes, the `@HtmlImport` annotation is completely ignored when Vaadin runs in npm mode.
 You either need to run Vaadin in compatibility mode, or simply replace the annotation
-with `@NpmPackage`. For example, for `<iron-form>`, remove:
+with `@NpmPackage`. For example, for `<iron-form>`, the following declaration
+is not enough:
 
 ```java
+@Tag("iron-form")
 @HtmlImport("frontend://bower_components/iron-form/iron-form.html")
+public class IronForm extends HtmlContainer {}
 ```
 
-and replace it with
+The correct declaration which works both in compatibility mode and in the npm mode:
 
 ```java
+@Tag("iron-form")
+@HtmlImport("frontend://bower_components/iron-form/iron-form.html")
 @NpmPackage(value = "@polymer/iron-form", version = "3.0.1")
 @JsModule("@polymer/iron-form/iron-form.js")
+public class IronForm extends HtmlContainer {}
 ```
 
 ### Others

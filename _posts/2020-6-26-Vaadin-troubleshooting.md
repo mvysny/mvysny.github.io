@@ -175,7 +175,8 @@ If this prints `undefined` then:
 * Verify that at least Vaadin has loaded properly, by trying `customElements.get("vaadin-button")`
   as described above. If Vaadin is not loaded, see above for steps to take.
 * Please note that the `@HtmlImport` annotation is completely ignored when Vaadin
-  is running in npm mode - you need to use `@NpmPackage()` instead.
+  is running in npm mode - you need to use `@NpmPackage()` and `@JsModule()` instead. Also see below
+  for tips.
 * It could be that the webpack bundle was not rebuilt properly. Try restarting
   your server if in development mode - it could cause Vaadin Servlet
   to notify changes, run npm install and update the package json files.
@@ -201,6 +202,23 @@ To call methods on the web component, simply select the DOM element in the
 
 ```javascript
 $0.click()
+```
+
+### `@HtmlImport` doesn't work
+
+Yes, the `@HtmlImport` annotation is completely ignored when Vaadin runs in npm mode.
+You either need to run Vaadin in compatibility mode, or simply replace the annotation
+with `@NpmPackage`. For example, for `<iron-form>`, remove:
+
+```java
+@HtmlImport("frontend://bower_components/iron-form/iron-form.html")
+```
+
+and replace it with
+
+```java
+@NpmPackage(value = "@polymer/iron-form", version = "3.0.1")
+@JsModule("@polymer/iron-form/iron-form.js")
 ```
 
 ### Others

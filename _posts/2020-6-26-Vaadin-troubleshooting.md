@@ -184,7 +184,7 @@ If this prints `undefined` then:
   values of the `@NpmPackage()` annotations are wrong - please double-check the values.
 * Try also performing the Vaadin Dance - it will force to re-generate `package.json`
   and `package-lock.json` and the dependency may now appear.
-* TODO what else to check.
+* TODO what else to check in this case?
 
 If the `customElements.get("my-component")` command prints something like
 `class a { constructor(args) }` then the web component is registered properly.

@@ -177,10 +177,11 @@ If this prints `undefined` then:
 * Please note that the `@HtmlImport` annotation is completely ignored when Vaadin
   is running in npm mode - you need to use `@NpmPackage()` and `@JsModule()` instead. Also see below
   for tips.
-* It could be that the webpack bundle was not rebuilt properly. Try restarting
-  your server if in development mode - it could cause Vaadin Servlet
-  to notify changes, run npm install and update the package json files.
-* If that doesn't help, try to verify whether the npm module is present in both
+* (Development mode only): It could be that the webpack bundle was not rebuilt
+  properly. Try restarting the server - it could cause Vaadin Servlet
+  to notice changes, run `npm install` and update the `package.json` and `package-lock.json` files.
+  Also try to run the `prepare-frontend` task/goal, to update `package.json` and `package-lock.json` files.
+* Try to verify whether the npm module is present in both
   `package.json` and `package-lock.json` files. If it's not,
   maybe Vaadin classpath scanning doesn't discover your `@NpmPackage()`-annotated
   class for some reason - make sure it's on classpath. Alternatively, the

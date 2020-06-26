@@ -172,11 +172,17 @@ customElements.get("my-component")
 ```
 
 If this prints `undefined` then:
-* Verify that at least Vaadin has loaded properly, by trying `customElements.get("vaadin-button")` as described above.
-* If yes, perhaps the webpack bundle was not rebuilt. Try:
-   * restart your server
-   * perform the Vaadin Dance
-   * try to also check that the npm module is present in `package.json`
+* Verify that at least Vaadin has loaded properly, by trying `customElements.get("vaadin-button")`
+  as described above. If Vaadin is not loaded, see above for steps to take.
+* It could be that the webpack bundle was not rebuilt properly. Try restarting
+  your server if in development mode - it could cause Vaadin Servlet
+  to notify changes, run npm install and update the package json files.
+* If that doesn't help, try to verify whether the npm module is present in both
+  `package.json` and `package-lock.json` files. If it's not,
+     it could be that Vaadin classpath scanning doesn't see a class annotated with
+     `@NpmPackage()` or the values are wrong. Try fixing those.
+* Try also performing the Vaadin Dance - it will force to re-generate `package.json`
+  and `package-lock.json` and the dependency may now appear.
 
 ### Others
 

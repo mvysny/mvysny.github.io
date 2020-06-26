@@ -47,7 +47,14 @@ Use the newest Vaadin 14.x - there are also fixes with respect to the JavaScript
 toolchain; for example it could be that at some point Vaadin will be able to detect
 all breaks and issues and the Vaadin Dance will be unnecessary.
 
-### Production issues: make sure the necessary files are present
+### Development mode issues
+
+If your webpack or npm is failing with a cryptic error messages, please make sure that
+you have the `flow-build-info.json` on your classpath, and the `npmFolder` path
+correctly points to your project location, and the `frontendFolder` correctly
+points to the `frontend/` folder in your project.
+
+### Production mode issues: make sure the necessary files are present
 
 Make sure that all of the Vaadin files are present in the WAR/EAR/JAR archive, when
 built for production mode via the `build-frontend` Plugin task:

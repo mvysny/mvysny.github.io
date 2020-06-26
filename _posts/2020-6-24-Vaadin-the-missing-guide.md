@@ -112,11 +112,11 @@ In development mode, Vaadin doesn't bundle the javascript files into the WAR fil
 that would prevent them from being hot-redeployed when modified. Instead,
 Vaadin Servlet will run webpack as a child process; webpack will then monitor
 `frontend/` for changes and is able to communicate with Vaadin Servlet internally
-so that Vaadin Servlet can correctly serve JavaScript code. That's why any changes
+so that Vaadin Servlet can correctly serve up-to-date JavaScript code. That's why any changes
 made to the `frontend/` folder are immediately visible when you refresh the page.
 
 In production mode however, Vaadin Servlet doesn't launch webpack (since that would
-require node.js and npm on your production machine); instead it relies on Vaadin Plugin
+require having node.js and npm on your production machine); instead it relies on Vaadin Plugin
 to run webpack, in order to produce the one huge JavaScript file. Vaadin Plugin
 then packages the produced JavaScript file onto classpath, into the `META-INF/VAADIN/build/` package;
 Vaadin Servlet is then able to serve those files to the browser, in order to

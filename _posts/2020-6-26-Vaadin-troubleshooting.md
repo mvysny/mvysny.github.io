@@ -179,11 +179,28 @@ If this prints `undefined` then:
   to notify changes, run npm install and update the package json files.
 * If that doesn't help, try to verify whether the npm module is present in both
   `package.json` and `package-lock.json` files. If it's not,
-     it could be that Vaadin classpath scanning doesn't see a class annotated with
-     `@NpmPackage()` or the values are wrong. Try fixing those.
+  maybe Vaadin classpath scanning doesn't discover your `@NpmPackage()`-annotated
+  class for some reason - make sure it's on classpath. Alternatively, the
+  values of the `@NpmPackage()` annotations are wrong - please double-check the values.
 * Try also performing the Vaadin Dance - it will force to re-generate `package.json`
   and `package-lock.json` and the dependency may now appear.
+* TODO what else to check.
+
+If the `customElements.get("my-component")` command prints something like
+`class a { constructor(args) }` then the web component is registered properly.
+You can print the version of the web component, by typing
+
+```javascript
+customElements.get("my-component").version
+```
+
+To call methods on the web component, simply select the DOM element in the
+"Inspector" tab, and you can then reference the selected node via the `$0` expression:
+
+```javascript
+$0.click()
+```
 
 ### Others
 
-Let me know and I'll add more tips.
+Please let me know at mavi@vaadin.com and I'll add more tips.

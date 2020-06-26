@@ -174,6 +174,8 @@ customElements.get("my-component")
 If this prints `undefined` then:
 * Verify that at least Vaadin has loaded properly, by trying `customElements.get("vaadin-button")`
   as described above. If Vaadin is not loaded, see above for steps to take.
+* Please note that the `@HtmlImport` annotation is completely ignored when Vaadin
+  is running in npm mode - you need to use `@NpmPackage()` instead.
 * It could be that the webpack bundle was not rebuilt properly. Try restarting
   your server if in development mode - it could cause Vaadin Servlet
   to notify changes, run npm install and update the package json files.

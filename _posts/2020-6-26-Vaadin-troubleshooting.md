@@ -39,7 +39,9 @@ by `build-frontend` when building for production.
 ### Gradle: use matching version of Vaadin and the Plugin
 
 Use Gradle Plugin 0.6.0 for Vaadin 14.1 and lower; use Gradle Plugin 0.7.0 for Vaadin 14.2 and newer.
-Gradle Plugin 0.6.0 doesn't work correctly with Vaadin 14.2.
+Gradle Plugin 0.7.0 may not work correctly with Vaadin 14.1.x;
+Gradle Plugin 0.6.0 may not work correctly with Vaadin 14.2+ (even though there
+are reports from users that it works just fine :-)
 
 ### Use newest Vaadin
 

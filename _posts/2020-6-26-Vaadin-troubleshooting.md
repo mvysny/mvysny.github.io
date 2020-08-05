@@ -38,7 +38,9 @@ by `build-frontend` when building for production.
 
 ### Gradle: use matching version of Vaadin and the Plugin
 
-Use Gradle Plugin 0.6.0 for Vaadin 14.1 and lower; use Gradle Plugin 0.7.0 for Vaadin 14.2 and newer.
+Please see the Compatibility Chart at [Vaadin Gradle Plugin home page](https://github.com/vaadin/vaadin-gradle-plugin/),
+to see which plugin version to use with which Vaadin version.
+ 
 Gradle Plugin 0.7.0 may not work correctly with Vaadin 14.1.x;
 Gradle Plugin 0.6.0 may not work correctly with Vaadin 14.2+ (even though there
 are reports from users that it works just fine :-)
@@ -114,7 +116,7 @@ built for production mode via the `build-frontend` Plugin task:
     └── webcomponents-loader.js
 ```
 
-Important: in the development mode, only the `flow-build-info.json` needs to
+**Important:** in the development mode, only the `flow-build-info.json` needs to
 be present on the classpath. Vaadin Servlet will internally start a child `webpack`
 process and will transfer all other files internally from `webpack`.
 

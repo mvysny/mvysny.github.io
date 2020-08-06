@@ -230,6 +230,18 @@ The correct declaration which works both in compatibility mode and in the npm mo
 public class IronForm extends HtmlContainer {}
 ```
 
+### JavaScript/webpack fails
+
+Please perform the "Vaadin Dance" as mentioned above - it could be that the `package-lock`
+references an incompatible combination of package versions, or obsolete versions of
+tools such as Babel.
+
+In addition, try to delete the following folders (if they exist):
+    
+* `$HOME/.vaadin`: contains a node.js distro downloaded by Vaadin; maybe it became corrupted?)
+* `$HOME/.pnpm-store` (if you're using pnpm): contains pnpm's cache of JavaScript packages,
+  maybe they somehow became corrupted)
+
 ### Others
 
 Please let me know at mavi@vaadin.com and I'll add more tips.

@@ -65,6 +65,30 @@ If it does, there is something very wrong with your web container.
 I currently do not know what could be the cause of this; if you know the
 cause, please let me know so that I can update this (and give you credits!)
 
+## Clusters
+
+If the application is deployed in a clustered installation, then a misconfigured cluster
+could redirect follow-up requests to different nodes; if the session is not replicated
+the session will only reside on one node.
+
+Try using a fixed node algorithm like IP hashing or sticky session which forces
+particular user to always communicate with one node only, and see whether the situation
+improves.
+
+Alternatively try making sure that session replication is enabled and configured
+properly.
+
+## Proxy
+
+Are the users accessing the application behind a proxy?
+Sometimes proxies can cause problems with Vaadin applications (TODO how exactly?)
+
+## Vaadin Closing Sessions
+
+If you're using `closeIdleSessions=true`, then lack of activity will kill the
+session since heartbeats will not refresh the session. Try setting `closeIdleSessions`
+to `false` temporarily, to see whether the situation improves.
+
 # Vaadin Push With WebSockets
 
 The problem with WebSockets is that websockets have their own session which

@@ -14,6 +14,12 @@ and the [Vaadin Plugin under the hood](../Vaadin-Plugin-under-the-hood/) article
 
 ## What to verify server-side
 
+To remove the possibility of random issues caused by corrupted `node_modules`
+or inproper javascript package versions in `package.json` and `package-lock.json`/`pnpm-lock.yaml`,
+it's always good to start the bug hunting with the **Vaadin Dance**.
+
+### The Vaadin Dance
+
 Sometimes Vaadin will fail to update `package.yaml` and `package-lock.yaml` with
 new versions of npm modules (especially after a Vaadin version update),
 or sometimes the `node_modules` becomes corrupted, or `package.yaml` will list
@@ -30,7 +36,9 @@ Vaadin to start from the clean state. You can achieve this by deleting the follo
 * `pnpm-lock.yaml` (if using pnpm)
 * `pnpmfile.js` (if using pnpm)
 
-(With [Vaadin Gradle plugin](https://github.com/vaadin/vaadin-gradle-plugin) you can simply run the `vaadinClean` task to do this).
+> Note: With [Vaadin Gradle plugin](https://github.com/vaadin/vaadin-gradle-plugin)
+you can simply run the `vaadinClean` task to do this; there's a [feature request for Vaadin Maven Plugin](https://github.com/vaadin/flow/issues/8885)
+for the same functionality.
 
 Then run the `prepare-frontend` task, to re-create those files. Note that the `node_modules`
 is populated later: either by Vaadin Servlet when running in development mode, or

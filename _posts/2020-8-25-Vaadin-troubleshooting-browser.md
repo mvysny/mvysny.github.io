@@ -13,29 +13,22 @@ on the client-side issues.
 
 ## What to verify in your browser
 
-You should at some point learn how to use your browser's dev tools:
+Two tips before we begin: you should at some point learn how to use your browser's dev tools:
 
 * [Firefox Dev Tools Guide](https://developer.mozilla.org/en-US/docs/Tools)
 * [Chrome Dev Tools Guide](https://developers.google.com/web/tools/chrome-devtools)
 
-The Dev Tools is an IDE integrated into your browser which you use to:
-
-* Debug javascript if something goes wrong
-* Debug CSS layouts if something is positioned in an odd way
-* Profile javascript when something is slow (e.g. when making a bug report to Vaadin Grid)
-
-If you do not understand something in the text below, please refer to the Dev Tools
-guides above.
+To remove the possibility of random issues caused by corrupted `node_modules`
+or inproper javascript package versions in `package.json` and `package-lock.json`/`pnpm-lock.yaml`,
+it's always good to start the bug hunting with the **Vaadin Dance**. See
+[Vaadin Troubleshooting](../Vaadin-troubleshooting/) for more details.
 
 Now, press F12 in your browser to fire up dev tools, then switch to the "Console"
 tab and let's go!
 
 ## Investigating Exceptions
 
-After you've verified everything mentioned in the [Vaadin Troubleshooting](../Vaadin-troubleshooting/)
-guide, it's time to check things in the browser.
-
-Open the JavaScript Console in your browser and search for any
+Search the JavaScript Console for any
 red-line logs, indicating JavaScript execution errors or JavaScript exceptions.
 Such exceptions prevent any further JavaScript execution which could cause any
 of the following:

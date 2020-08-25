@@ -46,8 +46,8 @@ of the following:
 * Prevent initialization of other components, causing lots of
   `Cannot read property x of undefined` further on.
 
-Fixing the root cause could then cause a domino effect and fix all follow-up errors
-like theming and `undefined`. Therefore, it's important to always investigate the
+Fixing the root cause can then cause a domino effect and can fix all follow-up errors
+like theming and `undefined`-related issues. Therefore, it's important to always investigate the
 first exception in the JavaScript console log. The red line can usually be unwrapped
 which reveals the stacktrace. Having the stacktrace is very important to quickly locate the
 origin of the issue.

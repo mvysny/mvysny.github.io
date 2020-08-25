@@ -254,4 +254,8 @@ In addition, try to delete the following folders (if they exist):
 
 ### Others
 
+Search the [Vaadin Flow Bug tracker](https://github.com/vaadin/flow/issues) for
+any issue you will find in the JavaScript console. If the issue is not yet reported,
+please report it so that it can be investigated (or Vaadin's error messages can be improved).
+
 Please let me know at mavi@vaadin.com and I'll add more tips.

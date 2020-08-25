@@ -152,6 +152,8 @@ common incorrect HTTP codes are:
 
 If everything looks okay in the "Network" tab, go into the "Console" tab and make sure
 there are no "red" errors logged in the console, preventing Vaadin from initializing.
+Please see the [Vaadin Troubleshooting - Browser](../Vaadin-troubleshooting-browser/)
+article for more details on this.
 
 Then, type this into the "Console" command prompt:
 

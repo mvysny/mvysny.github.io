@@ -57,4 +57,35 @@ proceed into the code and try to diagnose the root of the problem.
 
 ## Obfuscated Stacktraces
 
-TO BE WRITTEN
+Obfuscated stacktraces looks like following (see+vote [Vaadin Bug 8872](https://github.com/vaadin/flow/issues/8872)):
+
+```js
+(ReferenceError) : Polymer is not defined client-5F17FE7D56927576AB18BC8D06949321.cache.js:212:20
+    XC client-5F17FE7D56927576AB18BC8D06949321.cache.js:212
+    Xn client-5F17FE7D56927576AB18BC8D06949321.cache.js:1003
+    Wn client-5F17FE7D56927576AB18BC8D06949321.cache.js:774
+    Yn client-5F17FE7D56927576AB18BC8D06949321.cache.js:594
+    cu client-5F17FE7D56927576AB18BC8D06949321.cache.js:1016
+    bu client-5F17FE7D56927576AB18BC8D06949321.cache.js:973
+    _t client-5F17FE7D56927576AB18BC8D06949321.cache.js:575
+```
+
+Such obfuscated stacktrace usually comes from Vaadin Flow, since Flow's code is written
+in GWT and compiled in an obfuscated way. Read more on what could cause Flow to
+blow up/throw exceptions with such obfuscated stacktraces.
+
+### Incorrect JavaScript code in `Page.executeJavaScript()`
+
+Flow can throw an exception if the server sends an invalid JavaScript code by the means of calling
+`Page.executeJavaScript()` or `Page.executeJs()`.
+
+If this is so, there is a yellow warning line in the JavaScript console above,
+starting with `The error has occurred in the JS code: xyz`. To remedy this issue,
+search for the JavaScript code snippet `xyz` in your Java code-base and perform
+corrections as necessary.
+
+See+vote [Vaadin Bug 8872](https://github.com/vaadin/flow/issues/8872) for more details.
+
+## Others
+
+Please let me know at mavi@vaadin.com and I'll update this guide.

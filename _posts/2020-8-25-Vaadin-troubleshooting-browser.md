@@ -18,7 +18,7 @@ Two tips before we begin: you should at some point learn how to use your browser
 * [Firefox Dev Tools Guide](https://developer.mozilla.org/en-US/docs/Tools)
 * [Chrome Dev Tools Guide](https://developers.google.com/web/tools/chrome-devtools)
 
-To remove the possibility of random issues caused by corrupted `node_modules`
+Second tip: To remove the possibility of random issues caused by corrupted `node_modules`
 or inproper javascript package versions in `package.json` and `package-lock.json`/`pnpm-lock.yaml`,
 it's always good to start the bug hunting with the **Vaadin Dance**. See
 [Vaadin Troubleshooting](../Vaadin-troubleshooting/) for more details.

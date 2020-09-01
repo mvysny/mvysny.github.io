@@ -83,10 +83,23 @@ the precompiled JavaScript files bundle.
 
 If this task succeeds, it should produce the following outputs:
 
-* `node_modules` and `package-lock`
-* The `META-INF/VAADIN/config/flow-build-info.json` file on classpath
-* The `META-INF/VAADIN/config/stats.json` file on classpath
-* The `META-INF/VAADIN/build/` folder.
+* `node_modules` and `package-lock` in the project root folder;
+* The `META-INF/VAADIN/config/flow-build-info.json` file into the folder where generated resources go;
+* The `META-INF/VAADIN/config/stats.json` into the folder where generated resources go;
+* The `META-INF/VAADIN/build/` folder into the folder where generated resources go.
+
+The placement of generated resources depends on whether the project is built by
+Maven (then the folder is somewhere in `target/classes/`) or Gradle (then it's in `build/resources/main/`).
+It is now the job of the packaging plugin (WAR/EAR/JAR) to package those files
+and folders properly, so that Vaadin can use ClassLoader to load those files as
+resources from the classpath. For example:
+
+* When building JAR without Spring Boot (see [vaadin14-embedded-jetty](https://github.com/mvysny/vaadin14-embedded-jetty) example project), those folders
+  are simply located in the root of the jar file;
+* When building WAR (see e.g. [skeleton-starter](https://github.com/vaadin/skeleton-starter-flow))
+  then the folders are located in `WEB-INF/classes/`;
+* When building JAR+Spring Boot (e.g. [skeleton-starter-flow-spring](https://github.com/vaadin/skeleton-starter-flow-spring), those folders are located in
+  `BOOT-INF/classes/` in the Spring Boot jar file.
 
 Please see [Vaadin: the missing guide](../Vaadin-the-missing-guide/) on the
 example contents of those files and folders.

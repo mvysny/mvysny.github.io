@@ -214,9 +214,9 @@ WAR in Tomcat from Intellij, the `frontendFolder` setting will be "auto-detected
 to Tomcat's `bin/` folder, which will cause webpack to fail later on, because of missing files.
 
 If the file is present multiple times on the classpath,
-then Vaadin employs some black box code to try to choose which one is the right one (which one is coming
-from the main project). That's unfortunate since sometimes the black magic fails and
-backfires unexpectedly.
+then Vaadin tries to choose which one is the right one (which one is coming
+from the main project). That's unfortunate since sometimes the algorithm fails and
+backfires unexpectedly, choosing the incorrect file.
 This usually happens when a Vaadin addon
 incorrectly includes the `flow-build-info.json` file in the jar file.
 That's a bug in the addon packaging which need to be fixed and the `flow-build-info.json` file removed from their jar files.

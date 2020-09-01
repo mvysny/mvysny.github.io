@@ -86,7 +86,7 @@ If this task succeeds, it should produce the following outputs:
 * `node_modules` and `package-lock` in the project root folder;
 * The `META-INF/VAADIN/config/flow-build-info.json` file into the folder where generated resources go;
 * The `META-INF/VAADIN/config/stats.json` into the folder where generated resources go;
-* The `META-INF/VAADIN/build/` folder into the folder where generated resources go.
+* The `META-INF/VAADIN/build/` folder hosting generated JavaScript bundle, into the folder where generated resources go.
 
 The placement of generated resources depends on whether the project is built by
 Maven (then the folder is somewhere in `target/classes/`) or Gradle (then it's in `build/resources/main/`).

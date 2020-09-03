@@ -216,7 +216,8 @@ to Tomcat's `bin/` folder, which will cause webpack to fail later on, because of
 If the file is present multiple times on the classpath,
 then Vaadin tries to choose which one is the right one (which one is coming
 from the main project). That's unfortunate since sometimes the algorithm fails and
-backfires unexpectedly, choosing the incorrect file.
+backfires unexpectedly, choosing the incorrect file
+(see [Flow issue #8936](https://github.com/vaadin/flow/issues/8936) for more details).
 This usually happens when a Vaadin addon
 incorrectly includes the `flow-build-info.json` file in the jar file.
 That's a bug in the addon packaging which need to be fixed and the `flow-build-info.json` file removed from their jar files.

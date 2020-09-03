@@ -157,6 +157,10 @@ common incorrect HTTP codes are:
 
 * 404 NOT FOUND: VaadinServlet is mapped to a different context root, or not mapped at all, or not activated by the servlet container at all.
 * 403 FORBIDDEN: Make sure your Spring Security allows those files to pass through.
+* Even on 200 OK, the web server may be lying to you.
+  Make sure that the content downloaded is valid; for example a request to `vaadin-bundle.js`
+  actually downloads a JavaScript file and not for example a HTML login form.
+  This happened to me on WebSphere; the request even succeeded with 200 OK!
 
 If everything looks okay in the "Network" tab, go into the "Console" tab and make sure
 there are no "red" errors logged in the console, preventing Vaadin from initializing.

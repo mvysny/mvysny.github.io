@@ -57,6 +57,11 @@ not, the breakpoint will not trigger even if there's a focus change.
   fix, simply by rebuilding the widgetset with debugging info and with the
   obfuscation disabled.
 
+I wonder whether there's a possibility to place a breakpoint into the `Element.focus()`
+function itself, or override that function in Element's prototype temporarily,
+then place a breakpoint into the overridden function. Please let me know if
+you made this work.
+
 ### More
 
 This chapter is very short, incomplete, and just a general suggestion. If you gather

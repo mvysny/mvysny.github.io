@@ -43,6 +43,22 @@ Please read
 [Debugging Your Widgetset Components With SuperDevMode For Dummies](../Debugging-your-widgetset-components-with-superdevmode-for-dummies/)
 on how to debug the GWT code of your widgetset in superdevmode.
 
-> This chapter is very short, incomplete, and just a general suggestion. If you gather
+### 4. Debug the `focus` event listener
+
+In Firefox / Debugger / Event Listener Breakpoints / Control, you can activate
+to pause the JS execution on the 'focus' listeners. That's excellent since
+you can see the JavaScript stacktrace as well, which can help greatly in diagnosing
+the source of the issue. However, I'm not sure whether
+that's going to help in this case or not:
+
+1. It most probably only triggers when there is an actual focus listener. If there's
+not, the breakpoint will not trigger even if there's a focus change.
+2. The stacktrace is going to be obfuscated in case of GWT; however that's easy to
+  fix, simply by rebuilding the widgetset with debugging info and with the
+  obfuscation disabled.
+
+### More
+
+This chapter is very short, incomplete, and just a general suggestion. If you gather
 more experience in this area, please let me know - I'll update this text and
 I'll reference you as a co-author.

@@ -8,7 +8,7 @@ the TextField loses the focus or something else gets focused instead, for no app
 This article will summarize a list of items to review, to find out which pesky
 component or code steals your focus.
 
-# 1. Figure out in the browser who has the focus now
+### 1. Figure out in the browser who has the focus now
 
 You can run the `document.activeElement` command in your browser's dev tools javascript console (press F12, then select the `console` tab):
 
@@ -21,7 +21,7 @@ That should print the newly focused element, and the browser will even highlight
 if you hover over the `<div...>` text in the console. Sometimes this is enough
 for you to remember that special focus hack in your Java code :)
 
-# 2. Catch all calls to `focus()` on server-side.
+### 2. Catch all calls to `focus()` on server-side.
 
 When server-side Java code wishes to focus a component, it calls e.g.
 `TextField.focus()` which in turn goes to `UI.setFocusedComponent(Focusable)`.
@@ -32,7 +32,7 @@ in your UI class and simply print the component getting the focus.
 You can catch all server-side attempts to focus components; however unfortunately
 you will not catch any focus changes if a JavaScript/GWT code requests a focus.
 
-# 3. Debug GWT client-side in superdevmode
+### 3. Debug GWT client-side in superdevmode
 
 You can place a breakpoint into the client-side GWT code, for example into
 the `VTextField.onBlur()` function. With a little debugging,

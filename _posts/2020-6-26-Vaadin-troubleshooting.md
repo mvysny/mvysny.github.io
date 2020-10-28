@@ -44,6 +44,23 @@ Then run the `prepare-frontend` task, to re-create those files. Note that the `n
 is populated later: either by Vaadin Servlet when running in development mode, or
 by `build-frontend` when building for production.
 
+### Clean pnpm-cache
+
+When using pnpm, performing the Vaadin Dance may not be enough. The thing with pnpm
+is that it manages a cache of downloaded javascript libraries (which is good and speeds
+up the builds tremendously). However, `node_modules` is then populated not with actual files and folders,
+but with symlinks to the pnpm cache instead. If by accident something has been
+deleted from `node_modules` in an incorrect manner, it could be that the file got deleted
+from the actual cache and the cache got corrupted.
+
+In order to clear the cache and force pnpm to redownload everything, simply delete the
+cache folder. The pnpm cache is located at `$HOME/.pnpm-store` on Linux/Mac.
+Windows needs per-drive separated caches, since symlinks works only on the same drive.
+Therefore, if your project is located on `D:\` , the cache is located at `D:\.pnpm-store`.
+              
+After the `.pnpm-store` cache folder has been deleted, perform the Vaadin Dance
+and rebuild the app.
+
 ### Gradle: use matching version of Vaadin and the Plugin
 
 Please see the Compatibility Chart at [Vaadin Gradle Plugin home page](https://github.com/vaadin/vaadin-gradle-plugin/),

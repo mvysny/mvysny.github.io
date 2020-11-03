@@ -79,6 +79,23 @@ corrections as necessary.
 
 See+vote [Vaadin Bug 8872](https://github.com/vaadin/flow/issues/8872) for more details.
 
+### Deobfuscating JavaScript
+
+It's possible to turn off the webpack minifier when building for production, to see the original deobfuscated code.
+Edit the `webpack.config.js` file in your Vaadin project, and modify the `module.exports` stanza
+as following:
+
+```js
+module.exports = merge(flowDefaults, {
+    optimization: {
+        minimize: false
+    }
+});
+```
+
+Now rebuild in production mode; the exception stacktrace should now point towards a much
+clearer JavaScript code.
+
 ## Others
 
 Search the [Vaadin Flow Bug tracker](https://github.com/vaadin/flow/issues) for

@@ -53,10 +53,11 @@ then you will need to load them as old scripts.
 
 You currently can't use annotation-based approach to load a classic script locally from your app:
 
-1. `@HtmlImport` annotation is ignored in the npm mode - it does absolutely nothing, keep that in mind!
+1. `@HtmlImport` annotation is ignored in the npm mode - it does absolutely nothing, keep that in mind and never
+    use this annotation unless you're also targeting Vaadin 14 compatibility mode.
 2. `@JsModule` always loads the script as a module script;
 3. `@JavaScript` always loads the script as a module script when loading the script locally.
-   You can't use `@JavaScript` to load the script as if "external" from your WAR `src/main/webapp` using
+   You can't trick `@JavaScript` to load the script "as external" from your WAR `src/main/webapp` using
    the `context://` prefix since that's broken: [Flow bug #8290](https://github.com/vaadin/flow/issues/8290).
 
 The only way to load a script as a classic script is to place the javascript file into

@@ -27,7 +27,7 @@ documentation, it's not clear what the difference between the two are, apart may
 the loading order.
 
 The main difference is that `@JsModule` always loads the script as the module script,
-while `@JavaScript` loads the script either as the module script (if the path to script is prefixed with `./`),
+while `@JavaScript` loads the script either as the module script (if the path to script is prefixed with `./` - then the script will be loaded from the `frontend/` folder),
 or as a classic script (if loading from the external URL such as `https://`).
 
 The difference between the module script and the classic script is summarized at the
@@ -45,7 +45,7 @@ Quoting:
 9. imports are resolved statically at load time rather than dynamically at runtime.
 10. html comments are not allowed.
 
-You should always try to use the module script, and look up for the code you need in the npmjs
+You should always prefer js code which loads as the module script - you can find such libraries in the npmjs
 repository. However, certain old scripts won't work as module scripts (most probably because of the strict mode);
 then you will need to load them as old scripts.
 
@@ -56,7 +56,7 @@ You currently can't use annotation-based approach to load a classic script local
 1. `@HtmlImport` annotation is ignored in the npm mode - it does absolutely nothing, keep that in mind!
 2. `@JsModule` always loads the script as a module script;
 3. `@JavaScript` always loads the script as a module script when loading the script locally.
-   You can't use `@JavaScript` to load the script as "external" from your WAR `src/main/webapp` using
+   You can't use `@JavaScript` to load the script as if "external" from your WAR `src/main/webapp` using
    the `context://` prefix since that's broken: [Flow bug #8290](https://github.com/vaadin/flow/issues/8290).
 
 The only way to load a script as a classic script is to place the javascript file into
@@ -71,3 +71,5 @@ window.test = function test(val){
 ```
 
 However, certain scripts won't work as module scripts because of strict mode.
+You'll have to load those via `Page.addJavaScript`.
+

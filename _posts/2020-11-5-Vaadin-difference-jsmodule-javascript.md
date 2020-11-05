@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin 14: difference between `@JsModule` and `@JavaScript` in npm mode
+title: Vaadin 14: difference between @JsModule and @JavaScript in npm mode
 ---
 
 The problem is usually that you have a script such as

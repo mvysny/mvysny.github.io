@@ -49,7 +49,7 @@ You should always prefer js code which loads as the module script - you can find
 repository. However, certain old scripts won't work as module scripts (most probably because of the strict mode);
 then you will need to load them as old scripts.
 
-## Loading Classic Scripts
+## Loading classic scripts from your app
 
 You currently can't use annotation-based approach to load a classic script locally from your app:
 

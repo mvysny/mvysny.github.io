@@ -53,7 +53,7 @@ then you will need to load them as old scripts.
 
 You currently can't use an annotation-based approach to load a classic script locally from your app:
 
-1. `@HtmlImport` annotation is ignored in the npm mode - it does absolutely nothing, keep that in mind and never
+1. `@HtmlImport` annotation is ignored in the npm mode - it does absolutely nothing. Keep that in mind and never
     use this annotation unless you're also targeting Vaadin 14 compatibility mode.
 2. `@JsModule` always loads the script as a module script;
 3. `@JavaScript` always loads the script as a module script when loading the script locally.
@@ -65,11 +65,12 @@ e.g. `src/main/webapp/js/test.js` and call `Page.addJavaScript("context://js/tes
 
 ## Loading the script as module script
 
-You can use both `@JsModule` and `@JavaScript` to load script as a module script. The
-`@JavaScript` only loads stuff from the `frontend/` folder, while `@JsModule` is able to
-load the script both from `frontend/` and `node_modules/` folder. Also, the name `@JsModule`
-clearly states that the script is going to be loaded as a module script. Therefore
-you should always prefer `@JsModule` over `@JavaScript` when loading module scripts.
+You can use both `@JsModule` and `@JavaScript` to load script as a module script.
+You should always prefer `@JsModule` over `@JavaScript` when loading module scripts:
+
+* the `@JavaScript` only loads stuff from the `frontend/` folder, while `@JsModule` is able to
+load the script both from `frontend/` and `node_modules/` folder;
+* also, the name `@JsModule` clearly states that the script is going to be loaded as a module script.
 
 Certain scripts won't work as module scripts because of strict mode.
 Those scripts you'll have to load via `Page.addJavaScript`. However, if the script

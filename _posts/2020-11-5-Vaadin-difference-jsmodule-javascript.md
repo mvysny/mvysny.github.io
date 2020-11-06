@@ -98,8 +98,8 @@ export function test(val){
 }
 ```
 
-Unfortunately, such exported function is still not callable via `UI.getCurrent().getPage().executeJs("test('User')");`
-simply because the code snippet running via `executeJs()` would have to import the module script first.
+Unfortunately, such exported function is not callable via `UI.getCurrent().getPage().executeJs("test('User')");`
+because the code snippet running via `executeJs()` would have to import the module script first.
 That is currently not possible, please see [Flow bug #5094](https://github.com/vaadin/flow/issues/5094)
 for more details.
 

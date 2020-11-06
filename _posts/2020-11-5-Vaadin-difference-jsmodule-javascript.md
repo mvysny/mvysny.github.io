@@ -63,7 +63,22 @@ You currently can't use an annotation-based approach to load a classic script lo
 The only way to load a script as a classic script is to place the javascript file into
 e.g. `src/main/webapp/js/test.js` and call `Page.addJavaScript("context://js/test.js")`.
 
-Alternatively, you can load the script as a module script and publish the function as follows:
+## Loading the script as module script
+
+You can use both `@JsModule` and `@JavaScript` to load script as a module script. The
+`@JavaScript` only loads stuff from the `frontend/` folder, while `@JsModule` is able to
+load the script both from `frontend/` and `node_modules/` folder. Also, the name `@JsModule`
+clearly states that the script is going to be loaded as a module script. Therefore
+you should always prefer `@JsModule` over `@JavaScript` when loading module scripts.
+
+Certain scripts won't work as module scripts because of strict mode.
+Those scripts you'll have to load via `Page.addJavaScript`. However, if the script
+is loadable as a module script, below you can find a couple of ideas to call the
+function.
+
+### Publishing the function to `window`
+
+You can publish the function to the `window` object as follows:
 
 ```javascript
 window.test = function test(val){
@@ -71,6 +86,21 @@ window.test = function test(val){
 }
 ```
 
-However, certain scripts won't work as module scripts because of strict mode.
-You'll have to load those via `Page.addJavaScript`.
+Then the function should be callable via `UI.getCurrent().getPage().executeJs("test('User')");`,
+since the javascript snippet runs in the context of the `window` object.
+
+### Exporting the function
+
+An alternative approach would be to load the script as a module script and export the `test` function as follows:
+
+```javascript
+export function test(val){
+    alert('Hi'+val);
+}
+```
+
+Unfortunately, such exported function is still not callable via `UI.getCurrent().getPage().executeJs("test('User')");`
+simply because the code snippet running via `executeJs()` would have to import the module script first.
+That is currently not possible, please see [Flow bug #5094](https://github.com/vaadin/flow/issues/5094)
+for more details.
 

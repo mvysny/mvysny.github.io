@@ -3,7 +3,7 @@ layout: post
 title: Vaadin 14 - difference between `@JsModule` and `@JavaScript` in npm mode
 ---
 
-The problem is usually that you have a script such as
+Say you have a script such as
 
 ```javascript
 function test(val){
@@ -11,13 +11,16 @@ function test(val){
 }
 ```
 
-You try to load it via `@JavaScript` then call the function as `UI.getCurrent().getPage().executeJs("test('User')");`
-and it doesn't work. See [Flow bug #8285](https://github.com/vaadin/flow/issues/8285) and this
-[Vaadin Forum question](https://vaadin.com/forum/thread/18116726/javascript-function-defined-in-jsfile-used-by-javascript-annotation-is-n)
-for more details.
+and you want to call the function as `UI.getCurrent().getPage().executeJs("test('User')");`.
+You try to place the script into the `frontend/` folder, then load the script via `@JavaScript`, and it doesn't work.
+Unfortunately that's the way things work; please read below on why is that and what can be done about it.
 
 The reason is that the script has been loaded as module script; and since the `test` function was not published,
 it is internal in the module and nobody can access it.
+
+> See [Flow bug #8285](https://github.com/vaadin/flow/issues/8285) and this
+[Vaadin Forum question](https://vaadin.com/forum/thread/18116726/javascript-function-defined-in-jsfile-used-by-javascript-annotation-is-n)
+for more details.
 
 ## Module Scripts versus Classic Scripts
 

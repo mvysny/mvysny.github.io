@@ -72,10 +72,8 @@ You should always prefer `@JsModule` over `@JavaScript` when loading module scri
 load the script both from `frontend/` and `node_modules/` folder;
 * also, the name `@JsModule` clearly states that the script is going to be loaded as a module script.
 
-Certain scripts won't work as module scripts because of strict mode.
-Those scripts you'll have to load via `Page.addJavaScript`. However, if the script
-is loadable as a module script, below you can find a couple of ideas to call the
-function.
+Certain scripts won't work as module scripts though, because of strict mode.
+In such case you'll have to load them as classic scripts.
 
 ### Publishing the function to `window`
 

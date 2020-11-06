@@ -261,6 +261,10 @@ The correct declaration which works both in compatibility mode and in the npm mo
 public class IronForm extends HtmlContainer {}
 ```
 
+### `@HtmlImport`/`@JsModule`/`@JavaScript` don't work as expected
+
+Please see the [Vaadin 14 - difference between `@JsModule` and `@JavaScript` in npm mode](../Vaadin-difference-jsmodule-javascript/) article.
+
 ### JavaScript compilation or Webpack fails
 
 Please perform the "Vaadin Dance" as mentioned above - it could be that the `package-lock`

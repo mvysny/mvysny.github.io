@@ -94,7 +94,11 @@ module.exports = merge(flowDefaults, {
 ```
 
 Now rebuild in production mode; the exception stacktrace should now point towards a much
-clearer JavaScript code.
+clearer JavaScript code. Then:
+ 
+* from the code you can learn e.g. the element tag name (for example `vcf-progress-spinner`) or the add-on name;
+* from the element tag name you can learn the add-on name / homepage (e.g. [vcf-progress-spinner](https://github.com/vaadin-component-factory/vcf-progress-spinner)),
+* and from there you can open a bug report (e.g. [vcf-progress-spinner #3](https://github.com/vaadin-component-factory/vcf-progress-spinner/issues/3)).
 
 ## Others
 

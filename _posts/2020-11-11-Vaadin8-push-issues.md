@@ -27,7 +27,7 @@ The following list could help with Vaadin 8 Push issues, such as:
 * UI Freezing - browser just sitting there, idle, with the Vaadin progress indicator blinking
 * Frequent page reloads for no apparent reason
 
-## Problems at hand
+## What can go wrong
 
 ### TCP/IP breaks silently
 
@@ -58,7 +58,7 @@ from the server-side.
 
 See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more details
 on how those things work. In practice, Long-Polling has been observed to work
-more reliably than WebSocket/XHR, therefore I advise you to use Long-Polling. 
+more reliably than WebSocket/XHR, therefore I'd advise you to use Long-Polling. 
 
 ### UIDL
 

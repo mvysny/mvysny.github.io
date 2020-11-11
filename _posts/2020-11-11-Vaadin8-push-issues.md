@@ -119,11 +119,11 @@ if they do, there's some kind of problem going on.
 
 When the connection is broken, the client will basically do this:
 
-1. Await for next UIDL (which will never come)
+1. Await for next UIDL (which will never come because the connection is broken)
 2. After 5 minutes it will ask for a resync. It's not known whether the client does so
    over XHR or over WebSocket - if over WebSocket, the resync request will get lost as well;
    if over XHR and the response is sent via WebSocket, the response will get lost as well.
-3. The client will endlessly await for resync, thus appearing to be frozen.
+3. The client will thus endlessly await for resync, appearing to be frozen during that time.
 
 The client only sends the heartbeats to the server, the server never sends heartbeats
 to the client. Moreover, the only thing the server will do is that it will close

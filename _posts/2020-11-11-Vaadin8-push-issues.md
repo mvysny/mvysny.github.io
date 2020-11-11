@@ -149,7 +149,9 @@ What can cause the blinking progress bar?
 
 ## Solutions to try
 
-Hopefully something from the below will work for you.
+Hopefully something from the following might help. Usually the best thing
+is to prevent the connection from being broken at all costs, since
+that causes the Vaadin client to freeze indefinitely.
 
 ### Make Heartbeats go faster
 

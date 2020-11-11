@@ -126,12 +126,13 @@ When the connection is broken, the client will basically do this:
 3. The client will thus endlessly await for resync, appearing to be frozen during that time.
 
 The client only sends the heartbeats to the server, the server never sends heartbeats
-to the client. Moreover, the only thing the server will do is that it will close
-the UI after three heartbeats have been missed. Unfortunately,
+to the client. Therefore, the client has no way of learning that the connection is
+broken. Moreover, the only thing the server will do is that it will close
+the UI after three heartbeats have been missed;
 neither the client nor the server will attempt to repair the connection by
 reconnecting.
 
-Therefore, if the connection becomes broken, Vaadin client will simply freeze
+Therefore, if the connection becomes broken, Vaadin client will often simply freeze
 indefinitely.
 
 ## Solutions to try

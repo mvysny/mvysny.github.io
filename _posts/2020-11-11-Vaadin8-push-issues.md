@@ -60,38 +60,45 @@ See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more detail
 on how those things work. In practice, Long-Polling has been observed to work
 more reliably than WebSocket/XHR, therefore I advise you to use Long-Polling. 
 
-### Message Ordering
+### UIDL
 
 Vaadin's synchronization protocol is based on UIDL (UI Definition/Diffing Language? :-D ).
 Basically it's a JSON file, listing what have been changed since the last UIDL update. For example,
 if you set a new caption to a TextField with connector ID 42, you will be able to
 observe this information in the UIDL sent from the server to the client.
 
-Every UIDL message has a precise order number which is kept strictly in sync, since
-missing an UIDL message could lead to undefined client-side state.
+Essentially, Vaadin sends diffs (called UIDLs) of what has been changed from the server-side.
+Since missing out just one of those diffs could lead to undefined client-side state,
+Vaadin keeps strict track of which UIDLs has been sent and received by the client-side Vaadin code.
+
+### Message Ordering
+
+Every UIDL message has a precise order number which is kept strictly in sync.
 
 However, certain condition may lead to UIDL messages dropped or reordered:
 
 * Broken TCP/IP pipe;
-* A bug in Vaadin
-* Other - this is really hard to describe.
-
-In such case Vaadin will print messages such as `Gave up waiting for message 61 from the server` and others.
-You can see such messages in your browser in the JavaScript console; see [Bug 11702](https://github.com/vaadin/framework/issues/11702)
-for an example. If the out-of-order-message or dropped-message condition is detected,
-Vaadin will perform a full resync: it will refresh the browser and reload the
-entire state from the server-side.
+* A bug in Vaadin, handling possible race conditions incorrectly
+* Other - these kind of bugs are hard to reproduce.
 
 ### Out-of-order UIDL Messages
 
 Say Vaadin receives message 62
 while expecting 61. Vaadin will postpone the message 62 and will wait for message 61,
-which may never arrive. I don't know how long it will take for Vaadin to
-give up waiting for message in this case and perform a resync.
+which may never arrive. Ultimately Vaadin will give up waiting and
+will perform a full resync: it will refresh the browser and reload the
+entire state from the server-side.
+
 The following is logged into your browser's JavaScript console:
 
 * The `Gave up waiting for message 61 from the server` message;
 * The `Received message with server id 62 but expected 61. Postponing handling until the missing message(s) have been received` message
+
+See [Bug 11702](https://github.com/vaadin/framework/issues/11702)
+for an example.
+
+> Unfortunately I don't know how long it will take for Vaadin to
+give up waiting for message in this case and perform a resync.
 
 ### Frequent resync requests
 
@@ -105,7 +112,8 @@ if they do, there's some kind of problem going on.
 What can cause the blinking progress bar?
 
 1. TCP/IP connection broken; Vaadin waiting for next heartbeat, ultimately giving up
-   and performing resync. This can be remedied by make heartbeats fire more rapidly.
+   and performing resync. This can be remedied by make heartbeats fire more rapidly,
+   or to reconfigure proxy to stop killing the connection.
 2. Vaadin receives UIDL messages out-of-order. Not known how to
    make Vaadin give up faster, and not sure whether that's even a good idea.
 

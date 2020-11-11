@@ -207,6 +207,10 @@ for more details.
 
 I vaguely remember that certain WebLogic version will prevent Spring-based app to work when deployed as a WAR archive.
 
+### If everything else fails
+
+Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
+
 ## Conclusion
 
 * Push is not a silver bullet that will simply work out-of-the-box - avoid using

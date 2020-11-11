@@ -85,8 +85,18 @@ entire state from the server-side.
 Say Vaadin receives message 62
 while expecting 61. Vaadin will postpone the message 62 and will wait for message 61,
 which may never arrive. I don't know how long it will take for Vaadin to
-give up waiting for message in this case and perform a resync; however when Vaadin
-does so it will log the `Gave up waiting for message 61 from the server` message.
+give up waiting for message in this case and perform a resync.
+The following is logged into your browser's JavaScript console:
+
+* The `Gave up waiting for message 61 from the server` message;
+* The `Received message with server id 15 but expected 13` message
+
+### Frequent resync requests
+
+Occassional resync requests are okay in case when the connection is lost, or
+some internal bug of XHR/WebSocket causes out-of-order message to be sent in rare
+case. However, frequent resync requests should definitely not happen on regular basis -
+if they do, there's some kind of problem going on.
 
 ## Blinking progress bar
 
@@ -126,12 +136,21 @@ Certain bugs ([7719](https://github.com/vaadin/framework/issues/7719), [11702](h
 in Vaadin 8.9.3 or later; other push-related bugs could have been fixed in newer versions as well.
 Please make sure you're using the newest Vaadin possible.
 
+If you see `SEVERE: Trying to start a new request while another is active`, that's [bug 7719](https://github.com/vaadin/framework/issues/7719)
+which should be fixed in Vaadin 8.9.3.
+
 ### Reconfigure Proxy
 
 As mentioned above, certain proxies will kill the connection silently after 2 minutes
 of inactivity. Increase this setting to 10 minutes or even 20 minutes, to be extra-sure
 that Vaadin pings will keep the connection open. Alternatively, decrease the heartbeat
 interval to be 45-60 seconds.
+
+### Reconfigure Load Balancer / VPN / Firewall
+
+The same thing as with the proxy - certain load balancers/VPNs/Firewalls will kill the connection
+silently after 2 minutes of inactivity. See the "Reconfigure Proxy" above for
+a possible list of solutions.
 
 ### Try using Long-Polling instead of Websocket/XHR
 
@@ -142,3 +161,8 @@ desynchronizing state and receiving messages out-of-order.
 
 Therefore longpolling may help with out-of-order messages since it always only uses one TCP/IP
 connection. See above on how to detect out-of-order UIDL messages.
+
+### Avoid Streaming, disable Anti-Virus, others
+
+Please see [Vaadin 8 Docs: Configuring Push For Your Environment](https://vaadin.com/docs/v8/framework/articles/ConfiguringPushForYourEnvironment.html)
+for more details.

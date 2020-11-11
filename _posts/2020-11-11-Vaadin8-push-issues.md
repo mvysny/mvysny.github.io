@@ -86,8 +86,7 @@ However, certain condition may lead to UIDL messages dropped or reordered:
 Say Vaadin receives message 62
 while expecting 61. Vaadin will postpone the message 62 and will wait for message 61,
 which may never arrive. Ultimately Vaadin will give up waiting and
-will perform a full resync: it will refresh the browser and reload the
-entire state from the server-side.
+will ask the server to perform a full resync.
 
 The following is logged into your browser's JavaScript console:
 
@@ -98,7 +97,19 @@ See [Bug 11702](https://github.com/vaadin/framework/issues/11702)
 for an example.
 
 > Unfortunately I don't know how long it will take for Vaadin to
-give up waiting for message in this case and perform a resync.
+give up waiting for message in this case and perform a resync. I'm assuming 5 minutes,
+or perhaps it's the same setting governing heartbeats?
+
+However, neither XHR/WebSockets nor Long-Polling transfer layer can cause
+the message reordering, since they're both based on TCP/IP.
+Therefore, the only explanation I can see
+is some kind of race condition on Vaadin server-side, or an unfortunate
+network timing originating from
+client performing XHR call and getting a newer UIDL, while WebSocket is busy delivering
+an older UIDL with a delay.
+
+However, in this case, the Vaadin client will eventually perform a full resync
+and should unfreeze, given that the connection is not broken.
 
 ### Frequent resync requests
 

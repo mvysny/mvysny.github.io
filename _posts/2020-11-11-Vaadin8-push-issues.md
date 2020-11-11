@@ -3,31 +3,28 @@ layout: post
 title: Vaadin 8 Push issues
 ---
 
-There's so much that can go wrong in Java world of Push - the Atmosphere contains
-workarounds for server bugs that got ironed out eventually; Spring+WebLogic+Push
-combo may not work for certain Spring and WebLogic versions, etc. Here I'll try
-to list everything I know what could go wrong.
+Vaadin Push is a tricky complicated beast, based on a complicated push stack.
+A lot of things can go wrong, causing the Vaadin client to freeze endlessly.
+Let's discuss how exactly push works, and what can be done to prevent the freeze.
 
 Note that it's often impossible to diagnose exactly where the problem lies:
-
-* The issue can be caused by a certain configuration of proxy, a random TCP/IP
-  connection drop, unfortunate timing, certain Spring or Servlet container version,
-  or any of the combination above.
-* Vaadin Reconnection mechanism is a complex state machine which is hard to test
-  and fix things in.
-* Therefore, it's almost impossible to figure out what the problem is, even if
-  you obtain all the logs. Even if you gain insight what's going on, fixing
-  the state machine is hard.
+the issue can be caused by a certain configuration of proxy, a random TCP/IP
+connection drop, unfortunate timing, certain Spring or Servlet container version,
+or any of the combination above.
+Also, Vaadin reconnection mechanism is a complex state machine which is hard to test
+and fix things in.
   
-Therefore, the best way is to try out as much as possible from the items below,
-hope for the best, and eventually move to Vaadin 14.
+The following list could help with Vaadin 8 Push issues, such as UI freezing -
+having the browser just sitting there, idle, with the Vaadin progress indicator blinking.
 
-The following list could help with Vaadin 8 Push issues, such as:
+## What can go wrong with push
 
-* UI Freezing - browser just sitting there, idle, with the Vaadin progress indicator blinking
-* Frequent page reloads for no apparent reason
+### Java support for Push
 
-## What can go wrong
+The Push history in Java application servers and servlet containers is a long history
+of bugs in the servlet containers themselves, and workarounds made in the Atmosphere library.
+See [Vaadin 8 Docs: Configuring Push For Your Environment](https://vaadin.com/docs/v8/framework/articles/ConfiguringPushForYourEnvironment.html)
+for more details.
 
 ### TCP/IP breaks silently
 
@@ -137,21 +134,11 @@ reconnecting.
 Therefore, if the connection becomes broken, Vaadin client will simply freeze
 indefinitely.
 
-## Blinking progress bar
-
-What can cause the blinking progress bar?
-
-1. TCP/IP connection broken; Vaadin waiting for next heartbeat, ultimately giving up
-   and performing resync. This can be remedied by make heartbeats fire more rapidly,
-   or to reconfigure proxies/loadbalancers/others to stop killing the connection.
-2. Vaadin receives UIDL messages out-of-order. Not known how to
-   make Vaadin give up faster, and not sure whether that's even a good idea.
-
 ## Solutions to try
 
-Hopefully something from the following might help. Usually the best thing
-is to prevent the connection from being broken at all costs, since
-that causes the Vaadin client to freeze indefinitely.
+Since a broken connection can cause the Vaadin client to freeze endlessly,
+usually the best thing
+is to prevent the connection from being broken at all costs.
 
 ### Make Heartbeats go faster
 
@@ -214,3 +201,7 @@ connection. See above on how to detect out-of-order UIDL messages.
 
 Please see [Vaadin 8 Docs: Configuring Push For Your Environment](https://vaadin.com/docs/v8/framework/articles/ConfiguringPushForYourEnvironment.html)
 for more details.
+
+### Spring+WebLogic+Push combo
+
+I vaguely remember that certain WebLogic version will prevent Spring-based app to work when deployed as a WAR archive.

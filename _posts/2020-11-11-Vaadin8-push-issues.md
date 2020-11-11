@@ -42,7 +42,7 @@ but they're not really sent and there's simply no response, ever. There's no way
 * SO_TIMEOUT only prevents from blocking too long, but doesn't really keep the connection up
 * SO_LINGER also doesn't keep the connection open; more on [SO_LINGER StackOverflow](https://stackoverflow.com/questions/3757289/when-is-tcp-option-so-linger-0-required).
 
-The only way is to send specific Ping packets; in Vaadin's terminology those are called
+The only way to remedy this is to send a protocol-specific Ping packets; in Vaadin's terminology those are called
 [heartbeats](https://vaadin.com/docs/v8/framework/application/application-lifecycle.html).
 
 Since both WebSockets and Long-polling run on top of TCP/IP, they're both affected.

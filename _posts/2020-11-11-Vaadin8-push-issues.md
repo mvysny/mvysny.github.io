@@ -39,7 +39,9 @@ but they're not really sent and there's simply no response, ever. There's no way
   TCP_KEEPCNT, TCP_KEEPIDLE nor TCP_KEEPINTVL, therefore it's useless. If I remember
   correctly the default is *two hours* and may be only configured on the OS level
   which makes it completely useless.
-* SO_TIMEOUT only prevents from blocking too long, but doesn't really keep the connection up
+* SO_TIMEOUT only prevents from blocking too long, but doesn't really keep the connection up.
+  See [setSoTimeout on StackOverflow](https://stackoverflow.com/questions/12820874/what-is-the-functionality-of-setsotimeout-and-how-it-works)
+  for more details.
 * SO_LINGER also doesn't keep the connection open; more on [SO_LINGER StackOverflow](https://stackoverflow.com/questions/3757289/when-is-tcp-option-so-linger-0-required).
 
 The only way to remedy this is to send a protocol-specific Ping packets; in Vaadin's terminology those are called
@@ -89,7 +91,7 @@ give up waiting for message in this case and perform a resync.
 The following is logged into your browser's JavaScript console:
 
 * The `Gave up waiting for message 61 from the server` message;
-* The `Received message with server id 15 but expected 13` message
+* The `Received message with server id 62 but expected 61. Postponing handling until the missing message(s) have been received` message
 
 ### Frequent resync requests
 

@@ -51,7 +51,7 @@ Since both WebSockets and Long-polling run on top of TCP/IP, they're both affect
 
 The default heartbeat interval is 5 minutes. That effectively mean that, in the worst
 case, Vaadin can only learn after *5 minutes* that the connection is down,
-and can deploy the counter-measures of reloading the page and resyncing state fully
+and can deploy the counter-measures of resyncing state fully
 from the server-side.
 
 ### XHR/Websocket VS Long-Polling
@@ -106,6 +106,25 @@ Occassional resync requests are okay in case when the connection is lost, or
 some internal bug of XHR/WebSocket causes out-of-order message to be sent in rare
 case. However, frequent resync requests should definitely not happen on regular basis -
 if they do, there's some kind of problem going on.
+
+### Vaadin Client-side corrective measures
+
+When the connection is broken, the client will basically do this:
+
+1. Await for next UIDL (which will never come)
+2. After 5 minutes it will ask for a resync. It's not known whether the client does so
+   over XHR or over WebSocket - if over WebSocket, the resync request will get lost as well;
+   if over XHR and the response is sent via WebSocket, the response will get lost as well.
+3. The client will endlessly await for resync, thus appearing to be frozen.
+
+The client only sends the heartbeats to the server, the server never sends heartbeats
+to the client. Moreover, the only thing the server will do is that it will close
+the UI after three heartbeats have been missed. Unfortunately,
+neither the client nor the server will attempt to repair the connection by
+reconnecting.
+
+Therefore, if the connection becomes broken, Vaadin client will simply freeze
+indefinitely.
 
 ## Blinking progress bar
 

@@ -206,3 +206,12 @@ for more details.
 ### Spring+WebLogic+Push combo
 
 I vaguely remember that certain WebLogic version will prevent Spring-based app to work when deployed as a WAR archive.
+
+## Conclusion
+
+* Push is not a silver bullet that will simply work out-of-the-box - avoid using
+  unless absolutely necessary.
+* Use Long-Polling over XHR/WebSocket
+* Prevent connection breaking at all cost
+* Reconfigure your proxy or use more frequent heartbeats,
+  in order to prevent the connection drop.

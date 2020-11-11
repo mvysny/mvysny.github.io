@@ -146,6 +146,12 @@ of inactivity. Increase this setting to 10 minutes or even 20 minutes, to be ext
 that Vaadin pings will keep the connection open. Alternatively, decrease the heartbeat
 interval to be 45-60 seconds.
 
+Alternatively, configure a slightly shorter timeout for push in the Vaadin application
+so that the server terminates the idle connection and is aware of the termination
+before the proxy can kill the connection. Use the
+`pushLongPollingSuspendTimeout` servlet parameter for this
+(defined in milliseconds) (Vaadin 7.6+).
+
 ### Reconfigure Load Balancer / VPN / Firewall
 
 The same thing as with the proxy - certain load balancers/VPNs/Firewalls will kill the connection

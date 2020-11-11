@@ -171,8 +171,11 @@ which should be fixed in Vaadin 8.9.3.
 
 ### Reconfigure Proxy
 
-As mentioned above, certain proxies will kill the connection silently after 2 minutes
-of inactivity. Increase this setting to 10 minutes or even 20 minutes, to be extra-sure
+As mentioned above, certain proxies will kill the TCP/IP connection silently after 2 minutes
+of inactivity, and will stop relaying data over to the server. This will cause
+the vaadin client to freeze indefinitely.
+
+Increase the proxy inactivity setting to 10 minutes or even 20 minutes, to be extra-sure
 that Vaadin pings will keep the connection open. Alternatively, decrease the heartbeat
 interval to be 45-60 seconds.
 

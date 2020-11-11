@@ -77,7 +77,7 @@ Every UIDL message has a precise order number which is kept strictly in sync.
 
 However, certain condition may lead to UIDL messages dropped or reordered:
 
-* Broken TCP/IP pipe;
+* Broken TCP/IP pipe (most common cause);
 * A bug in Vaadin, handling possible race conditions incorrectly
 * Other - these kind of bugs are hard to reproduce.
 
@@ -113,7 +113,7 @@ What can cause the blinking progress bar?
 
 1. TCP/IP connection broken; Vaadin waiting for next heartbeat, ultimately giving up
    and performing resync. This can be remedied by make heartbeats fire more rapidly,
-   or to reconfigure proxy to stop killing the connection.
+   or to reconfigure proxies/loadbalancers/others to stop killing the connection.
 2. Vaadin receives UIDL messages out-of-order. Not known how to
    make Vaadin give up faster, and not sure whether that's even a good idea.
 

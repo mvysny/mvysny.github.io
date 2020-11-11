@@ -123,14 +123,15 @@ enables the server to send new stuff as well.
 ### Upgrade Vaadin 8
 
 Certain bugs ([7719](https://github.com/vaadin/framework/issues/7719), [11702](https://github.com/vaadin/framework/issues/11702)) have been fixed
-in Vaadin 8.9.3; other bugs could have been fixed in newer versions as well.
+in Vaadin 8.9.3 or later; other push-related bugs could have been fixed in newer versions as well.
 Please make sure you're using the newest Vaadin possible.
 
 ### Reconfigure Proxy
 
 As mentioned above, certain proxies will kill the connection silently after 2 minutes
 of inactivity. Increase this setting to 10 minutes or even 20 minutes, to be extra-sure
-that Vaadin pings will keep the connection open.
+that Vaadin pings will keep the connection open. Alternatively, decrease the heartbeat
+interval to be 45-60 seconds.
 
 ### Try using Long-Polling instead of Websocket/XHR
 

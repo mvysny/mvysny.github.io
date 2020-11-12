@@ -83,7 +83,8 @@ However, certain condition may lead to UIDL messages dropped or reordered:
 Say Vaadin receives message 62
 while expecting 61. Vaadin will postpone the message 62 and will wait for message 61,
 which may never arrive. Ultimately Vaadin will give up waiting and
-will ask the server to perform a full resync.
+will ask the server to perform a full resync. However, Vaadin will effectively
+freeze the UI until either the message arrives, or a full resync is performed.
 
 The following is logged into your browser's JavaScript console:
 
@@ -216,9 +217,8 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 
 ## Conclusion
 
-* Push is not a silver bullet that will simply work out-of-the-box - avoid using
-  unless absolutely necessary.
-* Use Long-Polling over XHR/WebSocket
-* Prevent connection breaking at all cost
-* Reconfigure your proxy or use more frequent heartbeats,
-  in order to prevent the connection drop.
+* Push is not a silver bullet and can freeze your UI easily - avoid using
+  unless necessary.
+* Use Long-Polling over XHR/WebSocket, to reduce chance of UI freezing.
+* Prevent connection breaking at all costs, otherwise your UI will freeze indefinitely.
+  * Either reconfigure the proxies to not to drop the connection, or increase heartbeat rate, or both.

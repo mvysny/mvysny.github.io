@@ -150,7 +150,12 @@ I can envision the following scenario for Long-Polling:
 3. The server responds, and the client resyncs successfully.
 4. Client immediately opens a new connection but sends nothing. Goto 1.
 
-TODO: XHR/WebSocket
+The same thing can not happen with XHR/WebSocket:
+
+1. Client encounters out-of-order message as described above.
+2. Client gives up waiting for the older message and sends resync over a new fresh XHR connection.
+3. The server responds over WebSocket connection (which is broken), and so the response is lost.
+4. Vaadin Client now freezes, endlessly waiting for a resync response which will never come.
 
 ### Vaadin Client-side corrective measures
 

@@ -84,12 +84,13 @@ if you set a new caption to a TextField with connector ID 42, you will be able t
 observe this information in the UIDL sent from the server to the client.
 
 Essentially, Vaadin sends diffs (called UIDLs) of what has been changed from the server-side.
-Since missing out just one of those diffs could lead to undefined client-side state,
-Vaadin keeps strict track of which UIDLs has been sent and received by the client-side Vaadin code.
 
 ### Message Ordering
 
-Every UIDL message has a precise order number which is kept strictly in sync.
+Since missing out just one of those diffs could lead to undefined client-side state,
+Vaadin keeps strict track of which UIDLs has been sent and received by the client-side Vaadin code.
+Essentially, the UIDL numbering scheme starts from 0 and continues in a strictly increasing
+order.
 
 However, certain condition may lead to UIDL messages dropped or reordered:
 
@@ -99,7 +100,7 @@ However, certain condition may lead to UIDL messages dropped or reordered:
 
 ### Out-of-order UIDL Messages
 
-Say Vaadin receives message 62
+Say Vaadin client receives message 62
 while expecting 61. Vaadin will postpone the message 62 and will wait for message 61,
 which may never arrive. Ultimately Vaadin will give up waiting and
 will ask the server to perform a full resync. However, Vaadin will effectively

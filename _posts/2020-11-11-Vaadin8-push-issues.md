@@ -59,7 +59,7 @@ more reliably than WebSocket/XHR, therefore I'd advise you to use Long-Polling.
 
 ### UIDL
 
-Vaadin's synchronization protocol is based on UIDL (UI Definition/Diffing Language? :-D ).
+Vaadin's synchronization protocol is based on UIDL (UI Diffing Language?).
 Basically it's a JSON file, listing what have been changed since the last UIDL update. For example,
 if you set a new caption to a TextField with connector ID 42, you will be able to
 observe this information in the UIDL sent from the server to the client.
@@ -98,15 +98,14 @@ for an example.
 give up waiting for message in this case and perform a resync. I'm assuming 5 minutes,
 or perhaps it's the same setting governing heartbeats?
 
-However, neither XHR/WebSockets nor Long-Polling transfer layer can cause
+However, neither XHR/WebSockets nor Long-Polling transfer layer itself can cause
 the message reordering, since they're both based on TCP/IP.
-Therefore, the only explanation I can see
-is some kind of race condition on Vaadin server-side, or an unfortunate
-network timing:
+Therefore, there has to be other cause; the only way I can see this can happen
+with XHR/WebSockets:
  
-1. Vaadin Server sends UIDL over Websockets, which is broken and so the message gets lost
+1. Vaadin Server sends UIDL over Websocket connection (which is broken) and so the message gets lost
 2. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
-3. Vaadin Client now waits for previous message which will never come.originating from
+3. Vaadin Client now waits for previous message which will never come.
 
 > TODO: does this also apply to Long-Polling? Out-of-order UIDL messages have been
 > observed with Long-Polling as well, but the cause is currently unknown.
@@ -121,15 +120,42 @@ some internal bug of XHR/WebSocket causes out-of-order message to be sent in rar
 case. However, frequent resync requests should definitely not happen on regular basis -
 if they do, there's some kind of problem going on.
 
+I can envision the following scenario for Long-Polling:
+
+1. The client opens a connection but sends nothing, waiting for server to send something. This is the basis of the Long-Polling algorithm.
+2. Proxy kills the connection after 2 minutes.
+3. Server sends UIDL but the message is lost.
+4. Client resyncs successfully.
+5. Client immediately opens a new connection but sends nothing. Goto 1.
+
+TODO: XHR/WebSocket
+
 ### Vaadin Client-side corrective measures
 
-When the connection is broken, the client will basically do this:
+When the connection is broken, the client will basically perform the same corrective algorithm
+both for WebSocket and Long-Polling. However, the effects are subtly different.
 
-1. Await for next UIDL (which will never come because the connection is broken)
-2. After 5 minutes it will ask for a resync. It's not known whether the client does so
-   over XHR or over WebSocket - if over WebSocket, the resync request will get lost as well;
-   if over XHR and the response is sent via WebSocket, the response will get lost as well.
-3. The client will thus endlessly await for resync, appearing to be frozen during that time.
+In both cases, we start with a state that a UIDL message has not been received for
+5 minutes from the server. In both cases, Vaadin Client tries to
+resync by sending a resync request.
+
+In case of XHR/WebSockets:
+
+1. The resync request is sent over XHR (a new fresh HTTP request), which reaches the server.
+2. The server responds with UIDL over WebSocket connection (which is broken), and so
+   the message gets lost.
+3. Vaadin Client now freezes, endlessly waiting for a resync response which will never come.
+
+However, in case of Long-Polling:
+
+1. The resync request is sent over a new fresh HTTP request, which reaches the server.
+2. The server responds with UIDL over the same connection, which should now work.
+3. Vaadin Client receives the resync request and reinitializes correctly.
+
+### Heartbeats/KeepAlive
+
+In order to keep the connection alive and detect faulty connection state,
+heartbeats are sent.
 
 The client only sends the heartbeats to the server, the server never sends heartbeats
 to the client. Therefore, the client has no way of learning that the connection is
@@ -154,7 +180,7 @@ connection silently after 2 minutes of inactivity. A good heartbeat interval is
 45-60 seconds (see [Wiki Keepalive](https://en.wikipedia.org/wiki/Keepalive)).
 Read [Vaadin 8 Docs on configuring the heartbeat interval](https://vaadin.com/docs/v8/framework/articles/CleaningUpResourcesInAUI.html).
 
-### Don't use polling
+### Disable polling when using Push
 
 > Note: Polling refers to `UI.setPollInterval()` which works both with and without Push,
 while Long-Polling only works with push. Polling and Long-Polling are two very different things.
@@ -197,7 +223,7 @@ The same thing as with the proxy - certain load balancers/VPNs/Firewalls will ki
 silently after 2 minutes of inactivity. See the "Reconfigure Proxy" above for
 a possible list of solutions.
 
-### Try using Long-Polling instead of Websocket/XHR
+### Use Long-Polling instead of Websocket/XHR
 
 When using XHR/Websocket, Vaadin will in fact use TWO connections: one XHR
 connection sending stuff from server to client, and a new TCP/IP connection whenever
@@ -205,7 +231,7 @@ client needs to send something to the server. That greatly increases the risk of
 desynchronizing state and receiving messages out-of-order.
 
 Therefore longpolling may help with out-of-order messages since it always only uses one TCP/IP
-connection. See above on how to detect out-of-order UIDL messages.
+connection, and a fresh one at that. See above on how to detect out-of-order UIDL messages.
 
 ### Avoid Streaming, disable Anti-Virus, others
 
@@ -257,6 +283,7 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 
 * Push is not a silver bullet and can freeze your UI easily - avoid using
   unless necessary.
-* Use Long-Polling over XHR/WebSocket, to reduce chance of UI freezing.
+* Use Long-Polling over XHR/WebSocket, to reduce chance of UI freezing. Also,
+  Long-Polling should not be affected by endless UI freezing.
 * Prevent connection breaking at all costs, otherwise your UI will freeze indefinitely.
   * Either reconfigure the proxies to not to drop the connection, or increase heartbeat rate, or both.

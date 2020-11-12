@@ -159,7 +159,8 @@ The same thing can not happen with XHR/WebSocket:
 
 ### Vaadin Client-side corrective measures
 
-When the connection is broken, the client will basically perform the same corrective algorithm
+When the connection breakage is detected (usually takes up to 5 minutes),
+the client will basically perform the same corrective algorithm,
 both for WebSocket and Long-Polling. However, the effects are subtly different.
 
 In both cases, we start with a state that a UIDL message has not been received for

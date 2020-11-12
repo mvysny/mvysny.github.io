@@ -51,6 +51,25 @@ case, Vaadin can only learn after *5 minutes* that the connection is down,
 and can deploy the counter-measures of resyncing state fully
 from the server-side.
 
+Moreover, during the 5 minute window, the server has no way of knowing that the
+connection is broken; any reply sent from the server to the client is lost silently.
+This is the major reason for UI freezings as we will describe below.
+
+### Heartbeats/KeepAlive
+
+In order to keep the connection alive and detect faulty connection state,
+heartbeats are sent.
+
+The client only sends the heartbeats to the server, the server never sends heartbeats
+to the client. Therefore, the client has no way of learning that the connection is
+broken. Moreover, the only thing the server will do is that it will close
+the UI after three heartbeats have been missed;
+neither the client nor the server will attempt to repair the connection by
+reconnecting.
+
+This will be important later on, when I demonstrate the way how the client
+can freeze endlessly.
+
 ### XHR/Websocket VS Long-Polling
 
 See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more details
@@ -158,21 +177,6 @@ In case of Long-Polling:
 
 The observable effect is that the client will eventually unfreeze,
 but there will be a lot of resync requests in the logs.
-
-### Heartbeats/KeepAlive
-
-In order to keep the connection alive and detect faulty connection state,
-heartbeats are sent.
-
-The client only sends the heartbeats to the server, the server never sends heartbeats
-to the client. Therefore, the client has no way of learning that the connection is
-broken. Moreover, the only thing the server will do is that it will close
-the UI after three heartbeats have been missed;
-neither the client nor the server will attempt to repair the connection by
-reconnecting.
-
-Therefore, if the connection becomes broken, Vaadin client will often simply freeze
-indefinitely.
 
 ## Solutions to try
 

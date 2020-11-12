@@ -61,11 +61,21 @@ In order to keep the connection alive and detect faulty connection state,
 heartbeats are sent.
 
 The client only sends the heartbeats to the server, the server never sends heartbeats
-to the client. Therefore, the client has no way of learning that the connection is
+to the client. Therefore, the client has no way of learning from the heartbeats alone
+that the connection is
 broken. Moreover, the only thing the server will do is that it will close
 the UI after three heartbeats have been missed;
 neither the client nor the server will attempt to repair the connection by
 reconnecting.
+
+Generally, heartbeats serve for:
+
+* Keeping the connection alive by making it appear active
+* Closing idle UIs
+
+Heartbeats do not serve for:
+
+* Client-side detection of broken connection.
 
 This will be important later on, when I demonstrate the way how the client
 can freeze endlessly.
@@ -159,7 +169,9 @@ The same thing can not happen with XHR/WebSocket:
 
 ### Vaadin Client-side corrective measures
 
-When the connection breakage is detected (usually takes up to 5 minutes),
+When the client detects the connection being broken
+(this usually takes up to 5 minutes and doesn't depend on heartbeat frequency,
+since heartbeats are only used to keep the connection alive and to close idle UIs server-side),
 the client will basically perform the same corrective algorithm,
 both for WebSocket and Long-Polling. However, the effects are subtly different.
 

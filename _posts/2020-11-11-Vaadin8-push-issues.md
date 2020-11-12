@@ -105,13 +105,16 @@ with XHR/WebSockets:
  
 1. Vaadin Server sends UIDL over Websocket connection (which is broken) and so the message gets lost
 2. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
-3. Vaadin Client now waits for previous message which will never come.
+3. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
 
-> TODO: does this also apply to Long-Polling? Out-of-order UIDL messages have been
-> observed with Long-Polling as well, but the cause is currently unknown.
+With Long-Polling, it could go like this:
 
-However, in this case, the Vaadin client will eventually perform a full resync
-and should unfreeze (given that the connection is not broken).
+1. Vaadin client establishes a connection but sends nothing, waiting for server to send something.
+2. Proxy kills the connection after 2 minutes.
+3. Server sends UIDL but the message is lost.
+4. Client sends a ping message over a new connection; the server responds by a new UIDL
+   message that had accumulated since step 3.
+5. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
 
 ### Frequent resync requests
 
@@ -122,11 +125,10 @@ if they do, there's some kind of problem going on.
 
 I can envision the following scenario for Long-Polling:
 
-1. The client opens a connection but sends nothing, waiting for server to send something. This is the basis of the Long-Polling algorithm.
-2. Proxy kills the connection after 2 minutes.
-3. Server sends UIDL but the message is lost.
-4. Client resyncs successfully.
-5. Client immediately opens a new connection but sends nothing. Goto 1.
+1. Client encounters out-of-order message as described above.
+2. Client gives up waiting for the older message and sends resync over a new fresh connection.
+3. The server responds, and the client resyncs successfully.
+4. Client immediately opens a new connection but sends nothing. Goto 1.
 
 TODO: XHR/WebSocket
 
@@ -146,11 +148,16 @@ In case of XHR/WebSockets:
    the message gets lost.
 3. Vaadin Client now freezes, endlessly waiting for a resync response which will never come.
 
-However, in case of Long-Polling:
+The observable effect is that the client will freeze endlessly.
+
+In case of Long-Polling:
 
 1. The resync request is sent over a new fresh HTTP request, which reaches the server.
 2. The server responds with UIDL over the same connection, which should now work.
 3. Vaadin Client receives the resync request and reinitializes correctly.
+
+The observable effect is that the client will eventually unfreeze,
+but there will be a lot of resync requests in the logs.
 
 ### Heartbeats/KeepAlive
 

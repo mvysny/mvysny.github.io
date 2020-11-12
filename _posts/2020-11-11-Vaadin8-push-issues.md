@@ -300,7 +300,9 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 
 * Push is not a silver bullet and can freeze your UI easily - avoid using
   unless necessary.
-* Use Long-Polling over XHR/WebSocket, to reduce chance of UI freezing. Also,
+* Use Long-Polling over XHR/WebSocket -
   Long-Polling should not be affected by endless UI freezing.
-* Prevent connection breaking at all costs, otherwise your UI will freeze indefinitely.
-  * Either reconfigure the proxies to not to drop the connection, or increase heartbeat rate, or both.
+* Prevent frequent connection breaking at all costs, otherwise your UI will appear frozen frequently.
+  * Reconfigure the proxies to not to drop the connections;
+  * Reconfigure proxy to drop the connection after 10 minutes;
+  * Increase heartbeat rate to 45-60 seconds.

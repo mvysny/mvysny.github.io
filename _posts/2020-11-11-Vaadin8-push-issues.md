@@ -66,12 +66,12 @@ the UI after three heartbeats have been missed;
 neither the client nor the server will attempt to repair the connection by
 reconnecting.
 
-Generally, heartbeats serve for:
+Generally, heartbeats in Vaadin serve for:
 
 * Keeping the connection alive by making it appear active
 * Closing idle UIs
 
-Heartbeats do not serve for:
+In Vaadin, heartbeats do not serve for:
 
 * Client-side detection of broken connection.
 

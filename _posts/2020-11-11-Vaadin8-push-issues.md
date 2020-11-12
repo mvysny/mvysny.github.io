@@ -211,6 +211,39 @@ for more details.
 
 I vaguely remember that certain WebLogic version will prevent Spring-based app to work when deployed as a WAR archive.
 
+### Make Vaadin perform a page reload
+
+This is a bit of a longshot, since this setting will cause Vaadin to perform 
+page reload on session timeout, which may take a long time (~30 minutes)?
+
+```java
+    public static class Servlet extends VaadinServlet {
+        @Override
+        protected void servletInitialized() throws ServletException {
+            super.servletInitialized();
+            getService()
+                    .setSystemMessagesProvider(new SystemMessagesProvider() {
+                        @Override
+                        public SystemMessages getSystemMessages(
+                                SystemMessagesInfo systemMessagesInfo) {
+                            CustomizedSystemMessages messages = new CustomizedSystemMessages();
+                            messages.setSessionExpiredNotificationEnabled(
+                                    false);
+                            messages.setSessionExpiredURL(null);
+                            return messages;
+                        }
+                    });
+        }
+    }
+```
+
+### Chrome freezing immediately on page reload
+
+Speculation: could be because the newest version of Chrome does not support
+Synchronous XMLHTTPRequest() in Page Dismissal anymore.
+And Atmosphere's long polling implementation is in fact based on using
+Synchronous XMLHTTPRequest(). Please check Atmosphere bug tracker for more details.
+
 ### If everything else fails
 
 Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.

@@ -102,12 +102,17 @@ However, neither XHR/WebSockets nor Long-Polling transfer layer can cause
 the message reordering, since they're both based on TCP/IP.
 Therefore, the only explanation I can see
 is some kind of race condition on Vaadin server-side, or an unfortunate
-network timing originating from
-client performing XHR call and getting a newer UIDL, while WebSocket is busy delivering
-an older UIDL with a delay.
+network timing:
+ 
+1. Vaadin Server sends UIDL over Websockets, which is broken and so the message gets lost
+2. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
+3. Vaadin Client now waits for previous message which will never come.originating from
+
+> TODO: does this also apply to Long-Polling? Out-of-order UIDL messages have been
+> observed with Long-Polling as well, but the cause is currently unknown.
 
 However, in this case, the Vaadin client will eventually perform a full resync
-and should unfreeze, given that the connection is not broken.
+and should unfreeze (given that the connection is not broken).
 
 ### Frequent resync requests
 

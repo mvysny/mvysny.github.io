@@ -53,7 +53,8 @@ however in function `_disconnect()` at line 461 it comes from `_request.closeAyn
 which is false. That's the only place where Vaadin uses sync request, potentially
 failing in modern browsers.
 
-This can cause problems when trying to reinitialize the session from Vaadin; the
+This can cause problems when trying to reinitialize the session from Vaadin, for
+example to prevent the Session Fixation attack as seen at [Vaadin bug #7526](https://github.com/vaadin/framework/issues/7526); the
 workaround is to use the following code (taken from Tatu's [DemoUtils](https://github.com/TatuLund/cdi-demo/blob/master/src/main/java/org/vaadin/cdidemo/util/DemoUtils.java#L9)):
 
 ```java

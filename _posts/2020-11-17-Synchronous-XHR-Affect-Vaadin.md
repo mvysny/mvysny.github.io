@@ -52,3 +52,18 @@ By default, the `request.async` comes from `_request.async` (which is true - OK)
 however in function `_disconnect()` at line 461 it comes from `_request.closeAync`
 which is false. That's the only place where Vaadin uses sync request, potentially
 failing in modern browsers.
+
+This can cause problems when trying to reinitialize the session from Vaadin; the
+workaround is to use the following code (taken from Tatu's [DemoUtils](https://github.com/TatuLund/cdi-demo/blob/master/src/main/java/org/vaadin/cdidemo/util/DemoUtils.java#L9)):
+
+```java
+public class DemoUtils {
+	public static void sessionFixation() {
+		// Chrome 80 does not support synchronous XHR during page dismissal anymore
+		// thus Push needs to be disabled during session re-initialization
+		UI.getCurrent().getPushConfiguration().setPushMode(PushMode.DISABLED);
+		VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
+		UI.getCurrent().getPushConfiguration().setPushMode(PushMode.AUTOMATIC);
+	}	
+}
+```

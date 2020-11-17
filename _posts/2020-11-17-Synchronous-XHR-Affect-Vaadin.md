@@ -33,21 +33,6 @@ which modifies the call as follows:
 ajaxRequest.open(request.method, url, request.async);
 ```
 
-TODO further analysis
-
-## The case of Vaadin 14+
-
-Vaadin's Flow is compiled with GWT, and therefore is using the `XMLHttpRequest` class
-which is async. All of Vaadin's XHR-related code (`DefaultConnectionStateHandler.java`,
-`Heartbeat.java`, `XhrConnection.java`) ultimately go through Vaadin's `Xhr`
-helper class (which uses GWT's `XMLHttpRequest` class), therefore this part is okay.
-
-However, `vaadinPush.js` uses the same modified call as Vaadin 8 does:
-
-```
-ajaxRequest.open(request.method, url, request.async);
-```
-
 By default, the `request.async` comes from `_request.async` (which is true - OK),
 however in function `_disconnect()` at line 461 it comes from `_request.closeAync`
 which is false. That's the only place where Vaadin uses sync request, potentially
@@ -68,3 +53,18 @@ public class DemoUtils {
 	}	
 }
 ```
+
+## The case of Vaadin 14+
+
+Vaadin's Flow is compiled with GWT, and therefore is using the `XMLHttpRequest` class
+which is async. All of Vaadin's XHR-related code (`DefaultConnectionStateHandler.java`,
+`Heartbeat.java`, `XhrConnection.java`) ultimately go through Vaadin's `Xhr`
+helper class (which uses GWT's `XMLHttpRequest` class), therefore this part is okay.
+
+However, `vaadinPush.js` uses the same modified call as Vaadin 8 does:
+
+```
+ajaxRequest.open(request.method, url, request.async);
+```
+
+Therefore, the code suffers from the same issues related to session reinitialization as the Vaadin 8 code does.

@@ -17,7 +17,7 @@ and fix things in.
 The following list could help with Vaadin 8 Push issues, such as UI freezing -
 having the browser just sitting there, idle, with the Vaadin progress indicator blinking.
 
-## What can go wrong with push
+## Push Explained
 
 ### Java support for Push
 
@@ -195,6 +195,15 @@ In case of Long-Polling:
 The observable effect is that the client will eventually unfreeze,
 but there will be a lot of resync requests in the logs.
 
+## When things go wrong
+
+* When the browser freezes straight after login (Chrome 80+), it could be that the Session Fixation
+  prevention algorithm doesn't work with Vaadin push. See
+  [Getting rid of synchronous XHR - does it affect Vaadin?](../Synchronous-XHR-Affect-Vaadin/)
+  for more details.
+* When the client freezes randomly, it could be that the connection gets broken by proxy, firewall
+  or load balancer. Read below for solutions to try, and for the conclusion.
+
 ## Solutions to try
 
 Since a broken connection can cause the Vaadin client to freeze endlessly,
@@ -317,3 +326,5 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
   * Reconfigure the proxies to not to drop the connections;
   * Reconfigure proxy to drop the connection after 10 minutes;
   * Increase heartbeat rate to 45-60 seconds.
+* Disable push before reinitializing session, to avoid Vaadin client freezing
+  on Chrome 80+ with push enabled.

@@ -56,15 +56,18 @@ This is the major reason for UI freezings as we will describe below.
 
 ### Heartbeats/KeepAlive
 
-In order to keep the connection alive, heartbeats are sent.
+In order to keep a TCP/IP connection alive, heartbeats are sent, from both sides of the connection.
 
-The client only sends the heartbeats to the server, the server never sends heartbeats
+Unfortunately, Vaadin heartbeats can not detect a broken connection, and here's why.
+
+It's only the Vaadin client that sends the heartbeats to the server, the server never sends heartbeats
 to the client. Therefore, the client has no way of learning from the heartbeats alone
 that the connection is
 broken. Moreover, the only thing the server will do is that it will close
 the UI after three heartbeats have been missed;
 neither the client nor the server will attempt to repair the connection by
-reconnecting.
+reconnecting. On top of that, heartbeats are sent over a NEW requests - they don't
+use LongPolling GET nor the XHR/WebSocket pipe.
 
 Generally, heartbeats in Vaadin serve for:
 
@@ -210,12 +213,27 @@ Since a broken connection can cause the Vaadin client to freeze endlessly,
 usually the best thing
 is to prevent the connection from being broken at all costs.
 
-### Make Heartbeats go faster
+### Make Heartbeats go faster - doesn't help
 
 The default heartbeat interval is 5 minutes, however certain proxies will kill the
 connection silently after 2 minutes of inactivity. A good heartbeat interval is
 45-60 seconds (see [Wiki Keepalive](https://en.wikipedia.org/wiki/Keepalive)).
 Read [Vaadin 8 Docs on configuring the heartbeat interval](https://vaadin.com/docs/v8/framework/articles/CleaningUpResourcesInAUI.html).
+
+Unfortunately, Vaadin heartbeats can't be used to keep the LongPolling nor XHR/WebSocket
+connection alive - they're sent from client to server over a new POST request, and not
+over the long-running LongPolling GET request nor XHR/WebSocket.
+
+Poll requests (configured via `UI.setPollInterval()`) can not be used as heartbeats/keepalives
+since they will not go through the Long-Polling GET connection, but will create a separate POST requests.
+
+### Send pings from server to client
+
+You can track the list of all opened UIs, and send some dummy RPC request (executeJS or similar)
+periodically to every UI via ui.access(). These UIDLs will get sent over the LongPolling GET request nor XHR/WebSocket
+(given that there's no current request ongoing).
+
+TODO I need to experiment on this.
 
 ### Disable polling when using Push
 
@@ -226,8 +244,8 @@ Setting `UI.setPollInterval()` to 0 or greater may interfere with Push, even tho
 it technically shouldn't. Make sure nobody is calling that method, by simply overriding it
 in your UI and throwing an exception, or calling `super.setPollInterval(-1)`.
 
-The problem is that polling may start sending new stuff from the client, while push
-enables the server to send new stuff as well.
+I think that polling is not a problem per se; it will just expose the dead connection
+much faster.
 
 ### Upgrade Vaadin 8
 
@@ -324,7 +342,6 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
   Long-Polling should not be affected by endless UI freezing.
 * Prevent frequent connection breaking at all costs, otherwise your UI will appear frozen frequently.
   * Reconfigure the proxies to not to drop the connections;
-  * Reconfigure proxy to drop the connection after 10 minutes;
-  * Increase heartbeat rate to 45-60 seconds.
+  * Implement a server->client heartbeat which will ping every live UI every 45-60 seconds.
 * Disable push before reinitializing session, to avoid Vaadin client freezing
   on Chrome 80+ with push enabled.

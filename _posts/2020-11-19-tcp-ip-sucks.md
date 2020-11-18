@@ -52,7 +52,7 @@ need to be taken.
 In order to detect the dead TCP/IP connection faster, it's also good
 to have the other party to send an acknowledge message back, for every message
 sent their way. This is important to also know which messages to re-send,
-if the connection fails.
+in case the connection fails.
 
 ## Detecting connection failures
 

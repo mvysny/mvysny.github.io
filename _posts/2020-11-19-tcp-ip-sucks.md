@@ -35,13 +35,13 @@ To remedy the cases above, app-specific protocols need to employ:
   connection to appear as being used for the load-balancer/proxy/firewall,
   so that they don't kill it.
 * ACKs (acknowledge messages, sent after every request, to confirm that
-  the request has indeed be received).
+  the request has indeed been received).
 
 ### ping
 
 The only way to remedy the connection being dropped as unused is to send
-a protocol-specific `ping` packets.
-In order to detect a dead TCP/IP connection (since TCP/IP is not going to
+a protocol-specific `ping` packets periodically.
+In order to detect a dead TCP/IP connection (since the TCP/IP stack is not going to
 figure it out itself), the other side needs to respond with a `pong` message.
 If the `pong` is not received, the connection
 is considered broken and corrective measures

@@ -307,15 +307,16 @@ The same thing as with the proxy - certain load balancers/VPNs/Firewalls will ki
 silently after 2 minutes of inactivity. See the "Reconfigure Proxy" above for
 a possible list of solutions.
 
-### Use LONG_POLLING instead of Websocket/XHR
+### Use LONG_POLLING instead of Websocket or Websocket/XHR
 
-When using WEBSOCKET_XHR, Vaadin will in fact use TWO connections: one XHR
-connection sending stuff from server to client, and a new TCP/IP connection whenever
-client needs to send something to the server. That greatly increases the risk of
-desynchronizing state and receiving messages out-of-order.
+Proxies and load balancers usually has much better support for LONG_POLLING as opposed to
+a websocket pipe. See above. 
 
-Therefore longpolling may help with out-of-order messages since it always only uses one TCP/IP
-connection, and a fresh one at that. See above on how to detect out-of-order UIDL messages.
+Also, WEBSOCKET on flaky connections frequently stops working entirely, since also
+Vaadin client requests are sent over the websocket; if the websocket pipe becomes broken
+then there's absolutely no communication whatsoever.
+
+On the other hand WEBSOCKET_XHR and LONG_POLLING will send requests in a fresh new connection.
 
 ### Avoid Streaming, disable Anti-Virus, others
 

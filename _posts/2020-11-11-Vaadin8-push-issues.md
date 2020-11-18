@@ -28,37 +28,28 @@ for more details.
 
 ### TCP/IP breaks silently
 
-TCP/IP is a horrible abstraction: it may break at any time for no apparent reason,
-and when it does, it starts acting as `/dev/null`: sending bytes succeed,
-but they're not really sent and there's simply no response, ever. There's no way to make this work:
+TCP/IP is a horrible abstraction. Read [TCP-IP Sucks](../tcp-ip-sucks) for more details.
 
-* SO_KEEPALIVE is a ping with undefined ping interval since on Java you can't specify
-  TCP_KEEPCNT, TCP_KEEPIDLE nor TCP_KEEPINTVL, therefore it's useless. If I remember
-  correctly the default is *two hours* and may be only configured on the OS level
-  which makes it completely useless.
-* SO_TIMEOUT only prevents from blocking too long, but doesn't really keep the connection up.
-  See [setSoTimeout on StackOverflow](https://stackoverflow.com/questions/12820874/what-is-the-functionality-of-setsotimeout-and-how-it-works)
-  for more details.
-* SO_LINGER also doesn't keep the connection open; more on [SO_LINGER StackOverflow](https://stackoverflow.com/questions/3757289/when-is-tcp-option-so-linger-0-required).
-
-The only way to remedy this is to send a protocol-specific Ping packets; in Vaadin's terminology those are called
-[heartbeats](https://vaadin.com/docs/v8/framework/application/application-lifecycle.html).
-
-Since both WebSockets and Long-polling run on top of TCP/IP, they're both affected.
+Since both WebSockets and LONG_POLLING run on top of TCP/IP, they're both affected.
+Vaadin uses something called
+[heartbeats](https://vaadin.com/docs/v8/framework/application/application-lifecycle.html),
+however they're severely limited when compared to the 'ping' mechanism. Read below for more info.
 
 When the connection is broken, the server has no way of knowing that the
 connection is broken; any UIDL sent from the server to the client is lost silently.
 This is the major reason for UI freezings as we will describe below.
 
 > Note: the client always uses a new connection when contacting server, both with
-> XHR/WebSockets and with Long-Polling, therefore requests from the client are
+> WEBSOCKET_XHR and with LONG_POLLING, therefore requests from the client are
 > not affected by broken TCP pipes.
 
 ### Heartbeats/KeepAlive
 
-In order to keep a TCP/IP connection alive, heartbeats are sent, from both sides of the connection.
+When a long-lived bi-directional TCP/IP pipe is opened by an app (any kind of app, not just a Vaadin app),
+in order to keep a TCP/IP connection alive, heartbeats are sent, from both sides of the connection.
 
-Unfortunately, Vaadin heartbeats can not detect a broken connection, and here's why.
+Unfortunately, Vaadin heartbeats can not detect a broken connection with WEBSOCKET_XHR and
+LONG_POLLING, and here's why.
 
 It's only the Vaadin client that sends the heartbeats to the server, the server never sends heartbeats
 to the client. Therefore, the client has no way of learning from the heartbeats alone
@@ -66,8 +57,11 @@ that the connection is
 broken. Moreover, the only thing the server will do is that it will close
 the UI after three heartbeats have been missed;
 neither the client nor the server will attempt to repair the connection by
-reconnecting. On top of that, heartbeats are sent over a NEW requests - they don't
-use LongPolling GET nor the XHR/WebSocket pipe.
+reconnecting. On top of that, heartbeats are sent over a *new* requests - they don't
+use LongPolling GET nor the WEBSOCKET_XHR pipe.
+
+However, using `Transport.WEBSOCKET` (not WEBSOCKET_XHR) will make poll requests (not heartbeats though)
+go through the websocket pipe, which allows the poll requests to serve as a keepalive ping.
 
 Generally, heartbeats in Vaadin serve for:
 
@@ -81,11 +75,37 @@ In Vaadin, heartbeats do not serve for:
 This will be important later on, when I demonstrate the way how the client
 can freeze endlessly.
 
-### XHR/Websocket VS Long-Polling
+### WEBSOCKET_XHR VS LONG_POLLING
 
-See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more details
-on how those things work. In practice, Long-Polling has been observed to work
-more reliably than WebSocket/XHR, therefore I'd advise you to use Long-Polling. 
+See [Long Polling vs WebSockets](../LONG_POLLING-vs-websockets/) for more details
+on how those things work. In practice, LONG_POLLING has been observed to work
+more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING. 
+
+### Push transport modes
+
+Vaadin supports three transport modes:
+
+* `LONG_POLLING` - Vaadin client/atmosphere creates a long-running HTTP GET request which
+  blocks on the server side until server has something asynchronous to send back. Nothing else
+  is sent through this pipe - both heartbeats and regular requests open a new separate
+  TCP/IP connections. Heartbeats are sent
+  as a new `HTTP POST` request to `/HEARTBEAT/?v-uiId=xyz` with no UIDL response;
+  regular requests are sent as a new `HTTP POST` request to
+  `/UIDL/?v-uiId=xyz` and the server responds with the UIDL message
+  (which is sent through this new request instead of through the long-running HTTP GET request).
+* `WEBSOCKET_XHR` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
+  The server writes to the pipe when there's something asynchronous to send back. Nothing else
+  is sent through this pipe - both heartbeats and regular requests open a new separate
+  TCP/IP connections, exactly as with `LONG_POLLING`.
+  The reasoning is that if the websocket connection became broken, it doesn't prevent
+  from requests still reaching the server.
+* `WEBSOCKET` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
+  The server writes to the pipe when there's something asynchronous to send back.
+  The heartbeats are still sent via separate requests, however the regular requests
+  (including poll-activated requests) are now transmitted via the websocket pipe.
+  Therefore, using poll interval of, say, 30 seconds will cause activity on the pipe,
+  preventing load-balancers/proxies/firewalls from killing the connection.
+  Unfortunately this still won't help in the case of "spuriously broken connection".
 
 ### UIDL
 
@@ -129,16 +149,16 @@ for an example.
 give up waiting for message in this case and perform a resync. I'm assuming 5 minutes,
 or perhaps it's the same setting governing heartbeats?
 
-However, neither XHR/WebSockets nor Long-Polling transfer layer itself can cause
+However, neither WEBSOCKET_XHRs nor LONG_POLLING transfer layer itself can cause
 the message reordering, since they're both based on TCP/IP.
 Therefore, there has to be other cause; the only way I can see this can happen
-with XHR/WebSockets:
+with WEBSOCKET_XHRs:
  
 1. Vaadin Server sends UIDL over Websocket connection (which is broken) and so the message gets lost
 2. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
 3. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
 
-With Long-Polling, it could go like this:
+With LONG_POLLING, it could go like this:
 
 1. Vaadin client establishes a connection but sends nothing, waiting for server to send something.
 2. Proxy kills the connection after 2 minutes.
@@ -150,18 +170,18 @@ With Long-Polling, it could go like this:
 ### Frequent resync requests
 
 Occassional resync requests are okay in case when the connection is lost, or
-some internal bug of XHR/WebSocket causes out-of-order message to be sent in rare
+some internal bug of WEBSOCKET_XHR causes out-of-order message to be sent in rare
 case. However, frequent resync requests should definitely not happen on regular basis -
 if they do, there's some kind of problem going on.
 
-I can envision the following scenario for Long-Polling:
+I can envision the following scenario for LONG_POLLING:
 
 1. Client encounters out-of-order message as described above.
 2. Client gives up waiting for the older message and sends resync over a new fresh connection.
 3. The server responds, and the client resyncs successfully.
 4. Client immediately opens a new connection but sends nothing. Goto 1.
 
-The same thing can not happen with XHR/WebSocket:
+The same thing can not happen with WEBSOCKET_XHR:
 
 1. Client encounters out-of-order message as described above.
 2. Client gives up waiting for the older message and sends resync over a new fresh XHR connection.
@@ -174,13 +194,13 @@ When the client detects the connection being broken
 (this usually takes up to 5 minutes and doesn't depend on heartbeat frequency,
 since heartbeats are only used to keep the connection alive and to close idle UIs server-side),
 the client will basically perform the same corrective algorithm,
-both for WebSocket and Long-Polling. However, the effects are subtly different.
+both for WebSocket and LONG_POLLING. However, the effects are subtly different.
 
 In both cases, we start with a state that a UIDL message has not been received for
 5 minutes from the server. In both cases, Vaadin Client tries to
 resync by sending a resync request.
 
-In case of XHR/WebSockets:
+In case of WEBSOCKET:
 
 1. The resync request is sent over XHR (a new fresh HTTP request), which reaches the server.
 2. The server responds with UIDL over WebSocket connection (which is broken), and so
@@ -189,11 +209,11 @@ In case of XHR/WebSockets:
 
 The observable effect is that the client will freeze endlessly.
 
-In case of Long-Polling:
+In case of LONG_POLLING and WEBSOCKET_XHR:
 
 1. The resync request is sent over a new fresh HTTP request, which reaches the server.
 2. The server responds with UIDL over the same connection, which should now work.
-3. Vaadin Client receives the resync request and reinitializes correctly.
+3. Vaadin Client receives the response to the resync request and reinitializes correctly.
 
 The observable effect is that the client will eventually unfreeze,
 but there will be a lot of resync requests in the logs.
@@ -220,32 +240,37 @@ connection silently after 2 minutes of inactivity. A good heartbeat interval is
 45-60 seconds (see [Wiki Keepalive](https://en.wikipedia.org/wiki/Keepalive)).
 Read [Vaadin 8 Docs on configuring the heartbeat interval](https://vaadin.com/docs/v8/framework/articles/CleaningUpResourcesInAUI.html).
 
-Unfortunately, Vaadin heartbeats can't be used to keep the LongPolling nor XHR/WebSocket
-connection alive - they're sent from client to server over a new POST request, and not
-over the long-running LongPolling GET request nor XHR/WebSocket.
+Unfortunately, Vaadin heartbeats can't be used to keep the LongPolling, WEBSOCKET nor WEBSOCKET_XHR
+connection alive: they're always sent from client to server over a new POST request, and never
+sent through the long-running LongPolling GET request nor through the websocket pipe.
 
-Poll requests (configured via `UI.setPollInterval()`) can not be used as heartbeats/keepalives
-since they will not go through the Long-Polling GET connection, but will create a separate POST requests.
+### Use poll requests as keepalives
+
+Poll requests (configured via `UI.setPollInterval()`) can be used as heartbeats/keepalive only
+when `Transport.WEBSOCKET` is used, since only `Transport.WEBSOCKET` will cause poll requests
+to go through the websocket pipe.
 
 ### Send pings from server to client
 
 You can track the list of all opened UIs, and send some dummy RPC request (executeJS or similar)
-periodically to every UI via ui.access(). These UIDLs will get sent over the LongPolling GET request nor XHR/WebSocket
+periodically to every UI via ui.access(). These UIDLs will get sent over the LongPolling GET request nor WEBSOCKET_XHR
 (given that there's no current request ongoing).
 
-TODO I need to experiment on this.
+This should prevent load-balancers/proxies/firewalls from killing the connection.
+Unfortunately this still won't help in the case of "spuriously broken connection".
 
 ### Disable polling when using Push
 
 > Note: Polling refers to `UI.setPollInterval()` which works both with and without Push,
-while Long-Polling only works with push. Polling and Long-Polling are two very different things.
+while LONG_POLLING only works with push. Polling and LONG_POLLING are two very different things.
 
 Setting `UI.setPollInterval()` to 0 or greater may interfere with Push, even though
 it technically shouldn't. Make sure nobody is calling that method, by simply overriding it
 in your UI and throwing an exception, or calling `super.setPollInterval(-1)`.
 
 I think that polling is not a problem per se; it will just expose the dead connection
-much faster.
+much faster. Poll can actually keep the connection alive with the `Transport.WEBSOCKET`,
+as described above.
 
 ### Upgrade Vaadin 8
 
@@ -278,9 +303,9 @@ The same thing as with the proxy - certain load balancers/VPNs/Firewalls will ki
 silently after 2 minutes of inactivity. See the "Reconfigure Proxy" above for
 a possible list of solutions.
 
-### Use Long-Polling instead of Websocket/XHR
+### Use LONG_POLLING instead of Websocket/XHR
 
-When using XHR/Websocket, Vaadin will in fact use TWO connections: one XHR
+When using WEBSOCKET_XHR, Vaadin will in fact use TWO connections: one XHR
 connection sending stuff from server to client, and a new TCP/IP connection whenever
 client needs to send something to the server. That greatly increases the risk of
 desynchronizing state and receiving messages out-of-order.
@@ -338,8 +363,9 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 
 * Push is not a silver bullet and can freeze your UI easily - avoid using
   unless necessary.
-* Use Long-Polling over XHR/WebSocket -
-  Long-Polling should not be affected by endless UI freezing.
+* Use LONG_POLLING over WEBSOCKET_XHR -
+  LONG_POLLING should not be affected by endless UI freezing.
+* Use WEBSOCKET and polls to keep the connection alive. This will however not help with flaky connections.
 * Prevent frequent connection breaking at all costs, otherwise your UI will appear frozen frequently.
   * Reconfigure the proxies to not to drop the connections;
   * Implement a server->client heartbeat which will ping every live UI every 45-60 seconds.

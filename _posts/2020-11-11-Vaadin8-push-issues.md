@@ -81,6 +81,10 @@ See [Long Polling vs WebSockets](../LONG_POLLING-vs-websockets/) for more detail
 on how those things work. In practice, LONG_POLLING has been observed to work
 more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING. 
 
+Also, LONG_POLLING is typically much better supported by proxies/load balancers since
+it's just a regular HTTP request, as opposed to a websocket pipe (which is a special HTTP
+protocol upgrade).
+
 ### Push transport modes
 
 Vaadin supports three transport modes:

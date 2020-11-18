@@ -251,6 +251,10 @@ Poll requests (configured via `UI.setPollInterval()`) can be used as heartbeats/
 when `Transport.WEBSOCKET` is used, since only `Transport.WEBSOCKET` will cause poll requests
 to go through the websocket pipe.
 
+Using this approach should prevent load-balancers/proxies/firewalls from killing the connection;
+however in case of "spuriously broken connections" the WEBSOCKET transport will
+also stop delivering requests from the client to the server, rendering the client dead.
+
 ### Send pings from server to client
 
 You can track the list of all opened UIs, and send some dummy RPC request (executeJS or similar)

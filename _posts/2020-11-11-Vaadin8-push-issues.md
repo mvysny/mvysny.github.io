@@ -45,25 +45,22 @@ This is the major reason for UI freezings as we will describe below.
 
 ### Heartbeats/KeepAlive
 
-When a long-lived bi-directional TCP/IP pipe is opened by an app (any kind of app, not just a Vaadin app),
-in order to keep a TCP/IP connection alive, heartbeats are sent, from both sides of the connection.
-
-Unfortunately, Vaadin heartbeats can not detect a broken connection with WEBSOCKET_XHR and
+Unfortunately, Vaadin [heartbeats](https://vaadin.com/docs/v8/framework/application/application-lifecycle.html)
+can not detect a broken connection with WEBSOCKET_XHR and
 LONG_POLLING, and here's why.
 
 It's only the Vaadin client that sends the heartbeats to the server, the server never sends heartbeats
 to the client. Therefore, the client has no way of learning from the heartbeats alone
 that the connection is
 broken. Moreover, the only thing the server will do is that it will close
-the UI after three heartbeats have been missed;
-neither the client nor the server will attempt to repair the connection by
+the UI after three heartbeats have been missed. The server will never attempt to repair the connection by
 reconnecting. On top of that, heartbeats are sent over a *new* requests - they don't
-use LongPolling GET nor the WEBSOCKET_XHR pipe.
+use LongPolling GET nor the websocket pipe.
 
 However, using `Transport.WEBSOCKET` (not WEBSOCKET_XHR) will make poll requests (not heartbeats though)
 go through the websocket pipe, which allows the poll requests to serve as a keepalive ping.
 
-Generally, heartbeats in Vaadin serve for:
+To sum it up, heartbeats in Vaadin serve for:
 
 * Keeping the connection alive by making it appear active
 * Closing idle UIs

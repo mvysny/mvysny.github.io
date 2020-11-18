@@ -87,4 +87,5 @@ no broken-connection detection, no corrective measures and no
 automatic connection re-establish and packet re-send.
 
 For the purposes of modern apps that need to communicate bi-directionally,
-TCP/IP is completely inadequate without lots of supportive machinery.
+TCP/IP is completely inadequate. Remember to add the supportive machinery
+mentioned above, in order to stay responsive and handle connection errors gracefully.

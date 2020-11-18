@@ -61,7 +61,8 @@ no reply has been received after certain timeout. Generally,
 a 1 minute timeout should be more than enough for even slow TCP/IP connections,
 but you can use a lower value if you need to detect the failure faster.
 
-Unfortunately, there's no golden number which works in all cases.
+Unfortunately, there's no silver timeout number which works in all cases.
+As a rule of thumb, use something between 30 secs and 2 minutes.
 
 ## Corrective measures
 

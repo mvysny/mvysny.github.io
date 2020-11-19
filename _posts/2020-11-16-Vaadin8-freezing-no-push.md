@@ -119,3 +119,13 @@ The client resyncs and everything continues.
 In this case the first response is lost. The server will receive re-sent request for the same thing,
 realize that the client is in a broken state and responds with a full resync. This scenario will now continue
 in exactly the same way as Scenario #2.
+
+## Reproducing the scenario #2 above
+
+It's possible to reproduce the scenario #2 above on your development machine.
+
+1. Create a button which will simply sleep for 10 seconds server-side on click.
+2. Click the button and observe the POST connection ongoing in the browser's network tab.
+3. Run `sudo ss -K dst 127.0.0.1 dport = 8080` a couple of times to kill the connection cleanly.
+   Taken from [Stack overflow: Killing TCP connections in Linux](https://unix.stackexchange.com/questions/71940/killing-tcp-connection-in-linux/203658).
+4. Observe the JavaScript log.

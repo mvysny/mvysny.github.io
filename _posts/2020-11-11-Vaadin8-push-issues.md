@@ -120,7 +120,7 @@ Essentially, Vaadin sends diffs (called UIDLs) of what has been changed from the
 ### Message Ordering
 
 Since missing out just one of those diffs could lead to undefined client-side state,
-Vaadin keeps strict track of which UIDLs has been sent and received by the client-side Vaadin code.
+Vaadin keeps strict track of which UIDLs has been received from the server by the client-side Vaadin code.
 Essentially, the UIDL numbering scheme starts from 0 and continues in a strictly increasing
 order.
 

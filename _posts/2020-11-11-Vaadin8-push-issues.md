@@ -127,7 +127,7 @@ which may never arrive. Ultimately Vaadin will give up waiting and
 will ask the server to perform a full resync. However, Vaadin will effectively
 freeze the UI until either the message arrives, or a full resync is performed.
 
-The following is logged into your browser's JavaScript console:
+Out-of-order UIDL condition is easy to spot: the following messages are logged into your browser's JavaScript console:
 
 * The `Gave up waiting for message 61 from the server` message;
 * The `Received message with server id 62 but expected 61. Postponing handling until the missing message(s) have been received` message
@@ -232,19 +232,9 @@ In case of LONG_POLLING and WEBSOCKET_XHR:
 
 The observable effect is that the client should unfreeze after 5 seconds.
 
-#### no reponse received after a long time
+#### No response received after a long time
 
-In case the push is disabled, the XhrConnection class is used to send requests.
-The code at `XhrConnection:193` suggest there is really no timeout set, and so
-Vaadin client will happily sit there for 10 hours, awaiting a response to the message it sent:
-
-```
-        // TODO enable timeout
-        // rb.setTimeoutMillis(timeoutMillis);
-        // TODO this should be configurable
-```
-
-TODO will the client delay further requests until the previous one is served or not?
+When push is disabled, see [Vaadin 8 Freezing with Push disabled](../Vaadin8-freezing-no-push/).
 
 TODO what happens when push is enabled?
 

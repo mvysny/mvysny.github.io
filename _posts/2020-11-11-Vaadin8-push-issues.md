@@ -146,14 +146,14 @@ The following is logged into your browser's JavaScript console:
 See [Bug 11702](https://github.com/vaadin/framework/issues/11702)
 for an example.
 
-> Unfortunately I don't know how long it will take for Vaadin to
-give up waiting for message in this case and perform a resync. I'm assuming 5 minutes,
-or perhaps it's the same setting governing heartbeats?
+After the "out-of-order UIDL" condition is encountered, Vaadin client will only wait 5 seconds
+before sending the resync request. This is governed by the `MessageHandler.MAX_SUSPENDED_TIMEOUT`
+setting which is hard-coded and can not be reconfigured.
 
-However, neither WEBSOCKET_XHRs nor LONG_POLLING transfer layer itself can cause
+Neither WEBSOCKET_XHRs nor LONG_POLLING transfer layer itself can cause
 the message reordering, since they're both based on TCP/IP.
-Therefore, there has to be other cause; the only way I can see this can happen
-with WEBSOCKET_XHRs:
+Therefore, it is simply caused by having two communication pipes, one of them becoming unresponsive.
+With WEBSOCKET_XHRs:
 
 1. Vaadin client establishes the websocket connection but sends nothing, waiting for server to send something.
 2. Proxy kills the connection after 2 minutes.
@@ -161,7 +161,7 @@ with WEBSOCKET_XHRs:
    The connection is broken and so the message gets lost.
 4. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
 5. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
-6. Vaadin Client times out after 5 minutes and asks for a resync in a separate connection.
+6. Vaadin Client times out after 5 seconds and asks for a resync in a separate connection.
 
 With WEBSOCKET, the out-of-order UIDLs can not happen since the entire communication
 goes through a single channel (the websocket connection):
@@ -185,7 +185,15 @@ With LONG_POLLING, it's the same thing as with WEBSOCKET_XHR:
 4. Client sends another request (a button click, or a Poll request) over a new connection;
    the server responds by the next UIDL message.
 5. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
-6. Vaadin Client times out after 5 minutes and asks for a resync in a separate connection.
+6. Vaadin Client times out after 5 seconds and asks for a resync in a separate connection.
+
+With no push, just a rapid stream of poll requests:
+
+1. A poll request is sent to the server; the request is received but the response is
+   lost because of a flaky TCP/IP connection.
+2. Another poll request is sent to the server. The server responds with yet another UIDL.
+3. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
+4. Vaadin Client times out after 5 seconds and asks for a resync in a separate connection.
 
 ### Frequent resync requests
 
@@ -209,6 +217,8 @@ The same thing happens with WEBSOCKET_XHR:
 4. Client immediately opens a new connection but sends nothing. Goto 1.
 
 ### Vaadin Client-side corrective measures
+
+TODO this is not correct
 
 When the client detects the connection being broken
 (this usually takes up to 5 minutes and doesn't depend on heartbeat frequency,

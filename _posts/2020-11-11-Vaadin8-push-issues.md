@@ -247,7 +247,9 @@ The observable effect is that the client should unfreeze after 5 seconds.
 
 When push is disabled, see [Vaadin 8 Freezing with Push disabled](../Vaadin8-freezing-no-push/).
 
-TODO what happens when push is enabled?
+TODO what happens when push is enabled? There's something called `pushLongPollingSuspendTimeout`
+- perhaps Atmosphere can re-establish the connection eventually? Probably not, but
+worth investigating.
 
 ## When things go wrong
 

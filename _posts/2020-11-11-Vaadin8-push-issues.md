@@ -288,11 +288,15 @@ also stop delivering requests from the client to the server, rendering the clien
 ### Send pings from server to client
 
 You can track the list of all opened UIs, and send some dummy RPC request (executeJS or similar)
-periodically to every UI via ui.access(). These UIDLs will get sent over the LongPolling GET request nor WEBSOCKET_XHR
-(given that there's no current request ongoing).
+periodically to every UI via `ui.access()`. These UIDLs will get sent over the LongPolling GET request
+or the websocket pipe in case of WEBSOCKET_XHR
+(given that there's no current request ongoing; if there is, then Vaadin will piggyback
+on the current request connection and will send the response through there).
 
 This should prevent load-balancers/proxies/firewalls from killing the connection.
 Unfortunately this still won't help in the case of "spuriously broken connection".
+
+This is just an idea, unverified yet.
 
 ### Disable polling when using Push
 

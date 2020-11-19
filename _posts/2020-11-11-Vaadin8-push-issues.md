@@ -106,7 +106,7 @@ Vaadin supports three transport modes:
   (including poll-activated requests) are now transmitted via the websocket pipe.
   Therefore, using poll interval of, say, 30 seconds will cause activity on the pipe,
   preventing load-balancers/proxies/firewalls from killing the connection.
-  Unfortunately this still won't help in the case of "spuriously broken connection".
+  However, a broken pipe will instantly kill any kind of comms between the client and the server.
 
 ### UIDL
 
@@ -154,19 +154,38 @@ However, neither WEBSOCKET_XHRs nor LONG_POLLING transfer layer itself can cause
 the message reordering, since they're both based on TCP/IP.
 Therefore, there has to be other cause; the only way I can see this can happen
 with WEBSOCKET_XHRs:
- 
-1. Vaadin Server sends UIDL over Websocket connection (which is broken) and so the message gets lost
-2. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
-3. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
 
-With LONG_POLLING, it could go like this:
+1. Vaadin client establishes the websocket connection but sends nothing, waiting for server to send something.
+2. Proxy kills the connection after 2 minutes.
+3. Vaadin Server sends a push UIDL message over Websocket connection.
+   The connection is broken and so the message gets lost.
+4. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
+5. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
+6. Vaadin Client times out after 5 minutes and asks for a resync in a separate connection.
 
-1. Vaadin client establishes a connection but sends nothing, waiting for server to send something.
+With WEBSOCKET, the out-of-order UIDLs can not happen since the entire communication
+goes through a single channel (the websocket connection):
+
+1. Vaadin client establishes the websocket connection.
+2. Eventually, proxy kills the connection after 2 minutes.
+3. Vaadin Server sends a push UIDL message over Websocket connection.
+   The connection is broken and so the message gets lost.
+4. (at some later time) Vaadin Client makes a XHR request to the Server. The connection
+   is broken and so the message gets lost.
+5. Vaadin Client awaits for an answer which will never come.
+6. TODO investigate: Will Vaadin Client eventually timeout and resync?
+7. Resync request is sent over websocket and lost.
+8. Vaadin Client freezes endlessly.
+
+With LONG_POLLING, it's the same thing as with WEBSOCKET_XHR:
+
+1. Vaadin client establishes the long-polling GET connection but sends nothing, waiting for server to send something.
 2. Proxy kills the connection after 2 minutes.
 3. Server sends UIDL but the message is lost.
-4. Client sends a ping message over a new connection; the server responds by a new UIDL
-   message that had accumulated since step 3.
+4. Client sends another request (a button click, or a Poll request) over a new connection;
+   the server responds by the next UIDL message.
 5. Vaadin Client detects out-of-order message and awaits for previous message which will never come.
+6. Vaadin Client times out after 5 minutes and asks for a resync in a separate connection.
 
 ### Frequent resync requests
 
@@ -178,16 +197,16 @@ if they do, there's some kind of problem going on.
 I can envision the following scenario for LONG_POLLING:
 
 1. Client encounters out-of-order message as described above.
-2. Client gives up waiting for the older message and sends resync over a new fresh connection.
+2. Client gives up waiting for the older message and sends resync as a HTTP PUSH request over new connection.
 3. The server responds, and the client resyncs successfully.
 4. Client immediately opens a new connection but sends nothing. Goto 1.
 
-The same thing can not happen with WEBSOCKET_XHR:
+The same thing happens with WEBSOCKET_XHR:
 
 1. Client encounters out-of-order message as described above.
-2. Client gives up waiting for the older message and sends resync over a new fresh XHR connection.
-3. The server responds over WebSocket connection (which is broken), and so the response is lost.
-4. Vaadin Client now freezes, endlessly waiting for a resync response which will never come.
+2. Client gives up waiting for the older message and sends resync as a HTTP PUSH request over new connection.
+3. The server responds, and the client resyncs successfully.
+4. Client immediately opens a new connection but sends nothing. Goto 1.
 
 ### Vaadin Client-side corrective measures
 

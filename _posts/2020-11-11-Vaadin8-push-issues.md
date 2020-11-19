@@ -73,12 +73,15 @@ Vaadin supports three transport modes:
   regular requests are sent as a new `HTTP POST` request to
   `/UIDL/?v-uiId=xyz` and the server responds with the UIDL message
   (which is sent through this new request instead of through the long-running HTTP GET request).
+  The GET request URL looks like this: `PUSH?v-uiId=1&v-pushId=9d11a92e-4757-4929-b27e-dcd88d4ebbc3&X-Atmosphere-tracking-id=42cffc7f-746a-42e1-a411-ba50e7a0d6bf&X-Atmosphere-Framework=2.3.2.vaadin1-javascript&X-Atmosphere-Transport=long-polling&X-Atmosphere-TrackMessageSize=true&Content-Type=application/json; charset=UTF-8&X-atmo-protocol=true&_=1605779039425`.
 * `WEBSOCKET_XHR` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
   The server writes to the pipe when there's something asynchronous to send back. Nothing else
   is sent through this pipe - both heartbeats and regular requests open a new separate
   TCP/IP connections, exactly as with `LONG_POLLING`.
   The reasoning is that if the websocket connection became broken, it doesn't prevent
-  from requests still reaching the server.
+  from requests still reaching the server. The websocket URL will also look like this: `PUSH?v-uiId=1&v-pushId=2560ed30-365e-45e9-8cbd-699189c065f8&X-Atmosphere-tracking-id=0&X-Atmosphere-Framework=2.3.2.vaadin1-javascript&X-Atmosphere-Transport=websocket&X-Atmosphere-TrackMessageSize=true&Content-Type=application/json; charset=UTF-8&X-atmo-protocol=true`,
+  the important difference is that the status will be `101` and the 'type' will be either 'plain' (Firefox)
+  or 'websocket' (Chrome).
 * `WEBSOCKET` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
   The server writes to the pipe when there's something asynchronous to send back.
   The heartbeats are still sent via separate requests, however the regular requests
@@ -86,6 +89,14 @@ Vaadin supports three transport modes:
   Therefore, using poll interval of, say, 30 seconds will cause activity on the pipe,
   preventing load-balancers/proxies/firewalls from killing the connection.
   However, a broken pipe will instantly kill any kind of comms between the client and the server.
+  The websocket request URL will look the same as with `WEBSOCKET_XHR`.
+
+#### Chrome Rant
+
+Chrome decides to simply drop parts of the URL and will simply only show the
+`?v-uiId=xyz` instead of `/UIDL/?v-uiId=xyz` part in the Network tab. You will thus be unable
+to tell between UIDL requests and Heartbeat requests. I have no idea in which fucking universe this makes sense,
+just be aware of this shit.
 
 ### WEBSOCKET_XHR VS LONG_POLLING
 

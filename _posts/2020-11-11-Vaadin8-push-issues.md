@@ -100,7 +100,7 @@ just be aware of this shit.
 
 ### WEBSOCKET_XHR VS LONG_POLLING
 
-See [Long Polling vs WebSockets](../LONG_POLLING-vs-websockets/) for more details
+See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more details
 on how those things work. In practice, LONG_POLLING has been observed to work
 more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING. 
 

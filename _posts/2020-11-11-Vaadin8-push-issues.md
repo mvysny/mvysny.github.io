@@ -246,6 +246,8 @@ Vaadin client will happily sit there for 10 hours, awaiting a response to the me
 
 TODO will the client delay further requests until the previous one is served or not?
 
+TODO what happens when push is enabled?
+
 ## When things go wrong
 
 * When the browser freezes straight after login (Chrome 80+), it could be that the Session Fixation

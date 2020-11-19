@@ -41,7 +41,8 @@ This is the major reason for UI freezings as we will describe below.
 
 > Note: the client always uses a new connection when contacting server, both with
 > WEBSOCKET_XHR and with LONG_POLLING, therefore requests from the client are
-> not affected by broken TCP pipes.
+> usually not affected by broken TCP pipes. Not the case for WEBSOCKET which uses
+> the websocket pipe for client-to-server requests as well.
 
 ### Heartbeats/KeepAlive
 
@@ -50,11 +51,11 @@ can not detect a broken connection with WEBSOCKET_XHR and
 LONG_POLLING, and here's why.
 
 It's only the Vaadin client that sends the heartbeats to the server, the server never sends heartbeats
-to the client. Therefore, the client has no way of learning from the heartbeats alone
+nor responses to a heartbeat to the client. Therefore, the client has no way of learning from the heartbeats alone
 that the connection is
 broken. Moreover, the only thing the server will do is that it will close
 the UI after three heartbeats have been missed. The server will never attempt to repair the connection by
-reconnecting. On top of that, heartbeats are sent over a *new* requests - they don't
+reconnecting. On top of that, heartbeats are always sent over a *new* requests - they don't
 use LongPolling GET nor the websocket pipe.
 
 However, using `Transport.WEBSOCKET` (not WEBSOCKET_XHR) will make poll requests (not heartbeats though)
@@ -218,23 +219,17 @@ The same thing happens with WEBSOCKET_XHR:
 
 ### Vaadin Client-side corrective measures
 
-TODO this is not correct
-
-When the client detects the connection being broken
-(this usually takes up to 5 minutes and doesn't depend on heartbeat frequency,
-since heartbeats are only used to keep the connection alive and to close idle UIs server-side),
-the client will basically perform the same corrective algorithm,
-both for WebSocket and LONG_POLLING. However, the effects are subtly different.
-
-In both cases, we start with a state that a UIDL message has not been received for
-5 minutes from the server. In both cases, Vaadin Client tries to
-resync by sending a resync request.
+When the "out-of-order UIDL" condition is detected,
+the client will wait 5 seconds to hopefully receive the missing UIDL responses.
+If the messages did not arrive in time, Vaadin Client will now ignore them and
+will attempt to perform a
+full resync: the client will try to download a complete server-side state of all components, redrawing them
+from scratch. To achieve that, the client sends a resync request.
 
 In case of WEBSOCKET:
 
-1. The resync request is sent over XHR (a new fresh HTTP request), which reaches the server.
-2. The server responds with UIDL over WebSocket connection (which is broken), and so
-   the message gets lost.
+1. The resync request is sent over the websocket connection.
+2. The websocket connection is broken and thus the request is lost.
 3. Vaadin Client now freezes, endlessly waiting for a resync response which will never come.
 
 The observable effect is that the client will freeze endlessly.
@@ -245,8 +240,9 @@ In case of LONG_POLLING and WEBSOCKET_XHR:
 2. The server responds with UIDL over the same connection, which should now work.
 3. Vaadin Client receives the response to the resync request and reinitializes correctly.
 
-The observable effect is that the client will eventually unfreeze,
-but there will be a lot of resync requests in the logs.
+The observable effect is that the client should unfreeze after 5 seconds.
+
+TODO what if there's no response for a long time? Will the client attempt to resync?
 
 ## When things go wrong
 
@@ -399,7 +395,7 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 * Push is not a silver bullet and can freeze your UI easily - avoid using
   unless necessary.
 * Use LONG_POLLING over WEBSOCKET_XHR -
-  LONG_POLLING should not be affected by endless UI freezing.
+  LONG_POLLING should be supported better by proxies.
 * Use WEBSOCKET and polls to keep the connection alive. This will however not help with flaky connections.
 * Prevent frequent connection breaking at all costs, otherwise your UI will appear frozen frequently.
   * Reconfigure the proxies to not to drop the connections;

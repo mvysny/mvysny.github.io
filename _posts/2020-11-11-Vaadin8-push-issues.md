@@ -407,7 +407,8 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
   unless necessary.
 * Use LONG_POLLING over WEBSOCKET_XHR -
   LONG_POLLING should be supported better by proxies.
-* Use WEBSOCKET and polls to keep the connection alive. This will however not help with flaky connections.
+* Use WEBSOCKET and polls to keep the connection alive. This will however not help with flaky connections,
+  which in turn completely destroy the WEBSOCKET transport since it will ignore requests from clients.
 * Prevent frequent connection breaking at all costs, otherwise your UI will appear frozen frequently.
   * Reconfigure the proxies to not to drop the connections;
   * Implement a server->client heartbeat which will ping every live UI every 45-60 seconds.

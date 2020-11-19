@@ -61,28 +61,6 @@ use LongPolling GET nor the websocket pipe.
 However, using `Transport.WEBSOCKET` (not WEBSOCKET_XHR) will make poll requests (not heartbeats though)
 go through the websocket pipe, which allows the poll requests to serve as a keepalive ping.
 
-To sum it up, heartbeats in Vaadin serve for:
-
-* Keeping the connection alive by making it appear active
-* Closing idle UIs
-
-In Vaadin, heartbeats do not serve for:
-
-* Client-side detection of broken connection.
-
-This will be important later on, when I demonstrate the way how the client
-can freeze endlessly.
-
-### WEBSOCKET_XHR VS LONG_POLLING
-
-See [Long Polling vs WebSockets](../LONG_POLLING-vs-websockets/) for more details
-on how those things work. In practice, LONG_POLLING has been observed to work
-more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING. 
-
-Also, LONG_POLLING is typically much better supported by proxies/load balancers since
-it's just a regular HTTP request, as opposed to a websocket pipe (which is a special HTTP
-protocol upgrade).
-
 ### Push transport modes
 
 Vaadin supports three transport modes:
@@ -108,6 +86,16 @@ Vaadin supports three transport modes:
   Therefore, using poll interval of, say, 30 seconds will cause activity on the pipe,
   preventing load-balancers/proxies/firewalls from killing the connection.
   However, a broken pipe will instantly kill any kind of comms between the client and the server.
+
+### WEBSOCKET_XHR VS LONG_POLLING
+
+See [Long Polling vs WebSockets](../LONG_POLLING-vs-websockets/) for more details
+on how those things work. In practice, LONG_POLLING has been observed to work
+more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING. 
+
+Also, LONG_POLLING is typically much better supported by proxies/load balancers since
+it's just a regular HTTP request, as opposed to a websocket pipe (which is a special HTTP
+protocol upgrade).
 
 ### UIDL
 
@@ -219,6 +207,8 @@ The same thing happens with WEBSOCKET_XHR:
 
 ### Vaadin Client-side corrective measures
 
+#### out-of-order UIDL
+
 When the "out-of-order UIDL" condition is detected,
 the client will wait 5 seconds to hopefully receive the missing UIDL responses.
 If the messages did not arrive in time, Vaadin Client will now ignore them and
@@ -242,7 +232,19 @@ In case of LONG_POLLING and WEBSOCKET_XHR:
 
 The observable effect is that the client should unfreeze after 5 seconds.
 
-TODO what if there's no response for a long time? Will the client attempt to resync?
+#### no reponse received after a long time
+
+In case the push is disabled, the XhrConnection class is used to send requests.
+The code at `XhrConnection:193` suggest there is really no timeout set, and so
+Vaadin client will happily sit there for 10 hours, awaiting a response to the message it sent:
+
+```
+        // TODO enable timeout
+        // rb.setTimeoutMillis(timeoutMillis);
+        // TODO this should be configurable
+```
+
+TODO will the client delay further requests until the previous one is served or not?
 
 ## When things go wrong
 

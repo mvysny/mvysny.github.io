@@ -44,6 +44,17 @@ Then run the `prepare-frontend` task, to re-create those files. Note that the `n
 is populated later: either by Vaadin Servlet when running in development mode, or
 by `build-frontend` when building for production.
 
+### Webpack build fails
+
+If the failure is as follows:
+
+```
+ERROR [dev-webpack] (webpack) Module build failed: Error: ENOENT: no such file or directory, open '......\target\frontend\generated-flow-imports.js'
+```
+
+You must run the `prepare-frontend` goal/task before the `build-frontend` goal/task. Please review the
+Maven/Gradle stdout log and check that the `prepare-frontend` goal/task has been run.
+
 ### Clean pnpm-cache
 
 When using pnpm, performing the Vaadin Dance may not be enough. The thing with pnpm

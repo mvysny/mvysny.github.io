@@ -156,7 +156,7 @@ Therefore, it is simply caused by having two communication pipes, one of them be
 With WEBSOCKET_XHRs:
 
 1. Vaadin client establishes the websocket connection but sends nothing, waiting for server to send something.
-2. Proxy kills the connection after 2 minutes.
+2. The TCP connection dies spuriously and starts acting as `/dev/null`.
 3. Vaadin Server sends a push UIDL message over Websocket connection.
    The connection is broken and so the message gets lost.
 4. (at some later time) Vaadin Client makes a XHR request to the Server and receives next UIDL.
@@ -167,20 +167,20 @@ With WEBSOCKET, the out-of-order UIDLs can not happen since the entire communica
 goes through a single channel (the websocket connection):
 
 1. Vaadin client establishes the websocket connection.
-2. Eventually, proxy kills the connection after 2 minutes.
+2. The TCP connection dies spuriously and starts acting as `/dev/null`.
 3. Vaadin Server sends a push UIDL message over Websocket connection.
    The connection is broken and so the message gets lost.
 4. (at some later time) Vaadin Client makes a XHR request to the Server. The connection
    is broken and so the message gets lost.
 5. Vaadin Client awaits for an answer which will never come.
-6. TODO investigate: Will Vaadin Client eventually timeout and resync?
+6. TODO investigate: Will Atmosphere eventually timeout and resync?
 7. Resync request is sent over websocket and lost.
 8. Vaadin Client freezes endlessly.
 
 With LONG_POLLING, it's the same thing as with WEBSOCKET_XHR:
 
 1. Vaadin client establishes the long-polling GET connection but sends nothing, waiting for server to send something.
-2. Proxy kills the connection after 2 minutes.
+2. The TCP connection dies spuriously and starts acting as `/dev/null`.
 3. Server sends UIDL but the message is lost.
 4. Client sends another request (a button click, or a Poll request) over a new connection;
    the server responds by the next UIDL message.

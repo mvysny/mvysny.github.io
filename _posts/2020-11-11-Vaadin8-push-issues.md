@@ -358,6 +358,8 @@ class MyUIServlet : VaadinServlet()
 
 The value is in milliseconds.
 
+Also see `PushHandler.setLongPollingSuspendTimeout()`.
+
 ### Reconfigure Load Balancer / VPN / Firewall
 
 The same thing as with the proxy - certain load balancers/VPNs/Firewalls will kill the connection

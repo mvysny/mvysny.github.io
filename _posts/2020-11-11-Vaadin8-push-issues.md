@@ -338,6 +338,26 @@ before the proxy can kill the connection. Use the
 `pushLongPollingSuspendTimeout` servlet parameter for this
 (defined in milliseconds) (Vaadin 7.6+).
 
+### LONG_POLLING: make server reset connection faster
+
+By using the `pushLongPollingSuspendTimeout` servlet init parameter, you can tell
+Vaadin server to return 200 OK and close the long-polling connection in the defined
+amount of time, thus forcing Vaadin client to open another connection. Say if
+you have a proxy which kills inactive connection in 2 minutes, you can tweak this
+parameter to be 90 seconds in order for Vaadin server to terminate the connection
+cleanly, before it's killed by a proxy.
+
+In order to configure this value, pass the init parameter to the Vaadin servlet as follows:
+
+```kotlin
+@WebServlet(urlPatterns = ["/*"], name = "MyUIServlet", asyncSupported = true,
+        initParams = [WebInitParam(name = "pushLongPollingSuspendTimeout", value = "90000")])
+@VaadinServletConfiguration(ui = MyUI::class, productionMode = false)
+class MyUIServlet : VaadinServlet()
+```
+
+The value is in milliseconds.
+
 ### Reconfigure Load Balancer / VPN / Firewall
 
 The same thing as with the proxy - certain load balancers/VPNs/Firewalls will kill the connection

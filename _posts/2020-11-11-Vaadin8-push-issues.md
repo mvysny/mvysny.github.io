@@ -340,10 +340,22 @@ before the proxy can kill the connection. Use the
 
 ### LONG_POLLING: make server reset connection faster
 
+Say that every minute when the long polling request ends, it ends with an error
+`net::ERR_HTTP2_PROTOCOL_ERROR 200`. After 10 minutes, this triggers an `_onError`
+function in `vaadinPush.js` which causes the reload.
+
+The problem is most probably a misconfigured load balancer, placed between the browser and the server.
+The load balancer may be configured to kill idle connections after, say, 60 seconds (for example this is
+the AWS load balancer default setting). Vaadin can not handle this cleanly and will wait for
+10 minutes, then re-establishes the connection.
+
+You can reconfigure the load balancer to leave the connections open for longer, say, 15 minutes.
+Alternatively, you can configure Vaadin to close the LONG_POLLING connection sooner.
+
 By using the `pushLongPollingSuspendTimeout` servlet init parameter, you can tell
 Vaadin server to return 200 OK and close the long-polling connection in the defined
 amount of time, thus forcing Vaadin client to open another connection. Say if
-you have a proxy which kills inactive connection in 2 minutes, you can tweak this
+you have a proxy/load balancer which kills inactive connection in 2 minutes, you can tweak this
 parameter to be 90 seconds in order for Vaadin server to terminate the connection
 cleanly, before it's killed by a proxy.
 
@@ -356,7 +368,7 @@ In order to configure this value, pass the init parameter to the Vaadin servlet 
 class MyUIServlet : VaadinServlet()
 ```
 
-The value is in milliseconds.
+The value is in milliseconds. The default value is 10 minutes.
 
 Also see `PushHandler.setLongPollingSuspendTimeout()`.
 

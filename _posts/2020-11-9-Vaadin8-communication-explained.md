@@ -70,7 +70,7 @@ And so on.
 
 The message number is stored in the `syncId` UIDL JSON field and also in the `clientId` UIDL JSON field.
 
-## Difference between syncId and clientId
+## A difference between syncId and clientId
 
 The `syncId` number is for server -> client messsages, the `clientId` is for client -> server messages.
 
@@ -148,7 +148,7 @@ Vaadin supports three transport modes:
   However, a broken pipe will instantly kill any kind of comms between the client and the server.
   The websocket request URL will look the same as with `WEBSOCKET_XHR`.
 
-## Chrome Rant
+## Chrome rant
 
 Chrome decides to simply drop parts of the URL and will simply only show the
 `?v-uiId=xyz` instead of `/UIDL/?v-uiId=xyz` part in the Network tab. You will thus be unable

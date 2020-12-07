@@ -68,7 +68,26 @@ Any user activity will now cause a message #0 to be sent to the server, to which
 Any follow-up activity will cause a message #1 to be sent to the server, to which the server replies with message #2.
 And so on.
 
-The message number is stored in the `syncId` UIDL JSON field.
+The message number is stored in the `syncId` UIDL JSON field and also in the `clientId` UIDL JSON field.
+
+## Difference between syncId and clientId
+
+The `syncId` number is for server -> client messsages, the `clientId` is for client -> server messages.
+
+When not using push, those numbers will stay exactly the same, since for every client request there
+is exactly one server response. However, when using push, the server may push a new UIDL
+message at any time, without being provoked by a message from the client first.
+In such case, the `syncId` number is increased
+but the `clientId` number is kept the same.
+
+The reasons for having two oddly-named values is historical:
+
+> First, there was only syncId which was supposed to cover both directions. Then later on,
+> it was realized that we need separate numbers for each direction. At that point, clientId
+> was introduced without renaming the existing syncId to e.g. serverId.
+
+Both numbers are used to check for missing/out-of-order messages: the client-side code
+checks the value of `syncId`, while the server checks the value of the `clientId`.
 
 ## Corrective Measures
 

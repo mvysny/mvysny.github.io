@@ -17,6 +17,14 @@ and fix things in.
 The following list could help with Vaadin 8 Push issues, such as UI freezing -
 having the browser just sitting there, idle, with the Vaadin progress indicator blinking.
 
+## Vaadin 8 Communication
+
+Vaadin 8 uses UIDL for communication, both for requests from the client, and for responses
+from the server.
+
+Please read [Vaadin 8 communication explained](../Vaadin8-communication-explained/) -
+it's vital to understand the communication basics before we dig deeper.
+
 ## Push Explained
 
 ### Java support for Push
@@ -28,7 +36,7 @@ for more details.
 
 ### TCP/IP breaks silently
 
-TCP/IP is a horrible abstraction. Read [TCP-IP Sucks](../tcp-ip-sucks) for more details.
+TCP/IP is a horrible abstraction. Read [TCP-IP Sucks](../tcp-ip-sucks/) for more details.
 
 Since both WebSockets and LONG_POLLING run on top of TCP/IP, they're both affected.
 Vaadin uses something called
@@ -61,43 +69,6 @@ use LongPolling GET nor the websocket pipe.
 However, using `Transport.WEBSOCKET` (not WEBSOCKET_XHR) will make poll requests (not heartbeats though)
 go through the websocket pipe, which allows the poll requests to serve as a keepalive ping.
 
-### Push transport modes
-
-Vaadin supports three transport modes:
-
-* `LONG_POLLING` - Vaadin client/atmosphere creates a long-running HTTP GET request which
-  blocks on the server side until server has something asynchronous to send back. Nothing else
-  is sent through this pipe - both heartbeats and regular requests open a new separate
-  TCP/IP connections. Heartbeats are sent
-  as a new `HTTP POST` request to `/HEARTBEAT/?v-uiId=xyz` with no UIDL response;
-  regular requests are sent as a new `HTTP POST` request to
-  `/UIDL/?v-uiId=xyz` and the server responds with the UIDL message
-  (which is sent through this new request instead of through the long-running HTTP GET request).
-  The GET request URL looks like this: `PUSH?v-uiId=1&v-pushId=9d11a92e-4757-4929-b27e-dcd88d4ebbc3&X-Atmosphere-tracking-id=42cffc7f-746a-42e1-a411-ba50e7a0d6bf&X-Atmosphere-Framework=2.3.2.vaadin1-javascript&X-Atmosphere-Transport=long-polling&X-Atmosphere-TrackMessageSize=true&Content-Type=application/json; charset=UTF-8&X-atmo-protocol=true&_=1605779039425`.
-* `WEBSOCKET_XHR` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
-  The server writes to the pipe when there's something asynchronous to send back. Nothing else
-  is sent through this pipe - both heartbeats and regular requests open a new separate
-  TCP/IP connections, exactly as with `LONG_POLLING`.
-  The reasoning is that if the websocket connection became broken, it doesn't prevent
-  from requests still reaching the server. The websocket URL will also look like this: `PUSH?v-uiId=1&v-pushId=2560ed30-365e-45e9-8cbd-699189c065f8&X-Atmosphere-tracking-id=0&X-Atmosphere-Framework=2.3.2.vaadin1-javascript&X-Atmosphere-Transport=websocket&X-Atmosphere-TrackMessageSize=true&Content-Type=application/json; charset=UTF-8&X-atmo-protocol=true`,
-  the important difference is that the status will be `101` and the 'type' will be either 'plain' (Firefox)
-  or 'websocket' (Chrome).
-* `WEBSOCKET` - Vaadin client/atmosphere creates a long-running websocket bi-directional pipe.
-  The server writes to the pipe when there's something asynchronous to send back.
-  The heartbeats are still sent via separate requests, however the regular requests
-  (including poll-activated requests) are now transmitted via the websocket pipe.
-  Therefore, using poll interval of, say, 30 seconds will cause activity on the pipe,
-  preventing load-balancers/proxies/firewalls from killing the connection.
-  However, a broken pipe will instantly kill any kind of comms between the client and the server.
-  The websocket request URL will look the same as with `WEBSOCKET_XHR`.
-
-#### Chrome Rant
-
-Chrome decides to simply drop parts of the URL and will simply only show the
-`?v-uiId=xyz` instead of `/UIDL/?v-uiId=xyz` part in the Network tab. You will thus be unable
-to tell between UIDL requests and Heartbeat requests. I have no idea in which fucking universe this makes sense,
-just be aware of this shit.
-
 ### WEBSOCKET_XHR VS LONG_POLLING
 
 See [Long Polling vs WebSockets](../long-polling-vs-websockets/) for more details
@@ -107,28 +78,6 @@ more reliably than WebSocket/XHR, therefore I'd advise you to use LONG_POLLING.
 Also, LONG_POLLING is typically much better supported by proxies/load balancers since
 it's just a regular HTTP request, as opposed to a websocket pipe (which is a special HTTP
 protocol upgrade).
-
-### UIDL
-
-Vaadin's synchronization protocol is based on UIDL (UI Diffing Language?).
-Basically it's a JSON file, listing what have been changed since the last UIDL update. For example,
-if you set a new caption to a TextField with connector ID 42, you will be able to
-observe this information in the UIDL sent from the server to the client.
-
-Essentially, Vaadin sends diffs (called UIDLs) of what has been changed from the server-side.
-
-### Message Ordering
-
-Since missing out just one of those diffs could lead to undefined client-side state,
-Vaadin keeps strict track of which UIDLs has been received from the server by the client-side Vaadin code.
-Essentially, the UIDL numbering scheme starts from 0 and continues in a strictly increasing
-order.
-
-However, certain condition may lead to UIDL messages dropped or reordered:
-
-* Broken TCP/IP pipe (most common cause);
-* A bug in Vaadin, handling possible race conditions incorrectly
-* Other - these kind of bugs are hard to reproduce.
 
 ### Out-of-order UIDL Messages
 

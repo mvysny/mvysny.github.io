@@ -47,8 +47,10 @@ for(;;);[
 ]
 ```
 
-From that we can see that the component with ID 8 (the TextField, even though that's not visible from this particular UIDL)
-needs to apply a new text.
+From that we can see that the component with ID 8
+needs to apply a new text. We can also see from `types` that the component 8 is mapped to type 14;
+from `typeMappings` we can see that it's the type `com.vaadin.ui.Label`. That means
+that the `Label` with ID 8 will change its text to `Thanks , it works!`.
 
 ## Message Ordering
 

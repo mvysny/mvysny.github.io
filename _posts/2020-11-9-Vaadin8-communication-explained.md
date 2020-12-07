@@ -89,6 +89,11 @@ The reasons for having two oddly-named values is historical:
 Both numbers are used to check for missing/out-of-order messages: the client-side code
 checks the value of `syncId`, while the server checks the value of the `clientId`.
 
+Both values
+are increased on the server: any request from the client will be responded to with
+having both `syncId` and `clientId` increased. The next request from the client will
+then reuse the last values sent from the server-side, without increasing them client-side.
+
 ## Corrective Measures
 
 If certain conditions lead to UIDL messages dropped or reordered, corrective measures are taken.

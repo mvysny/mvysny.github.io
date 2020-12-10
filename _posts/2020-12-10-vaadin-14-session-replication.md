@@ -68,3 +68,7 @@ the server usage is minimal.
 Disable session replication, enable sticky sessions and keep as much state as possible
 in the database. That way, even if a Vaadin node dies, the user can re-login and continue
 her work easily since everything is saved in the database.
+
+### Use Vaadin Fusion
+
+Having UI in the browser, reducing backend to a set of stateless service calls.

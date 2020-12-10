@@ -3,7 +3,7 @@ layout: post
 title: Does Vaadin 14 support session replication
 ---
 
-In short, **Vaadin 14 does NOT support session replication**. I'll let Leif summarize the situation:
+In short, **Vaadin 14 does NOT support session replication** and **must be run with Sticky Sessions**. I'll let Leif summarize the situation:
 
 > Flow doesn't support session replication. There are some workarounds but they come with lots of gotchas.
 
@@ -31,7 +31,16 @@ and for a possible workaround.
 
 ### Session replication not serializing the state of Vaadin 14+
 
-The reason is that Flow no longer calls `session.setAttribute()` when the UI is modified.
+Vaadin 8 stores `VaadinSession` under a single Session attribute key `com.vaadin.server.VaadinSession.MyUIServlet`.
+The session lists all active UIs; the UIs in turn list all attached components. Therefore,
+the entire UI state is stored under one session key.
+
+The same thing applies to Vaadin Flow as well.
+Flow stores `VaadinSession` under a single Session attribute key `com.vaadin.flow.server.VaadinSession.com.vaadin.flow.server.startup.ServletDeployer`.
+The session lists all active UIs; the UIs in turn list all attached components. Therefore,
+the entire UI state is stored under one session key.
+
+However, Vaadin doesn't call `session.setAttribute()` when the UI is modified.
 That leads to Tomcat thinking that the session has not been changed, thus not
 triggering the session replication. Quoting Leif:
 

@@ -71,4 +71,6 @@ her work easily since everything is saved in the database.
 
 ### Use Vaadin Fusion
 
-Having UI in the browser, reducing backend to a set of stateless service calls.
+Use [Vaadin Fusion](https://vaadin.com/blog/reintroducing-vaadin-flow-and-fusion):
+you'll have the entire UI in the browser, reducing backend to a set of stateless service calls.
+Downside: you'll need to implement the entire UI in JavaScript or in TypeScript.

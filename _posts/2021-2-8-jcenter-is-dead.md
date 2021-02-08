@@ -11,19 +11,21 @@ Here I've summarized the steps which a Gradle-based project needs to take in ord
 to be published successfully onto Maven Central.
 
 First, read the [How to publish artifact to Maven Central via Gradle](https://www.albertgao.xyz/2018/01/18/how-to-publish-artifact-to-maven-central-via-gradle/)
-blog post, it's a good starter. Read it until the section "5.Set up your project to upload"
-and stop there. A couple of remarks:
+blog post, it's a good starter and explains the entire process in a sane way.
+Read it until the section "5.Set up your project to upload"
+and stop there; the `com.bmuschko` plugin is not needed, in fact it's easier to not to use the
+plugin. A couple of remarks:
 
 1. I've put the signing key credentials and Sonatype nexus username/password
    into the `~/.gradle/gradle.properties`. That way, I will never commit
    the file accidentally into git and publish into github.
-2. The `com.bmuschko` plugin is not needed; in fact it's easier to not to use the
-   plugin.
-3. If you're stuck with the OSSRH registration, this blogpost can help:
+2. If you're stuck with the OSSRH registration, this blogpost can help:
    [How to publish artifacts on maven central](https://blog.10pines.com/2018/06/25/publish-artifacts-on-maven-central/).
-4. You may need to publish the GPG key on a couple of key servers;
+3. You may need to publish the GPG key on a couple of key servers;
    the official [Maven Central: Working with PGP Signatures](https://central.sonatype.org/pages/working-with-pgp-signatures.html)
    documentation suggests `hkp://pool.sks-keyservers.net`.
+4. Interesting - the key doesn't have to be signed by anyone from Sonatype, which
+   sounds like anyone can generate those keys... well /shrug.
 
 In order to sign the artifact and upload it to Maven Staging Repository please use the `signing` plugin and `maven-publish` plugin.
 * A very simple one-module setup is outlined in this example project: [single-project build.gradle.kts](https://gitlab.com/mvysny/jdbi-orm/-/blob/master/build.gradle.kts)

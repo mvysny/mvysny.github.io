@@ -10,6 +10,8 @@ Looks like that can not be avoided anymore.
 Here I've summarized the steps which a Gradle-based project needs to take in order
 to be published successfully onto Maven Central.
 
+## The Painful: Initial Set of Steps
+
 First, read the [How to publish artifact to Maven Central via Gradle](https://www.albertgao.xyz/2018/01/18/how-to-publish-artifact-to-maven-central-via-gradle/)
 blog post, it's a good starter and explains the entire process in a sane way.
 Read it until the section "5.Set up your project to upload"
@@ -27,10 +29,25 @@ plugin. A couple of remarks:
 4. Interesting - the key doesn't have to be signed by anyone from Sonatype, which
    sounds like anyone can generate those keys... well /shrug.
 
+## Releasing
+
+Releasing is far simpler luckily.
+
 In order to sign the artifact and upload it to Maven Staging Repository please use the `signing` plugin and `maven-publish` plugin.
 * A very simple one-module setup is outlined in this example project: [single-project build.gradle.kts](https://gitlab.com/mvysny/jdbi-orm/-/blob/master/build.gradle.kts)
 * Multi-project setup can take advantage of a reusable closure as explained
   here: [multi-project build.gradle.kts](https://github.com/mvysny/karibu-testing/blob/master/build.gradle.kts)
+
+A couple of tips:
+
+* The Maven Central infrastructure seems to be not always... responsive. I often got build failures due to timeouts.
+  Life-saving tip from [DanySK maven central gradle plugin](https://github.com/DanySK/maven-central-gradle-plugin): place
+  the following into `~/.gradle/gradle.properties`:
+
+```
+systemProp.org.gradle.internal.http.connectionTimeout=500000
+systemProp.org.gradle.internal.http.socketTimeout=500000
+```
 
 ## Official Guide
 

@@ -4,8 +4,8 @@ title: JCenter is dead, long live Maven Central
 ---
 
 According to Bintray blogpost, [Bintray and JCenter are dead effective May 2021](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
-That's too bad - I've been using Bintray to avoid ridiculously complex deployments
-to Maven Central. Sounds like that can not be avoided anymore.
+That's too bad - I've been using Bintray to avoid Maven Central ridiculously complex deployment process.
+Looks like that can not be avoided anymore.
 
 Here I've summarized the steps which a Gradle-based project needs to take in order
 to be published successfully onto Maven Central.

@@ -29,10 +29,6 @@ plugin. A couple of remarks:
 4. Interesting - the key doesn't have to be signed by anyone from Sonatype, which
    sounds like anyone can generate those keys... well /shrug.
 
-## Releasing
-
-Releasing is far simpler luckily.
-
 In order to sign the artifact and upload it to Maven Staging Repository please use the `signing` plugin and `maven-publish` plugin.
 * A very simple one-module setup is outlined in this example project: [single-project build.gradle.kts](https://gitlab.com/mvysny/jdbi-orm/-/blob/master/build.gradle.kts)
 * Multi-project setup can take advantage of a reusable closure as explained
@@ -48,6 +44,24 @@ A couple of tips:
 systemProp.org.gradle.internal.http.connectionTimeout=500000
 systemProp.org.gradle.internal.http.socketTimeout=500000
 ```
+
+## Releasing
+
+Releasing is far simpler luckily. Running
+
+```
+./gradlew clean build publish
+```
+
+will upload your project into a new fresh staging repository. You then need
+to close the repository and publish it. This process is simple but LONG and can easily
+take 1 hour since [https://oss.sonatype.org](https://oss.sonatype.org) is SLOOOOW.
+
+The releasing steps are as follows:
+
+1. Run `./gradlew clean build publish` to publish to a fresh staging repo.
+1. Visit [https://oss.sonatype.org](https://oss.sonatype.org)
+2. Open "Staging Repositories"; continue according to [Releasing deployments](https://central.sonatype.org/pages/releasing-the-deployment.html)
 
 ## Official Guide
 

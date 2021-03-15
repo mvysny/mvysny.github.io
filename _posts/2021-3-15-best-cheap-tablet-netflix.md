@@ -25,8 +25,9 @@ tablet which has all the desired properties:
 because of crapware; Huawei tablets are ruled out because either of missing Google Play store,
 or no Android updates.
 
-However, I quickly discovered that both Netflix and Prime Video only works in SD resolution on Lenovo Tab M10,
-because of Widevine is only of version 15.0.0. Apparently Netflix works Full-HD only if:
+However, I quickly discovered that both Netflix and Prime Video only works in SD resolution on Lenovo Tab M10;
+Netflix app quickly tells us that Widevine is L1 version 15.0.0 which is apparently not enough.
+Apparently, Netflix works Full-HD only if:
 
 * Widevine is L1
 * The version is at least 16.0.0 or higher
@@ -38,6 +39,6 @@ According to [this reddit thread](https://www.reddit.com/r/tablets/comments/k1it
 Netflix supports Full HD, BUT according to [this forums.lenovo.com thread](https://forums.lenovo.com/t5/Lenovo-Android-based-Tablets-and-Phablets/Lenovo-TAB-P11-TB-J606F-NETFLIX-PRIME-VIDEO-WIDEVINE-SUPPORT/m-p/5066473)
 Netflix doesn't support Full HD. BUT according to the gigantti.fi page, the tablet is certified for Netflix HD; also
 according to Antti in the gigantti.fi page review, "Kuva on terävä ja Netflix näkyy myös Full HD-laatuna"
-which means that the tablet supports Netflix Full-HD.
+which means that the tablet supports Netflix Full-HD. Now what?!?
 
-I'll try it out myself, then I'll let you guys know more.
+I'll try it out myself, then I'll let you guys know.

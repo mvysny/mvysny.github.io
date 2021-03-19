@@ -44,7 +44,7 @@ which means that the tablet supports Netflix Full-HD. Now what?!?
 
 I'll try it out myself, then I'll let you guys know.
 
-EDIT: just got the tablet and it does support FullHD playback resolution on Netflix but not on Prime Video.
+EDIT: just got the P11 (the model says TB-J606F) and it does support FullHD playback resolution on Netflix but not on Prime Video.
 Netflix says:
 
 * Widevine L1 15.0.0

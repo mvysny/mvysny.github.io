@@ -30,7 +30,8 @@ Netflix app quickly tells us that Widevine is L1 version 15.0.0 which is apparen
 Apparently, Netflix works Full-HD only if:
 
 * Widevine is L1
-* The version is at least 16.0.0 or higher
+* The version is at least 15.0.0 or higher
+* Necessary secure codecs are supported: VP9 and AVC-High
 
 (at least on my phone there's Widevine L1 16.0.0 and both Netflix and Prime Video plays content in Full HD).
 
@@ -42,3 +43,13 @@ according to Antti in the gigantti.fi page review, "Kuva on terävä ja Netflix 
 which means that the tablet supports Netflix Full-HD. Now what?!?
 
 I'll try it out myself, then I'll let you guys know.
+
+EDIT: just got the tablet and it does support FullHD playback resolution on Netflix but not on Prime Video.
+Netflix says:
+
+* Widevine L1 15.0.0
+* Supported HW Codecs: VP9, AVC-High
+
+However, Amazon Prime Video doesn't seem to play the video in FullHD and says that the Best streaming
+quality consumes 0,46GB/hr which is definitely not FullHD (on my phone the Best quality
+is described as consuming 1,82GB/hr and that's definitely a FullHD quality).

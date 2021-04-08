@@ -7,7 +7,15 @@ If you need to preserve the state of certain route during the duration of
 user's session (e.g. to preserve a half-filled form so that the user can
 return to the form and fill it afterwards, or to create a multi-route wizard with
 a back+forward navigation), you may use the following code to cache the route components
-in your session:
+in your session.
+
+The trick here is to create a customized `Instantiator` which, instead of creating
+new instances of routes, would store the instances into the session and reuse them
+afterwards.
+
+For Vaadin 14.5.x and lower, customizing `Instantiator` is a bit tricky,
+see+vote [Vaadin Flow #8427](https://github.com/vaadin/flow/issues/8427)
+for more details. The code looks like this:
 
 ```java
 @WebServlet(urlPatterns = "/*", asyncSupported = true)
@@ -57,8 +65,6 @@ public class MyServlet extends VaadinServlet {
 }
 ```
 
-The custom `MyServlet` and custom `VaadinServletService` is there only because it's
-impossible to customize Vaadin's `DefaultInstantiator`, see+vote [Vaadin Flow #8427](https://github.com/vaadin/flow/issues/8427)
-for more details. If you're using Vaadin 14.6+, you will be able to customize the
+For Vaadin 14.6+ you can simply provide your own implementation of
 `InstantiatorFactory` in order to produce `MyInstantiator`; you will no longer need
 to create a custom `MyServlet`.

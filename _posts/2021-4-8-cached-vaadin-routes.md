@@ -18,6 +18,7 @@ see+vote [Vaadin Flow #8427](https://github.com/vaadin/flow/issues/8427)
 for more details. The code looks like this:
 
 ```java
+
 @WebServlet(urlPatterns = "/*", asyncSupported = true)
 public class MyServlet extends VaadinServlet {
 
@@ -43,7 +44,6 @@ public class MyServlet extends VaadinServlet {
         public <T extends HasElement> T createRouteTarget(Class<T> routeTargetType, NavigationEvent event) {
             if (routeTargetType == MainView.class) {
                 final MainView view = RouteSessionCache.getOrCreate(MainView.class);
-                view.getElement().removeFromTree();
                 return ((T) view);
             }
             return super.createRouteTarget(routeTargetType, event);
@@ -52,14 +52,17 @@ public class MyServlet extends VaadinServlet {
 
     public static class RouteSessionCache implements Serializable {
         private final Map<Class<?>, Serializable> routeCache = new HashMap<>();
-        public static <T> T getOrCreate(Class<T> clazz) {
+
+        public static <T extends HasElement> T getOrCreate(Class<T> clazz) {
             RouteSessionCache cache = VaadinSession.getCurrent().getAttribute(RouteSessionCache.class);
             if (cache == null) {
                 cache = new RouteSessionCache();
                 VaadinSession.getCurrent().setAttribute(RouteSessionCache.class, cache);
             }
             final Serializable instance = cache.routeCache.computeIfAbsent(clazz, (c) -> ((Serializable) ReflectTools.createInstance(clazz)));
-            return clazz.cast(instance);
+            final T route = clazz.cast(instance);
+            route.getElement().removeFromTree();
+            return route;
         }
     }
 }

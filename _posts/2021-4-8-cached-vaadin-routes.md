@@ -18,7 +18,6 @@ see+vote [Vaadin Flow #8427](https://github.com/vaadin/flow/issues/8427)
 for more details. The code looks like this:
 
 ```java
-
 @WebServlet(urlPatterns = "/*", asyncSupported = true)
 public class MyServlet extends VaadinServlet {
 
@@ -59,7 +58,8 @@ public class MyServlet extends VaadinServlet {
                 cache = new RouteSessionCache();
                 VaadinSession.getCurrent().setAttribute(RouteSessionCache.class, cache);
             }
-            final Serializable instance = cache.routeCache.computeIfAbsent(clazz, (c) -> ((Serializable) ReflectTools.createInstance(clazz)));
+            final Serializable instance = cache.routeCache.computeIfAbsent(clazz,
+                    (c) -> ((Serializable) ReflectTools.createInstance(clazz)));
             final T route = clazz.cast(instance);
             route.getElement().removeFromTree();
             return route;

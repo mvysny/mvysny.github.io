@@ -27,8 +27,7 @@ pluginManagement {
 }
 ```
 
-That will enable you to download Gradle plugins from the `vaadin-prereleases` repository
-also.
+That will enable you to download Gradle plugin pre-releases from the `vaadin-prereleases` repository.
 
 The official [vaadin-prereleases](https://maven.vaadin.com/vaadin-prereleases)
 does not allow browsing though; however in order to find out the gradle plugin

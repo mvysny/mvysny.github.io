@@ -4,10 +4,13 @@ title: Quarkus VS Embedded Jetty
 ---
 
 In today's highly unscientific test, I'm going to compare two projects:
-[Vaadin Quarkus Skeleton Starter](https://github.com/mvysny/vaadin-quarkus-skeleton-starter)
-and [Vaadin Embedded Jetty](https://github.com/mvysny/vaadin14-embedded-jetty-gradle).
 
-Both projects are compiled with Vaadin production mode:
+* [Vaadin Quarkus Skeleton Starter](https://github.com/mvysny/vaadin-quarkus-skeleton-starter)
+  running Vaadin 14.5.1 and Quarkus 1.10.5
+* [Vaadin Embedded Jetty](https://github.com/mvysny/vaadin14-embedded-jetty-gradle) running
+  Vaadin 14.5.2 and Jetty 9.4.36.v20210114.
+
+Both projects are compiled with Vaadin production mode enabled:
 
 * The Quarkus project is compiled via `mvn -C clean package -Pproduction`, then launched
   via `java -jar vaadin-quarkus-skeleton-starter-1.0.0-SNAPSHOT-runner.jar`

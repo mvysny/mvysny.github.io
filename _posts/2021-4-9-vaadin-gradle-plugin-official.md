@@ -7,8 +7,8 @@ After months of development and testing, the Vaadin Gradle Plugin is now officia
 hooray! :-D
 
 You can now see that the ['com.vaadin' Vaadin Plugin at plugins.gradle.org](https://plugins.gradle.org/plugin/com.vaadin)
-version no longer begins with the trailing zero, but instead now follows the Vaadin
-platform official versioning. 
+version no longer begins with the leading zero (which meant that the plugin is in alpha state),
+but instead now follows the Vaadin platform official versioning. 
 
 That being said,  the plugin `20.0.0.alpha6` is bit of an exception. The alpha, beta, rc
 versions will no longer be released to plugins.gradle.org - only the final versions

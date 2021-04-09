@@ -4,7 +4,9 @@ title: Vaadin Gradle Plugin Official!
 ---
 
 After months of development and testing, the Vaadin Gradle Plugin is now official,
-hooray! :-D You can now see that the ['com.vaadin' Vaadin Plugin at plugins.gradle.org](https://plugins.gradle.org/plugin/com.vaadin)
+hooray! :-D
+
+You can now see that the ['com.vaadin' Vaadin Plugin at plugins.gradle.org](https://plugins.gradle.org/plugin/com.vaadin)
 version no longer begins with the trailing zero, but instead now follows the Vaadin
 platform official versioning. 
 

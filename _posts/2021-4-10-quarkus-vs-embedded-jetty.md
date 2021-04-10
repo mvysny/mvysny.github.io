@@ -26,7 +26,7 @@ In both cases, openjdk 11.0.10 x86-64 on Ubuntu 20.10 is used.
 
 ## Startup time
 
-I've performed three startups, and the startup time is very similar:
+I've performed three startups, and the startup times are as follows:
 
 * The Quarkus project boots in 1345ms, 1319ms and 1454ms
 * The Embedded Jetty project boots in 1394ms, 1452ms, 1380ms
@@ -38,7 +38,7 @@ With the default JVM memory settings, after startup and serving of one page:
 
 * The Quarkus project used 367M of RAM
 * The Embedded Jetty project used 485M of RAM
-* Spring Boot uses whopping 783M of RAM
+* Spring Boot uses a whopping 783M of RAM
 
 Using `-Xmx32M` (32 megs of heap space), after startup and serving of one page:
 

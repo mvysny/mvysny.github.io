@@ -44,5 +44,5 @@ Using `-Xmx32M` (32 megs of heap space), after startup and serving of one page:
 
 * The Quarkus project used 189M of RAM and started in 1272ms
 * The Embedded Jetty project used 151M of RAM but was noticeable slower to start - 2462ms
-* Spring Boot starts in 3307ms but fails to serve a page and throws `OutOfMemoryError: Java heap space`
-   * With `-Xmx64M` the app starts in 3800ms and uses 317M of RAM.
+* Spring Boot starts in 3307ms but fails to serve a page and throws `OutOfMemoryError: Java heap space`.
+  With `-Xmx64M` the app starts in 3800ms and uses 317M of RAM.

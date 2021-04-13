@@ -15,18 +15,8 @@ versions will no longer be released to plugins.gradle.org - only the final versi
 will be released to toe Gradle Plugins repo. This is in accord with the Maven plugin:
 final versions of the plugin are released to Maven Central while pre-releases are released to `vaadin-prereleases` only.
 
-If you need to use a pre-release version of the plugin, create the following
-`settings.gradle.kts` file in the root folder of your Gradle-based project:
-
-```kotlin
-pluginManagement {
-    repositories {
-        maven { setUrl("https://maven.vaadin.com/vaadin-prereleases") }
-        gradlePluginPortal()
-    }
-}
-```
-
+If you need to use a pre-release version of the plugin, please follow the
+[Vaadin Documentation on Gradle plugin: Using Plugin Snapshot Version](https://vaadin.com/docs/latest/guide/start/gradle#pre-release).
 That will enable you to download Gradle plugin pre-releases from the `vaadin-prereleases` repository.
 
 The official [vaadin-prereleases](https://maven.vaadin.com/vaadin-prereleases)

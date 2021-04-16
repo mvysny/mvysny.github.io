@@ -3,7 +3,7 @@ layout: post
 title: Vaadin 14+ Error Handling
 ---
 
-There are two points of error handling in Vaadin:
+There are two main entrypoints of error handling in Vaadin:
 
 * The router exception handling, triggered during the navigation phase when the view is constructed, and
 * Session's ErrorHandler, triggered after the view has been rendered.

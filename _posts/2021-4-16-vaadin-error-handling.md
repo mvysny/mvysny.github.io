@@ -45,6 +45,25 @@ An example of an `ErrorHandler` implementation can be found at [Vaadin Forums: T
 You don't have to extend Vaadin Servlet to customize `ErrorHandler` - you can
 introduce a custom VaadinServiceInitListener as described in the
 [Vaadin VaadinServiceInitListener tutorial](https://vaadin.com/docs/v14/flow/advanced/tutorial-service-init-listener).
+Then:
+
+```java
+public class ApplicationServiceInitListener
+        implements VaadinServiceInitListener, SessionInitListener {
+
+    @Override
+    public void serviceInit(ServiceInitEvent event) {
+        event.getSource().addSessionInitListener(this);
+    }
+
+    @Override
+    public void sessionInit(SessionInitEvent event) {
+        event.getSession().setErrorHandler((ErrorHandler) event1 -> {
+            // TODO implement
+        });
+    }
+}
+```
 
 ## Which one to override for customized error handling?
 

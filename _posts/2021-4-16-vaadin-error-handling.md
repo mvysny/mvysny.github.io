@@ -44,7 +44,8 @@ An example of an `ErrorHandler` implementation can be found at [Vaadin Forums: T
 
 You don't have to extend Vaadin Servlet to customize `ErrorHandler` - you can
 introduce a custom VaadinServiceInitListener as described in the
-[Vaadin VaadinServiceInitListener tutorial](https://vaadin.com/docs/v14/flow/advanced/tutorial-service-init-listener).
+[Vaadin VaadinServiceInitListener tutorial](https://vaadin.com/docs/v14/flow/advanced/tutorial-service-init-listener)
+(for Spring solution see [this stackoverflow answer](https://stackoverflow.com/a/60773432/377320)).
 Then:
 
 ```java

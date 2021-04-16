@@ -36,9 +36,9 @@ It handles exceptions coming from:
 
 > Note: It's not possible to use one unified solution, for example only have an `ErrorHandler` handling
 the routing exceptions. The error handler is for example supposed to show a notification or a dialog detailing
-the steps to take (e.g. where to report the error), however it's not possible to do
-so since View has failed to initialize and render and there might be even JavaScript stuff
-missing.
+the steps to take (e.g. where to report the error). However when the view failed to initialize and
+render, it might not even be possible to show a Dialog on a blank page since the JavaScript stuff
+might be missing etc.
 
 An example of an `ErrorHandler` implementation can be found at [Vaadin Forums: The 'Vaadin Error Handling' Question](https://vaadin.com/forum/thread/18453061/18462964).
 

@@ -14,7 +14,7 @@ Described in the [Router Exception Handling Vaadin Tutorial](https://vaadin.com/
 Triggered when the server failed to produce a view because of an exception.
 This is akin to performing HTTP GET and receiving an HTTP 500 Internal Server Error page.
 
-This handling is triggerd when the Route class fails to initialize:
+This handling is triggered when the Route class fails to initialize:
 for example an exception is thrown in the View class constructor, or Spring/CDI/JavaEE failed to inject beans into the view.
 
 By default, the `InternalServerError` Java class is rendered, which shows the exception stacktrace.

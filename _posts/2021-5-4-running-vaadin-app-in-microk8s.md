@@ -9,8 +9,8 @@ we're going to have the [vaadin-kotlin-pwa](https://github.com/mvysny/vaadin-kot
 app running in Kubernetes with a PostgreSQL database. That will require the following
 steps:
 
-1. Create a docker image of the vaadin-kotlin-pwa running in Jetty
-2. Deploy that docker image into microk8s docker repository
+1. Create a docker image of the vaadin-kotlin-pwa app; we'll use Jetty to run the WAR
+2. Deploy that docker image into microk8s docker repository.
 3. Define a Kubernetes pod consisting of the vaadin-kotlin-pwa app and the PostgreSQL database.
 4. Upload and run the pod.
 
@@ -35,7 +35,10 @@ ready to proceed to the next step.
 
 ## Import the `test/vaadin-kotlin-pwa` image to microk8s
 
-Microk8s pods can only run docker images located in the local microk8s docker registry.
+Since microk8s/Kubernetes is supposed to run on multiple machines, it wouldn't
+make sense to access local docker repository since it may differ machine by machine.
+Therefore, microk8s uses its own image repository, and that's where we need to
+import the image produced in the step above.
 
 In order to register the `test/vaadin-kotlin-pwa` image to microk8s, we need
 to export it first, then import into the microk8s internal docker registry:
@@ -50,10 +53,10 @@ registry:
 
 ```bash
 $ microk8s ctr images ls|grep test/vaadin-kotlin-pwa
-docker.io/test/vaadin-kotlin-pwa:latest   application/vnd.docker.distribution.manifest.v2+json      sha256:b4f81c1e1ced941931b2cc1d3ffed26c2581cff11782475a4b9c9cbcdaaa794d 335.8 MiB linux/amd64                                                 io.cri-containerd.image=managed
+docker.io/test/vaadin-kotlin-pwa:latest   application/vnd.docker.distribution.manifest.v2+json  sha256:b4f81c1e1ced941931b2cc1d3ffed26c2581cff11782475a4b9c9cbcdaaa794d 335.8 MiB linux/amd64  io.cri-containerd.image=managed
 ```
 
-## Define the vok-pwa Kubernetes pod
+## Define Kubernetes deployments and services
 
 We need to define a pod and a service, both for the vok-pwa webapp and for the PostgreSQL
 database.
@@ -80,7 +83,7 @@ spec:
   selector:
     app: pgsql
 ---
-# The database pod follows
+# The database pod configuration
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -107,7 +110,8 @@ spec:
             port: 5432
 ---
 # This configuration exposes the vok-pwa pod as a service.
-# To obtain the IP address, you need to run `microk8s kubectl get all`; then just navigate to http://IP:8080
+# To obtain the IP address, you need to run
+# `microk8s kubectl get all`; then browse http://IP:8080
 apiVersion: v1
 kind: Service
 metadata:
@@ -122,7 +126,7 @@ spec:
   selector:
     app: vok-pwa
 ---
-# Now the vok-pwa webapp pod itself.
+# The vok-pwa webapp pod
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -168,18 +172,30 @@ $ microk8s kubectl apply -f vok-pwa.yaml
 You can verify that the pods and services have been created, via:
 ```bash
 $ microk8s kubectl get all
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/pgsql-768d7b4756-t2wp5     1/1     Running   1          145m
+pod/vok-pwa-66cc5d8645-kjzw6   1/1     Running   1          145m
+
+NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/kubernetes        ClusterIP   10.152.183.1     <none>        443/TCP          28h
+service/vok-pwa-service   NodePort    10.152.183.242   <none>        8080:30540/TCP   153m
+service/pgsql-service     NodePort    10.152.183.83    <none>        5432:32363/TCP   145m
+
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/pgsql     1/1     1            1           145m
+deployment.apps/vok-pwa   1/1     1            1           172m
 ```
 
 You can also navigate to the [microk8s dashboard](https://127.0.0.1:10443),
 to *Pods* / *vok-pwa-*. You can select the three-dot overflow menu and *Logs*,
-to view the pod logs. If you see something like
+to view the pod logs (Jetty/vok-pwa stdout). If you see something like
 
 ```
 2021-05-04 16:55:51.360:INFO:oejs.AbstractConnector:main: Started ServerConnector@5981f4a6{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
 2021-05-04 16:55:51.361:INFO:oejs.Server:main: Started @9195ms
 ```
 
-Then the vok-pwa app has started correctly and is correctly connected to the PostgreSQL database.
+then the vok-pwa app has started correctly and is correctly connected to the PostgreSQL database.
 
 To browse the app, you need to figure out the vok-pwa-service IP address. You can do so
 by running
@@ -188,8 +204,8 @@ $ microk8s kubectl get all
 ```
 
 or by navigating to *Services* / *vok-pwa-service* in the Dashboard. After you
-figure out the IP address, you can simply point your browser towards
-`http://IP:8080` and you should see the vok-pwa app.
+figure out the IP address (shown under "CLUSTER IP"), you can simply point your browser towards
+`http://IP:8080` and you should see the vok-pwa app up and running.
 
 ## Troubleshooting
 

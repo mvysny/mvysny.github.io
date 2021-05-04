@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Launch your Vaadin-on-Kotlin app quickly in cloud
+title: Launch your Vaadin-on-Kotlin app quickly in cloud/docker
 ---
 
 So you have built your first awesome VoK app - congratulations! You will probably want to launch it outside of your IDE, or even deploy it somewhere on the interwebz. Just pick up any virtual server provider with your favourite Linux distribution.
@@ -60,8 +60,16 @@ docker-compose up --build --force-recreate
 
 ## Fat jar
 
-It is possible to package Jetty or Tomcat into the WAR itself, add a launcher class and then simply run it via `java -jar your-app.war`, thus making an executable WAR. You can read more about this option here: https://stackoverflow.com/questions/13333867/embed-tomcat-with-app-in-one-fat-jar . Unfortunately I have no experience in this regard.
+The easiest option is to embed Jetty into your app, then have Jetty launch your app.
+You can build an uberjar (jar with all dependencies) or a zip file with a start script
+and a folder with all jars. See the [vaadin14-embedded-jetty-gradle](https://github.com/mvysny/vaadin14-embedded-jetty-gradle)
+project for more details.
 
-Beware though: fat jars may not work for apps that package multiple files into the same location: for example there will be only one MANIFEST.MF. You can read about the pitfalls here: http://product.hubspot.com/blog/the-fault-in-our-jars-why-we-stopped-building-fat-jars
+Beware though: fat jars may not work for apps that package multiple files into the
+same location: for example there will be only one MANIFEST.MF. You can read about
+the pitfalls here: [The Fault in Our JARs: Why We Stopped Building Fat JARs](https://product.hubspot.com/blog/the-fault-in-our-jars-why-we-stopped-building-fat-jars).
 
-It is possible to embed Jetty - just check out this launcher class: https://github.com/mvysny/vaadin-on-kotlin/blob/master/vok-example-crud-jpa/src/test/kotlin/com/github/vok/example/crud/Server.kt
+It is also possible to package Tomcat into the WAR itself, add a launcher class and then simply run it
+via `java -jar your-app.war`, thus making an executable WAR. You can read more about this option here:
+[StackOverflow: Embed Tomcat with App in One Fat Jar](https://stackoverflow.com/questions/13333867/embed-tomcat-with-app-in-one-fat-jar).
+Unfortunately I have no experience in this regard.

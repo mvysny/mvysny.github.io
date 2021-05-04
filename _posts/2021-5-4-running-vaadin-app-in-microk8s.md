@@ -26,8 +26,26 @@ Follow the [vaadin-kotlin-pwa Docker guide](https://github.com/mvysny/vaadin-kot
 After the `test/vaadin-kotlin-pwa` docker image is built on your local system, we're
 ready to proceed to the next step.
 
-## Deploy the `test/vaadin-kotlin-pwa` image to microk8s
+## Import the `test/vaadin-kotlin-pwa` image to microk8s
 
 Microk8s pods can only run docker images located in the local microk8s docker repository.
+
+In order to register the `test/vaadin-kotlin-pwa` image to microk8s, we need
+to export it first:
+
+```bash
+$ docker save test/vaadin-kotlin-pwa > vok-pwa.tar
+$ microk8s ctr image import vok-pwa.tar
+```
+
+Now you can confirm that the image has indeed been imported to your microk8s docker
+repository:
+
+```bash
+$ microk8s ctr images ls|grep test/vaadin-kotlin-pwa
+docker.io/test/vaadin-kotlin-pwa:latest                                                                             application/vnd.docker.distribution.manifest.v2+json      sha256:b4f81c1e1ced941931b2cc1d3ffed26c2581cff11782475a4b9c9cbcdaaa794d 335.8 MiB linux/amd64                                                 io.cri-containerd.image=managed
+```
+
+## Define the vok-pwa Kubernetes pod
 
 TODO

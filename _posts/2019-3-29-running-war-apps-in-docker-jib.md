@@ -19,9 +19,12 @@ Then, edit the `build.gradle.kts` file and add the Jib plugin:
 ```kotlin
 plugins {
    // ...
-   id("com.google.cloud.tools.jib") version "1.7.0"
+    id("com.google.cloud.tools.jib") version "3.0.0"
 }
 ```
+
+> Note: these instructions might be outdated. Please see the [vaadin-kotlin-pwa build.gradle.kts](https://github.com/mvysny/vaadin-kotlin-pwa/blob/master/build.gradle.kts)
+> file for the most up-to-date JIB plugin configuration.
 
 Jib will automatically detect that the project is a WAR project and will use Jetty Docker image
 (you can read more about this at [Jib War Projects](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#war-projects)).
@@ -30,10 +33,11 @@ However, to force a specific Jetty image just add this to `build.gradle.kts`:
 ```kotlin
 jib {
     from {
-        image = "jetty:9.4.18-jre11"
+        image = "jetty:9.4.40-jre11"
     }
     container {
         appRoot = "/var/lib/jetty/webapps/ROOT"
+        user = "root" // otherwise we'll get https://github.com/appropriate/docker-jetty/issues/80
     }
 }
 ```

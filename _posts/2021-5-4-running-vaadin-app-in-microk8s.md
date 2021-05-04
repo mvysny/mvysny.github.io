@@ -29,3 +29,5 @@ ready to proceed to the next step.
 ## Deploy the `test/vaadin-kotlin-pwa` image to microk8s
 
 Microk8s pods can only run docker images located in the local microk8s docker repository.
+
+TODO

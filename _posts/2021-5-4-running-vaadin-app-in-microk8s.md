@@ -156,6 +156,10 @@ spec:
             port: 8080
 ```
 
+> Note: if the configuration file above doesn't make any sense, please make sure
+> to read the [Deploy your first scaleable PHP/MySQL Web application in Kubernetes](https://faun.pub/deploy-your-first-scaleable-php-mysql-web-application-in-kubernetes-33ed7ab66595)
+> article which is an excellent introduction to Kubernetes.
+
 Run this command in order to create and activate the services and pods above:
 ```bash
 $ microk8s kubectl apply -f vok-pwa.yaml
@@ -213,3 +217,12 @@ from ufw:
 $ sudo ufw allow in on cni0
 $ sudo ufw allow out on cni0
 ```
+
+## More Resources
+
+* [microk8s official documentation](https://microk8s.io/docs)
+* [Kubernetes official documentation](https://kubernetes.io/docs/home/)
+
+microk8s is an implementation of the Kubernetes standard, therefore visit both
+sites to learn as much as possible. Kubernetes has quite steep learning curve -
+make sure to allocate lots of time and energy for your learning endeavour ;)

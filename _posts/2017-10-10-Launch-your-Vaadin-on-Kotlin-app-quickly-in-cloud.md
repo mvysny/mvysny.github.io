@@ -73,3 +73,9 @@ It is also possible to package Tomcat into the WAR itself, add a launcher class 
 via `java -jar your-app.war`, thus making an executable WAR. You can read more about this option here:
 [StackOverflow: Embed Tomcat with App in One Fat Jar](https://stackoverflow.com/questions/13333867/embed-tomcat-with-app-in-one-fat-jar).
 Unfortunately I have no experience in this regard.
+
+## Docker-Compose
+
+You can use Docker-Compose to launch both the app and the database in one go.
+See the [vaadin-kotlin-pwa example app documentation](https://github.com/mvysny/vaadin-kotlin-pwa)
+for more details.

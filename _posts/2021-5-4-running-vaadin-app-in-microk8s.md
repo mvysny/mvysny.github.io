@@ -17,8 +17,15 @@ steps:
 ## Install microk8s and docker
 
 First, follow the steps outlined on the [microk8s home page](https://microk8s.io/)
-to have microk8s up-and-running quickly. Verify that the microk8s is running on your
-machine:
+to have microk8s up-and-running quickly. Make sure to enable the dashboard and dns:
+the dashboard will give you a nice UI way to view the app logs, while
+the DNS management facilitates communication between services:
+
+```bash
+$ microk8s enable dashboard dns
+```
+
+Verify that the microk8s is running on your machine:
 
 ```bash
 $ microk8s dashboard-proxy
@@ -26,6 +33,11 @@ $ microk8s dashboard-proxy
 
 Navigate to [https://127.0.0.1:10443](https://127.0.0.1:10443), to see the microk8s dashboard.
 From here, you can for example inspect pods and their logs, which will reveal any errors.
+
+Also, it's a good idea to have your user join the `microk8s` group, so that you don't have
+to use sudo when typing microk8s commands. You can find the guide on the [Getting Started](https://microk8s.io/docs)
+guide. I had to reboot my machine in order for my user to have the `microk8s` group; you can verify
+that by running the `groups` command.
 
 ## Create a docker image of vaadin-kotlin-pwa
 

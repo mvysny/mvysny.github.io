@@ -249,11 +249,18 @@ $ sudo ufw allow out on cni0
 ## LoadBalancer
 
 Instead of using `NodePort` for `vok-pwa-service` you could try to use the `LoadBalancer` and
-try to run multiple instances of the vok-pwa pod. However, according to
+try to run multiple instances of the vok-pwa pod. However, you would quickly find that
+the session gets invalid all the time. That's because the load balancer chooses the pods randomly,
+but only one pod has the servlet session. You either need to enable session replication between pods,
+or sticky sessions.
+
+According to
 [Does Vaadin 14 support session replication](https://mvysny.github.io/vaadin-14-session-replication/)
-Vaadin 14 doesn't work well with session replication and thus you need to enable
-sticky session. Apparently the `LoadBalancer` service type can not handle sticky
-session and you need to use the `ingress-nginx` service type. According to
+Vaadin 14 doesn't work well with session replication and thus the only option is to enable
+sticky session.
+
+Apparently the `LoadBalancer` service type can not handle sticky
+sessions, hence you need to use the `ingress-nginx` service type. According to
 [ingress-nginx deploy: microk8s](https://kubernetes.github.io/ingress-nginx/deploy/#microk8s)
 microk8s already uses ingress-nginx, so you only need to configure it properly:
 [ingress-nginx docs on sticky sessions](https://kubernetes.github.io/ingress-nginx/examples/affinity/cookie/).

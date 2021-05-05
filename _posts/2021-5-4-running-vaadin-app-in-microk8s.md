@@ -258,6 +258,9 @@ session and you need to use the `ingress-nginx` service type. According to
 microk8s already uses ingress-nginx, so you only need to configure it properly:
 [ingress-nginx docs on sticky sessions](https://kubernetes.github.io/ingress-nginx/examples/affinity/cookie/).
 
+Just let me know if you manage to do so, and I'll post the config file here along with
+your copyright.
+
 ## More Resources
 
 * [microk8s official documentation](https://microk8s.io/docs)

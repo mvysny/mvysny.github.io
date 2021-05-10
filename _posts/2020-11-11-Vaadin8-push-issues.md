@@ -387,7 +387,8 @@ Disable push and use the poll mechanism, by setting the `UI.setPollInterval()`.
 ## Conclusion
 
 * Push is not a silver bullet and can freeze your UI easily - avoid using
-  unless necessary.
+  unless necessary. Vaadin push implementation doesn't use pings+repair measures
+  and therefore can't fix broken TCP/IP connections.
 * Use LONG_POLLING over WEBSOCKET_XHR -
   LONG_POLLING should be supported better by proxies.
 * Use WEBSOCKET and polls to keep the connection alive. This will however not help with flaky connections,

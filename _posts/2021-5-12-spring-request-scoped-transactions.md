@@ -59,5 +59,5 @@ public class MyServiceInitListener implements VaadinServiceInitListener {
 }
 ```
 
-(See [Vaadin 14+ Error Handling](../vaadin-error-handling/))
+> Note: See [Vaadin 14+ Error Handling](../vaadin-error-handling/)
 for more details.

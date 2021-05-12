@@ -29,6 +29,12 @@ have been opened - please upvote.
 
 Then you need `@WebListener`-annotated class implementing `HttpSessionListener`.
 
-## Spring?
+## Spring
 
-You should just be able to make a class that implements `ServiceInitListener` and make it a bean with `@Component`.
+Documented in [this StackOverflow answer](https://stackoverflow.com/a/60773432/377320).
+
+Simply create a class `ApplicationServiceInitListener` as above, but don't
+forget to annotate it with `@Component`.
+
+Adding `@EventListener` on `SessionInitEvent` doesn't work, implementing
+`ApplicationListener<SessionInitEvent>` doesn't work.

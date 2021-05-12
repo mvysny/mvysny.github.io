@@ -43,9 +43,8 @@ might be missing etc.
 An example of an `ErrorHandler` implementation can be found at [Vaadin Forums: The 'Vaadin Error Handling' Question](https://vaadin.com/forum/thread/18453061/18462964).
 
 You don't have to extend Vaadin Servlet to customize `ErrorHandler` - you can
-introduce a custom VaadinServiceInitListener as described in the
-[Vaadin VaadinServiceInitListener tutorial](https://vaadin.com/docs/v14/flow/advanced/tutorial-service-init-listener)
-(for Spring solution see [this stackoverflow answer](https://stackoverflow.com/a/60773432/377320)).
+add a session initializer which sets the `ErrorHandler` as described in the
+[Vaadin 14 SessionInitListener](../vaadin-sessioninitlistener/).
 Then:
 
 ```java

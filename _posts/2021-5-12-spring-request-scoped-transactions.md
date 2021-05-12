@@ -31,7 +31,7 @@ public class TransactionalFilter implements Filter {
 }
 ```
 
-(the idea taken from [Stack Overflow](https://stackoverflow.com/questions/10888861/transaction-with-request-scope-with-mybatis-and-spring)).
+(the idea taken from [Stack Overflow: Transaction with request scope with MyBatis and Spring](https://stackoverflow.com/a/11026477/377320)).
 
 However, the problem is that Vaadin will catch exceptions thrown by the event handlers
 and will process them internally, and will not rethrow the exception upwards. That means

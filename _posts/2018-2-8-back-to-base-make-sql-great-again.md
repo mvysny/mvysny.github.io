@@ -58,9 +58,9 @@ nonsense for you :-)
 
 That can be achieved by a simple reflection. Moreover, no runtime enhancement
 is needed since the bean will never track changes; to save changes we will need to
-issue the `INSERT`/`UPDATE` statement. Very important thought: since there's no
+issue the `INSERT`/`UPDATE` statement. Also, since there's no
 runtime enhancement, the bean is really a POJO and can be actually made serializable
-and passed around in the app freely; you don't need DTOs anymore.
+and passed around in the app freely, which means that *you don't need DTOs anymore*.
 
 ## The Vaadin-on-Kotlin Persistency Layer: [vok-orm](https://github.com/mvysny/vok-orm)
 
@@ -89,7 +89,7 @@ populate the bean with data and return the first one. Using this approach it is
 easy to implement more of the finders, such as `findAll(clazz: Class<T>)`,
 `findBySQL(clazz: Class<T>, where: String)`. However, let's focus on the `findById()` for now.
 
-To obtain the Sql2o's `Connection` (which is a wrapper of JDBC's connection),
+To obtain the JDBI's `Connection` (which is a wrapper of JDBC's connection),
 we simply poll the HikariCP connection pool and use the `db{}` method to start+commit
 the transaction for us. This will allow us to retrieve beans from the database easily,
 simply by calling the following statement from anywhere of your code, be it a
@@ -168,7 +168,7 @@ Next up, data modification.
 
 ### vok-db: Data Modification
 
-Unfortunately Sql2o doesn't support persisting of the data, so we will have to
+Unfortunately JDBI doesn't support persisting of the data, so we will have to
 do that ourselves. Luckily, it's very simple: all we need to do is to generate
 a proper `insert` or `update` SQL statement:
 

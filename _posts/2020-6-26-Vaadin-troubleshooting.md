@@ -30,11 +30,13 @@ delete all npm-related packages, npm config files and webpack config files and f
 Vaadin to start from the clean state. You can achieve this by deleting the following files:
 
 * `node_modules`
-* `package.json`
 * `package-lock.json` (if using npm)
 * `webpack.generated.js`
 * `pnpm-lock.yaml` (if using pnpm)
 * `pnpmfile.js` (if using pnpm)
+
+> Note: **It is not recommended to remove the `package.json` file completely**, as this can break your project if you have any frontend dependencies that
+have been added directly to it, like is the case with Fusion based views or theming related dependencies.
 
 > Note: With [Vaadin Gradle plugin](https://github.com/vaadin/vaadin-gradle-plugin)
 you can simply run the `vaadinClean` task to do this; there's a [feature request for Vaadin Maven Plugin](https://github.com/vaadin/flow/issues/8885)

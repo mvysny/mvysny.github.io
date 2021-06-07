@@ -35,8 +35,10 @@ Vaadin to start from the clean state. You can achieve this by deleting the follo
 * `pnpm-lock.yaml` (if using pnpm)
 * `pnpmfile.js` (if using pnpm)
 
-> Note: **It is not recommended to remove the `package.json` file completely**, as this can break your project if you have any frontend dependencies that
-have been added directly to it, like is the case with Fusion based views or theming related dependencies.
+> Note: You can try to remove the `package.json` as well, however
+> for Vaadin 14.6 and newer **it is not recommended to remove the `package.json` file completely**,
+> as this can break your project if you have any frontend dependencies that
+> have been added directly to it, like is the case with Fusion based views or theming related dependencies.
 
 > Note: With [Vaadin Gradle plugin](https://github.com/vaadin/vaadin-gradle-plugin)
 you can simply run the `vaadinClean` task to do this; there's a [feature request for Vaadin Maven Plugin](https://github.com/vaadin/flow/issues/8885)
@@ -73,6 +75,15 @@ Therefore, if your project is located on `D:\` , the cache is located at `D:\.pn
               
 After the `.pnpm-store` cache folder has been deleted, perform the Vaadin Dance
 and rebuild the app.
+
+### Use npm instead of pnpm
+
+pnpm is supposed to be a faster npm. However, the dependency resolution mechanism
+works a bit differently and it may cause issues with Vaadin 14. There are a couple of
+related bugs for Vaadin 14.5.x and lower: [#10571](https://github.com/vaadin/flow/issues/10571),
+[#10572](https://github.com/vaadin/flow/issues/10572), [#11162](https://github.com/vaadin/flow/issues/11162).
+
+For Vaadin 14, it's recommended to use npm.
 
 ### Gradle: use matching version of Vaadin and the Plugin
 

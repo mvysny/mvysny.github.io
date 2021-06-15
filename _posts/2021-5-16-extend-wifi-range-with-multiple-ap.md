@@ -90,7 +90,9 @@ In order to use the last workaround, simply follow the [How do I ban a wifi netw
 open the WiFi connection properties in Network Manager, go to Identity > BSSID and input the MAC address
 of the AP you want to stay connected to. The MAC address is in the form of `aa:bb:cc:dd:ee:ff`. Finding the MAC address
 is easy - it's present in the dmesg log above, but you can also run `sudo iwlist wlp3s0 scan`
-to see all available APs, then pick the one with the highest quality.
+to see all available APs, then pick the one with the highest quality. Also read
+[How to list all available WIFI access points with Linux.](https://securitronlinux.com/debian-testing/how-to-list-all-available-wifi-access-points-with-linux/)
+for more details.
 
 > Note: the `wlp3s0` is a wifi network interface name on my system; use the `iwconfig` command
 > to discover the network interface name on your system.

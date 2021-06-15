@@ -26,8 +26,12 @@ towards the router and back; this will also cause the APs to use part of its ban
 Therefore, I am sticking to physical wiring; you can read more about the option 2 in the
 [WiFi Boosters, Repeaters and Extenders](https://www.waveform.com/pages/wifi-booster-repeater-extender-differences) article.
 
+> Note: if having ethernet cables around the house is not an option for you, you can try
+> ethernet-over-powerline. Simply google for "ethernet over powerline" for more details and
+> for a list of devices to purchase; also read [Powerline networking may be what you need](https://www.digitaltrends.com/computing/everything-you-need-to-know-about-powerline-networking/).
+
 I urge you to read the excellent [Multi-AP Roaming Network Background](https://superuser.com/a/122508/750976) which summarizes
-this topic in an excellent way.
+this topic in excellent way.
 
 Couple of tips from the article above:
 * Use 5Ghz WiFi only, to avoid interference from bluetooth and your microwave oven

@@ -38,3 +38,6 @@ forget to annotate it with `@Component`.
 
 Adding `@EventListener` on `SessionInitEvent` doesn't work, implementing
 `ApplicationListener<SessionInitEvent>` doesn't work.
+
+MAKE SURE to remove any stray `META-INF/services/com.vaadin.flow.server.VaadinServiceInitListener`
+file, otherwise `serviceInit()` will be called but `SessionInitListener` WILL NOT.

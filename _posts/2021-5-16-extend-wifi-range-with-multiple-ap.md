@@ -38,11 +38,11 @@ Couple of tips from the article above:
 * If you have devices that only use 2,4Ghz band, make sure your APs do not interfere with each other, by configuring them to
   explicitly use channel 1, 6 and 11 (in case of three APs).
 * Buy identical AP devices, or configure all APs to offer the same speed. If not, the client may prefer faster AP even though
-  the signal is weaker, which could cause the client to reconnect between APs frequently with no obvious sense.
+  the signal is weaker, which could cause the client to reconnect between APs frequently for no obvious reason.
 
 You need to search for WiFi routers which support configuring themselves in the AP mode; luckily
 almost all of them do. Then, simply setup the router via a wizard and configure it to run in the AP
-mode; then plug the ethernet cable into your main router and then into the WLAN socket of your AP. 
+mode; then plug the ethernet cable into the WLAN socket of your AP and connect it to your main router. 
 
 ## Linux and The Network Manager
 

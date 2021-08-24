@@ -89,6 +89,21 @@ If you're using `closeIdleSessions=true`, then lack of activity will kill the
 session since heartbeats will not refresh the session. Try setting `closeIdleSessions`
 to `false` temporarily, to see whether the situation improves.
 
+## Embedding Vaadin Apps In iframe
+
+Embedding Vaadin apps in an iframe will cause the JSESSIONID cookie to be filtered
+out by the browser, which means that the session can not be tracked.
+
+The solution should be to enable the JSESSIONID cookie (or all cookies) to be passed to third-party sites,
+by setting the `SameSite=None` parameter to each cookie.
+See [Issue In Vaadin while using in Embeded](https://vaadin.com/forum/thread/18124830/issue-in-vaadin-while-using-in-embeded)
+for more details on how to configure the servlet container to add that parameter to all cookies.
+
+However, according to the [SameSite Cookie Changes in February 2020](https://blog.chromium.org/2020/02/samesite-cookie-changes-in-february.html)
+article, only cookies set as `SameSite=None; Secure` will be available in third-party contexts, however
+that would effectively disable cookie passing through an unsecure http connection!
+Needs to be tested.
+
 # Vaadin Push With WebSockets
 
 The problem with WebSockets is that websockets have their own session which

@@ -105,6 +105,9 @@ article, this only works with https (and not with http) since the "Secure" attri
 Alternative solution is to configure Tomcat to use an alternative means of session identification -
 TODO needs to be evaluated.
 
+Please vote for [Vaadin Issue #7736](https://github.com/vaadin/flow/issues/7736)
+to have this solved and documented.
+
 # Vaadin Push With WebSockets
 
 The problem with WebSockets is that websockets have their own session which

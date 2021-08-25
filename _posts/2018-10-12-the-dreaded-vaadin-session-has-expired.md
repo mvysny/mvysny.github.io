@@ -92,7 +92,9 @@ to `false` temporarily, to see whether the situation improves.
 ## Embedding Vaadin 14 Apps In iframe
 
 Embedding Vaadin apps in an iframe will cause the JSESSIONID cookie to be filtered
-out by the browser, which means that the session can not be tracked.
+out by the browser, which means that the session can not be tracked. This is on
+purpose: see the [SameSite cookies explained](https://web.dev/samesite-cookies-explained/)
+for more details.
 
 One of the solutions is to enable the JSESSIONID cookie (or all cookies) to be passed to third-party sites,
 by setting the `SameSite=None` parameter to each cookie.

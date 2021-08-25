@@ -109,8 +109,9 @@ ultimately giving up with "Cookies Disabled".
 
 According to [Using an external Embeddable Application](https://vaadin.com/docs/latest/flow/integrations/embedding/overview/#using-an-external-embeddable-application)
 you can enable the SSL-based session tracking, however according to the [SSL ID StackOverflow Question](https://stackoverflow.com/questions/2817325/retrieve-ssl-session-id-in-asp-net/2885177#2885177)
-this way is unreliable and requires HTTPS anyways. So the best bet is to use `SameSite=None`
-and HTTPS.
+this way is unreliable and requires HTTPS anyways.
+
+Judging from the above, the best bet is to use `SameSite=None` and HTTPS.
 
 Please vote for [Vaadin Issue #7736](https://github.com/vaadin/flow/issues/7736)
 to have this solved and documented.

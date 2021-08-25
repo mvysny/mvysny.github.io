@@ -116,6 +116,8 @@ this way is unreliable and requires HTTPS anyways.
 
 Judging from the above, the best bet is to use `SameSite=None` and enable HTTPS,
 for example [HTTPS using Self-Signed Certificate in Spring Boot](https://www.baeldung.com/spring-boot-https-self-signed-certificate).
+Note that this will disable http; to bring it back simply follow
+the [Enable both http and https on Spring Boot](../spring-boot-enable-http-https/) guide.
 
 Please vote for [Vaadin Issue #7736](https://github.com/vaadin/flow/issues/7736)
 to have this solved and documented.

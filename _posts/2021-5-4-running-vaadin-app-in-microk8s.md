@@ -255,7 +255,7 @@ but only one pod has the servlet session. You either need to enable session repl
 or sticky sessions.
 
 According to
-[Does Vaadin 14 support session replication](https://mvysny.github.io/vaadin-14-session-replication/)
+[Does Vaadin 14 support session replication](../vaadin-14-session-replication/)
 Vaadin 14 doesn't work well with session replication and thus the only option is to enable
 sticky session.
 

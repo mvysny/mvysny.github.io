@@ -3,7 +3,7 @@ layout: post
 title: WTF Spring
 ---
 
-This post is not about how [Spring/Dependency Injection hurts ability to navigate and code readability](../2017-6-18-code-locality-and-ability-to-navigate/)
+This post is not about how [Spring/Dependency Injection hurts ability to navigate and code readability](../code-locality-and-ability-to-navigate/)
 nor it's about [There's no place for Spring in post-annotation world](../post-annotation-programming/).
 This post is a rant.
 

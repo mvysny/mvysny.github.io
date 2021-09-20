@@ -53,3 +53,10 @@ Netflix says:
 However, Amazon Prime Video doesn't seem to play the video in FullHD and says that the Best streaming
 quality consumes 0,46GB/hr which is definitely not FullHD (on my phone the Best quality
 is described as consuming 1,82GB/hr and that's definitely a FullHD quality).
+
+EDIT2: After half a year of usage, I've found out that the Lenovo Tab P11 tablet is utter crap.
+After just two days of being switched on (or after couple of switching between two users),
+the tablet develops horrible lags and freezes. Youtube video playback will freeze randomly,
+but also keyboard input will freeze randomly, causing it to skip or long-press keys, rendering
+any text input almost impossible. Just get the cheapest iPad - much better OS than
+Android, regularly upgraded, and much better user experience.

@@ -40,7 +40,7 @@ Flow stores `VaadinSession` under a single Session attribute key `com.vaadin.flo
 The session lists all active UIs; the UIs in turn list all attached components. Therefore,
 the entire UI state is stored under one session key.
 
-However, Vaadin doesn't call `session.setAttribute()` when the UI is modified.
+The problem is that Vaadin doesn't call `session.setAttribute()` when the UI is modified; neither Vaadin Flow nor Vaadin 8 does that.
 That leads to Tomcat thinking that the session has not been changed, thus not
 triggering the session replication. Quoting Leif:
 

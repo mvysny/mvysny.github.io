@@ -14,17 +14,27 @@ of your system:
 
 To easily monitor those in your Ubuntu desktop, you can install the System Monitor Extension which would then show itself permanently in the Gnome Shell Tray.
 
-You can install install the extension via the browser, but I really hate browser installing stuff onto my machine, so I'll use the old-fashioned `apt` command:
+## Ubuntu 21.10+
+
+The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ yet,
+see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
+However, it does work when ran via `chrome-gnome-shell`:
+
+1. `sudo apt install chrome-gnome-shell`
+2. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
+   and install the extension via Firefox. A Firefox plugin is needed, the page will prompt you to install the plugin.
+3. Download and enable the extension. The system monitor will be shown but the Preferences
+   will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
+
+### Going with the package
+
+> Doesn't work at the moment, please report this to Ubuntu developers.
+
+Run
 
 ```bash
 sudo apt install gnome-shell-extension-system-monitor
 ```
-
-Log out, log in, the extension should auto-activate itself. If not, follow on.
-
-## Ubuntu 21.10+
-
-The extension currently doesn't work with GNOME 40+, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 
 If the extension doesn't activate itself, install the [org.gnome.Extensions flatpak](https://flathub.org/apps/details/org.gnome.Extensions).
 Follow these guides to [install flatpak on Ubuntu](https://flatpak.org/setup/Ubuntu/) - it's really easy.
@@ -39,6 +49,15 @@ then make sure the `system-monitor` extension is enabled.
 > Note that `gnome-tweaks` no longer manages gnome extensions starting from Ubuntu 21.10.
 
 ## Ubuntu 21.04 and older
+
+You can install install the extension via the browser, but I really hate browser installing stuff onto my machine,
+so I'll use the old-fashioned `apt` command:
+
+```bash
+sudo apt install gnome-shell-extension-system-monitor
+```
+
+Log out, log in, the extension should auto-activate itself. If not, follow on.
 
 Simply install the Gnome Tweaks:
 

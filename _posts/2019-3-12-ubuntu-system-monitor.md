@@ -20,7 +20,27 @@ You can install install the extension via the browser, but I really hate browser
 sudo apt install gnome-shell-extension-system-monitor
 ```
 
-Log out, log in, the extension should auto-activate itself. If not, simply install the Gnome Tweaks:
+Log out, log in, the extension should auto-activate itself. If not, follow on.
+
+## Ubuntu 21.10+
+
+The extension currently doesn't work with GNOME 40+, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
+
+If the extension doesn't activate itself, install the [org.gnome.Extensions flatpak](https://flathub.org/apps/details/org.gnome.Extensions).
+Follow these guides to [install flatpak on Ubuntu](https://flatpak.org/setup/Ubuntu/) - it's really easy.
+
+Run the app via
+
+```bash
+flatpak run org.gnome.Extensions
+```
+then make sure the `system-monitor` extension is enabled.
+
+> Note that `gnome-tweaks` no longer manages gnome extensions starting from Ubuntu 21.10.
+
+## Ubuntu 21.04 and older
+
+Simply install the Gnome Tweaks:
 
 ```bash
 sudo apt install gnome-tweaks
@@ -28,7 +48,7 @@ sudo apt install gnome-tweaks
 
 Then launch it, go to the Extensions tab and make sure that the System-monitor extension is activated.
 
-## Reporting Bugs
+### Reporting Bugs
 
 Since this extension literally breaks on every Ubuntu upgrade, it's worth knowing how to report bugs.
 

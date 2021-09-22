@@ -145,6 +145,9 @@ the core idea is that you're writing the code for your fellow human beings rathe
 But the more abstractions and loose coupling you throw in, the harder it will be for a maintainer
 to reason about the code itself.
 
+All abstractions are enemy of a maintainable code. Use them when they bring clarity, but use them sparingly
+and with caution.
+
 ## Spring is Killing Java
 
 Spring is fucking hard to learn: the "easy" learning curve image is shattered with the first mammoth

@@ -170,3 +170,6 @@ I can't say it will be missed.
 Java 8 is... okay I guess (since it has closures). But Java can't compete with Kotlin
 and will have difficult times in the future; it doesn't make its position much worse
 by tainting itself by Spring.
+
+Java with Spring will die for sure. Java without Spring will probably die too,
+but it will take much more time.

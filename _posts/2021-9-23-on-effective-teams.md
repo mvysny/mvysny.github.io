@@ -37,7 +37,9 @@ hours to slack or do something more productive with their lives. But the As eage
 will leave for sure.
 
 In other words, the company will evolve into a company with majority of Bs and Cs. Hence the name BC.
-On the other hand, a company of As will naturally clean itself of Bs and Cs (since they can't keep up).
+On the other hand, a company of As will naturally clean itself of Bs and Cs (since they can't keep up...
+or not. Sometimes parasitic managerial bullshit bingo type-of-speech people will invade the company
+and will rip it apart from the inside, downgrading the company to BC. That's a story for another time though.).
 
 That means that the evolution will usually drive the companies into two states: either they
 have a majority of As, or a vast majority of Bs and Cs.

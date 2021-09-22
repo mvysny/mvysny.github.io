@@ -111,6 +111,10 @@ the spaghetti of abstractions and proxies before lecturing me on simplicity.
   cycles going through tons of Spring abstractions and dynamically
   generated proxies in order to reach your code. Maybe quicker to write code than in plain Java 7.
 
+Sure, I can sacrifice some of the runtime speed just fine, given that I'll receive something in return.
+For example, I would never do C++ now that I have JDK and GC. But sacrificing speed
+and gaining anti-pattern in return, that doesn't sound like a good business to me.
+
 Just read [Why I hate Spring](https://samatkinson.com/why-i-hate-spring/).
 
 So, let's rewrite the above Spring quote, shall we?
@@ -168,7 +172,7 @@ it will die along with it. And, [Java being, well, Java](../java-vs-kotlin/),
 I can't say it will be missed.
 
 Java 8 is... okay I guess (since it has closures). But Java can't compete with Kotlin
-and will have difficult times in the future; it doesn't make its position much worse
+and will have difficult times in the future; it makes its position much worse
 by tainting itself by Spring.
 
 Java with Spring will die for sure. Java without Spring will probably die too,

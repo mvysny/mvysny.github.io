@@ -184,7 +184,8 @@ To avoid the noise introduced by Java you can consider switching to Kotlin.
 
 *Affects: Code Readability*
 
-Optional is the Java's way to deal with nulls. Unfortunately Optional introduces methods which tend to be used instead of the built-in `if` statements. Consider this code:
+Optional is the Java's way to deal with nulls. Unfortunately Optional introduces
+methods which tend to be used instead of the built-in `if` statements. Consider this code:
 
 ```java
 optionalString=Optional.ofNullable(optionalTest.getNullString());
@@ -199,9 +200,12 @@ Optional is also capable of breaking of the Bean API. Consider the following cod
 public void setFoo(String foo) {}
 public Optional<String> getFoo() {}
 ```
-This is actually **not** a property since the type for setter and getter differs. This also breaks the Kotlin support for propertyising Java beans. The code could be fixed by changing the setter to `setFoo(Optional<String> foo)` but that makes it really annoying to call the `setFoo` method.
+This is actually **not** a property since the type for setter and getter differs.
+This also breaks the Kotlin support for propertyising Java beans. The code could
+be fixed by changing the setter to `setFoo(Optional<String> foo)` but that makes it really annoying to call the `setFoo` method.
 
-Instead, it is better to use Intellij's `@NotNull` annotation and traditional language statements. The resulting code tends to be way more readable than any `Optional` black magic.
+Instead, it is better to use Intellij's `@NotNull` annotation and traditional
+language statements. The resulting code tends to be way more readable than any `Optional` black magic.
 
 ## Spring, JavaEE, Dependency Injection
 
@@ -212,18 +216,28 @@ of XMLs. At that time it was lean; nowadays it has tons of modules, with varying
 quality of the documentation. It seems that Spring permeates everything and uses
 all of the above methods:
 
-* In a lots of projects, the wiring granularity is too high. Instead of wiring modules, it often wires classes, often with synthetic interfaces in front of those. This is basically Loose Coupling on a way too granular level, which makes the navigation in such code harder.
-* Uses interceptors/annotations heavily. Spring Data, Spring Security for example. Spring Security has became so huge that coders are avoiding it on purpose.
-* Uses clever tricks to employ interceptors. To employ interceptors to a class, Spring uses the CGLIB library to create a dynamic class which extends the original one, overrides all methods and invokes interceptor chain. This has the unfortunate side-effect of having lots of $$$PROXY fields with null values which clutter the state of the original class.
+* In a lots of projects, the wiring granularity is too high. Instead of wiring modules,
+  it often wires classes, often with synthetic interfaces in front of those. This is basically 
+  Loose Coupling on a way too granular level, which makes the navigation in such code harder.
+* Uses interceptors/annotations heavily. Spring Data, Spring Security for example.
+  Spring Security has became so huge that coders are avoiding it on purpose.
+* Uses clever tricks to employ interceptors. To employ interceptors to a class,
+  Spring uses the CGLIB library to create a dynamic class which extends the original one,
+  overrides all methods and invokes interceptor chain. This has the unfortunate 
+  side-effect of having lots of `$$$PROXY` fields with null values which clutter the state of the original class.
 
 JavaEE suffers from the very same problems, and adds the following issues on top:
 
 * It is impossible to see the actual implementation of, say, `@Transactional`, since it's implemented somewhere in the application server, which may not even be OSS. And even if it was possible, the code is highly complex and hard to read.
 * If JavaEE can't employ annotation, it simply will ignore it. For example, calling `@Asynchronous` method on the same bean instance will silently result in a synchronous call. This directly violates the main principle since the program silently does something else than it should, from the look of the code. To actually call the method asynchronously, the class needs to inject itself and call the method on that.
 
-The Dependency Injection paradigm is highly invasive. For example, the need of injecting classes into Vaadin (or Swing, JavaFX) components: since all DI frameworks usually tend to hide Injector from the programmer, the programmer usually makes every Vaadin component a managed bean, to have depending services injected. This makes it harder to use java-debug class-reloading techniques.
+The Dependency Injection paradigm is highly invasive. For example, the need of
+injecting classes into Vaadin (or Swing, JavaFX) components: since all DI frameworks usually tend to
+hide Injector from the programmer, the programmer usually makes every Vaadin component a managed bean,
+to have depending services injected. This makes it harder to use java-debug class-reloading techniques.
 
-I've seen people using Spring only because of `Spring Boot`, since it is a pain in the ass to launch a war project in Eclipse. Let me rephrase: one's code base hurts just because the tooling of his choice sucks.
+I've seen people using Spring only because of `Spring Boot`, since it is a pain in
+the ass to launch a war project in Eclipse. Let me rephrase: one's code base hurts just because the tooling of his choice sucks.
 
 ## Overuse of async: Reactive, EventBus, AKKA
 

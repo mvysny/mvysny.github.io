@@ -20,7 +20,12 @@ Unfortunately, I was not able to implement the `User.findByUsername` static meth
 
 Eventually I realized that it was the DI itself who directly forbade me to group the code in a logical way, finders (they are in fact factory methods!) together with the Entity itself. I believe that the need to keep the common functionality together is one of the core concepts in pragmatic OOP, and I felt that DI was violating this. As the time passed I got so frustrated that I no longer could see the merits of the DI technology itself. After realizing this I hesitantly rejected the DI approach and tried to prototype a different approach.
 
-I was learning Kotlin back then and I have just learned of global functions with blocks. What if those things could to the transaction for me, outside of EJB context? Such heresy, working with a database just like that! The idea is described in [Writing Vaadin apps in Kotlin Part 2](../2017-3-4-Tutorial-Writing-Vaadin-apps-in-Kotlin-Part-2/), but the gist is that it's dead easy to write a function which runs given block in a transaction, creates an EntityManager and provides it: the `db` method.
+I was learning Kotlin back then and I have just learned of global functions with blocks.
+What if those things could to the transaction for me, outside of EJB context? Such heresy,
+working with a database just like that! The idea is described in
+[Writing Vaadin apps in Kotlin Part 2](../2017-3-4-Tutorial-Writing-Vaadin-apps-in-Kotlin-Part-2/),
+but the gist is that it's dead easy to write a function which runs given block in a transaction,
+creates an EntityManager and provides it: the `db` method.
 
 With that arsenal at hand, I was able to simply write this code:
 ```kotlin

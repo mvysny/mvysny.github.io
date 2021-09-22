@@ -60,15 +60,26 @@ class TabSheets {
 ```
 which is hardly discoverable by the IDE.
 
-Extension methods are immensely helpful. It is amazing how underestimated this amazing feature is. You can for example establish a `Session` class and make all modules add stuff there, e.g. security module could add the `Session.loggedInUser` property etc. Goodbye dependency injection (and all that DI-based crap like Spring and JavaEE), you won't be missed.
+Extension methods are immensely helpful. It is amazing how underestimated this amazing
+feature is. You can for example establish a `Session` class and make all modules add stuff
+there, e.g. security module could add the `Session.loggedInUser` property etc. Goodbye
+dependency injection (and all that DI-based crap like Spring and JavaEE), you won't be missed.
 
-Another case: adding functionality to JAXB-generated classes. Very hard in Java, easy-as-pie in Kotlin, just define extension methods for those classes.
+Another case: adding functionality to JAXB-generated classes. Very hard in Java,
+easy-as-pie in Kotlin, just define extension methods for those classes.
 
-Another case: creating a server-side testing framework for Vaadin. Often you don't need to test with the browser - just creating the component graph server-side and asserting on that is enough. Adding an extension method named $ (yeah Java can have a method named $, that's actually a good thing :-D ) to Vaadin `Component` allows you to do a simple search for descendants of that component, for example:
+Another case: creating a server-side testing framework for Vaadin. Often you don't need
+to test with the browser - just creating the component graph server-side and asserting
+on that is enough. Adding an extension method named `$` (yeah Java can have a method named
+`$`, that's actually a good thing :-D ) to Vaadin `Component` allows you to do a
+simple search for descendants of that component, for example:
 ```Kotlin
 expect(0) { mainLayout.$(Grid::class.java, caption("Service List")).dataProvider.size(Query())
 ```
-In Java there's no way to do that, so you either create a static method in some class (undiscoverable), or you wrap all Vaadin components in a wrapper class and add the $ method to that wrapper class (lot of work, unnecessary wrappings). And thus Java forces me once again to create a complex solution for a simple problem.
+In Java there's no way to do that, so you either create a static method in some class
+(undiscoverable), or you wrap all Vaadin components in a wrapper class and add the `$`
+method to that wrapper class (lot of work, unnecessary wrappings). And thus Java forces
+me once again to create a complex solution for a simple problem.
 
 # Kotlin: The Bad
 
@@ -100,10 +111,18 @@ I thus believe Simon is a bit wrong in his statement:
 
 > It’s just a selection of things, which will hopefully find their way into the Java language soon.
 
-No they will not - the Java guys focus on completeness instead of simplicity. This is a difference of mindset and this is very important, since the typical way of Java guys to solve a problem is to solve all related problems as well, creating useless complex mother-of-frameworks in the process.
+No they will not - the Java guys focus on completeness instead of simplicity.
+This is a difference of mindset and this is very important, since the typical way of
+Java guys to solve a problem is to solve all related problems as well, creating
+useless complex mother-of-frameworks in the process.
 
-Also, Java guys can not undo things they've done. For example, now that Java 8 has the horrible stream API, that API can not go away or be made simpler. The same goes for `Optional`.
+Also, Java guys can not undo things they've done. For example, now that Java 8
+has the horrible stream API, that API can not go away or be made simpler. The same goes for `Optional`.
 
-Java's mindset of complexity is what will ultimately kill Java. Put yourself into shoes of an 18-year old, trying to pick a language to learn. Why bother with Java? It's the Cobol of today. I don't know what next generation of programmers will program in, but I bet it won't be Java.
+Java's mindset of complexity is what will ultimately kill Java.
+Put yourself into shoes of an 18-year old, trying to pick a language to learn.
+Why bother with Java? It's the Cobol of today. I don't know what next generation
+of programmers will program in, but I bet it won't be Java.
 
-Kotlin is for people who appreciate simplicity. And having an expressive language is far more important than people do realize.
+Kotlin is for people who appreciate simplicity. And having an expressive
+language is far more important than people do realize.

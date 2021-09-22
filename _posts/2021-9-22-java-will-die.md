@@ -4,7 +4,7 @@ title: Java will die
 ---
 
 A bit of a clickbait title there; sure, there has been countless articles in this regard (die/won't die/blah).
-I'm not interested in when or how; here I'll talk about the why. In my [Java Is Not Dead, Java Is Obsolete](../2017-8-22-java-is-not-dead-java-is-obsolete/)
+I'm not interested in when or how; here I'll talk about the why. In my [Java Is Not Dead, Java Is Obsolete](../java-is-not-dead-java-is-obsolete/)
 article I touched the subject from an evolutionary point of view (think of Java as a meme - it is alive only when
 there are Java practitioners around. Since the stream of new practitioners shrinks every year because there are more lively memes,
 the "Java" meme will shrink and die as the pool of its hosts will shrink). Here, I'll touch other topics.
@@ -18,7 +18,7 @@ Let me be crystal clear: Java is still far better than PHP and Perl, and
 arguably better than Ruby and Python IF AND ONLY IF your preference is a strongly typed language.
 But it's **not** the best language, by far.
 
-In my [Java VS Kotlin](../2017-10-27-java-vs-kotlin/) article I detailed in which ways
+In my [Java VS Kotlin](../java-vs-kotlin/) article I detailed in which ways
 Java is inferior to Kotlin. However, this lack of helpful APIs has severe repercussions.
 Mammoth libraries like Spring had to be invented, simply because Java 7 and older lacked closures
 and it was a huge pain in the ass to manage transactions in plain Java code. Compare the following
@@ -43,7 +43,7 @@ try {
 
 Spring to the rescue! All you need to do is to create an interface, annotate with `@Transactional`
 and pull in 20 megabytes worth of Spring shit which will manage your transactions
-in a [completely unrelated codebase](../2017-6-18-code-locality-and-ability-to-navigate/) and
+in a [completely unrelated codebase](../code-locality-and-ability-to-navigate/) and
 will force you to use dependency injection:
 
 ```java
@@ -121,7 +121,7 @@ but that's all it is, marketing. It has no place in a programming language that 
 Right, topic of maintainability. As your code base grows bigger, maintenance of the code becomes
 far more important than development. When maintaining, you absolutely need to have
 a complete control over your code base. You must be able to tell with crystal clarity
-what given function does. See my [Code Locality](../2017-6-18-code-locality-and-ability-to-navigate/)
+what given function does. See my [Code Locality](../code-locality-and-ability-to-navigate/)
 article for more details.
 
 What Spring and **any dependency injection framework** does is the exact and complete opposite.
@@ -158,5 +158,5 @@ However, Spring has now embedded deeply into the Java community. So deeply, many
 as one atomic inseparable thing. However, Spring being hard to learn and annoying to maintain, it is
 effectively harming the Java community, deterring programmers to find other solutions. A parasite,
 sucking on the Java host and killing its host in the process. If Java can't ditch this parasite,
-it will die along with it. And, [Java being, well, Java](../2017-10-27-java-vs-kotlin/),
+it will die along with it. And, [Java being, well, Java](../java-vs-kotlin/),
 I can't say it will be missed.

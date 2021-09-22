@@ -23,7 +23,7 @@ Eventually I realized that it was the DI itself who directly forbade me to group
 I was learning Kotlin back then and I have just learned of global functions with blocks.
 What if those things could to the transaction for me, outside of EJB context? Such heresy,
 working with a database just like that! The idea is described in
-[Writing Vaadin apps in Kotlin Part 2](../2017-3-4-Tutorial-Writing-Vaadin-apps-in-Kotlin-Part-2/),
+[Writing Vaadin apps in Kotlin Part 2](../Tutorial-Writing-Vaadin-apps-in-Kotlin-Part-2/),
 but the gist is that it's dead easy to write a function which runs given block in a transaction,
 creates an EntityManager and provides it: the `db` method.
 

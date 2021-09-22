@@ -124,7 +124,7 @@ a programming language that doesn't suck. And even its usage with Java8+ is ques
 
 ## Dependency Injection is an anti-pattern
 
-Right, topic of maintainability. As your code base grows bigger, maintenance of the code becomes
+Right, the topic of maintainability. As your code base grows bigger, maintenance of the code becomes
 far more important than development. When maintaining, you absolutely need to have
 a complete control over your code base. You must be able to tell with crystal clarity
 what given function does. See my [Code Locality](../code-locality-and-ability-to-navigate/)
@@ -167,4 +167,6 @@ sucking on the Java host and killing its host in the process. If Java can't ditc
 it will die along with it. And, [Java being, well, Java](../java-vs-kotlin/),
 I can't say it will be missed.
 
-Java 8 is... okay (since it has closures). But Java needs to liberate itself from Spring.
+Java 8 is... okay I guess (since it has closures). But Java can't compete with Kotlin
+and will have difficult times in the future; it doesn't make its position much worse
+by tainting itself by Spring.

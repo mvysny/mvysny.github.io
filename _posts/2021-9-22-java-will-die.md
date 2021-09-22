@@ -44,7 +44,8 @@ try {
 Spring to the rescue! All you need to do is to create an interface, annotate with `@Transactional`
 and pull in 20 megabytes worth of Spring shit which will manage your transactions
 in a [completely unrelated codebase](../code-locality-and-ability-to-navigate/) and
-will force you to use dependency injection:
+will force you to use dependency injection, so that you can avoid the abomination
+code above and instead write:
 
 ```java
 interface Blah {
@@ -67,8 +68,10 @@ Db.db(() -> {
 ```
 
 See? All Java solutions suck balls. It's impossible to have a nice transaction handling
-in Java. In other words, Java the language and its design prevents you to have a nice transaction handling.
-To be crystal clear: Spring attempts to fix Java shortcomings and fails spectacularly.
+in Java. To be crystal clear:
+ 
+* Java the language and its design prevents you to have a nice transaction handling;
+* Spring attempts to fix Java shortcomings and fails spectacularly.
 
 For comparison, see the same snippet in Kotlin. It's an actual pleasure to type this:
 
@@ -79,21 +82,24 @@ db { /* woot, running in transaction */ }
 ## Spring is an anti-pattern
 
 As demoed above, Spring was invented to circumvent Java's shortcomings, and
-has since grown to somehow become a de-facto go-to when starting Java project.
+has since mysteriously grown to somehow become a de-facto go-to when starting Java project.
 Quoting [Why Spring?](https://spring.io/why-spring):
 
 > Spring makes programming Java quicker, easier, and safer for everybody.
 > Spring’s focus on speed, simplicity, and productivity has made it the world's
 > most popular Java framework.
 
-Let's discuss a very important distinction between simplicity and easiness.
+What a load of bullshit. Let's debunk this marketing turd.
+But first, a very important distinction between simplicity and easiness.
 Spring allows you to manage transactions in an easy way, true, but in doing so
 it brings in 20 megs worth of crap and forces you to use complex patterns like the dependency
 injection. And that can hardly be perceived as "simple". Try debugging a 200-line-long
 stacktrace pointing somewhere within deep bowels of Spring transaction magic, within
 the spaghetti of abstractions and proxies before lecturing me on simplicity.
 
-* So, Spring may be easy, but it's definitely NOT simple.
+> Writing code easily doesn't mean at all that the resulting solution will be simple.
+
+* So, Spring code snippets may look easy, but the iceberg below is definitely NOT simple.
 * It's not "safer" in any meaning of this word: just remember how safe it is when it suddenly
   starts applying a rogue interceptor because there was a beans.xml hidden somewhere within
   a jar pulled in as a transitive dependency.
@@ -101,7 +107,7 @@ the spaghetti of abstractions and proxies before lecturing me on simplicity.
   30-60 seconds whilst it initialises beans, before falling over, because a runtime misconfiguration
   somewhere deep within Spring XMLs or `@Component` or whatever.
 * Productivity in outputting code perhaps, but definitely not in runtime speed and maintainability.
-* Quicker? In what universe? Definitely not runtime: the CPU needs to waste tons of
+* Quicker? In what universe? Definitely not in runtime: the CPU needs to waste tons of
   cycles going through tons of Spring abstractions and dynamically
   generated proxies in order to reach your code. Maybe quicker to write code than in plain Java 7.
 
@@ -109,12 +115,12 @@ Just read [Why I hate Spring](https://samatkinson.com/why-i-hate-spring/).
 
 So, let's rewrite the above Spring quote, shall we?
 
-> Spring makes programming Java quicker, easier for everybody.
-> Spring’s focus on NOTHING has made it the world's
-> most popular Java framework.
+> Spring makes programming Java quicker, easier for programmers.
+> Spring somehow made it to the world's most popular Java framework.
 
-Yeah but nobody got fired because they bought from IBM, right? Spring has excellent marketing,
-but that's all it is, marketing. It has no place in a programming language that doesn't suck.
+Yeah, nobody got fired because they bought from IBM, right? Spring has excellent marketing,
+but that's all it is, marketing. It is an anti-pattern and has no place in
+a programming language that doesn't suck. And even its usage with Java8+ is questionable.
 
 ## Dependency Injection is an anti-pattern
 
@@ -160,3 +166,5 @@ effectively harming the Java community, deterring programmers to find other solu
 sucking on the Java host and killing its host in the process. If Java can't ditch this parasite,
 it will die along with it. And, [Java being, well, Java](../java-vs-kotlin/),
 I can't say it will be missed.
+
+Java 8 is... okay (since it has closures). But Java needs to liberate itself from Spring.

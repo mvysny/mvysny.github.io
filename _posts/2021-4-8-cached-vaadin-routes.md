@@ -71,3 +71,13 @@ public class MyServlet extends VaadinServlet {
 For Vaadin 14.6+ you can simply provide your own implementation of
 `InstantiatorFactory` in order to produce `MyInstantiator`; you will no longer need
 to create a custom `MyServlet`.
+
+## FAQ
+
+Q: I'm getting
+```
+ERROR com.vaadin.flow.router.InternalServerError: There was an exception while trying to navigate to ''
+java.lang.IllegalStateException: Can't move a node from one state tree to another. If this is intentional, first remove the node from its current state tree by calling removeFromTree
+```
+
+A: Yes, you must call `route.getElement().removeFromTree();` for some mystery reason otherwise Vaadin Flow will complain.

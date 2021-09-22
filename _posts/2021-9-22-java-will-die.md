@@ -173,3 +173,6 @@ by tainting itself by Spring.
 
 Java with Spring will die for sure. Java without Spring will probably die too,
 but it will take much more time.
+
+Also, don't learn Spring - there's no point in investing gigantic amount of time
+to learn a dead technology.

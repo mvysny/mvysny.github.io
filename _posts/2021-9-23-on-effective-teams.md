@@ -72,6 +72,13 @@ The 'A' company will have a catchy vision to change the world, since A players w
 
 [Learn how to get A+ players and how to keep them](https://talentrust.com/blog/how-steve-jobs-got-the-a-players-and-kept-them/).
 
+The company's As are all there is, and so the company pampers its As and bribes them with
+benefits, money and shiny hardware. But the benefits and
+money can only go as far; you can go much faster when you make your As true believers
+of your mission and vision. This is something that an 'A' company must understand.
+
+The best and brightest want to work for Tesla and SpaceX. Figure out why.
+
 ### A Genealogy of the BC Company
 
 Now let's take a look at a place where things fall apart. A company full of Bs and Cs.
@@ -93,4 +100,34 @@ requires more than one box to cooperate.
 
 In order to fix this situation, a hierarchy of managers is hired, to force the boxes to play
 along and talk to each other. That creates another gap of performance between As and BCs
-because all communication goes through 
+because all communication now has to go through the managerial layer.
+Also, managers are not technology-based leaders, and therefore they can't possibly
+fanthom on converting the company into As. Once the manager hierarchy is in, it will fight
+tooths-and-nails when you try to remove them. They will cement themselves into position,
+disabling any chance of turning the company into A.
+
+Now, in order to track the performance of Bs and Cs, some bullshit performance-tracking methodology is typically used,
+forcing Bs and Cs to further waste time filing in forms, erecting goals, having follow-up meetings
+and covering their asses when something goes south. It also effectively creates punishments
+for "try-and-fail" causing Bs and Cs to work very cautiously and thus slowly; A company on the other hand
+punishes "don't-try" which causes As to run full steam with "try" since "try-and-fail" is completely okay.
+Also see [Elon Musk on why the key to success is failure](https://www.inc.com/alyssa-satara/in-2-sentences-elon-musk-explains-why-key-to-success-is-failure.html).
+
+Usually SCRUM is employed, but not the good-parts-only but EVERYTHING, including all of the
+'agile' / 'scum master' driven waste of everyone's time, further wasting more time.
+
+## Conclusion
+
+The BC company wastes so much time it is effectively 100x slower than the A company.
+But not only that: they frequently try completely mind-numbingly stupid things that
+would be filtered out by a tiny speck of common sense. That's because in a huge BC structure there is no longer any place for a common sense.
+
+The BC companies live off their past successes and are usually disrupted and bankrupt
+by an A company. That's why BC companies buy off A companies like crazy - BC
+historically has shitload of money and the only way for BC to survive is to kill any
+disruptors, and the easiest way to do that is to buy 'A' companies and
+extinguish them.
+
+This doesn't only apply to software: the Big Auto companies are BCs while Tesla
+is an A. And now you understand why Big Auto will go bankwupt or merge into something
+mammoth until 2030. In fact, it has already begun: [Stellantis](https://www.stellantis.com/).

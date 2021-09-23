@@ -13,8 +13,8 @@ True, [but it isn't that great either](../java-will-die/).
 
 **Functional programming is another tool, not a panacea.**
 
-True, but it's far better than AOP/Interceptors/Annotationmania bullshit employed by Java instead.
-See my thoughts in the link above.
+True, but it's far better than AOP/Interceptors/Annotationmania/Spring bullshit
+usually employed by Java practitioners instead. See my thoughts in the link above.
 
 **YAGNI, SOLID, DRY. In that order.**
 

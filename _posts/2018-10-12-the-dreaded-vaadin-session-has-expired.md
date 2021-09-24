@@ -104,15 +104,9 @@ for more details on how to configure the servlet container to add that parameter
 However, according to the [SameSite Cookie Changes in February 2020](https://blog.chromium.org/2020/02/samesite-cookie-changes-in-february.html)
 article, this only works with https (and not with http) since the "Secure" attribute is required with `SameSite=None`.
 
-Alternative solution of using the URL session tracking (passing the session via an URL parameter)
-as described at [Session Tracking modes in Spring security](https://springhow.com/session-tracking-modes-in-spring-security/)
-doesn't work - Vaadin doesn't support URL-based session tracking and will endlessly reload the page,
-ultimately giving up with "Cookies Disabled". Also, URL session tracking via HTTP is
-a security issue which allows for session hijacking.
-
-According to [Using an external Embeddable Application](https://vaadin.com/docs/latest/flow/integrations/embedding/overview/#using-an-external-embeddable-application)
-you can enable the SSL-based session tracking, however according to the [SSL ID StackOverflow Question](https://stackoverflow.com/questions/2817325/retrieve-ssl-session-id-in-asp-net/2885177#2885177)
-this way is unreliable and requires HTTPS anyways.
+Alternatively you could try to use URL session tracking, or SSL-based session tracking,
+but neither of those seem to be working with Vaadin well:
+[Does Vaadin support storing session id into something else than a cookie?](../vaadin-sessionid-cookie/).
 
 Judging from the above, the best bet is to use `SameSite=None` and enable HTTPS,
 for example [HTTPS using Self-Signed Certificate in Spring Boot](https://www.baeldung.com/spring-boot-https-self-signed-certificate).

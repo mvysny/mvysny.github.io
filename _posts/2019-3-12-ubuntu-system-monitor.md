@@ -16,7 +16,7 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 
 ## Ubuntu 21.10+
 
-The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ yet,
+The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ yet (as of version `38+git20200414-32cc79e-1`),
 see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 However, it does work when ran via `chrome-gnome-shell`:
 
@@ -31,6 +31,8 @@ However, it does work when ran via `chrome-gnome-shell`:
 Warning: Firefox installed via snap (the default for Ubuntu 21.10) doesn't support
 connections to 'native host connector' (`chrome-gnome-shell`), see+vote for
 [Ubuntu bug #1741074](https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1741074).
+The only known workaround is to uninstall the
+Firefox snap and install the Firefox deb via `sudo snap remove firefox && sudo apt install firefox`.
 
 ### Going with the package
 

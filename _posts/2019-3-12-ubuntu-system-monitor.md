@@ -28,14 +28,18 @@ However, it does work when ran via `chrome-gnome-shell`:
    not need to log in into the extensions.gnome.org website.
 4. Visit [gnome-shell-system-monitor-applet](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet) and install
    all the necessary system packages as described by the page.
-4. Download and enable the extension. The system monitor will be shown but the Preferences
+5. Download and enable the extension. The system monitor will be shown but the Preferences
    will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
+6. If the system monitor will fail to start and the [local extensions](https://extensions.gnome.org) page
+   will show an ERROR next to the system-monitor add-on, simply logout and login again,
+   or reboot your machine.
 
 Warning: Firefox installed via snap (the default for Ubuntu 21.10) doesn't support
 connections to 'native host connector' (`chrome-gnome-shell`), see+vote for
 [Ubuntu bug #1741074](https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1741074).
 The only known workaround is to uninstall the
-Firefox snap and install the Firefox deb via `sudo snap remove firefox && sudo apt install firefox`.
+Firefox snap and install the Firefox deb via `sudo snap remove firefox && sudo apt install firefox`,
+then repeat the process above.
 
 ### Going with the package
 

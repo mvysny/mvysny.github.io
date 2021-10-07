@@ -20,7 +20,8 @@ The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ y
 see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 However, it does work when ran via `chrome-gnome-shell`:
 
-1. Uninstall the extension: `sudo apt autoremove --purge gnome-shell-extension-system-monitor`
+1. Uninstall the extension deb package: `sudo apt autoremove --purge gnome-shell-extension-system-monitor`.
+   Don't worry, your settings will be preserved.
 2. `sudo apt install chrome-gnome-shell` - this will allow to install and update extensions
    from your browser (yeah I don't really like browser installing stuff into my system, but what can you do.)
 3. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)

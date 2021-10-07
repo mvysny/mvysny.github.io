@@ -20,10 +20,12 @@ The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ y
 see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 However, it does work when ran via `chrome-gnome-shell`:
 
-1. `sudo apt install chrome-gnome-shell`
-2. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
+1. Uninstall the extension: `sudo apt autoremove --purge gnome-shell-extension-system-monitor`
+2. `sudo apt install chrome-gnome-shell` - this will allow to install and update extensions
+   from your browser (yeah I don't really like browser installing stuff into my system, but what can you do.)
+4. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
    and install the extension via Firefox. A Firefox plugin is needed, the page will prompt you to install the plugin.
-3. Download and enable the extension. The system monitor will be shown but the Preferences
+5. Download and enable the extension. The system monitor will be shown but the Preferences
    will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 
 ### Going with the package

@@ -24,7 +24,10 @@ However, it does work when ran via `chrome-gnome-shell`:
 2. `sudo apt install chrome-gnome-shell` - this will allow to install and update extensions
    from your browser (yeah I don't really like browser installing stuff into my system, but what can you do.)
 3. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
-   and install the extension via Firefox. A Firefox plugin is needed, the page will prompt you to install the plugin.
+   and install the extension via Firefox. A Firefox plugin is needed, the page will prompt you to install the plugin. You do
+   not need to log in into the extensions.gnome.org website.
+4. Visit [gnome-shell-system-monitor-applet](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet) and install
+   all the necessary system packages as described by the page.
 4. Download and enable the extension. The system monitor will be shown but the Preferences
    will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
 

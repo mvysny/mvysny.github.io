@@ -40,7 +40,12 @@ Warning: Firefox installed via snap (the default for Ubuntu 21.10) doesn't suppo
 connections to 'native host connector' (`chrome-gnome-shell`), see+vote for
 [Ubuntu bug #1741074](https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1741074).
 The only known workaround is to uninstall the
-Firefox snap and install the Firefox deb via `sudo snap remove firefox && sudo apt install firefox`,
+Firefox snap and install the Firefox deb via:
+
+1. `sudo snap remove --purge firefox`
+2. `sudo apt install firefox`
+3. `sudo apt autoremove --purge lynx`
+
 then repeat the process above.
 
 ### Going with the package

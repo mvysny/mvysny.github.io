@@ -23,14 +23,19 @@ However, it does work when ran via `chrome-gnome-shell`:
 1. Uninstall the extension: `sudo apt autoremove --purge gnome-shell-extension-system-monitor`
 2. `sudo apt install chrome-gnome-shell` - this will allow to install and update extensions
    from your browser (yeah I don't really like browser installing stuff into my system, but what can you do.)
-4. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
+3. Visit [https://extensions.gnome.org/extension/120/system-monitor/](https://extensions.gnome.org/extension/120/system-monitor/)
    and install the extension via Firefox. A Firefox plugin is needed, the page will prompt you to install the plugin.
-5. Download and enable the extension. The system monitor will be shown but the Preferences
+4. Download and enable the extension. The system monitor will be shown but the Preferences
    will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
+
+Warning: Firefox installed via snap (the default for Ubuntu 21.10) doesn't support
+connections to 'native host connector' (`chrome-gnome-shell`), see+vote for
+[Ubuntu bug #1741074](https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1741074).
 
 ### Going with the package
 
-> Doesn't work at the moment, please report this to Ubuntu developers.
+`gnome-tweaks` no longer manages gnome extensions starting from Ubuntu 21.10. Therefore,
+you have to install a flatpak which manages gnome extensions as mentioned below.
 
 Run
 
@@ -48,7 +53,8 @@ flatpak run org.gnome.Extensions
 ```
 then make sure the `system-monitor` extension is enabled.
 
-> Note that `gnome-tweaks` no longer manages gnome extensions starting from Ubuntu 21.10.
+> NOTE: This approach doesn't work at the moment; the extension will not start and
+> will show an exception instead.
 
 ## Ubuntu 21.04 and older
 

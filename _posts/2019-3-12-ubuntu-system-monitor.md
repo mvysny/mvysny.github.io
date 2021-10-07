@@ -32,7 +32,7 @@ However, it does work when ran via `chrome-gnome-shell`:
    not need to log in into the extensions.gnome.org website.
 5. Download and enable the extension. The system monitor will be shown but the Preferences
    will fail to start, see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
-6. If the system monitor will fail to start and the [local extensions](https://extensions.gnome.org) page
+6. If the system monitor will fail to start and the [local extensions](https://extensions.gnome.org/local) page
    will show an ERROR next to the system-monitor add-on, simply logout and login again,
    or reboot your machine.
 

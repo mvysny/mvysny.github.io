@@ -26,9 +26,15 @@ something like `"21.0.2"` which exactly matches the Vaadin version.
 
 Unfortunately, on Vaadin 14 this doesn't work since `customElements.get('vaadin-button').version`
 will print something like `"2.4.0"` and you have to figure out the Vaadin version from that somehow.
-One way would be to take a look at the `@NpmPackage(value = "@vaadin/vaadin-button", version = "2.4.0")`
-annotation present on the Java `Button` class (or rather `GeneratedVaadinButton`), but
-it's definitely not a clear indicator of Vaadin version.
+
+One way would be to realize that certain Vaadin version pulls in certain Vaadin Button version,
+which would make the Vaadin Button version a kind of indicator of the Vaadin version itself.
+For example Vaadin 14.7.1 pulls in Vaadin Button 2.4.0.
+To do that, take a look at the `@NpmPackage(value = "@vaadin/vaadin-button", version = "2.4.0")`
+annotation present on the Java `Button` class (or rather `GeneratedVaadinButton`) and
+from that you can see the Button version which you should expect on the client-side as well.
+That being said, older/newer Vaadin versions might pull in the same Vaadin Button 2.4.0
+and thus it's definitely not a clear indicator of Vaadin version.
 
 There's `window.Vaadin` and `window.Vaadin.Flow` object but neither of those seem
 to be able to provide the version. You can only learn whether you're running

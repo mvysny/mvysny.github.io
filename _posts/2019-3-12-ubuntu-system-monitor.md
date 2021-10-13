@@ -58,7 +58,8 @@ then repeat the process above.
 ### Going with the package
 
 `gnome-tweaks` no longer manages gnome extensions starting from Ubuntu 21.10. Therefore,
-you have to install a flatpak which manages gnome extensions as mentioned below.
+if you don't have the extension already enabled when upgrading to Ubuntu 21.10,
+you will have to install a flatpak which manages gnome extensions as mentioned below.
 
 Run
 

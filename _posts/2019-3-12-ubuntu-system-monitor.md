@@ -16,9 +16,16 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 
 ## Ubuntu 21.10+
 
-The `gnome-shell-extension-system-monitor` package doesn't work with GNOME 40+ yet (as of version `38+git20200414-32cc79e-1`),
-see+vote on [Issue 704](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/704).
-However, it does work when ran via `chrome-gnome-shell`:
+There are two ways to have the extension installed:
+
+* Via `apt`
+* Via the official way of installing gnome extensions via Firefox
+
+### The official way
+
+Firefox will install extensions from [extensions.gnome.org](https://extensions.gnome.org).
+This will be done by using a Firefox extension, talking to your system via `chrome-gnome-shell`.
+Follow these steps:
 
 1. Uninstall the extension deb package: `sudo apt autoremove --purge gnome-shell-extension-system-monitor`.
    Don't worry, your settings will be preserved.
@@ -68,9 +75,6 @@ Run the app via
 flatpak run org.gnome.Extensions
 ```
 then make sure the `system-monitor` extension is enabled.
-
-> NOTE: This approach doesn't work at the moment; the extension will not start and
-> will show an exception instead.
 
 ## Ubuntu 21.04 and older
 

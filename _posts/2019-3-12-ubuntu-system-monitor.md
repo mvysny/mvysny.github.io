@@ -67,10 +67,12 @@ Run
 sudo apt install gnome-shell-extension-system-monitor
 ```
 
-If the extension doesn't activate itself, install the [org.gnome.Extensions flatpak](https://flathub.org/apps/details/org.gnome.Extensions).
-Follow these guides to [install flatpak on Ubuntu](https://flatpak.org/setup/Ubuntu/) - it's really easy.
+If the extension doesn't activate itself, activate it either via
 
-Run the app via
+* [org.gnome.Extensions flatpak](https://flathub.org/apps/details/org.gnome.Extensions)
+* or even simpler, `sudo apt install gnome-shell-extension-prefs` - the Settings will now allow you to enable/disable extensions.
+
+In case of flatpak: Follow these guides to [install flatpak on Ubuntu](https://flatpak.org/setup/Ubuntu/) - it's really easy. Then, run the app via
 
 ```bash
 flatpak run org.gnome.Extensions

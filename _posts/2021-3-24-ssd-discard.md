@@ -20,8 +20,12 @@ sdc           0        4K       4G         0
 
 If the DISC-GRAN and DISC-MAX are non-zero, discard is supported for that particular drive.
 
-However, that's not enough. If you've installed your Linux into a LVM, you need to
-configure LVM to pass-through the Discard operation: edit `/etc/lvm/lvm.conf`
+However, that's not enough. You must make sure to check that trim is supported for
+the block device hosting your root filesystem (and possibly other filesystems, e.g. `/home` etc).
+See tips below for enabling trim all the way for the most common cases.
+
+If you have installed your Linux into a LVM, then you need to
+configure LVM to pass-through the Discard operation. Edit `/etc/lvm/lvm.conf`
 and make sure the `devices{}` section contains `issue_discards = 1`.
 
 Alternatively if you're using dm-crypt, edit `/etc/crypttab` and make sure the `discard` option is there.

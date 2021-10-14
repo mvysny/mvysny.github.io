@@ -6,6 +6,8 @@ title: Enable Discard for your SSD
 After Linux is installed on your SSD, don't forget to enable the Discard operation,
 to let your SSD know which blocks are free to be reclaimed.
 
+## Checking the `trim` support
+
 In order to check that the SSD properly supports the discard command, run
 
 ```bash
@@ -29,3 +31,19 @@ Finally, you need to enable discard for all of your ext4 partitions: simply add 
 
 Please see the excellent [SSD Optimization](https://wiki.debian.org/SSDOptimization)
 article for more details.
+
+## Running `trim` manually
+
+Simply run the `sudo fstrim -a` command which will trim all unused blocks on all mounted
+filesystems. It is safe to run the command on a running Linux machine since the command
+is designed to run on live filesystems.
+
+On Ubuntu the command is scheduled to be run every week: read
+[Is TRIM enabled on my Ubuntu 18.04 installation?](https://askubuntu.com/questions/1034169/is-trim-enabled-on-my-ubuntu-18-04-installation)
+for more info. Run
+
+```bash
+$ journalctl -u fstrim.service
+```
+
+to check that the trim was run on your machine.

@@ -12,9 +12,12 @@ Author of [Vaadin-on-Kotlin](http://www.vaadinonkotlin.eu/).
 
 > Complexity appeals to stupid people
 
-[starting strength](https://www.youtube.com/watch?v=Cun6Uck2cYU)
+― [starting strength](https://www.youtube.com/watch?v=Cun6Uck2cYU)
 
-> premature optimization is the root of all evil
+> Never argue with stupid people, they will drag you down to their level and then beat you with experience.
 
-Donald Knuth
+― Mark Twain
 
+> Premature optimization is the root of all evil
+
+― Donald Knuth

@@ -6,7 +6,9 @@ permalink: /about/
 
 Practices First Principle Thinking. Massive thanks to Elon Musk for coining/popularizing this term.
 
-Author of [Vaadin-on-Kotlin](http://www.vaadinonkotlin.eu/).
+Author of [Vaadin-on-Kotlin](http://www.vaadinonkotlin.eu/) and a bunch of other
+stuff you can find at [github.com/mvysny](https://github.com/mvysny?tab=repositories)
+and [gitlab.com/mvysny](https://gitlab.com/users/mvysny/projects).
 
 ## Favourite quotes:
 

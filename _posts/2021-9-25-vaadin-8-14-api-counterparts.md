@@ -3,6 +3,9 @@ layout: post
 title: Vaadin 8 -> 14 API Counterparts
 ---
 
+**EDIT:** There's a project in Github listing all API replacements now: the [karibu-migration](https://github.com/mvysny/karibu-migration).
+I'm keeping this blogpost for historic reasons only.
+
 When migrating from Vaadin 8 to Vaadin 14, there is a good basic [Vaadin Documentation on Upgrading from Vaadin 8](https://vaadin.com/docs/v14/guide/upgrading/v8).
 The documentation also lists [replacement components to use in Vaadin 14](https://vaadin.com/docs/v14/guide/upgrading/v8/5-components),
 but the page doesn't mention replacement APIs to use. So, here we go.

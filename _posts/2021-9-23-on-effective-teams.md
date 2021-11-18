@@ -24,6 +24,9 @@ Now how to hire the cream of the cream is out-of-scope for this article and can 
 the [What You Can Learn From Steve Jobs About Hiring](https://artisantalent.com/steve-jobs-about-hiring/)
 article. Let's instead focus on the mechanics of how exactly the A+ players almost always outclass B and C players.
 
+> Note: this [video of a former Tesla employee](https://www.youtube.com/watch?v=6edPaRGyHIQ) tells the same tale
+> much more eloquently. A must watch.
+
 ## A Genealogy Of A Big Company
 
 A company (let's call the company 'BC') hires all sorts of people: the A+ players, the A players, B and C as well.

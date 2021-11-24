@@ -23,3 +23,6 @@ The solution is to show the "Clear" button as follows:
 ```kotlin
 combobox.setClearButtonVisible(true)
 ```
+
+**Note**: for all Vaadin 8->14 migration tips see the [karibu-migration](https://github.com/mvysny/karibu-migration/)
+project.

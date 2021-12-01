@@ -31,6 +31,9 @@ $ killall java
 Kill all java processes to make sure the Gradle daemon is dead and is started anew next time, using the new
 file limit.
 
+Note that the new limit only applies to this shell process (and all processes launched by it), so make sure
+to run Gradle from this shell.
+
 Reported as [flow #12489](https://github.com/vaadin/flow/issues/12489)
 
 #### Q: I'm getting IllegalArgumentException: wrong number of arguments

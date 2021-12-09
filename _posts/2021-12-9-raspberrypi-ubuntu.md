@@ -35,7 +35,7 @@ network:
   renderer: networkd
 ```
 
-Make sure you have the `netplan.io` package installed. Then, run `$ sudo netplan --debug apply`
+Make sure you have the `netplan.io` package installed. Then, run `sudo netplan --debug apply`
 and your wifi should be up - you can verify that by running `ifconfig -a`.
 
 ## Controlling GPIO

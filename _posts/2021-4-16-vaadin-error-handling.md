@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin 14+ Error Handling
+title: Vaadin 14+ Error/Exception Handling
 ---
 
 There are two main entrypoints of error handling in Vaadin:

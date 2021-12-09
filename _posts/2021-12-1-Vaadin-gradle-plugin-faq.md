@@ -54,3 +54,12 @@ Alternatively, try to upgrade Vaadin version in your project.
 
 Please see the Compatibility chart at the [Vaadin gradle plugin](https://github.com/vaadin/vaadin-gradle-plugin/) page.
 
+#### Q: My `@CssImport` is not picked up
+
+Perhaps the component the import is attached to is not visible on classpath. More precisely:
+
+* In development mode, Vaadin relies on servlet container to find all classes with Vaadin annotations.
+  Make sure your servlet container properly discover all jars in runtime.
+* In production mode, the Vaadin Maven/Gradle plugin is responsible for figuring out the
+  classpath and finding all classes. Make sure the runtime classpath is properly populated
+  at compile time.

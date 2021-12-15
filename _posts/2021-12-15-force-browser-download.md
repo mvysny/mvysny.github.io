@@ -11,7 +11,7 @@ force-download the target content:
 * The same by setting target to `_parent`.
 
 
-The only way is to set the [Content-Disposition` HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) header
+The only way is to set the [Content-Disposition HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition) header
 to `attachment`.
 
 This feature has been added to Vaadin 22, see [flow #5471](https://github.com/vaadin/flow/issues/5471) for more details.

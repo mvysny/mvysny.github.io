@@ -3,6 +3,8 @@ layout: post
 title: Raspberry PI 3 and Ubuntu Server aarch64
 ---
 
+Random thoughts on having the Ubuntu Server 21.10 running on top of Raspberry PI 3.
+
 ## Installation
 
 Simply follow the [Raspberry PI Ubuntu Page](https://ubuntu.com/download/raspberry-pi)

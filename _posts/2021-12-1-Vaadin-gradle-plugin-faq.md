@@ -3,6 +3,8 @@ layout: post
 title: Vaadin 14 Gradle plugin FAQ
 ---
 
+A list of frequently asked questions regarding the Gradle plugin.
+
 #### Q: I'm getting java.io.FileNotFoundException: JAR entry during vaadinBuildFrontend
 
 The full stack trace is

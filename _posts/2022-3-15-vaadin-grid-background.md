@@ -10,13 +10,13 @@ the color in a `vaadin-grid.css` file placed in your theme/components folder,
 in order to be injected into Vaadin Grid's ShadowDOM:
 
 ```css
-:host(.transparent) [part~='cell'] {
-  background-color: rgba(0, 0, 0, 0);
+:host(.red) [part~='cell'] {
+  background-color: red;
 }
 ```
 
-Then add the `transparent` class to your Grid and voila!
+Then add the `red` class to your Grid and voila!
 
 ## Material
 
-Set the `--material-background-color` style to `rgba(0,0,0,0)` on the Vaadin Grid.
+Set the `--material-background-color` style to `red` on the Vaadin Grid.

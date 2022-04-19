@@ -14,7 +14,39 @@ of your system:
 
 To easily monitor those in your Ubuntu desktop, you can install the System Monitor Extension which would then show itself permanently in the Gnome Shell Tray.
 
-## Ubuntu 21.10+
+> Note: this breaks on EVERY Ubuntu upgrade for me. Be prepared to live without it
+> for a couple of weeks after Ubuntu upgrade.
+
+## Ubuntu 22.04
+
+The easiest way to manage extensions is to install the `gnome-shell-extension-manager` via apt:
+
+```bash
+sudo apt install gnome-shell-extension-manager
+extension-manager
+```
+
+OR
+
+```bash
+sudo apt install gnome-shell-extenion-prefs
+gnome-extensions-app
+```
+
+Alternatively install the same thing via flatpak: [org.gnome.Extensions flatpak](https://flathub.org/apps/details/org.gnome.Extensions),
+then run:
+
+```bash
+flatpak run org.gnome.Extensions
+```
+
+Unfortunately `gnome-shell-extension-system-monitor` package is no longer available from
+official repo at the moment, and it's not compatible with Gnome 42 at the moment, see+vote
+for [#737](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/737).
+
+Alternatively read below for the official way.
+
+## Ubuntu 21.10
 
 There are two ways to have the extension installed:
 

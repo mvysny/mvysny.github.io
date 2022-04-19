@@ -29,7 +29,7 @@ extension-manager
 OR
 
 ```bash
-sudo apt install gnome-shell-extenion-prefs
+sudo apt install gnome-shell-extension-prefs
 gnome-extensions-app
 ```
 

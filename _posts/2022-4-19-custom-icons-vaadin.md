@@ -11,5 +11,5 @@ To embed SVGs as icons into your app, see
 1. The disadvantage of SVGs is that you
    [can't change their color easily](https://stackoverflow.com/questions/22252472/how-to-change-the-color-of-an-svg-element)
 2. To embed icon font see [Custom Themes: Other Theme Assets](https://vaadin.com/docs/latest/ds/customization/custom-theme/#other-theme-assets)
-   then insert `<span style='font-family: My Font`>&#e854;</span>` to insert an `add_shopping_cart` icon from [Google Icons](https://fonts.google.com/icons?icon.style=Outlined).
+   then insert `<span style='font-family: My Font'>&#e854;</span>` to insert an `add_shopping_cart` icon from [Google Icons](https://fonts.google.com/icons?icon.style=Outlined).
 3. No idea how to do this VaadinIcons style (using iconset).

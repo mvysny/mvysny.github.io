@@ -26,7 +26,7 @@ sudo apt install gnome-shell-extension-manager
 extension-manager
 ```
 
-OR
+OR (but I hate that this would install `chrome-gnome-shell`)
 
 ```bash
 sudo apt install gnome-shell-extension-prefs
@@ -44,7 +44,9 @@ Unfortunately `gnome-shell-extension-system-monitor` package is no longer availa
 official repo at the moment, and it's not compatible with Gnome 42 at the moment, see+vote
 for [#737](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/737).
 
-Alternatively read below for the official way.
+However, you can now install extensions from the `extension-manager` itself: there are two tabs in the app,
+"Installed" and "Browse" and the latter one allows you to install extensions.
+Just search for "system monitor" - the one from Cerin is the "official" one.
 
 ## Ubuntu 21.10
 

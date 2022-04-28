@@ -100,6 +100,12 @@ clearer JavaScript code. Then:
 * from the element tag name you can learn the add-on name / homepage (e.g. [vcf-progress-spinner](https://github.com/vaadin-component-factory/vcf-progress-spinner)),
 * and from there you can open a bug report (e.g. [vcf-progress-spinner #3](https://github.com/vaadin-component-factory/vcf-progress-spinner/issues/3)).
 
+### Deobfuscating GWT
+
+At the moment you need to build your own deobfuscated `flow-client.jar` then
+replace the obfuscated one in your local Maven repo with the deobfuscated version. See+vote for
+[Issue 13644](https://github.com/vaadin/flow/issues/13644).
+
 ## Others
 
 Search the [Vaadin Flow Bug tracker](https://github.com/vaadin/flow/issues) for

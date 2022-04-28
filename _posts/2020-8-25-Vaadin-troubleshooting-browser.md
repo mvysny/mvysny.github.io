@@ -50,9 +50,9 @@ proceed into the code and try to diagnose the root of the problem.
 
 ## Obfuscated Stacktraces
 
-> Before you start deobfuscating JavaScript: check whether there's a line
-> "The error has occurred in the JS code:" above the exception. If yes, Flow is
-> simply trying to execute whatever the server sent. Calm down & read below.
+*NOTE TO THE FUTURE ME:* Before you start wasting time deobfuscating JavaScript: check whether there's a line
+`"The error has occurred in the JS code:"` above the exception. If yes, Flow is
+simply trying to execute whatever the server sent. Calm down & read below & start searching on the server-side.
 
 Obfuscated stacktraces looks like following (see+vote [Vaadin Bug 8872](https://github.com/vaadin/flow/issues/8872)):
 

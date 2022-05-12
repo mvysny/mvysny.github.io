@@ -19,6 +19,9 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 
 ## Ubuntu 22.04
 
+Unfortunately the `gnome-shell-extension-system-monitor` deb package is no longer available from
+official repo at the moment. It needs to be installed as a Gnome extension.
+
 The easiest way to manage extensions is to install the `gnome-shell-extension-manager` via apt:
 
 ```bash
@@ -40,13 +43,18 @@ then run:
 flatpak run org.gnome.Extensions
 ```
 
-Unfortunately `gnome-shell-extension-system-monitor` package is no longer available from
-official repo at the moment, and it's not compatible with Gnome 42 at the moment, see+vote
-for [#737](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/737).
-
-However, you can now install extensions from the `extension-manager` itself: there are two tabs in the app,
+You can now install extensions from the `extension-manager` itself: there are two tabs in the app,
 "Installed" and "Browse" and the latter one allows you to install extensions.
 Just search for "system monitor" - the one from Cerin is the "official" one.
+
+The "original" extension is not compatible with Gnome 42 at the moment, see+vote
+for [#737](https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet/issues/737).
+Workaround is to install `system-monitor-next` from mgalgs; make sure you have
+all the necessary dependencies installed:
+
+```bash
+sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
+```
 
 ## Ubuntu 21.10
 

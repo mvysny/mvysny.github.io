@@ -91,12 +91,34 @@ such as Vaadin, there's something better: components.
 ## Component-Oriented Programming
 
 If you ever used a component-oriented framework such as Java's Swing or Vaadin,
-then you're familiar with components such as buttons and checkboxes. The 
+then you're familiar with components such as buttons and checkboxes. It goes like this:
 
-Components are a much smaller unit of reuse than pages, employing
-MVC with Component-oriented frameworks does not make that much sense: for
-example it will usually leave you with nearly empty Views. We thus believe that
-using MVC does more harm than good since it adds unnecessary complexity.
-Therefore this tutorial will not use MVC.
+1. Need a button? Write `new Button()`. Need a text field? Write `new TextField()`.
+2. Build own components and views by composing existing components with layouts.
+3. Navigate to components by marking them with a `@Route("path")` annotation.
+4. If the component needs data, it will introduce an interface (e.g. DataProvider)
+5. If the component wants you to know something, it will provide a listener.
 
-TODO
+Simple, right? You can even go further: your PersonGrid can add columns to itself
+and populate itself with data, calling the backend services directly; all you
+then need to do is to call `new PersonGrid()` and add it to your layout. Problem solved!
+
+* Components are a much smaller unit of reuse than pages.
+* They are a natural extension to the object-oriented programming paradigm: Encapsulation
+* Do one thing and do it well
+* Promotes object composition but also works well with inheritance
+* Simple for simple components
+* “with Vaadin the productivity boost comes from the components rather than the [MVP] framework.”
+* Reusable
+* UI Consistency: you create a set of reusable components then use them throughout your app;
+  they will look the same, granting your UI consistency.
+  * Create a 'Sampler' - a page demoing common UI patterns in your app: common layouts, layouts with
+    borders, how to create forms, etc etc.
+
+
+Testing
+Karibu-Testing to mock Vaadin
+May require backend to be up
+Mock services
+
+Listeners etc

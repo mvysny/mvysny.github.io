@@ -9,7 +9,7 @@ and Python Django. There is typically a lot of things going on in the page, and
 the MVC pattern helps keeping the code separated into smaller, more easily
 digestable packages.
 
-However, all of those patterns have the following fundamental flaws:
+However, all of those MVx patterns have the following fundamental flaws:
 
 * You can split your code three way (M V and C) but not any further, unless you
   go sub-controllers, sub-models and sub-views. That way lies insanity.
@@ -26,6 +26,68 @@ However, all of those patterns have the following fundamental flaws:
 
 This is the common property of anti-patterns: the [complexity](../on-complexity/) growth is exponential.
 
+## Refuting MVx 'pros'
+
+Pro: One great thing about MVP is that you could essentially swap out your view
+implementation to something completely different.
+
+The problem with that is while that
+looks good on paper, it's often impossible in practice. It's as "easy" as swapping your
+SQL database for a different one. Doesn't happen that often, does it?
+
+Pro: It makes it possible to replace Vaadin with a different UI framework without rewriting everything.
+
+Yeah, well, see above.
+
+Pro: It makes it possible to reuse the UI logic in both desktop and mobile UIs.
+
+Not at all. The mobile screens are much smaller, which means that the UX is completely different.
+Not only that, but often the mobile app serves a different purpose. You would not
+do your tax forms on your mobile phone, right? Tops, you could check that a tax form has been processed.
+
+Pro: It makes it easier to test the UI logic without setting up the entire runtime
+environment or simulating user interactions (clicks, text inputs, etc.).
+
+In my experience not worth the added complexity. Plus, often there's a framework which
+allows you to do that without having to abstract everything, e.g. [Karibu-Testing](https://github.com/mvysny/karibu-testing/) for
+Vaadin. The point is that you shouldn't screw up your codebase in the name of testability,
+since maintainability is going to suffer.
+
+## MVx cons
+
+MVP is a vague pattern that can be interpreted and used in many different ways.
+There is no MVP Vaadin framework: it’s recommended for the MVP framework to be
+implemented from scratch in every project that uses them. Well, good luck with that.
+
+For each view in the application, you have to create and maintain at least three separate Java files:
+the view interface, the presenter class and the view class. You might have to change all
+of them just to make a small addition to a form.
+Also the comms between those. Adds complexity.
+
+Pure MVP implementations do not allow the presenter to be aware of the existence of Vaadin.
+This makes some things more complicated than they need to be.
+
+Presenter unit tests are easy to write, but are often very technical in nature:
+you first write the presenter, then you write a unit test that systematically goes through every
+line in the presenter. The result is a test that is several times bigger
+than the original class, took a lot of time and money to implement,
+has great testing coverage and provides little real value.
+
+The role of the presenter and its relation to the view is not fully understood.
+This becomes especially clear when a large view is split up into subviews and subpresenters.
+The end result is often a mess of presenters and views calling each other or asking each other to call each other.
+
+Architects often discourage the use of MVC and MVP for the MVVP, but that's not widely used yet
+(read: nobody fucking knows what MVVP should do. It's an "architectural proposal"
+which means it's useless in real world. But it makes a good academical paper! /sarcasm).
+
+Also see [Is MVP a Best Practice?](https://vaadin.com/blog/is-mvp-a-best-practice-).
+
+## MVx: Conclusion
+
+It's an anti-pattern, ignore it. If you're using a component-oriented framework
+such as Vaadin, there's something better: components.
+
 ## Component-Oriented Programming
 
 If you ever used a component-oriented framework such as Java's Swing or Vaadin,
@@ -37,3 +99,4 @@ example it will usually leave you with nearly empty Views. We thus believe that
 using MVC does more harm than good since it adds unnecessary complexity.
 Therefore this tutorial will not use MVC.
 
+TODO

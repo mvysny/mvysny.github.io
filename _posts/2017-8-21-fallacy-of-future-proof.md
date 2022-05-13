@@ -9,9 +9,19 @@ Worst atrocities has been committed in the name of future-proof.
 
 > Hey, let's refactor this previously readable code using all design patterns we can find, so that, you know, **what if** somebody would want to add things in the future?
 
-Ah, the dreaded "**what if**": it's easy to propose, hard to fight against, and thus the team usually gives up after several what-ifs and just nods their heads. In the better case those what-ifs are kept at the bottom of the backlog; the manager is satisfied and the code is not polluted. In the worst case they are actually implemented, twisting the code base into a spaghetti of undecypherable patterns.
+Ah, the dreaded "**what if**": it's easy to propose, hard to fight against, and
+thus the team usually gives up after several what-ifs and just nods their heads.
+In the better case those what-ifs are kept at the bottom of the backlog; the
+manager is satisfied and the code is not polluted. In the worst case they are
+actually implemented, twisting the code base into a spaghetti of undecypherable
+patterns.
 
-The best future-proof strategy I've seen so far is to keep the code simple and understandable. If the code is simple, then any requirement is easy to integrate. You must thus strive to not to be future-proof, otherwise you will trade code readability **immediately** for some dubious future which may not even come. Remember: complexity kills, and it's easy to introduce complexity but hard to get rid of it.
+The best future-proof strategy I've seen so far is to keep the code simple and
+understandable. If the code is simple, then any requirement is easy to
+integrate. You must thus strive to not to be future-proof, otherwise you will
+trade code readability **immediately** for some dubious future which may not
+even come. Remember: complexity kills, and it's easy to introduce complexity but
+hard to get rid of it.
 
 I have just recently read parts of the *Code Change* book by Uncle Bob (he uses that nickname himself, so I will too). Ironically dubbed *A Handbook of Agile Software Craftmanship*, the book is infected with the *what-if* fallacy and it proposes to trade code simplicity for uncertain future. For example, the `Sql` class on page 147:
 

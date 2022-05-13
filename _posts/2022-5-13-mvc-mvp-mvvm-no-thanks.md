@@ -26,6 +26,21 @@ However, all of those MVx patterns have the following fundamental flaws:
 
 This is the common property of anti-patterns: the [complexity](../on-complexity/) growth is exponential.
 
+## Never a perfect fit
+
+In [Difference Between MVC, MVP and MVVM](https://www.geeksforgeeks.org/difference-between-mvc-mvp-and-mvvm-architecture-pattern-in-android/),
+notice the "Ideal for small scale projects only." line. I'll reiterate the lines here:
+
+* MVC: Ideal for small scale projects only.
+* MVP: Ideal for simple and complex applications.
+* MVVM: Not ideal for small scale projects.
+
+That means that the architecture can not grow with your needs. You need MVC at first,
+but then after your app grows bigger you need to go MVP or even MVVM, reworking the
+entire codebase in the process. Different architects will have different opinions:
+time will be wasted with endless ivory tower discussions while the maintenance team
+struggles to fix tickets, digging through endless abstractions.
+
 ## Refuting MVx 'pros'
 
 Pro: One great thing about MVP is that you could essentially swap out your view
@@ -85,10 +100,10 @@ Also see [Is MVP a Best Practice?](https://vaadin.com/blog/is-mvp-a-best-practic
 
 ## MVx: Conclusion
 
-It's an anti-pattern, ignore it. If you're using a component-oriented framework
+It's an anti-pattern, fuck it. If you're using a component-oriented framework
 such as Vaadin, there's something better: components.
 
-## Component-Oriented Programming
+# Component-Oriented Programming
 
 If you ever used a component-oriented framework such as Java's Swing or Vaadin,
 then you're familiar with components such as buttons and checkboxes. It goes like this:
@@ -103,6 +118,18 @@ Simple, right? You can even go further: your PersonGrid can add columns to itsel
 and populate itself with data, calling the backend services directly; all you
 then need to do is to call `new PersonGrid()` and add it to your layout. Problem solved!
 
+This architecture can grow easily with your app. You create a set of reusable components;
+you then compose those components in layouts that also implement a logic. For example,
+you can create a `PersonForm` which not only manages fields needed to edit a person,
+but also performs validation and may even implement the saving functionality. You can
+then compose multiple forms in a bigger wizard, which will still be a component,
+hiding all the complexity within its implementation.
+
+> You manage complexity by wrapping it in tiny boxes called components. You then
+> compose tiny boxes in bigger boxes, and those in turn in bigger boxes. Every box
+> will have a small and nice API depending on what the box solves. The UNIX
+> philosophy of "Do one thing and do it right" works wonders here.
+
 * Components are a much smaller unit of reuse than pages.
 * They are a natural extension to the object-oriented programming paradigm: Encapsulation
 * Do one thing and do it well
@@ -115,6 +142,7 @@ then need to do is to call `new PersonGrid()` and add it to your layout. Problem
   * Create a 'Sampler' - a page demoing common UI patterns in your app: common layouts, layouts with
     borders, how to create forms, etc etc.
 
+TODO
 
 Testing
 Karibu-Testing to mock Vaadin

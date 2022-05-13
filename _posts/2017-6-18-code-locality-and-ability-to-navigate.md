@@ -230,9 +230,10 @@ approach may work here quite well.
 
 JPA is a tough beast. Its sheer amount of annotations makes you want to run and
 hide. There is absolutely no way one can understand what's going on behind the
-scenes by a simple Ctrl+click approach. However, once one follows a good
+scenes by a simple Ctrl+click approach. It is believed that once one follows a good
 tutorial and learns how to navigate himself around pitfalls such as detached
-beans, then it does its job and is again an acceptable black box.
+beans, then it can do its job and can act as an acceptable black box.
+I do not believe that: [Make SQL Great Again](../back-to-base-make-sql-great-again/).
 
 Yet, I grew weary of constant surge of exceptions, N+1 selection problems and
 now I just select exactly what I need with plain SQL selects, using sql2o plus a

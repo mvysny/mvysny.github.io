@@ -34,7 +34,9 @@ My personal list of anti-patterns in Java ecosystem:
 The right way to develop apps in Java:
 
 * Avoid the abovementioned shit. Specifically, avoid both Spring and JavaEE. You
-  can run your apps on Jetty or Tomcat.
+  can run your app just fine on Jetty or Tomcat.
+* Learn and use Docker. You can build and run a production image anywhere: both
+  on your dev machine and on production.
 * Use SQL directly; use JDBI or other stuff that talks to SQL directly.
 * Use [Component-Oriented programming](../mvc-mvp-mvvm-no-thanks/)
 * Use SOA: wrap your data with services then call them from your UI code.

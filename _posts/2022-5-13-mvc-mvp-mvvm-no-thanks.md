@@ -94,59 +94,11 @@ The end result is often a mess of presenters and views calling each other or ask
 
 Architects often discourage the use of MVC and MVP for the MVVP, but that's not widely used yet
 (read: nobody fucking knows what MVVP should do. It's an "architectural proposal"
-which means it's useless in real world. But it makes a good academical paper! /sarcasm).
+which means it's useless in real world, but it makes a good academical paper! /sarcasm).
 
 Also see [Is MVP a Best Practice?](https://vaadin.com/blog/is-mvp-a-best-practice-).
 
 ## MVx: Conclusion
 
 It's an anti-pattern, fuck it. If you're using a component-oriented framework
-such as Vaadin, there's something better: components.
-
-# Component-Oriented Programming
-
-If you ever used a component-oriented framework such as Java's Swing or Vaadin,
-then you're familiar with components such as buttons and checkboxes. It goes like this:
-
-1. Need a button? Write `new Button()`. Need a text field? Write `new TextField()`.
-2. Build own components and views by composing existing components with layouts.
-3. Navigate to components by marking them with a `@Route("path")` annotation.
-4. If the component needs data, it will introduce an interface (e.g. DataProvider)
-5. If the component wants you to know something, it will provide a listener.
-
-Simple, right? You can even go further: your PersonGrid can add columns to itself
-and populate itself with data, calling the backend services directly; all you
-then need to do is to call `new PersonGrid()` and add it to your layout. Problem solved!
-
-This architecture can grow easily with your app. You create a set of reusable components;
-you then compose those components in layouts that also implement a logic. For example,
-you can create a `PersonForm` which not only manages fields needed to edit a person,
-but also performs validation and may even implement the saving functionality. You can
-then compose multiple forms in a bigger wizard, which will still be a component,
-hiding all the complexity within its implementation.
-
-> You manage complexity by wrapping it in tiny boxes called components. You then
-> compose tiny boxes in bigger boxes, and those in turn in bigger boxes. Every box
-> will have a small and nice API depending on what the box solves. The UNIX
-> philosophy of "Do one thing and do it right" works wonders here.
-
-* Components are a much smaller unit of reuse than pages.
-* They are a natural extension to the object-oriented programming paradigm: Encapsulation
-* Do one thing and do it well
-* Promotes object composition but also works well with inheritance
-* Simple for simple components
-* “with Vaadin the productivity boost comes from the components rather than the [MVP] framework.”
-* Reusable
-* UI Consistency: you create a set of reusable components then use them throughout your app;
-  they will look the same, granting your UI consistency.
-  * Create a 'Sampler' - a page demoing common UI patterns in your app: common layouts, layouts with
-    borders, how to create forms, etc etc.
-
-TODO
-
-Testing
-Karibu-Testing to mock Vaadin
-May require backend to be up
-Mock services
-
-Listeners etc
+such as Vaadin, there's something better: [Components](../component-oriented-programming/).

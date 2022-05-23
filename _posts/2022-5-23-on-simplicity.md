@@ -42,11 +42,12 @@ it's time to throw away your darling and start again.
 
 ## Undesign
 
-Keep your design as much as possible. Don't drink the kool aid of MVC, MVP, MVVM, Hexagonal
-and other whatnot architectures. From my experience, every time someone used a fancy architecture, there
+Keep your design as simple as possible. Don't drink the kool aid of MVC, MVP, MVVM, Hexagonal
+and other crap.
+From my experience, every time someone used a fancy architecture, there
 was a bunch of frustrated developers trying to maintain that bullshit. If the architecture
 is not making maintenance easier, it is wrong and must be removed. If the architect
-disagrees, make him the sole maintainer of the app.
+disagrees, make him the sole maintainer of the app. Let him live with it.
 
 ## Eat Your Own Dogfood
 

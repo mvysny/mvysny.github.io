@@ -40,3 +40,41 @@ The right way to develop apps in Java:
 * Use SQL directly; use JDBI or other stuff that talks to SQL directly.
 * Use [Component-Oriented programming](../mvc-mvp-mvvm-no-thanks/)
 * Use SOA: wrap your data with services then call them from your UI code.
+
+## My preferred Vaadin architecture
+
+The best way that worked for me was a simple SOA architecture,
+no Spring, no JPA, no DI. Only use what you really need.
+
+If you use SQL database, plain JDBC is a pain in the ass. Use [jdbi-orm](https://gitlab.com/mvysny/jdbi-orm),
+or maybe [ActiveJDBC](https://javalite.io/activejdbc) even though I hated that you need a Maven plugin for that.
+Don't use JPA.
+
+Don't use DI in any form or shape (no Spring, no Guice, no Dagger). Instead, create a static repository of services:
+
+```java
+public static class Services {
+  public static LoginService getLoginService() {}
+  public static ThatService getThatService() {}
+}
+```
+
+For stateful services you can use JVM singletons. For session-scoped services you can
+make the getter look up the service from Vaadin session.
+
+Use [Karibu-Testing](https://github.com/mvysny/karibu-testing/) to test your app server-side.
+Either:
+
+* don't mock anything: use your services as-is and assert on the database contents, using
+an in-memory db like H2 or a throwaway db-in-docker; maybe rolling back transactions at the end of each test
+* If you can't do that, e.g. because you're using REST server, you can fake the REST server.
+* If you can't do that, set fake implementations of services before every test.
+
+Don't drink the kool aid of MVC, MVP, MVVM, Hexagonal
+and other crap. Have a simple layer of services, then make your components call those
+services directly. Simple SOA.
+
+Don't use JavaEE nor Spring-Boot: JavaEE is dead and an anti-pattern, Spring is anti-pattern (and should be dead):
+
+* [Use an embedded Jetty](https://github.com/mvysny/vaadin-embedded-jetty-gradle)
+* Or develop in Intellij with Tomcat, then [deploy into the Tomcat Docker image](../Launch-your-Vaadin-on-Kotlin-app-quickly-in-cloud/)

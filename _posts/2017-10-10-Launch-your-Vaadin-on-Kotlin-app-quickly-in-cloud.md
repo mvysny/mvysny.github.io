@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Launch your Vaadin-on-Kotlin app quickly in cloud/docker
+title: Launch your Vaadin-on-Kotlin app quickly in cloud/docker/Tomcat
 ---
 
 So you have built your first awesome VoK app - congratulations! You will probably want to launch it outside of your IDE, or even deploy it somewhere on the interwebz. Just pick up any virtual server provider with your favourite Linux distribution.

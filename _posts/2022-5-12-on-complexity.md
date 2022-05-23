@@ -28,6 +28,9 @@ Complexity appeal to companies. If you drank IBM's kool-aid and bought yourself
 WebSphere, congratulations - now you need to purchase trainings and consultants from IBM
 in order to survive with WebSphere.
 
+> E.W.Dijkstra: "Simplicity is a great virtue but it requires hard work to
+> achieve it and education to appreciate it. And to make matters worse: complexity sells better."
+
 It's easy to introduce complexity but hard to get rid of it.
 
 Complexity kills maintainability. If you can't understand the code, you can't fix

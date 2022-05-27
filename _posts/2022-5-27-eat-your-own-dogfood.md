@@ -7,7 +7,7 @@ The only way humans really learn is by their own mistakes. Make a programming mi
 live with it, maintain it, fix it, then move on. That is the only way to grow as a developer.
 That implies that if you're not also the maintainer of your own code, you can *not* grow as a developer:
 there is no other way to learn from one's mistakes than by becoming a maintainer
-of what you did.
+of your own code.
 
 ## Evolution of a developer
 

@@ -15,9 +15,10 @@ With that cleared out, let's focus on simplicity.
 > Elon Musk: “The best part is no part. The best process is no process. It weighs nothing. Costs nothing. Can’t go wrong.”
 
 Applied to software, you use frameworks and libraries only when absolutely necessary.
-That doesn't mean you should develop stuff from scratch instead (aka Not Invented Here Syndrome),
-far from it: that means that you should not for example slam Spring and JPA mindlessly
-into your projects, just because. Any library, framework or code will make
+That does *not* imply the Not Invented Here (that you should develop things in-house instead
+of using a third-party library), far from it: that means that you should only use what you need,
+and not for example slam Spring and JPA mindlessly
+into your projects just because. Any library, framework or code will make
 the project harder to understand for newcomers, and harder to maintain for everyone.
 Ask these questions about anything you are about to add to your project:
 
@@ -34,7 +35,7 @@ to execute that code is just a side-effect.
 
 ## Kill Your Darlings
 
-We do stupid shit all the time. Experienced developers realize ideas that are stupid,
+We do stupid shit all the time. Experienced developers simply learned to know which ideas lead to stupid things,
 but still do stupid shit from time to time.
 
 If a class is loved by you but a pain in the ass to understand by everyone else, perhaps
@@ -42,18 +43,15 @@ it's time to throw away your darling and start again.
 
 ## Undesign
 
-Keep your design as simple as possible. Don't drink the kool aid of MVC, MVP, MVVM, Hexagonal
+Keep your design as simple as possible. Don't drink the kool aid of MVC, MVP, MVVM, Hexagonal Architecture
 and other crap.
-From my experience, every time someone used a fancy architecture, there
-was a bunch of frustrated developers trying to maintain that bullshit. If the architecture
+From my experience, behind every fancy architecture there
+is a bunch of frustrated developers trying to maintain that bullshit. If the architecture
 is not making maintenance easier, it is wrong and must be removed. If the architect
-disagrees, make him the sole maintainer of the app. Let him live with it.
+disagrees, make him the sole maintainer of the app. Let him live with it. Let him
+[eat his own dogfood](../eat-your-own-dogfood/).
 
-## Eat Your Own Dogfood
-
-The only way humans really learn is by their own mistakes. Make a programming mistake,
-live with it, maintain it, fix it, then move on. That is the only way to grow as a developer.
-If you're not also the maintainer of your own code, you can not grow as a developer.
+## Design Like Elon Musk
 
 [Design like Elon Musk](https://uxdesign.cc/design-like-elon-musk-using-6-fundamental-principles-4aaab08d5e41)
 

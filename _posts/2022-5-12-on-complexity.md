@@ -41,26 +41,9 @@ The best future-proof strategy I've seen so far is to keep the code simple and
 understandable. If the code is simple, then any requirement is easy to
 integrate. This is the ultimate future-proof you can get, there's nothing better.
 
+> Ray Ozzie: Complexity kills. It sucks the life out of developers, it makes products difficult to plan, build, and test.
+
 Complexity just attracts the wrong crowd.
-
-## Evolution of a developer
-
-All developers follow the ladder below:
-
-1. Junior - wow my program starts! How cute!
-2. Advanced - I can somehow create an intraweb portal! I have so much power at my fingertips!
-3. Master - I have combined all design patterns into my code. I'm using all
-   cool frameworks and my app needs 45 kubernetes pods to run and a dark incantations
-   of 100-strong team of developers, managers and managers of managers. I'm the king and
-   the *real* developer, everybody else is just cute.
-4. Guru - I have removed all frameworks and approaches except those I really need.
-   I know how stupid I was before.
-
-The only way to climb this ladder is to maintain shit you produced earlier, AKA
-*dogfooding*.
-
-The complexity increases and achieves peak at step 3, then disappears once you
-start pursuing simplicity.
 
 ## Anti-patterns
 
@@ -104,3 +87,11 @@ Adding an annotation is *easy*, but the outcome does *not* result in simplicity.
 
 It's much simpler to have a function `db()` which runs given `Runnable` in transaction.
 The syntax for that sucks in Java though, you need to use Kotlin.
+
+## Throw DI Away
+
+To make my point crystal-clear: I am *not* implying that you should use JavaEE instead
+of Spring. Far from it. Both are based on dependency injection which is
+an [anti-pattern](../java-antipatterns/) and thus garbage. To be crystal-clear:
+anything based on DI (Guice, Dagger) is inherently an anti-pattern and thus should
+be avoided.

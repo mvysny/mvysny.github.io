@@ -79,10 +79,18 @@ Don't use JavaEE nor Spring-Boot: JavaEE is dead and an anti-pattern, Spring is 
 * [Use an embedded Jetty](https://github.com/mvysny/vaadin-embedded-jetty-gradle)
 * Or develop in Intellij with Tomcat, then [deploy into the Tomcat Docker image](../Launch-your-Vaadin-on-Kotlin-app-quickly-in-cloud/)
 
-For Vaadin-related suggestions:
+For Vaadin-related suggestions: Vaadin actually can be used in a simple way, without Spring, Hibernate, JavaEE
+and other crap. Additional rules apply:
 
-* Don't ever mark Vaadin components as beans otherwise you may get strange parent-child-relationship-broken issues
+* (If you must use DI) Don't ever mark Vaadin components as beans otherwise you may get strange parent-child-relationship-broken issues
 * Don't use PolymerTemplates nor LitTemplates: they don't work with Karibu-Testing and
   the abstraction leaks in multiple ways:
    * see [Karibu-Testing+PolymerTemplates](https://github.com/mvysny/karibu-testing/tree/master/karibu-testing-v10#polymer-templates--lit-templates)
    * `@Id`-mapped elements within a vaadin-dialog template are not properly initialized. (TODO github ticket link)
+* Use Component-oriented approach over MVP
+* Avoid EventBus unless your app is highly asynchronous in nature
+* Use TestBench for happy-flow testing, use Karibu-Testing for everything else
+* Create a reusable set of Java layouts such as GreyDetailsPane; then create a view called Sampler which
+  demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes
+  for new developers to follow.
+

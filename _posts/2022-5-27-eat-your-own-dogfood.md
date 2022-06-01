@@ -17,7 +17,7 @@ All developers follow the ladder below:
 2. Advanced - I can somehow create an intraweb portal! I have so much power at my fingertips!
 3. Master - I have combined all design patterns into my code. I'm using all
    cool frameworks and my app needs 45 kubernetes pods to run and a dark incantations
-   of 100-strong team of developers, managers and managers of managers. I'm the king and
+   of 100-strong team of developers, managers, and managers of managers. I'm the king and
    the *real* developer, everybody else is just cute.
 4. Guru - I have removed all frameworks and approaches except those I really need.
    I know how stupid I was before.

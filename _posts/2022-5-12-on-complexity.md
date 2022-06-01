@@ -6,11 +6,11 @@ title: On Complexity
 I hate complexity. I can't stand it, I can't handle it, and most importantly: I don't want to handle it.
 I hate frameworks that expose me to great complexity just in order to achieve something simple,
 ultimately producing stacktraces 200 lines deep into some dynamic proxy crap I'm not
-possible to understand in a day. And why should I? If it's not simple then clearly the
-authors have not done their homework, haven't found the right approach
-and thus it's not worth my limited Earth time.
+possible to understand in a day. And why should I? If the library is not simple, then clearly the
+authors have not done their homework, haven't found the right approach or abstraction,
+or they don't care about simplicity, and thus it's not worth my limited Earth time.
 
-I've walked from complexity to simplicity and never fucking looked back once.
+I've walked away from complexity and never looked back once.
 
 ## Basic Properties of Complexity
 

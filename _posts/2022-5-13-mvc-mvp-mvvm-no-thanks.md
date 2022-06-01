@@ -94,7 +94,7 @@ The end result is often a mess of presenters and views calling each other or ask
 
 Architects often discourage the use of MVC and MVP for the MVVP, but that's not widely used yet
 (read: nobody fucking knows what MVVP should do. It's an "architectural proposal"
-which means it's useless in real world, but it makes a good academical paper! /sarcasm).
+which means it's useless in real world, but it makes a good academical paper I guess).
 
 Also see [Is MVP a Best Practice?](https://vaadin.com/blog/is-mvp-a-best-practice-).
 

@@ -16,9 +16,9 @@ With that cleared out, let's focus on simplicity.
 
 Applied to software, you use frameworks and libraries only when absolutely necessary.
 That does *not* imply the Not Invented Here (that you should develop things in-house instead
-of using a third-party library), far from it: that means that you should only use what you need,
-and not for example slam Spring and JPA mindlessly
-into your projects just because. Any library, framework or code will make
+of using a third-party library), far from it: you definitely *should* reuse effort put in available libraries.
+However, you should only use what you need, and not for example slam Spring and JPA mindlessly
+into your projects by default, just because. Any library, framework or code added to your project will make
 the project harder to understand for newcomers, and harder to maintain for everyone.
 Ask these questions about anything you are about to add to your project:
 

@@ -78,3 +78,11 @@ Don't use JavaEE nor Spring-Boot: JavaEE is dead and an anti-pattern, Spring is 
 
 * [Use an embedded Jetty](https://github.com/mvysny/vaadin-embedded-jetty-gradle)
 * Or develop in Intellij with Tomcat, then [deploy into the Tomcat Docker image](../Launch-your-Vaadin-on-Kotlin-app-quickly-in-cloud/)
+
+For Vaadin-related suggestions:
+
+* Don't ever mark Vaadin components as beans otherwise you may get strange parent-child-relationship-broken issues
+* Don't use PolymerTemplates nor LitTemplates: they don't work with Karibu-Testing and
+  the abstraction leaks in multiple ways:
+   * see [Karibu-Testing+PolymerTemplates](https://github.com/mvysny/karibu-testing/tree/master/karibu-testing-v10#polymer-templates--lit-templates)
+   * `@Id`-mapped elements within a vaadin-dialog template are not properly initialized. (TODO github ticket link)

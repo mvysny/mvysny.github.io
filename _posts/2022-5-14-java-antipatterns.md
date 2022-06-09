@@ -88,7 +88,8 @@ and other crap. Additional rules apply:
    * see [Karibu-Testing+PolymerTemplates](https://github.com/mvysny/karibu-testing/tree/master/karibu-testing-v10#polymer-templates--lit-templates)
    * `@Id`-mapped elements within a vaadin-dialog template are not properly initialized. (TODO github ticket link)
 * Use Component-oriented approach over MVP
-* Avoid EventBus unless your app is highly asynchronous in nature
+* Avoid EventBus unless your app is highly asynchronous in nature. Otherwise it will be hard
+  for you to reason about code flow (since it's hard/impossible to tell which observers will react to given event).
 * Use TestBench for happy-flow testing, use Karibu-Testing for everything else
 * Create a reusable set of Java layouts such as GreyDetailsPane; then create a view called Sampler which
   demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes

@@ -17,7 +17,7 @@ Apparently gathering statistics of an empty bucket (0 documents) is highly
 time-consuming in CouchBase world. That should be a warning sign of the
 quality (or rather, the lack thereof) of the whole CouchBase offering. That,
 combined with a constant stream of poor excuses from the devs for every bug
-I've opened. I should've abandon the CouchBase stack, but it seemed to be
+I've opened. Given these red flags I should've abandoned the CouchBase stack long time ago, but it seemed to be
 working so far, so I thought I'm simply doing something wrong.
 
 Then things started to break.

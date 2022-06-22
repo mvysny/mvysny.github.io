@@ -81,6 +81,8 @@ In Java there's no way to do that, so you either create a static method in some 
 method to that wrapper class (lot of work, unnecessary wrappings). And thus Java forces
 me once again to create a complex solution for a simple problem.
 
+Read [Extension Functions](../extension-functions/) for more info.
+
 # Kotlin: The Bad
 
 ## The invoke operator

@@ -48,7 +48,7 @@ Complexity just attracts the wrong crowd.
 ## Anti-patterns
 
 This is the common property of anti-patterns: the complexity growth is exponential.
-Once you need to achieve something non-trivial with MV*, the complexity skyrockets
+Once you need to achieve something non-trivial with [MV*](../mvc-mvp-mvvm-no-thanks/), the complexity skyrockets
 until you either need a team or just give up and change your job industry. Shepherding
 is nice I heard.
 

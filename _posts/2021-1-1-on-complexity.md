@@ -94,4 +94,5 @@ To make my point crystal-clear: I am *not* implying that you should use JavaEE i
 of Spring. Far from it. Both are based on dependency injection which is
 an [anti-pattern](../java-antipatterns/) and thus garbage. To be crystal-clear:
 anything based on DI (Guice, Dagger) is inherently an anti-pattern and thus should
-be avoided.
+be avoided. Use [Extension Functions](../extension-functions/) instead; if your
+language doesn't support those then it's time to switch.

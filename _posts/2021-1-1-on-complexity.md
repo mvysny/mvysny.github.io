@@ -23,6 +23,8 @@ so that they can't be fired from the company.
 
 Complexity appeal to smug people. He wants to be the rocket scientist.
 The member of an exclusive club. Complex problems for the *real* engineers.
+Wizards in their ivory towers, mumbling arcane incantations. The "Emperor Is Naked"-kind of guys
+are natural enemies of a wizard.
 
 Complexity appeal to companies. If you drank IBM's kool-aid and bought yourself
 WebSphere, congratulations - now you need to purchase trainings and consultants from IBM
@@ -45,6 +47,12 @@ integrate. This is the ultimate future-proof you can get, there's nothing better
 
 Complexity just attracts the wrong crowd.
 
+## Germans: Champions of Complexity
+
+[Why Germany has a problem with software](https://medium.com/@Terrania/why-germany-has-a-problem-with-software-a9c0a2eab699).
+
+A German will never choose the easiest way if he can help it.
+
 ## Anti-patterns
 
 This is the common property of anti-patterns: the complexity growth is exponential.
@@ -55,13 +63,7 @@ is nice I heard.
 On the other hand, a well designed simple idea naturally combines with other similarly
 simple ideas to achieve amazing stuff, while the complexity only climbs slowly, logarithmically at best.
 
-## Germans: Champions of Complexity
-
-[Why Germany has a problem with software](https://medium.com/@Terrania/why-germany-has-a-problem-with-software-a9c0a2eab699).
-
-A German will never choose the easiest way if he can help it.
-
-## 'Just add an annotation'
+### 'Just add an annotation'
 
 Not only this is very wrong, but it's also very deceptive. After all, what's
 so complex about an innocent-looking annotation such as `@Transactional`?
@@ -88,7 +90,7 @@ Adding an annotation is *easy*, but the outcome does *not* result in simplicity.
 It's much simpler to have a function `db()` which runs given `Runnable` in transaction.
 The syntax for that sucks in Java though, you need to use Kotlin.
 
-## Throw DI Away
+### Throw DI Away
 
 To make my point crystal-clear: I am *not* implying that you should use JavaEE instead
 of Spring. Far from it. Both are based on dependency injection which is
@@ -96,3 +98,21 @@ an [anti-pattern](../java-antipatterns/) and thus garbage. To be crystal-clear:
 anything based on DI (Guice, Dagger) is inherently an anti-pattern and thus should
 be avoided. Use [Extension Functions](../extension-functions/) instead; if your
 language doesn't support those then it's time to switch.
+
+## Advantages Of Complexity
+
+The problem with simplicity is that simple things are easy to understand, which may not necessarily be a good thing:
+
+- People like to prove their worth by suggesting changes. It's hard to suggest changes to something
+  you have no idea about, therefore most suggestions will target simple things.
+  Want to please your manager? Leave some labels
+  untranslated or with wrong fonts. They will spot it out, point it out, suggest a change and
+  walk away from the meeting feeling happy and fulfilled.
+- Simple things provoke endless discussions (suggestions about changes).
+- [bike shedding](https://en.wiktionary.org/wiki/bikeshedding).
+- You can create a simple problem as a decoy, to get those monkeys off your back (see the "label" idea above).
+- Turning simple things complex, people will look at you with respect (see the "Wizard" note above).
+
+> Side note: In traditional large companies, lots of energy is wasted on bike shedding and politics bickering.
+  Such company can not evolve and can not compete with faster competitors; survival strategy is
+  to buy competitors out, sue them or otherwise eliminate them (if you're big enough).

@@ -39,6 +39,9 @@ Couple of tips from the article above:
   explicitly use channel 1, 6 and 11 (in case of three APs).
 * Buy identical AP devices, or configure all APs to offer the same speed. If not, the client may prefer faster AP even though
   the signal is weaker, which could cause the client to reconnect between APs frequently for no obvious reason.
+* It is becoming a "best practice" to set your 2.4GHz 802.11n radio to 20MHz (HT20) channels so that it leaves some of the band free for things like Bluetooth to use. This limits your 802.11n transmission rates in the 2.4GHz band to ~130mbps instead of 300mbps, but allows other non-802.11 2.4GHz devices to still work okay. In 5GHz, where there are many more channels available and they are all generally much less busy, you are encouraged to use 80MHz (VHT80) channels to get maximum throughput.
+* Only enable 5ghz if all of your hotspots support it; otherwise the devices may stubbornly stick
+  to a far-away 5ghz device with poor signal strength since the speed is faster on paper.
 
 You need to search for WiFi routers which support configuring themselves in the AP mode; luckily
 almost all of them do. Then, simply setup the router via a wizard and configure it to run in the AP

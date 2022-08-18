@@ -10,7 +10,7 @@ by Erik Lumme is much clearer.
 In short, if you want to set the session timeout to 30 minutes, make sure that you set all of the following:
 
 * The web container session timeout is set to 30 (see below)
-* Set Vaadin's `closeIdleSessions` to `true` (see below)
+* Set Vaadin's `DeploymentConfiguration.closeIdleSessions` to `true` (see below)
 
 ## Configuring web container session timeout
 
@@ -29,10 +29,11 @@ public class MyWebListener implements ServletContextListener {
 
 If you're still using `web.xml`, you can set `<session-timeout>30</session-timeout>`, see [Java Session Timeout](https://www.baeldung.com/servlet-session-timeout).
 
-## Setting Vaadin servlet init parameters
+## Setting Vaadin DeploymentConfiguration via servlet init parameters
 
 The [official Vaadin documentation on configuration properties](https://vaadin.com/docs/latest/configuration/properties)
-doesn't say how to pass in the properties in a non-Spring environment. Luckily it's easy, pass it as a servlet init parameter.
+is quite well hidden, therefore I'll repost it here.
+In order to change `DeploymentConfiguration` properties, pass them as a servlet init parameter.
 Simply define your own servlet which extends VaadinServlet:
 
 ```java

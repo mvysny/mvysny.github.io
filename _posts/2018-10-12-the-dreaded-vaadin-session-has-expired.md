@@ -148,6 +148,35 @@ That way websockets aren't used at all, just the standard http mechanism
 you've already been using. To compare those two, please check the
 [Long Polling vs WebSocket](../long-polling-vs-websockets/) article.
 
+## Two Vaadin app instances in the same web container
+
+Fredi Šarić was kind to send his experience with this topic. Fredi has
+two Vaadin app instances in the same web container, both using websockets.
+With his kind consent I'm posting his experiences below.
+
+I've encountered the same problem where I would start two instances of the Vaadin app
+(with the Jetty embedded server) and once I open the second app the session on the first would expire.
+I've gone through all of the possible explanations you provided but none matched the description of my
+problem, except the one without solution "Unstable Session ID". When I would send a
+first request to the server I would have one JSESSION cookie value, and by the time the app loads it would have the other.
+
+I'm pretty sure the reason for this is that browsers will store the cookies in a
+CookieStore under the host key, hence both sites will have access to the same CookieStore and the same cookies.
+
+When we start the second application (after the first has been started and loaded
+by the browser), we will send the JSESSION cookie which is already stored in the browser.
+This sessionId will not be present in the Jetty's SessionManager and it will create
+a new session and put the session id in the `Set-Cookie` header of the response.
+This new sessionId will then overwrite the previous one for both applications. Then on
+the next heartbeat of the first application we will get a `403 session expired` response
+(because heartbeats are handled differently from the normal request which would create a new session).
+The  WS communication will still work up until that point since it uses a cookie
+that was set when we initiated the connection. Then the vaadin app will close the
+WS connection since it thinks the session has expired.
+
+An easy solution is to disable heartbeats in the dev mode or use different cookie
+names for the session in different applications, or maybe opening a second app in a different browser or an incognito mode.
+
 # Something Else
 
 There may always be something else that's wrong. For example I vaguely remember

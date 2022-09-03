@@ -112,7 +112,7 @@ Create the `~/.gitconfig` file:
   conflictstyle = diff3
 ```
 
-Create a ssh key & press enter to keep the default settings:
+Create ssh key & press enter to keep the default settings:
 ```bash
 ssh-keygen
 ```

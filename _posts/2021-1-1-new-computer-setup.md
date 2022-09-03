@@ -21,6 +21,8 @@ do that in the installer):
 3. Rest of the disk `unallocated` for dm-crypt - the `btrfs` for `/` will go here.
 4. No swap yet - we'll swap to a file.
 
+Name the machine after the computer brand & type, e.g. `mavi-lenovo-t14s`.
+
 Install & reboot. Select no updates and just a minimum installation - we'll add
 everything later on, after we verify that the system boots :-D
 
@@ -31,10 +33,36 @@ Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthed
 ## Install basic software
 
 ```bash
-sudo apt install git vim htop gparted
+sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor
 ```
 
-### git
+Uninstall gedit:
+```bash
+sudo apt autoremove --purge gedit nautilus-extension-gnome-terminal
+```
+
+### gnome console
+
+Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
+
+### fish
+
+```bash
+chsh -s /usr/bin/fish
+```
+
+To add environment variables, put them to `~/.config/fish/config.fish`:
+```
+export M2_HOME=$HOME/local/apache-maven
+```
+
+### Firefox
+
+Add `MOZ_ENABLE_WAYLAND=1` to `/etc/environment` to force Firefox to run on `wayland`
+instead of `xwayland`, then reboot. Verify in the `about:support` page: the "Window Protocol"
+setting should read "wayland" instead of "xwayland".
+
+### git+sshkey
 
 Create the `~/.gitconfig` file:
 ```
@@ -55,3 +83,10 @@ Create the `~/.gitconfig` file:
 [merge]
   conflictstyle = diff3
 ```
+
+Create a ssh key & press enter to keep the default settings:
+```bash
+ssh-keygen
+```
+
+Upload the public key to [github ssh keys](https://github.com/settings/keys)

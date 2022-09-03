@@ -42,7 +42,7 @@ Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice
+sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox
 ```
 
 Uninstall gedit:
@@ -125,7 +125,16 @@ TODO
 
 ### Resilio Sync
 
-TODO
+Download [Resilio Sync](https://www.resilio.com) from [Desktop download page](https://www.resilio.com/platforms/desktop/);
+[direct link to x86-64 binary](https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz) and
+unzip to `~` and run it: `./rslsync`.
+
+Head to [localhost:8888](http://localhost:8888). Webui runs on localhost only, thus no strong password
+is needed: use `v` for both username and password. Use computer hostname as name shown when you send and receive folders.
+
+Create the base folder for rslsync: `cd ~ && mkdir -p "Resilio Sync"`. Now click `+ / Enter a key or link`. On other
+computer click "Share" on a folder, then "Key" and "Read & Write". Then select the target folder, e.g.
+`/home/mavi/Resilio Sync/muf`. The sync should now start.
 
 ### Intellij
 

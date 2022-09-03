@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Enable Discard for your SSD
+title: Enable Discard/Trim for your SSD
 ---
 
 After Linux is installed on your SSD, don't forget to enable the Discard operation,

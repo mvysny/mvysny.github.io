@@ -51,6 +51,16 @@ sudo apt autoremove --purge gedit nautilus-extension-gnome-terminal
 
 Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
 
+### gnome text editor
+
+* Settings Cog wheel > Show Line numbers
+* Settings Cog wheel > Show Right Margin
+* Preferences > Appearance: select 2nd row 2nd column.
+* Preferences > Highlight current line
+* Preferences > Display overview map
+* Preferences > Right margin: set to 120
+* Preferences > Restore Session: disable
+
 ### fish
 
 ```bash
@@ -96,6 +106,10 @@ ssh-keygen
 ```
 
 Upload the public key to [github ssh keys](https://github.com/settings/keys)
+
+### Double Commander
+
+TODO
 
 ### Intellij
 

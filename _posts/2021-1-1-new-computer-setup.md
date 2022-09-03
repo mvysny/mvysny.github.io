@@ -30,10 +30,16 @@ everything later on, after we verify that the system boots :-D
 
 Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthedocs.io/en/latest/Swapfile.html).
 
+Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition.
+
+Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
+
 ## Install basic software
 
 ```bash
-sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor
+sudo apt update
+sudo apt -V dist-upgrade
+sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice
 ```
 
 Uninstall gedit:
@@ -90,3 +96,17 @@ ssh-keygen
 ```
 
 Upload the public key to [github ssh keys](https://github.com/settings/keys)
+
+### Intellij
+
+```fish
+sudo snap install intellij-idea-ultimate
+```
+
+Login to my user account. To restore settings, follow [Sync settings between IDE instances](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#IDE_settings_sync).
+Make sure to:
+
+1. overwrite local settings from jetbrains account
+2. enable "sync plugins silently"
+
+To get rid of fish-related `read-only file system` uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`

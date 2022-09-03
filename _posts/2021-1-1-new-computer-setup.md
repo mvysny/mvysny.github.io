@@ -178,7 +178,7 @@ Copy home files from resilio sync to `~`.
 ### Intellij
 
 ```fish
-sudo snap install intellij-idea-ultimate
+sudo snap install intellij-idea-ultimate --classic
 ```
 
 Login to my user account. To restore settings, follow [Sync settings between IDE instances](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#IDE_settings_sync).

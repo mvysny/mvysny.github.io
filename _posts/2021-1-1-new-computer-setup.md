@@ -42,7 +42,7 @@ Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox
+sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird
 ```
 
 Uninstall gedit:
@@ -121,7 +121,30 @@ Upload the public key to [github ssh keys](https://github.com/settings/keys)
 
 ### Double Commander
 
-TODO
+Go to Configuration:
+
+* Colors / File Panels / Text Color: black
+* Colors / File types:
+  * category name: `executable`, mask: `*`, attributes: `-*x*`, color: `Green`
+  * `dir`, `*`, `d*`, `Navy`
+  * `symlink`, `*`, `l*`, `Teal`
+* Files views / Files views extra / Show system and hidden files
+* Folder tabs / "Show tab header also when there is only one tab" - uncheck
+* Fonts:
+  * Main Font: Ubuntu 11 Regular
+  * Viewer font: Monospace 11
+* Icons / File panel: 16x16
+* Keys / Hot Keys:
+  * cm_RunTerm: F2
+  * cm_PackFiles: Alt+P
+  * cm_ExtractFiles: Alt+U
+  * cm_ChangeDirToHome: ` (grave accent)
+* Tools / Editor:
+  * Use External Program;
+  * executable: `gnome-text-editor`
+  * additional parameters: `-n`
+
+Sort by extension.
 
 ### Resilio Sync
 
@@ -135,6 +158,10 @@ is needed: use `v` for both username and password. Use computer hostname as name
 Create the base folder for rslsync: `cd ~ && mkdir -p "Resilio Sync"`. Now click `+ / Enter a key or link`. On other
 computer click "Share" on a folder, then "Key" and "Read & Write". Then select the target folder, e.g.
 `/home/mavi/Resilio Sync/muf`. The sync should now start.
+
+### HOME Setup
+
+Copy home files from resilio sync to `~`.
 
 ### Intellij
 

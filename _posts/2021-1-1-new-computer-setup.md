@@ -41,6 +41,8 @@ Enable dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_re
 
 Make sure there are no btrfs errors: `dmesg|grep -i btrfs`.
 
+Optimize systemd journal: `sudo chattr +C /var/log/journal`
+
 Reboot.
 
 ## Install basic software
@@ -48,7 +50,8 @@ Reboot.
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support
+sudo snap refresh
+sudo apt install git vim htop gparted fish doublecmd-gtk gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support
 ```
 
 Uninstall gedit:
@@ -59,6 +62,8 @@ sudo apt autoremove --purge gedit nautilus-extension-gnome-terminal
 ### gnome console
 
 Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
+
+Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set "Launch Terminal" to `Super+t`.
 
 ### gnome text editor
 

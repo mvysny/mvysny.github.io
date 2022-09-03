@@ -37,6 +37,12 @@ run `sudo dmsetup ls --tree -o blkdevname`.
 
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
+Enable dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
+
+Make sure there are no btrfs errors: `dmesg|grep -i btrfs`.
+
+Reboot.
+
 ## Install basic software
 
 ```bash

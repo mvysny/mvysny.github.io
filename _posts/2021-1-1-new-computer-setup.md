@@ -78,6 +78,8 @@ Add `MOZ_ENABLE_WAYLAND=1` to `/etc/environment` to force Firefox to run on `way
 instead of `xwayland`, then reboot. Verify in the `about:support` page: the "Window Protocol"
 setting should read "wayland" instead of "xwayland".
 
+Login to firefox account and sync.
+
 ### git+sshkey
 
 Create the `~/.gitconfig` file:
@@ -108,6 +110,10 @@ ssh-keygen
 Upload the public key to [github ssh keys](https://github.com/settings/keys)
 
 ### Double Commander
+
+TODO
+
+### Resilio Sync
 
 TODO
 

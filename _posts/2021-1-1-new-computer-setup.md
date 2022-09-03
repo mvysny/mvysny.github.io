@@ -11,6 +11,8 @@ So, here it goes.
 Ubuntu 22.04 Desktop installer is now able to create an encrypted block device using
 dm-crypt, so it's no longer necessary to use the Ubuntu Server text installer.
 
+Simply download the Desktop Installer ISO and `dd` it to `/dev/sda` (replace with your USB drive).
+
 Boot the Desktop and run `gparted`.
 Partition the disk using the GPT partitioning table, and not the old MBR one.
 Create three partitions (don't set the fs type just yet and leave it unallocated, we'll
@@ -30,7 +32,8 @@ everything later on, after we verify that the system boots :-D
 
 Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthedocs.io/en/latest/Swapfile.html).
 
-Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition.
+Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition; also
+run `sudo dmsetup ls --tree -o blkdevname`.
 
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
@@ -130,3 +133,12 @@ Make sure to:
 2. enable "sync plugins silently"
 
 To get rid of fish-related `read-only file system` uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
+
+## OS Recovery
+
+Boot Ubuntu 22.04 Desktop Installer.
+
+1. Decrypt the root device: `sudo cryptsetup luksOpen TODO`
+2. mount the root fs: TODO
+3. TODO mount subvolumes?
+

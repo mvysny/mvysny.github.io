@@ -42,7 +42,7 @@ Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird
+sudo apt install git vim htop gparted fish doublecmd gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support
 ```
 
 Uninstall gedit:
@@ -183,5 +183,4 @@ Boot Ubuntu 22.04 Desktop Installer.
 
 1. Decrypt the root device: `sudo cryptsetup luksOpen TODO`
 2. mount the root fs: TODO
-3. TODO mount subvolumes?
-
+3. mount subvolumes according to fstab

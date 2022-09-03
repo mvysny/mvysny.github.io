@@ -64,6 +64,7 @@ Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https:
 
 * Settings Cog wheel > Show Line numbers
 * Settings Cog wheel > Show Right Margin
+* Settings Cog wheel > disable "Text Wrapping"
 * Preferences > Appearance: select 2nd row 2nd column.
 * Preferences > Highlight current line
 * Preferences > Display overview map

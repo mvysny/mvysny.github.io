@@ -63,7 +63,12 @@ sudo apt autoremove --purge gedit nautilus-extension-gnome-terminal
 
 Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
 
-Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set "Launch Terminal" to `Super+t`.
+### gnome keyboard shortcuts
+
+Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
+
+* "Launch Terminal" to `Super+t`
+* "Move Window" set to **Disabled** (press Backspace to clear the shortcut): conflict with Intellij
 
 ### gnome text editor
 

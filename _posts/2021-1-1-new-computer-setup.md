@@ -194,6 +194,27 @@ Make sure to:
 
 To get rid of fish-related `read-only file system` uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
 
+### Desktop
+
+Create a file named `Startup2.desktop` in `~/Desktop`, with the following contents:
+```
+[Desktop Entry]
+Encoding=UTF-8
+Exec=/home/mavi/local/startup.sh
+Icon=/usr/share/pixmaps/debian-logo.png
+Name=Startup
+Terminal=false
+Type=Application
+Version=1.0
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-RunOnDiscreteGpu=false
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+```
+
+Make it executable, then right-click it on the Desktop and check "Allow Launching".
+
 ## OS Recovery
 
 Boot Ubuntu 22.04 Desktop Installer.

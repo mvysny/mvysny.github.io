@@ -70,7 +70,8 @@ public class MyServlet extends VaadinServlet {
 
 For Vaadin 14.6+ you can simply provide your own implementation of
 `InstantiatorFactory` in order to produce `MyInstantiator`; you will no longer need
-to create a custom `MyServlet`.
+to create a custom `MyServlet`. See [Custom Instantiator](../vaadin-custom-instantiator/)
+on how that's done.
 
 ## FAQ
 

@@ -47,20 +47,21 @@ First, stop the VM. Then, go to where your `*.qcow2` image is located, and run t
 $ qemu-img create -f qcow2 -F qcow2 -b image.qcow2 image-1.qcow2
 ```
 
-Now duplicate your VM and select to run the VM on the original disk (since virt-manager doesn't allow you to
-specify a new disk). Head to the new VM settings, select "VirtIO Disk 1", then the "XML" tab and
-change the image file name manually (you may need to enable XML editing in virt-manager settings).
+Now duplicate your VM. Since virt-manager doesn't allow you to
+specify another disk to run the VM on, we'll need a bit of a hack.
+Select to run the VM on the original disk; then head to the new VM settings, select "VirtIO Disk 1", then the "XML" tab and
+change the image file name to `image-1.qcow2` manually (you may need to enable XML editing in virt-manager settings).
 
 If you want to run the original VM as well, you'll need to create a new image for it - the original
-`image.qcow2` MUST NOT BE MODIFIED (or can it? most probably not... TODO)
+`image.qcow2` MUST NOT BE MODIFIED otherwise all child images will most probably get corrupted.
 
 ```bash
 $ qemu-img create -f qcow2 -F qcow2 -b image.qcow2 image-2.qcow2
 ```
 
-Notice the `-1` and `-2` suffixes - we're creating a "tree" of images; this way we can clearly
+Notice the `-1` and `-2` suffixes - this way we're creating a "tree" of images; this way we can clearly
 tell who's the parent of whom. When creating a child image out of `image-1.qcow2`, you can
-simply name it `image-1-1.qcow2` etc.
+name it `image-1-1.qcow2` etc.
 
 If you decide to stop experimenting and delete the new VM, simply delete the VM including the `image-1.qcow2` file.
 

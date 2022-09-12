@@ -66,9 +66,8 @@ name it `image-1-1.qcow2` etc.
 If you decide to stop experimenting and delete the new VM, simply delete the VM including the `image-1.qcow2` file.
 
 On the other hand if you decide to keep the changes, just leave the images as-is, and
-maybe delete the old VM without deleting the image file. Alternatively, if the base image has no other children,
-you can merge
-changes done to `image-1.qcow2` to `image.qcow`:
+maybe delete the old VM without deleting the image file. Later on, if the base image has no other children,
+you can merge changes done to `image-1.qcow2` to `image.qcow` and delete `image-1.qcow2`:
 
 ```bash
 $ qemu-img commit -f qcow2 -d image-1.qcow2.

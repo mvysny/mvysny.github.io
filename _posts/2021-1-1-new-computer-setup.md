@@ -43,6 +43,12 @@ Make sure there are no btrfs errors: `dmesg|grep -i btrfs`.
 
 Optimize systemd journal: `sudo chattr +C /var/log/journal`
 
+Regarding additional fs flags:
+* `user_xattr` is enabled by default on ext4 and btrfs; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
+  and also [user_xattr ubuntu forums thread](https://ubuntuforums.org/showthread.php?t=2400092)
+* `extents` - used by default by btrfs; ext4: unknown. There's no longer a mount option `extent` or `extents`,
+  probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
+
 Reboot.
 
 ## Install basic software

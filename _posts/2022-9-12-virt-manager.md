@@ -24,6 +24,23 @@ on openjdk-11 on Ubuntu 22.04 x86-64 machine:
 
 Not bad - very usable. The UI performance is perfect with 3D acceleration enabled.
 
+## UI issues
+
+I always enable "Auto-resize VM with window" which makes sure the VM fills all the available
+screen space of the virt-manager window.
+
+Use the `virtio` video driver, and make sure the 3D acceleration support is enabled.
+Then head to Display, select Spice and enable OpenGL. This is the best and fastest setting for smoothest UI.
+
+* Virtio without 3D still offers quite decent performance. If you don't want to enable 3D acceleration, I still recommend to use this driver.
+* QXL doesn't support 3D acceleration. The speed is fine, but the "Auto-resize VM with window" is very buggy with this driver
+  and stubbornly refuses to resize the screen of your VM.
+* Bochs driver is horribly slow.
+* Haven't tried others.
+
+Firefox+Wayland+Screen sharing: on all video drivers, if you try to share a screen where your VM is running, the screen will
+soon stop updating in Firefox. Workaround is to share just the virt-manager window with the VM and not the entire screen.
+
 ## What I miss
 
 I miss the ability to clone the VM without having to clone the disk. VirtualBox

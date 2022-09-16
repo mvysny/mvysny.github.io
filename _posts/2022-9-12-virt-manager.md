@@ -16,7 +16,7 @@ Pretty happy so far with my Linux-in-Linux setup:
 ## Performance
 
 The CPU performance is fine. My highly unscientific test of compiling [karibu-testing](https://github.com/mvysny/karibu-testing/)
-on openjdk-11 on Ubuntu 22.04 x86-64 machine:
+on openjdk-11 on Ubuntu 22.04 x86-64 machine with "AMD Ryzen 7 PRO 4750U" CPU:
 
 * Host machine with 8 cores+hyperthreading: 2m 1s
 * Docker image: 2m 12s

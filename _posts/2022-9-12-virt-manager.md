@@ -41,7 +41,7 @@ Then head to Display, select Spice and enable OpenGL. This is the best and faste
 Firefox+Wayland+Screen sharing: on all video drivers, if you try to share a screen where your VM is running, the screen will
 soon stop updating in Firefox. Workaround is to share just the virt-manager window with the VM and not the entire screen.
 
-## What I miss
+## Quick VM cloning
 
 I miss the ability to clone the VM without having to clone the disk. VirtualBox
 simply created additional filesystem layers, allowing for quick prototyping (and

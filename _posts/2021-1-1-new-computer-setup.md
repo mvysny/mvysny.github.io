@@ -18,8 +18,8 @@ Partition the disk using the GPT partitioning table, and not the old MBR one.
 Create three partitions (don't set the fs type just yet and leave it unallocated, we'll
 do that in the installer):
 
-1. 2GB `ext4` for `/boot`
-2. 256MB `vfat` for `/boot/efi`
+1. 2GB `ext4` for `/boot` - unencrypted. [It's better to have a separate /boot even when using ESP](https://www.reddit.com/r/archlinux/comments/ogfa3e/do_i_need_a_boot_partition_for_system_encryption/)
+2. 256MB ESP `vfat` for `/boot/efi`
 3. Rest of the disk `unallocated` for dm-crypt - the `btrfs` for `/` will go here.
 4. No swap yet - we'll swap to a file.
 

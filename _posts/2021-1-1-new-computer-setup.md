@@ -234,6 +234,8 @@ Go to Settings. Then:
     * Disable File History; also click the "Clear History"
     * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
   * Screen Lock: Blank Screen Display: Never; 
+* Date & Time: Enable Automatic Time Zone
+* Keyboard: Add "Slovak QWERTY" and "Finnish".
 
 ## OS Recovery
 

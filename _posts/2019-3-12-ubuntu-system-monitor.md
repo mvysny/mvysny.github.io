@@ -17,6 +17,17 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 > Note: this breaks on EVERY Ubuntu upgrade for me. Be prepared to live without it
 > for a couple of weeks after Ubuntu upgrade.
 
+## Ubuntu 22.10
+
+Install the `gnome-shell-extension-manager` via apt:
+
+```bash
+sudo apt install gnome-shell-extension-manager
+extension-manager
+```
+
+Unfortunately all system monitors are marked as incompatible with GNOME 43 at the moment.
+
 ## Ubuntu 22.04
 
 Unfortunately the `gnome-shell-extension-system-monitor` deb package is no longer available from

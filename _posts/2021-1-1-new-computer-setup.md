@@ -221,6 +221,11 @@ X-KDE-Username=
 
 Make it executable, then right-click it on the Desktop and check "Allow Launching".
 
+### Rhythmbox
+
+* Preferences > Plugins > Disable "Alternative Toolbar", "DAAP Music Sharing", "Last FM", "Portable Players"
+* `cd Music && ln -s "../Resilio Sync/muf-music/music" ./`
+
 ## GNOME Settings
 
 Go to Settings. Then:

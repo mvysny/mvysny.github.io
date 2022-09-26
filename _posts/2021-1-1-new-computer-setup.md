@@ -158,10 +158,11 @@ Go to Configuration:
   * Viewer font: Monospace 11
 * Icons / File panel: 16x16
 * Keys / Hot Keys:
-  * cm_RunTerm: F2
-  * cm_PackFiles: Alt+P
-  * cm_ExtractFiles: Alt+U
+  * cm_RunTerm: `F2`
+  * cm_PackFiles: `Alt+P`
+  * cm_ExtractFiles: `Alt+U`
   * cm_ChangeDirToHome: ` (grave accent)
+  * cm_RenameOnly: `F9`
 * Tools / Editor:
   * Use External Program;
   * executable: `gnome-text-editor`

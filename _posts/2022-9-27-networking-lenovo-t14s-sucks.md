@@ -8,6 +8,8 @@ Linux kernel 5.15.0-48.
 Which is a pity since T14s is otherwise a great laptop. However, the networking stack
 is just completely broken, simple and plain.
 
+## Wired eth
+
 The wired eth via docking station will stop working randomly with these error messages.
 
 ```
@@ -25,9 +27,15 @@ Reported as [bug 1922651](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1
 but unfortunately the bug still persists with Linux kernel 5.15.0-48. The only way
 is to unplug the machine from the docking station, then plug it back, or just disable the cable networking.
 
-The wired eth via an ethernet dongle will randomly stop working with the same error messages.
+The wired eth via an ethernet dongle ([Lenovo ThinkPad Ethernet Extension Cable Gen 2](https://www.verkkokauppa.com/fi/product/468930/Lenovo-ThinkPad-Ethernet-Extension-Cable-Gen-2))
+will randomly stop working with the same error messages. Avoid like the pague!
 
-The wireless will randomly stop working with the following messages, with an occasional kernel segfault on top:
+Workaround: don't buy the ethernet dongle from Lenovo, buy [TP-LINK UE306](https://www.verkkokauppa.com/fi/product/743296/TP-LINK-UE306-USB-3-0-Gigabit-Ethernet-verkkokortti)
+instead and plug it into your docking station. It has been working flawlessly for me so far.
+
+## Wireless
+
+The wireless will frequently and randomly stop working with the following messages, with an occasional kernel segfault on top:
 
 ```
 [  592.333309] iwlwifi 0000:03:00.0: Queue 5 is stuck 225 43
@@ -105,5 +113,10 @@ The wireless will randomly stop working with the following messages, with an occ
 [  592.336478] iwlwifi 0000:03:00.0: WRT: Collecting data: ini trigger 4 fired (delay=0ms).
 [  592.336488] ieee80211 phy0: Hardware restart was requested
 ```
+
+Workaround is to upgrade your access point. This only happens when I create an access point
+on my phone, with WiFi 5 or lower. Enable Wifi 6 in your phone.
+
+## Conclusion
 
 It's so fucking irritating, piece of crap, avoid.

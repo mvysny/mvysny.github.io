@@ -30,8 +30,14 @@ is to unplug the machine from the docking station, then plug it back, or just di
 The wired eth via an ethernet dongle ([Lenovo ThinkPad Ethernet Extension Cable Gen 2](https://www.verkkokauppa.com/fi/product/468930/Lenovo-ThinkPad-Ethernet-Extension-Cable-Gen-2))
 will randomly stop working with the same error messages. Avoid like the pague!
 
+### Workaround
+
 Workaround: don't buy the ethernet dongle from Lenovo, buy [TP-LINK UE306](https://www.verkkokauppa.com/fi/product/743296/TP-LINK-UE306-USB-3-0-Gigabit-Ethernet-verkkokortti)
 instead and plug it into your docking station. It has been working flawlessly for me so far.
+It uses the `ax88179_178a` kernel module and reports like this in dmesg:
+```
+[   18.054458] ax88179_178a 5-1.2:1.0 enx7cc2c642aedf: ax88179 - Link status is: 1
+```
 
 ## Wireless
 

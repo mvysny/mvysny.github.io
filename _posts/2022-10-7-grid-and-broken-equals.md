@@ -63,7 +63,7 @@ it to the browser, there are numerous issues with that approach:
 * Also: formatting; which column would show which bean property, etc.
 
 Therefore, when Grid needs to display a row in the browser, Grid will run all `ValueProviders` for every
-column, convert that to `List<String>` and send that to the client-side. Actually Grid sends rows in batches,
+column, convert that to `List<String>` and send that to the client-side, one for every row. Actually Grid sends rows in batches,
 so it will send a `List<List<String>>` instead. Actually scratch that, Grid will send a `Map<ID, List<String>>`
 instead. The `ID` is a very important point here.
 

@@ -154,6 +154,7 @@ to edit!
 
 The simplest workaround is to add a `new Person("Jim (Clone)")` instead, or `Jim #2` or similar.
 This makes sense: if your Grid shows Jim two times, your user will also have a hard time differentiating between those two.
+This is the bean "identity" problem; discussion on this topic is beyond the scope of this article.
 
 ## System.identityHashCode()
 
@@ -195,8 +196,20 @@ Sometimes the entities come from a legacy JAR and there's nothing you can do abo
 
 ## `DataProvider.getId()`
 
-TODO
+There is a way to tell Grid to map the entity to an ID using a different strategy: overriding the `DataProvider.getId()`.
+The Bean-to-ID translation goes as follows:
+
+1. Grid asks `DataProvider.getId()` to obtain an "ID" from a bean. By default, the `DataProvider` simply returns the
+   bean itself.
+2. Grid then takes this "ID", goes to `KeyMapper` and translates it to an Integer ID which is
+   then used in Grid server-client communication.
+
+You can override `DataProvider.getId()` and use any of the strategy above, to fix the grid formatting issue.
+However, the selection will continue using the beans themselves in the Set, therefore
+this fix won't work with multi-select Grid (even though it will work with single-select Grid).
 
 ## Wrapper class
 
-TODO
+You can create a `Wrapper` class which wraps your bean and calculates `hashCode()/equals()` properly.
+The problem is that instead of having `Grid<T>` you'll have `Grid<Wrapper<T>>`, which
+might or might not suit your need.

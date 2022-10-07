@@ -178,7 +178,7 @@ It appears that there's a fundamental problem here: you will have to make some o
 for a selection-from-backend scenario to work, which will break the clone scenario.
 
 The `identityHashCode()` solution will work well when:
-* 
+
 * All data is in-memory;
 * or if the Grid will not allow for a selection (`SelectionMode.NONE`);
 * or if only the user will perform selection changes (the server is not trying to set a new selection)

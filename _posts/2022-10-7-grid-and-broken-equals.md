@@ -101,9 +101,9 @@ The grid will thus send three identical rows to the client-side; in JSON communi
 And we have arrived to the core of the problem. Clearly KeyMapper is lying like crazy here, but that's because the `Person.equals()/hashCode()` has broken
 the contract as required by `HashMap` which causes `HashMap` to fail to work properly.
 
-## The Problem of the Selection
+## The Problem of the Grid Selection
 
-The selection in Vaadin is internally represented as a `Set` of `Person`. And you should already hear an alarm bell:
+Selected rows in the Vaadin Grid are internally represented as a `Set` of `Person`. And you should already hear an alarm bell:
 never place objects with broken `equals()/hashCode()` into a `Set`. True, but let's take a look what exactly happens.
 
 What will happen in `grid.asSingleSelect().setValue(jim);` is that Vaadin will create a `Set` holding just one item: `jim`,

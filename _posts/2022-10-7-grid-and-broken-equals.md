@@ -157,6 +157,20 @@ The simplest workaround is to add a `new Person("Jim (Clone)")` instead, or `Jim
 This makes sense: if your Grid shows Jim two times, your user will also have a hard time differentiating between those two.
 This is the bean "identity" problem; discussion on this topic is beyond the scope of this article.
 
+## The Database Entity (JPA) solution
+
+For an entity fetched from a backend system you should employ a different strategy. Usually you have a primary key
+identifier of the record; read [JPA Entity Equality](https://www.baeldung.com/jpa-entity-equality) for more info.
+In short, the entities are supposed
+to represent a row with given ID anyway; if they represent the same row then they're equal, regardless of what data they hold.
+They might have been retrieved at different times, with a data modification in between.
+
+The algorithm is as follows:
+
+* If both entities have non-null primary keys, compare those only and ignore differences in values.
+* If both entities have null primary keys, compare as data class - all of their properties. That will leave the
+  clone problem open though. Read below on how to solve the clone problem.
+
 ## System.identityHashCode()
 
 Alternatively, we could simply delete `Person.equals()/hashCode()` and leave `Object` to calculate those,
@@ -177,24 +191,20 @@ In other words, the Grid shows rows with IDs of `1`, `2` and `3`, and you're tel
 It appears that there's a fundamental problem here: you will have to make some objects equal in order
 for a selection-from-backend scenario to work, which will break the clone scenario.
 
+You will have to choose one, based on the usage scenario.
+Basically, by default it's best to use the Data/JPA equality solution and work around the 'clone' problem.
+However, sometimes you don't have that kind of possibility, and you have to use the `identityHashCode()` solution.
 The `identityHashCode()` solution will work well when:
 
 * All data is in-memory;
 * or if the Grid will not allow for a selection (`SelectionMode.NONE`);
 * or if only the user will perform selection changes (the server is not trying to set a new selection)
 
-For selection data fetched from a backend system you'll have to fix the `equals()/hashCode()`. Usually you have a primary key
-identifier of the record; read [JPA Entity Equality](https://www.baeldung.com/jpa-entity-equality) for more info.
-In short:
-
-* If both entities have non-null primary keys, compare those only and ignore differences in values. The entities are supposed
-  to represent a row with given ID anyway.
-* If both entities have null primary keys, compare as data class - all of their properties. That will leave the
-  clone problem open though.
+## Solving the 'clone' problem
 
 To solve the 'clone' problem, you can rework your UX, edit the newly created row in a new dialog and only
 show the row in the grid after it is persisted in the database.
-Alternatively, you can make the clone unique by adding `" (Clone #1)"` to its name or similar. 
+Alternatively, you can make the clone unique by adding `" (Clone #1)"` to its name or similar.
 
 # If you can't change equals()/hashCode()
 

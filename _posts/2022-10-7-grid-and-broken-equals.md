@@ -84,15 +84,15 @@ then passes only that integer to the client-side. `KeyMapper` uses `HashMap` int
 
 The conversation between Grid and KeyMapper goes like this:
 
-1. Grid: KeyMapper, do you have an ID for jim please?
-2. KeyMapper: No, but I generated an ID of `1`, here it is.
-3. Grid: Thanks, I'll remember the rendered string "jim" for this row under the ID of 1. What about martin?
-4. KeyMapper: Yes, my `HashMap` already contains martin and the ID is `1`, here it is. (!!!!!)
-5. Grid: Ah great, alright, I'll just remember the rendered string "martin" for this row under the ID of 1. Hmm, strange, there's already something there... whatever I'll just overwrite. What about albert?
-6. KeyMapper: Yes, my `HashMap` already contains albert and the ID is `1`, here it is. (!!!!!)
+1. Grid: KeyMapper, do you have an ID for `Person("jim")` please?
+2. KeyMapper: Not yet; but I've remembered it, generated an ID of `1` for it, here it is.
+3. Grid: Thanks! I'll run the `ValueProvider`s, 'll remember the rendered string "jim" for this row under the ID of 1. What about `Person("martin")`?
+4. KeyMapper: Yes, my `HashMap` already contains `Person("martin")` and the ID is `1`, here it is.
+5. Grid: Ah great, alright, I'll just remember the rendered string "martin" for this row under the ID of 1. Hmm, strange, there's already something there... whatever I'll just overwrite. What about `Person("albert")`?
+6. KeyMapper: Yes, my `HashMap` already contains `Person("albert")` and the ID is `1`, here it is.
 7. Grid: alrighty, writing down "albert" under ID 1.
 
-The grid will thus send three identical rows to the client-side; in JSON it will look something like this:
+The grid will thus send three identical rows to the client-side; in JSON communication from server to client it will look something like this:
 
 ```json
 [{"id": 1, "values": ["Albert"]}, {"id": 1, "values": ["Albert"]}, {"id": 1, "values": ["Albert"]}]
@@ -104,13 +104,13 @@ the contract as required by `HashMap` which causes `HashMap` to fail to work pro
 ## The Problem of the Selection
 
 The selection in Vaadin is internally represented as a `Set` of `Person`. And you should already hear an alarm bell:
-never place objects with broken equals()/hashCode() into a Set. True, but let's take a look what exactly happens.
+never place objects with broken `equals()/hashCode()` into a `Set`. True, but let's take a look what exactly happens.
 
 What will happen in `grid.asSingleSelect().setValue(jim);` is that Vaadin will create a `Set` holding just one item: `jim`,
 and will store that as a selection, then it will pass it to the client-side.
 
 We can't pass in `Person`s directly to the client-side, we know that already.
-We unfortunately can not calculate the row index only from the `Person` instance alone anymore.
+We unfortunately can not calculate the row index only from the `Person` instance alone.
 That is the primary reason why Grid uses the ID mechanism and the `KeyMapper` instead of row indices.
 
 What Grid will do is that it will turn `Set<Person>` into a `List<Integer>`
@@ -126,7 +126,8 @@ implementations of `hashCode()`/`equals()`.
 
 ## The 'Data Class' Solution
 
-Data class simply calculates equals/hashCode from the value of its fields. We only have one field:
+Data class simply calculates `equals()/hashCode()` from the value of its fields.
+We only have one field, therefore we'll fix the code as follows:
 ```java
 public class Person implements Serializable {
     @Override
@@ -144,7 +145,7 @@ This makes sense: `new Person("Jim").equals(new Person("Jim"))` should obviously
 
 This fixes the Grid example and the selection, but opens up a very interesting corner-case problem: say
 that you want to clone a person in the grid. A "clone" button will take the currently selected item,
-add it to the list and set it to the grid. Say that the list now reads
+add it to the list and set it to the grid. Say that the list of items in the Grid now reads
 ```
 new Person("Jim"), new Person("Martin"), new Person("Albert"), new Person("Jim")
 ```
@@ -160,23 +161,29 @@ This is the bean "identity" problem; discussion on this topic is beyond the scop
 
 Alternatively, we could simply delete `Person.equals()/hashCode()` and leave `Object` to calculate those,
 using `System.identityHashCode()`. That will make `new Person("Jim").equals(new Person("Jim"))` return
-false (which looks weird), but at least the user will be able to select "the other Jim" independently of the "original Jim" and edit it.
+false (which looks weird), but at least the user will be able to select "the other Jim"
+independently of the "original Jim" and edit it.
 
 This may work when you have data in-memory, but quickly falls apart when you have data loaded from a database.
 Say you want to select a person by his name, "Jim". You run a SQL `SELECT` to fetch a bean from a database,
 then proceed to call `grid.asSingleSelect().setValue(person);` to select the person, only to find out
-that nothing is selected at all. The problem is that the new person has received a new ID by the `KeyMapper`,
-since the newly fetched person is not yet present amongst the beans know to the `KeyMapper` (and hence displayed in the Grid).
+that nothing is selected at all. The problem is that the new person has received a new ID by the `KeyMapper`
+(because it's a new instance of the `Person` class which isn't equal to the old one).
 
-In other words, the Grid shows rows with IDs of 1, 2 and 3, and you're telling the Grid to select row with ID 4.
+In other words, the Grid shows rows with IDs of `1`, `2` and `3`, and you're telling the Grid to select row with ID `4`.
 
 ## No One-Size-Fits-All Solution
 
 It appears that there's a fundamental problem here: you will have to make some objects equal in order
 for a selection-from-backend scenario to work, which will break the clone scenario.
 
-The `identityHashCode()` solution works well when all data is in-memory, or if the Grid will not allow for a selection (`SelectionMode.NONE`).
-For data fetched from a backend system you'll have to fix the `equals()/hashCode()`. Usually you have a primary key
+The `identityHashCode()` solution will work well when:
+* 
+* All data is in-memory;
+* or if the Grid will not allow for a selection (`SelectionMode.NONE`);
+* or if only the user will perform selection changes (the server is not trying to set a new selection)
+
+For selection data fetched from a backend system you'll have to fix the `equals()/hashCode()`. Usually you have a primary key
 identifier of the record; read [JPA Entity Equality](https://www.baeldung.com/jpa-entity-equality) for more info.
 In short:
 
@@ -194,9 +201,9 @@ Alternatively, you can make the clone unique by adding `" (Clone #1)"` to its na
 Sometimes the entities come from a legacy JAR and there's nothing you can do about their
 `hashCode()/equals()` without risking that the legacy code falls apart. Is there another way perhaps?
 
-## `DataProvider.getId()`
+## DataProvider.getId()
 
-There is a way to tell Grid to map the entity to an ID using a different strategy: overriding the `DataProvider.getId()`.
+There is a way to tell Grid to map the entity to an ID using a different approach, by overriding the `DataProvider.getId()`.
 The Bean-to-ID translation goes as follows:
 
 1. Grid asks `DataProvider.getId()` to obtain an "ID" from a bean. By default, the `DataProvider` simply returns the

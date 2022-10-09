@@ -3,6 +3,18 @@ layout: post
 title: Networking in Lenovo T14s sucks
 ---
 
+T14s is a great laptop on paper: powerful AMD processor, portable 14" body, lovely
+piece of art. A complete garbage underneath.
+
+# Keyboard
+
+The `ENTER` key just randomly doesn't work when you boot up the computer. It's most probably
+not a mechanical problem though - at some random point ENTER starts working properly
+and continues to be working fine. The problem is that you have to log in at some point,
+and then you have to wait and wait and wait until ENTER starts working. Fucking irritating.
+
+# Networking
+
 Networking in Lenovo ThinkPad T14s is a complete piece of garbage with
 Linux kernel 5.15.0-48.
 Which is a pity since T14s is otherwise a great laptop. However, the networking stack

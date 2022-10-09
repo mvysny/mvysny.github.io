@@ -4,7 +4,8 @@ title: Networking in Lenovo T14s sucks
 ---
 
 T14s is a great laptop on paper: powerful AMD processor, portable 14" body, lovely
-piece of art. A complete garbage underneath.
+piece of art. A complete garbage underneath. This is literally the worst machine
+I ever owned.
 
 # Keyboard
 

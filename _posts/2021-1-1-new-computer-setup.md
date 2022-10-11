@@ -243,6 +243,12 @@ Go to Settings. Then:
 * Date & Time: Enable Automatic Time Zone
 * Keyboard: Add "Slovak QWERTY" and "Finnish".
 
+### Software & Updates
+
+Go to the "Updates" tab and set:
+* When there are other updates: Display Immediately
+* Notify me of new Ubuntu version: For any new version
+
 ## OS Recovery
 
 Boot Ubuntu 22.04 Desktop Installer.

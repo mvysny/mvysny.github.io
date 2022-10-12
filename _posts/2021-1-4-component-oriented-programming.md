@@ -12,7 +12,7 @@ then you're familiar with components such as buttons and checkboxes. It goes lik
 4. If the component needs data, it will introduce an interface (e.g. DataProvider)
 5. If the component wants you to know something, it will provide a listener.
 
-Simple, right? You can even go further: your PersonGrid can add columns to itself
+Simple, right? You can even go further: your `PersonGrid` can add columns to itself
 and populate itself with data, calling the backend services directly; all you
 then need to do is to call `new PersonGrid()` and add it to your layout. Problem solved!
 

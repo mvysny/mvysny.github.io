@@ -11,8 +11,9 @@ digestable packages.
 
 However, all of those MVx patterns have the following fundamental flaws:
 
-* You can split your code three way (M V and C) but not any further, unless you
-  go sub-controllers, sub-models and sub-views. That way lies insanity.
+* You can split your code into exactly three pieces: M, V and C. You can't split the code into more pieces even
+  if you wanted to, unless you
+  go sub-controllers, sub-models and sub-views. That way lies insanity though.
 * It is fucking complicated. You need to read shitload of [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
   articles and books (which often contradict each other), just to be able to
   maintain a MVP codebase.

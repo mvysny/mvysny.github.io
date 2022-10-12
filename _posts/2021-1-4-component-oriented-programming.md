@@ -67,8 +67,8 @@ The component needs data to display.
 * A common `Grid` which is designed to serve variety of use-cases provides the `DataProvider`
   interface for you to implement, through which Grid then fetches data.
 * You can (and should) extend Grid and create a `BookingsGrid` which sets all of its columns
-  and renderers, and also may directly call services to populate itself. In such case,
-  the `BookingsGrid` is self-sufficient and doesn't even need a `DataProvider` to be set.
+  and renderers, and also may directly call services to populate itself (sets its own `DataProvider`).
+  That makes `BookingsGrid` completely self-sufficient.
 
 ## Testing
 

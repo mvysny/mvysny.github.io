@@ -3,7 +3,7 @@ layout: post
 title: Vaadin + Localization/Internationalization (l10n/i18n)
 ---
 
-The class performing localization in Vaadin is the `I18nProvider` class.
+The `I18nProvider` class handles the duty of performing localization in Vaadin apps.
 You can invoke it either directly via `VaadinService.getCurrent().getInstantiator().getI18NProvider().getTranslation("key", UI.getCurrent().getLocale());`
 or via `Component.getTranslation()`. The latter is much shorter, but you may not have a component
 always around to perform the translation. Therefore, I recommend to create a simple class

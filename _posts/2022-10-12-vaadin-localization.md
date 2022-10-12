@@ -18,18 +18,18 @@ public class Tr {
 
 Then you can static-import the `tr()` function everywhere and use it from anywhere.
 
-## Default I18nProvider
+## Default I18nProvider?
 
-There is no `I18nProvider` implementation by default. You can check out
+There is no default `I18nProvider` implementation. You can check out
 [Vaadin documentation in Localization](https://vaadin.com/docs/v14/flow/advanced/tutorial-i18n-localization)
-on how to create a simple `ResourceBundle`-backed I18nProvider yourself.
+on how to create a simple `ResourceBundle`-backed I18nProvider, or simply read on.
 
-Vaadin recommends a funny way of registering the I18nProvider (via a system property or web init param);
-it looks funny but it works.
+For non-Spring projects, Vaadin recommends a funny way of registering your I18nProvider, via a system property or web init param.
+It looks funny but it works.
 Alternatively you can define [your own Instantiator](../vaadin-custom-instantiator/),
 override `Instantiator.getI18nProvider()` and provide a singleton instance of your I18nProvider.
 
-With Spring, you can annotate your i18n provider with `@Bean` and Vaadin-Spring integration should pick it up
+With Spring, you can annotate your i18n provider class with `@Service` and Vaadin-Spring integration should pick it up
 automatically.
 
 ## Resource Bundle
@@ -43,7 +43,7 @@ In order to use Resource Bundles with Vaadin, you'll need to define the followin
 ```java
 public class TranslationProvider implements I18NProvider {
 
-    public static final String BUNDLE_PREFIX = "translate";
+    private static final String BUNDLE_PREFIX = "translate";
 
     private static final List<Locale> locales = Collections
             .unmodifiableList(Arrays.asList(new Locale("en", "GB"), new Locale("fi", "FI")));
@@ -78,8 +78,8 @@ public class TranslationProvider implements I18NProvider {
 ```
 
 In the `getProvidedLocales()` you should return all locales for which you define resource bundles.
-Vaadin will then match the locale coming from the browser in the http request to this list,
-and will pick a match and will set it to the VaadinSession and all UIs. If no match
+Vaadin will then match the language coming from the browser in the http request to this list,
+it will pick a match and will set it to the VaadinSession and all UIs. If no match
 is found, first locale is selected. Therefore:
 
 * Pick one locale that will be the primary one, usually it's English. This will be a fallback locale:
@@ -99,18 +99,21 @@ You should then create two resource bundles in `src/main/resources/`:
 Note the `{0}` string - that's what `MessageFormat` class uses to format String with parameters. See
 the `MessageFormat` class javadoc for more info on how to use additional formatting.
 
-Now you can call `tr("Hi", "Martin")` in your code, obtain the translation e.g. `Hello, Martin!`.
+Now you are able to call `tr("Hi", "Martin")` from anywhere in your code, to obtain the translation e.g. `Hello, Martin!`.
 
 ## Changing Language On-The-Fly
 
-Say that you want to have a ComboBox language selector with the languages; if the language
-changes then you want to immediately change all texts in all components to the new language.
-You may be tempted to call `VaadinSession.getCurrent().setLocale(locale)`, then have all
-components implement the `LocaleChangeObserver` interface and then change the labels.
+Say that you want to have a ComboBox language selector with the languages placed somewhere within the navigation bar of
+your application. If the user changed the language,
+then you'd like to immediately change all texts in all Vaadin components to the new language.
+You may be tempted to have all
+components implement the `LocaleChangeObserver` interface to change their labels,
+then simply call `VaadinSession.getCurrent().setLocale(locale)`.
 
 **Don't.**
 
-There is no good solution for this. Let's explore one solution that sounds good at first.
+There is no good solution for this. Let's explore two solutions.
+
 Say you want to have a Button which changes its text automatically based on locale change.
 You would create a class `I18nButton` as follows:
 
@@ -181,13 +184,18 @@ original counterpart `TextField`. Any extending classes will need to have the `I
 say you have `MyTextField` which extends `TextField` then you need to define `I18nMyTextField` and repeat the i18n
 machinery there.
 
-Maybe you could instead introduce a set of mixin interfaces, say `HasI18nText` which would extend `LocaleChangeObserver`
-and would be implemented by all components, but that solution is very complex; you'll need to implement
-get/set for `tr` in every component; and also mixin interface won't add constructor parameters.
+You may be tempted to solve the repetition problem by introducing a set of mixin interfaces,
+say `HasI18nText` which would extend `LocaleChangeObserver`
+and would be implemented by all components, but that solution is just horrible:
+
+* It's very complex to understand;
+* You'll need to implement get/set for `tr` in every component
+* Mixin interface won't add constructor parameters
+* You'll still need to define the `I18n*` class hierarchy anyway
 
 ### Alternative: Traverse Components Yourself
 
-Alternatively you could remember the i18nkey for component's placeholder/label/texts in component data,
+Alternatively you could remember the i18nkey for component's placeholder/label/texts in component data (`ComponentUtil.getData()`),
 then have one locale observer which would traverse all components on locale change and would apply the new placeholders/labels/texts
 to the components. This certainly removes the need of having a parallel set of `I18n*` classes.
 
@@ -206,8 +214,8 @@ The best & simplest solution is to reload the page on language change, then re-c
 set their labels via `textField.setLabel(tr("key.name"))`. You only need to remember one rule: to always
 call the `tr()` function, and that's really easy to remember.
 
-What if you're using `@PreserveOnRefresh` or [cached views](../cached-vaadin-routes/)? You can
-make `LanguageComboBox` clear the view cache on language change, which is perfectly acceptable -
+What if you're using `@PreserveOnRefresh` or [cached routes](../cached-vaadin-routes/)? You can
+make `LanguageComboBox` clear the view cache on language change then reload the page, which is perfectly acceptable -
 the language doesn't change often after all. In case of `@PreserveOnRefresh` there's no simple solution -
 even if you navigate to other view, the root layout may not be changed. You may need a combination
 of navigation + page reload; or you can clear the session and log out the user.

@@ -14,7 +14,7 @@ var a = new Anchor(...);
 a.add(new Icon(VaadinIcon.ABACUS));
 ```
 
-This may not work with the button though, since the button may steal clicks.
+This may not work with the Vaadin Button though, since the button may steal clicks.
 
 ## Programmatic Downloads
 

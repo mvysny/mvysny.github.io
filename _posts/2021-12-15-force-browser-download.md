@@ -10,7 +10,7 @@ working as expected.
 If you want to have a download icon, you can simply add the `Icon` component into `Anchor` like follows:
 
 ```java
-var a = new Anchor(...);
+Anchor a = new Anchor(...);
 a.add(new Icon(VaadinIcon.ABACUS));
 ```
 

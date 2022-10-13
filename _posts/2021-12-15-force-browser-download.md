@@ -18,8 +18,12 @@ This may not work with the Vaadin Button though, since the button may steal clic
 
 ## Programmatic Downloads
 
-You can try to call `button.getElement().executeJs("window.open($0)", registration.getResourceUri().toString()))`
-to open the download in a new popup. Note that Firefox will block the popup by default - you will need to
+You can try to call the following on button click, to open the download in a new popup:
+```java
+button.getElement().executeJs("window.open($0)", registration.getResourceUri().toString()));
+```
+
+Note that Firefox will block the popup by default - you will need to
 tell the user to disable popup blocking for your site.
 
 On top of that, unfortunately it's not possible to tell [window.open](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) to

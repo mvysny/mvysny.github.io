@@ -18,7 +18,7 @@ This may not work with the Vaadin Button though, since the button may steal clic
 
 ## Programmatic Downloads
 
-You can try to call the following on button click, to open the download in a new popup:
+You can try to call [window.open](https://developer.mozilla.org/en-US/docs/Web/API/Window/open) as follows, on button click, to open the download in a new popup:
 ```java
 button.getElement().executeJs("window.open($0)", registration.getResourceUri().toString()));
 ```
@@ -56,7 +56,7 @@ public class MainView extends VerticalLayout {
                 registration = null;
             });
             button.addClickListener(e ->
-                    button.getElement().executeJs("window.open($0)", registration.getResourceUri().toString()));
+                    button.getElement().executeJs("window.location.href = $0", registration.getResourceUri().toString()));
         }
 
         private void registerResource() {

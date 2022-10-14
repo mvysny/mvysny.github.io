@@ -22,10 +22,33 @@ Then run this to connect to it with the `psql` command-line client:
 $ PGPASSWORD=mysecretpassword psql -h localhost -p 5432 -U postgres postgres
 ```
 
+or (but this will make the password visible in the list of processes, see [interactive password](https://stackoverflow.com/questions/6405127/how-do-i-specify-a-password-to-psql-non-interactively))
+
+```bash
+$ psql postgresql://postgres:mysecretpassword@localhost:5432/postgres
+```
+
 You can also run SQL commands from the command line:
 
 ```bash
 $ PGPASSWORD=mysecretpassword psql -h localhost -p 5432 -U postgres postgres -c "CREATE TABLE IF NOT EXISTS foo (id bigint primary key not null)"
 $ PGPASSWORD=mysecretpassword psql -h localhost -p 5432 -U postgres postgres -c "INSERT INTO foo (id) VALUES (1)"
 $ PGPASSWORD=mysecretpassword psql -h localhost -p 5432 -U postgres postgres -c "SELECT * FROM foo"
+```
+
+## Installing PostgreSQL server on Ubuntu
+
+Run the following to install PostgreSQL, configure user and create the database:
+```bash
+sudo apt install postgresql
+sudo -u postgres psql
+postgres=# create database mydb;
+postgres=# create user myuser with encrypted password 'mypass';
+postgres=# grant all privileges on database mydb to myuser;
+```
+
+PostgreSQL will by default listen on localhost:5432. Then, to connect to the database:
+
+```bash
+$ psql postgresql://myuser:mypass@localhost:5432/mydb
 ```

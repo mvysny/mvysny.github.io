@@ -3,7 +3,8 @@ layout: post
 title: Quickly connect to PostgreSQL In Docker
 ---
 
-The [postgresql docker docs](https://hub.docker.com/_/postgres) are pretty good. For experimenting, run
+The [postgresql docker docs](https://hub.docker.com/_/postgres) are pretty good. For experimenting, you
+can run PostgreSQL in a docker container. Note that once you hit CTRL+C, the database is gone:
 
 ```bash
 $ docker run -it --rm -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 postgres

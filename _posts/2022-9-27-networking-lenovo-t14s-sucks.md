@@ -136,6 +136,12 @@ The wireless will frequently and randomly stop working with the following messag
 Workaround is to upgrade your access point. This only happens when I create an access point
 on my phone, with WiFi 5 or lower. Enable Wifi 6 in your phone.
 
+## Docking Station
+
+ThinkPad's docking station is utter crap - the monitor and/or the usb keyboard
+wouldn't randomly connect/power up, once per week-ish. The only way is to unplug the docking
+station from the power cable, then plug it in again.
+
 ## Conclusion
 
 It's so fucking irritating, piece of crap, avoid.

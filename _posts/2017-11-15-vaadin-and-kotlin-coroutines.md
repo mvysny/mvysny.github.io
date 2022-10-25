@@ -3,13 +3,23 @@ layout: post
 title: Vaadin And Kotlin Coroutines
 ---
 
-When Kotlin 1.1 brought in Coroutines, at first I wasn't impressed. I thought coroutines to be just a bit more lightweight threads: a lighter version of the OS threads we already have, perhaps easier on memory and a bit lighter on the CPU. Of course, this alone can actually make a ground-breaking difference: for example, Docker is just a light version of a VM, but it's quite a difference. It's just that I failed to see the consequences of this ground-breaking difference; also, performance-wise in Vaadin apps, it seems that there is little need to switch away from threads (read [Are Threads Obsolete With Vaadin Apps?](../are-threads-obsolete-with-vaadin-apps/) for more info).
+When Kotlin 1.1 brought in Coroutines, at first I wasn't impressed. I thought coroutines
+to be just a bit more lightweight threads: a lighter version of the OS threads we already have,
+perhaps easier on memory and a bit lighter on the CPU. Of course, this alone can actually make a
+ground-breaking difference: for example, Docker is just a light version of a VM, but it's quite a difference.
+It's just that I failed to see the consequences of this ground-breaking difference; also,
+performance-wise in Vaadin apps, it seems that there is little need to switch away from
+threads (read [Are Threads Obsolete With Vaadin Apps?](../are-threads-obsolete-with-vaadin-apps/) for more info).
 
 So, is there something else to Coroutines with respect to Vaadin? The answer is yes.
 
 ## What are Coroutines?
 
-Coroutine is a block of code that looks just like a regular block of code. The main difference is that you can pause (suspend) that block by calling a special function; later on you can direct the code to continue the execution; the function will simply end and the calling code resumes execution. This is achieved by compiler magic and thus no support from JVM/OS is necessary. The [Informal Kotlin Coroutines](https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md) introduction offers great in-depth explanation. Even better is [Roman Elizarov's Coroutine Video](https://www.youtube.com/watch?v=_hfBv0a09Jc&list=PLQ176FUIyIUY6UK1cgVsbdPYA3X5WLam5&index=2) - the most clear explanation of Coroutines that I've seen (here is the part 2: [Deep Dive into Coroutines on JVM](https://www.youtube.com/watch?v=YrrUCSi72E8)).
+Coroutine is a block of code that looks just like a regular block of code.
+The main difference is that you can pause (suspend) that block by calling a
+special function; later on you can direct the code to continue the execution;
+the function will simply end and the calling code resumes execution. This is
+achieved by compiler magic and thus no support from JVM/OS is necessary. The [Informal Kotlin Coroutines](https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md) introduction offers great in-depth explanation. Even better is [Roman Elizarov's Coroutine Video](https://www.youtube.com/watch?v=_hfBv0a09Jc&list=PLQ176FUIyIUY6UK1cgVsbdPYA3X5WLam5&index=2) - the most clear explanation of Coroutines that I've seen (here is the part 2: [Deep Dive into Coroutines on JVM](https://www.youtube.com/watch?v=YrrUCSi72E8)).
 
 There are the following problems with Coroutines:
 
@@ -17,11 +27,22 @@ There are the following problems with Coroutines:
 * the block looks like just a regular synchronous code, but suddenly out of nowhere completely another thread may continue the execution (after the coroutine is resumed). That's not something we can easily attune our mental model to.
 * They're not easy to grok.
 
-*Just* disadvantages, what the hell? I can do pausing with threads already, simply by calling `wait()` or locks or semaphores etc; so what's the big fuss? The important difference is that at the suspension point, the coroutine *detaches* from the thread - it saves its call stack, the state of the variables and bails out, allowing the thread to do something else, or even terminate. When the coroutine is resumed later on, it can pick any thread to restore the stack+state in, and continue execution. Aha! Now this is something we can't do with threads.
+*Just* disadvantages, what the hell, why should I even bother? I can already do pausing with threads
+(simply by calling `wait()`, or with locks or semaphores etc); so what's the big fuss?
+
+The important difference is that at the suspension point,
+the coroutine *detaches* from the thread - it saves its call stack, the state of the variables and bails out,
+allowing the thread to do something else, or even terminate.
+When the coroutine is resumed later on, it can pick any thread to restore the stack+state in, and continue execution.
+
+Aha! Now this is something we can't do with threads.
 
 ## The Blocking Dialogs
 
-The coroutines suspend at suspension functions, and we can resume them as we see fit, say, from a button click handler. Consider the following Vaadin click handler:
+Important note: In this text, **Blocking** will always refer to an actual old-school Thread that is blocked (sleeping/waiting for lock/etc).
+
+The coroutines suspend at suspension functions, and we can resume them as we see fit, say, from a button click handler.
+Consider the following Vaadin click handler:
 
 ```kotlin
 deleteButton.addClickListener { e ->
@@ -31,7 +52,12 @@ deleteButton.addClickListener { e ->
 }
 ```
 
-This can't be done with the regular approach since we can't have blocking dialogs with Vaadin. The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin UI thread to wait for the user to click the "Yes" or "No" button. However, in order for the dialog to be actually drawn in the browser, the Vaadin UI thread must finish and produce response for the browser. But Vaadin UI thread can't finish since it's blocked in the `confirmDialog` function.
+The above code can not be implemented with the regular Thread-based approach.
+The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin
+UI thread to wait for the user to click the "Yes" or "No" button. However,
+in order for the dialog to be actually drawn in the browser,
+the Vaadin UI thread must finish and produce response for the browser. But Vaadin UI
+thread can't finish since it's blocked in the `confirmDialog` function.
 
 However, consider the following [suspend function](https://github.com/mvysny/vaadin-coroutines-demo/blob/master/src/main/kotlin/org/test/Dialogs.kt#L72):
 

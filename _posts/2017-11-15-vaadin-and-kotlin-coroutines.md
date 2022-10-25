@@ -39,7 +39,8 @@ Aha! Now this is something we can't do with threads.
 
 ## The Blocking Dialogs
 
-**Important note:** In this text, **Blocking** will always refer to an actual old-school Thread that is blocked (sleeping/waiting for lock/etc).
+**Important note:** In this text, **Blocking** will always refer to an actual old-school Thread
+that is blocked (it's sleeping/waiting for lock/etc) and can not continue its execution at the moment.
 
 The coroutines suspend at suspension functions, and we can resume them as we see fit, say, from a button click handler.
 Consider the following Vaadin click handler:

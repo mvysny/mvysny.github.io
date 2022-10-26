@@ -56,3 +56,4 @@ and other crap. Additional rules apply:
 * Create a reusable set of Java layouts such as `GreyDetailsPane`; then create a view called Sampler which
   demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes
   for new developers to follow.
+* Package your app as a zip/jar via [Vaadin Boot](https://github.com/mvysny/vaadin-boot)

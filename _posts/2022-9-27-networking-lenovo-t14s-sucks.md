@@ -52,6 +52,9 @@ It uses the `ax88179_178a` kernel module and reports like this in dmesg:
 [   18.054458] ax88179_178a 5-1.2:1.0 enx7cc2c642aedf: ax88179 - Link status is: 1
 ```
 
+EDIT: Flawlessly would be a stretch, the card randomly disconnects, but that's because it's connected
+to the piece-of-shit Lenovo docking station, read below.
+
 ## Wireless
 
 The wireless will frequently and randomly stop working with the following messages, with an occasional kernel segfault on top:
@@ -139,9 +142,10 @@ on my phone, with WiFi 5 or lower. Enable Wifi 6 in your phone.
 ## Docking Station
 
 ThinkPad's docking station is utter crap - the monitor and/or the usb keyboard
-wouldn't randomly connect/power up, once per week-ish. The only way is to unplug the docking
+wouldn't randomly connect/power up, the network would randomly drop and/or not start,
+a couple of times per week. The only way is to unplug the docking
 station from the power cable, then plug it in again.
 
 ## Conclusion
 
-It's so fucking irritating, piece of crap, avoid.
+It's so fucking irritating piece of crap, avoid.

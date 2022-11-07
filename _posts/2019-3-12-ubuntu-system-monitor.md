@@ -26,7 +26,14 @@ sudo apt install gnome-shell-extension-manager
 extension-manager
 ```
 
-Unfortunately all system monitors are marked as incompatible with GNOME 43 at the moment.
+You can now install extensions from the `extension-manager` itself: there are two tabs in the app,
+"Installed" and "Browse" and the latter one allows you to install extensions.
+Just search for "system monitor" and install `system-monitor-next` from mgalgs; make sure you have
+all the necessary dependencies installed:
+
+```bash
+sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
+```
 
 ## Ubuntu 22.04
 

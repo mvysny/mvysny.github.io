@@ -71,3 +71,10 @@ the last non-heartbeat request was made.
 
 In short, either Vaadin or web container will eventually close the session, regardless of
 whether there are browsers open or not.
+
+## FAQ
+
+* Q: If `closeIdleSessions` is set to `false`, will the session ever close if the user just idles?
+* A: When `closeIdleSessions` is `false`, heartbeat requests will effectively keep the session active for as long as the user is online and has at least one tab open, using up memory.
+* Q: Will Tomcat's session-to-disk storage help with memory consumption?
+* A: No. Session-to-disk only works for passivated sessions, which doesn't happen by default. That also requires all session objects to implement `Serializable`.

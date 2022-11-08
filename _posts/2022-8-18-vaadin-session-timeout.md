@@ -66,7 +66,7 @@ web container from closing the session. This is where `closeIdleSessions` steps 
 `closeIdleSessions` is true, Vaadin will run the `VaadinService.cleanupSession()` function
 on every request, including the heartbeat request. The function will check whether
 last non-heartbeat request was 30 minutes ago or more; if it was, the session and all UIs are closed.
-By default heartbeats are sent every 5 minutes; in the worst case the session should be closed in 35 minutes since
+By default, heartbeats are sent every 5 minutes; in the worst case the session should be closed in 35 minutes since
 the last non-heartbeat request was made.
 
 In short, either Vaadin or web container will eventually close the session, regardless of
@@ -75,6 +75,6 @@ whether there are browsers open or not.
 ## FAQ
 
 * Q: If `closeIdleSessions` is set to `false`, will the session ever close if the user just idles?
-* A: When `closeIdleSessions` is `false`, heartbeat requests will effectively keep the session active for as long as the user is online and has at least one tab open, using up memory.
+* A: When `closeIdleSessions` is `false`, heartbeat requests will effectively keep the session active for as long as the user has at least one tab open, using up server memory.
 * Q: Will Tomcat's session-to-disk storage help with memory consumption?
 * A: No. Session-to-disk only works for passivated sessions, which doesn't happen by default. That also requires all session objects to implement `Serializable`.

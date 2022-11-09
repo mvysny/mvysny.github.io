@@ -26,3 +26,8 @@ packages your apps as a zip file. Such a project has tremendous advantages over 
 Obviously Vaadin requires a Servlet container; Vaadin Boot simply uses embedded [Jetty](https://www.eclipse.org/jetty/)
 which has been battle-tested in production as well. But this is just an implementation detail -
 you focus on your routes and views while Vaadin Boot focuses on having your app running smoothly.
+
+You can start your new project from scratch easily with Vaadin Boot: check out the example videos:
+
+* [Part 1](https://www.youtube.com/watch?v=vl8Dnh6FIYA)
+* [Part 2](https://www.youtube.com/watch?v=0g_kfqECDvk)

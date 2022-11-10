@@ -19,22 +19,19 @@ To run TestBench on Ubuntu with Chromium installed via `snap install chromium`:
 
 ```java
 public abstract class AbstractViewTest extends TestBenchTestCase {
-    private static final int SERVER_PORT = 8080;
 
     private final String route;
-    private final By rootSelector;
 
     @Rule
     public ScreenshotOnFailureRule rule = new ScreenshotOnFailureRule(this,
             false);
 
     public AbstractViewTest() {
-        this("", By.tagName("body"));
+        this("");
     }
 
-    protected AbstractViewTest(String route, By rootSelector) {
+    protected AbstractViewTest(String route) {
         this.route = route;
-        this.rootSelector = rootSelector;
     }
 
     @Before
@@ -55,7 +52,7 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
                         }
                     }
                 }.build())));
-        getDriver().get(getURL(route));
+        getDriver().get("http://localhost:8080/" + route);
     }
 
     @After
@@ -76,11 +73,6 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
         Assert.assertTrue("Element '" + element.getTagName() + "' should have" +
                         " had theme '" + themeClass.getSimpleName() + "'.",
                 hasStyle);
-    }
-
-    private static String getURL(String route) {
-        return String.format("http://%s:%d/%s", "localhost",
-                SERVER_PORT, route);
     }
 }
 ```

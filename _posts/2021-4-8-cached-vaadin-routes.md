@@ -9,6 +9,10 @@ return to the form and fill it afterwards, or to create a multi-route wizard wit
 a back+forward navigation), you may use the following code to cache the route components
 in your session.
 
+**WARNING**: session-scoping a route is **very dangerous** since if the user opens two tabs,
+the route instance will be shared between the two tabs, leading to unpredictable errors.
+Scope to UI instead. Note that this can not be done properly, see [Vaadin UI/Tab Scoping](../vaadin-ui-scope/).
+
 The trick here is to create a customized `Instantiator` which, instead of creating
 new instances of routes, would store the instances into the session and reuse them
 afterwards.
@@ -42,13 +46,17 @@ public class MyServlet extends VaadinServlet {
         @Override
         public <T extends HasElement> T createRouteTarget(Class<T> routeTargetType, NavigationEvent event) {
             if (routeTargetType == MainView.class) {
-                final MainView view = RouteSessionCache.getOrCreate(MainView.class);
+                final MainView view = RouteUICache.getOrCreate(MainView.class);
                 return ((T) view);
             }
             return super.createRouteTarget(routeTargetType, event);
         }
     }
 
+    /**
+     * @deprecated don't use - two browser tabs will share the same route component instance, leading to unpredictable errors.
+     */
+    @Deprecated
     public static class RouteSessionCache implements Serializable {
         private final Map<Class<?>, Serializable> routeCache = new HashMap<>();
 
@@ -60,6 +68,26 @@ public class MyServlet extends VaadinServlet {
             }
             final Serializable instance = cache.routeCache.computeIfAbsent(clazz,
                     (c) -> ((Serializable) ReflectTools.createInstance(clazz)));
+            final T route = clazz.cast(instance);
+            route.getElement().removeFromTree();
+            return route;
+        }
+    }
+
+    /**
+     * Note that this can not be done properly, see [Vaadin UI/Tab Scoping](../vaadin-ui-scope/).
+     */
+    public static class RouteUICache implements Serializable {
+        private final Map<Class<?>, Serializable> routeCache = new HashMap<>();
+
+        public static <T extends HasElement> T getOrCreate(Class<T> clazz) {
+            RouteUICache cache = ComponentUtil.getData(UI.getCurrent(), RouteUICache.class);
+            if (cache == null) {
+                cache = new RouteUICache();
+                ComponentUtil.setData(UI.getCurrent(), RouteUICache.class, cache);
+            }
+            final Serializable instance = cache.routeCache.computeIfAbsent(clazz,
+                    (c) -> ReflectTools.createInstance(clazz));
             final T route = clazz.cast(instance);
             route.getElement().removeFromTree();
             return route;

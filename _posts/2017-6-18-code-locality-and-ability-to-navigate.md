@@ -382,7 +382,7 @@ all of the above methods:
   Spring uses the CGLIB library to create a dynamic class which extends the
   original one,
   overrides all methods and invokes interceptor chain. This has the unfortunate
-  side-effect of having lots of `$$$PROXY` fields with null values which clutter
+  side effect of having lots of `$$$PROXY` fields with null values which clutter
   the state of the original class.
 
 JavaEE suffers from the very same problems, and adds the following issues on

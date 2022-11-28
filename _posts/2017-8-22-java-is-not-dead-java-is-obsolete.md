@@ -6,14 +6,17 @@ title: Java Is Not Dead, Java Is Obsolete
 Obsolete as in Cobol - used widely, but on a descendant trajectory. Let's ask a very simple question:
 
 > How many freshmen, when faced the question which language/web framework to learn,
-> would pick Java (with all of its complexity) when there are countless of other languages/frameworks to pick from?
+> would pick Java (with all of its complexity) when there are countless other languages/frameworks to pick from?
 
 To build a full-stack web apps in Java you need to:
 
 * learn Mother Of All Frameworks: JavaEE or Spring
 * learn Mother Of All (Leaky) Abstractions: JPA
 * Pay for Intellij, use Netbeans or use Eclipse (which has more controls than a freaking flight simulator, and is next to impossible to launch a WAR with - that's why now we have Spring Boot)
-* Use Java which is (let's face it) a bloody chatty feature-lacking language. And because of this feature (or lack thereof) it gave birth to monstrosities like JavaEE and Spring. Java 8 has streams() and `Optional`, sure, but let's face it: the former is chatty and not enough, and the latter usually just produces crappy code.
+* Use Java which is (let's face it) a bloody chatty feature-lacking language. And
+  because of this feature (or lack thereof) it gave birth to monstrosities like JavaEE and Spring.
+  Java 8 has streams() and `Optional`, sure, but let's face it: the former is chatty and not enough, 
+  and the latter usually just produces crappy code.
 * When you will eventually learn JavaEE, you will have to work with Javists (complexity-infected happy bunch) on an enterprise (read uber-complex) variation of [FizzBuzzEnterpriseEdition](https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition) and will start all project with including Spring, regardless of whether it is actually relevant to the project itself or not.
 
 That's a Mount Everest-grade of steep learning curve. Why climb Mount Everest
@@ -51,7 +54,7 @@ It's too late - the descent has begun and the Java language designers are runnin
 in the wrong direction. Consider Java streams: the authors of that API should shoot for
 simplicity of use instead of for purity of the design, and thus they managed to
 create a complex API which is pain to use. Use Kotlin's streams using extension methods
-producing plain lists for a week and you will not want to go back to Java, guaranteed.
+producing plain lists for a week, and you will not want to go back to Java, guaranteed.
 
 ## So how to save JDK?
 

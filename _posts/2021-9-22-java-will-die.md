@@ -79,6 +79,8 @@ For comparison, see the same snippet in Kotlin. It's an actual pleasure to type 
 db { /* woot, running in transaction */ }
 ```
 
+Also Uncle Bob agrees: [Every framework you’ve ever seen is really just an echo of this statement: My language sucks!](https://blog.cleancoder.com/uncle-bob/2015/08/06/LetTheMagicDie.html).
+
 ## Spring is an anti-pattern
 
 As demoed above, Spring was invented to circumvent Java's shortcomings, and
@@ -101,7 +103,7 @@ the spaghetti of abstractions and proxies before lecturing me on simplicity.
 
 * So, Spring code snippets may look easy, but the iceberg below is definitely NOT simple.
 * It's not "safer" in any meaning of this word: just remember how safe it is when it suddenly
-  starts applying a rogue interceptor because there was a beans.xml hidden somewhere within
+  starts applying a rogue interceptor because there was a `beans.xml` hidden somewhere within
   a jar pulled in as a transitive dependency.
 * Speed: yeah right. In applications I work on with Spring, you hit run, wait for
   30-60 seconds whilst it initialises beans, before falling over, because a runtime misconfiguration
@@ -111,7 +113,7 @@ the spaghetti of abstractions and proxies before lecturing me on simplicity.
   cycles going through tons of Spring abstractions and dynamically
   generated proxies in order to reach your code. Maybe quicker to write code than in plain Java 7.
 
-Sure, I can sacrifice some of the runtime speed just fine, given that I'll receive something in return.
+Sure, I can sacrifice some runtime speed just fine, given that I'll receive something in return.
 For example, I would never do C++ now that I have JDK and GC. But sacrificing speed
 and gaining anti-pattern in return, that doesn't sound like a good business to me.
 

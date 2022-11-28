@@ -25,12 +25,16 @@ Ask these questions about anything you are about to add to your project:
 * Will it make maintenance easier?
 * Will it make my code more understandable for others?
 
+This is the idea behind the [Frameworkless Movenent](https://www.frameworklessmovement.org/)
+which contains more awesome links, for example the [8 lines of code](https://www.infoq.com/presentations/8-lines-code-refactoring/)
+amazing presentation.
+
 ## Readable Code
 
 > If you struggle to read the code, how the hell are you meant to fix it?
 
 You write code to express ideas to other developers; the ability of computers
-to execute that code is just a side-effect.
+to execute that code is just a side effect.
 [Why code readability is important](https://thehosk.medium.com/why-code-readability-is-important-e0c228a238a)
 
 ## Kill Your Darlings

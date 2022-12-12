@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kotlin Native: Lessons Learned
+title: Kotlin Native - Lessons Learned
 ---
 
 Having excellent language (Kotlin) with a proper full-blown garbage collector (not just
@@ -51,6 +51,20 @@ You either figure out how to access database via ODBC (and then install proper d
 or you try to find a C client for your database and then create bindings for Kotlin-Native.
 The easiest way I found is to simply run a native database client from command-line, which obviously
 doesn't work for bigger SELECTs etc. See [#12](https://github.com/mvysny/solar-controller-client/issues/12) for more details.
+
+## JSON parsing
+
+There's excellent [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) which works really well
+and supports ARM too.
+
+## CLI parameter parsing
+
+There's [kotlinx.cli](https://github.com/Kotlin/kotlinx-cli) but unfortunately [it doesn't support ARM directly](https://github.com/Kotlin/kotlinx-cli/issues/89).
+Workaround is to copy the sources to your project - it works on ARM well.
+
+## Startup time
+
+Native starts immediately. However, JVM (openjdk 11) on linux x86-64 starts and runs in 170ms which is pretty good as well.
 
 ## Conclusion
 

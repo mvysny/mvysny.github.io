@@ -72,9 +72,11 @@ Experimenting with Kotlin-Native taught me to value the JVM:
 
 * Write-Once-Run-Anywhere (WORA) is simply critical advantage, as can be seen from the text above.
   You don't have to write and test every library on all possible CPUs and platforms: you
-  write it only once and leverage JRE to run it properly.
+  write it only once and leverage JRE to run it properly. Simply amazing.
 * Threading with JRE is simply a completely different level than any pthread-based threading.
   Not only we have higher-level abstractions like Executors, but we also have a Java Memory Model
   with the happens-before relationship, guaranteed to work on any CPU and platform.
 * Database support is simply on a different level in JDK. Drivers work and are portable
   across all CPUs, because of WORA.
+* You don't have to program in Java to use JDK. JDK is awesome, Java is ... average.
+  However, JDK+Kotlin is simply brilliant.

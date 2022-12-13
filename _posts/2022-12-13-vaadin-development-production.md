@@ -6,9 +6,9 @@ title: Vaadin Production/Development mode and flow-build-info.json
 Vaadin offers two concepts, which are orthogonal (can be combined independently):
 
 1. Development and production mode
-2. Building the JavaScript bundle on-the-fly VS upfront
+2. Building the JavaScript bundle on-the-fly VS upfront (also known as *DevServer*)
 
-The following combinations are possible:
+Vaadin can therefore run in the following modes (essentially all combinations of the above):
 
 1. Dev mode with js webpack bundle built on-the-fly (lazily). This is the default mode when you run the Vaadin app from your IDE.
 2. Dev mode, js webpack bundle built upfront. In some environments (say remote development) it's not possible for Vaadin Servlet

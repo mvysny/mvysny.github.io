@@ -5,8 +5,8 @@ title: Vaadin Production/Development mode and flow-build-info.json
 
 Vaadin offers two concepts, which are orthogonal (can be combined independently):
 
-1. Development and production mode
-2. Building the JavaScript bundle on-the-fly (lazily) VS upfront (also known as *DevServer*)
+1. **Development** and **production** mode
+2. Building the JavaScript bundle **on-the-fly** (lazily) VS *upfront* (also known as *DevServer*)
 
 Vaadin can therefore run in the following modes (essentially all combinations of the above):
 

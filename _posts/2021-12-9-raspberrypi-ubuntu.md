@@ -40,6 +40,8 @@ network:
 Make sure you have the `netplan.io` package installed. Then, run `sudo netplan --debug apply`
 and your wifi should be up - you can verify that by running `ifconfig -a`.
 
+Also see [Ubuntu Netplan no NetworkManager](../ubuntu-netplan-no-networkmanager/).
+
 ## Controlling GPIO
 
 * Python: see [gpiozero](https://gpiozero.readthedocs.io/en/stable/)

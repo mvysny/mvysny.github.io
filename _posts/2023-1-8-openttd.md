@@ -92,6 +92,7 @@ Learn the [Hotkeys](https://wiki.openttd.org/en/Manual/Hotkeys), at least:
 
 * `F1` for pausing. Gives you time to plan new rails; also `F4` map is vital for checking particular industry on a map.
 * `A` for railroad building; Ctrl+Click removes tracks.
+* `X` to turn transparent buildings on or off. Greatly helps when building rails.
 * `L` for landscaping
 * `6` for demolish
 * `S` to build a signal, `B` to build a bridge, `9` to build a railway station.

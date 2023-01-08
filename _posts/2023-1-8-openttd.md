@@ -94,7 +94,7 @@ Learn the [Hotkeys](https://wiki.openttd.org/en/Manual/Hotkeys), at least:
 * `A` for railroad building; Ctrl+Click removes tracks.
 * `X` to turn transparent buildings on or off. Greatly helps when building rails.
 * `L` for landscaping
-* `6` for demolish
+* `6` for demolish; however `R` removes selected rail/signal/station and is much more useful.
 * `S` to build a signal, `B` to build a bridge, `9` to build a railway station.
 * `Alt+Enter` for fullscreen
 

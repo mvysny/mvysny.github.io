@@ -91,6 +91,7 @@ you need to manually upgrade them for every train.
 Learn the [Hotkeys](https://wiki.openttd.org/en/Manual/Hotkeys), at least:
 
 * `A` for railroad building; Ctrl+Click removes tracks.
+* `L` for landscaping
 * `6` for demolish
 * `S` to build a signal, `B` to build a bridge, `9` to build a railway station.
 * `Alt+Enter` for fullscreen

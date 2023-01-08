@@ -90,6 +90,7 @@ you need to manually upgrade them for every train.
 
 Learn the [Hotkeys](https://wiki.openttd.org/en/Manual/Hotkeys), at least:
 
+* `F1` for pausing. Gives you time to plan new rails; also `F4` map is vital for checking particular industry on a map.
 * `A` for railroad building; Ctrl+Click removes tracks.
 * `L` for landscaping
 * `6` for demolish

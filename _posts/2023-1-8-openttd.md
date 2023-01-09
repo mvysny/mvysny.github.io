@@ -29,6 +29,8 @@ It is possible to remove just a part of a station, by using the 'Removal tool'.
 
 You can mass-upgrade all your trains to a newer train engine easily, via 'All Trains' / 'Manage List' / 'Replace Vehicles'.
 
+You can also mass-upgrade wagons! Read below.
+
 ### Turn Radius
 
 Turn radius: [Train Mechanics](https://wiki.openttd.org/en/Manual/Game%20Mechanics/#trains)
@@ -87,17 +89,18 @@ To convert all the rails in the entire map at once to universal:
 4. Press and hold the left mouse-button. Press arrow keys to scroll the map, then move the cursor to the lowermost part of the map, then release the left mouse-button.
 5. All rails and depos are now universal.
 
-When the monorail locomotive is out, you can simply 'mass-upgrade' all trains to the newer train engine. Once all trains are upgraded,
+When the monorail locomotive is out, you can simply 'mass-upgrade' all trains to the newer train engine. Once all trains (engines+wagons) are upgraded,
 you can convert all the rails in the entire map to the monorail rail type, using the 'convert to monorail' tool.
 
 ### After converting to monorail
 
-The rail engine gets updated by the mass-upgrade, but the wagons will not! To use the new wagons with higher capacity,
-you need to manually upgrade them for every train.
+You can also 'mass-upgrade' wagons! This is quite important since monorail wagons have higher capacity.
+To perform the mass-upgrade, head to 'All Trains' / 'Manage List' / 'Replace Vehicles' as usual.
+There's a quite hidden combobox which says "Engines" - switch it to "Cars" and perform the mass-upgrade as usual.
 
-1. Send the train to depo
-2. Drag the first wagon behind the rail engine to the second 'sell' button. That will sell all wagons.
-3. Re-purchase the new monorail wagons.
+**WARNING:** The mass-upgrade from rails to monorail will only work for "universal rail type" depos. When the depos are
+already monorail, the rail wagons will not get upgraded to monorail wagons. To work around this limitation,
+simply convert monorail back to "universal rail type", then wait for all trains to get converted, then convert rails back to monorail.
 
 ## Hotkeys
 

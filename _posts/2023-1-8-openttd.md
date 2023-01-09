@@ -9,7 +9,7 @@ a new open music, graphics data and everything, in order for you to run and play
 
 Couple of tips below.
 
-## Rails
+## Train Railroads
 
 Use the stations of length 5 as the bare minimum (10 carriages including the engine).
 Remember that the best train engine in the game (Lev4 Chimaera Maglev) occupies two carriage slots, leaving
@@ -18,6 +18,8 @@ only 8 carriages for cargo.
 [Electrified Rails](https://wiki.openttd.org/en/Manual/Base%20Set/Electrified%20railways) are only available
 in the 'Temperate' map type, as per [List of Train engines](https://wiki.openttd.org/en/Manual/Trains#list-of-train-engines-and-carriages).
 If you are a newbie, just start with the 'Temperate' map.
+
+Please find more on the [Types of Railway](https://wiki.openttd.org/en/Manual/Base%20Set/Types%20of%20railway) here.
 
 > Tip: You can mass-convert to electrified rails easily, by employing Universal Rail Type (below).
 
@@ -45,6 +47,17 @@ for the tutorial. Only use the path signals in the game, and use them as follows
 3. To see a visualisation how the trains are 'allocating rails', I highly recommend to enable the "highlight reserved tracks" or
    "show reserved tracks" setting, as shown in the Signals tutorial.
 4. I never needed the "Pre-signals" and they're gone from the OpenTTD game anyway.
+
+### Passenger+Mail Connection Between Cities
+
+Trans-map magistral sounds lovely but doesn't make any sense within the rules of OpenTTD:
+
+1. The passengers don't care - two stations is enough.
+2. More than 4 stations (assuming two-rail paths+stations) tends to create a clogging effect: first train takes all the passengers
+   which takes some time. Next train arrives to a nearly-empty station and departs faster, thus catching up to the first train.
+3. The best setup is 2-4 stations with two-rail paths, middle stations are RoRo.
+
+Read more on RoRo at [Railway Stations](https://wiki.openttd.org/en/Manual/Railway%20station).
 
 ## Original Music
 

@@ -25,7 +25,7 @@ Ask these questions about anything you are about to add to your project:
 * Will it make maintenance easier?
 * Will it make my code more understandable for others?
 
-This is the idea behind the [Frameworkless Movenent](https://www.frameworklessmovement.org/)
+This is the idea behind the [Frameworkless Movement](https://www.frameworklessmovement.org/)
 which contains more awesome links, for example the [8 lines of code](https://www.infoq.com/presentations/8-lines-code-refactoring/)
 amazing presentation.
 

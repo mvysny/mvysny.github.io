@@ -59,6 +59,7 @@ UI thread to wait for the user to click the "Yes" or "No" button. However,
 in order for the dialog to be actually drawn in the browser,
 the Vaadin UI thread must finish and produce response for the browser. But Vaadin UI
 thread can't finish since it's blocked in the `confirmDialog` function.
+Please read [Vaadin Blocking Dialogs](../vaadin-blocking-dialogs/) for more info.
 
 However, consider the following [suspend function](https://github.com/mvysny/vaadin-coroutines-demo/blob/master/src/main/kotlin/org/test/Dialogs.kt#L72):
 

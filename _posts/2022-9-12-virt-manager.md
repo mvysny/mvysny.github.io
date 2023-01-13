@@ -24,10 +24,24 @@ on openjdk-11 on Ubuntu 22.04 x86-64 machine with "AMD Ryzen 7 PRO 4750U" CPU:
 
 Not bad - very usable. The UI performance is perfect with 3D acceleration enabled.
 
-## UI issues
+## Video
 
 I always enable "Auto-resize VM with window" which makes sure the VM fills all the available
 screen space of the virt-manager window.
+
+### Ubuntu 22.10 Host
+
+Use the `QXL` video driver. Even with "Auto-resize VM with window", it will stubbornly
+set a low resolution. Fix is to change the guest display resolution to something high, like 1920x1200 -
+the image won't be chopped off but rather will correctly match the host window size.
+
+* On my AMD GPU, Virtio with 3D acceleration is utter crap - slow & choppy
+* Virtio without 3D acceleration is okay, but moving a window around the screen clearly shows that the performance is lacking.
+  Yet, at least the "Auto-resize VM with window" seems to be working.
+* QXL is the smoothest, but the "Auto-resize VM with window" needs a workaround.
+* Bochs, VGA and ramfb are horribly slow, don't bother.
+
+### Ubuntu 22.04 Host
 
 Use the `virtio` video driver, and make sure the 3D acceleration support is enabled.
 Then head to Display, select Spice and enable OpenGL. This is the best and fastest setting for smoothest UI.

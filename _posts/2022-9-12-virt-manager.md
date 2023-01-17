@@ -29,28 +29,27 @@ Not bad - very usable. The UI performance is perfect with 3D acceleration enable
 I always enable "Auto-resize VM with window" which makes sure the VM fills all the available
 screen space of the virt-manager window.
 
+Video drivers:
+
+* Virtio and QXL are the best supported. Virtio supports 3d acceleration which should offer the best performance.
+  Make sure the 3D acceleration support is enabled;
+  then head to Display, select Spice and enable OpenGL.
+* QXL doesn't offer 3d acceleration, but performs faster with software renderer than virtio.
+   But the "Auto-resize VM with window" needs a workaround: change the guest display resolution to something high, like 1920x1200 -
+  the image won't be chopped off but rather will correctly match the host window size.
+* Bochs, VGA and ramfb are horribly slow, don't bother.
+
 ### Ubuntu 22.10 Host
 
-Use the `QXL` video driver. Even with "Auto-resize VM with window", it will stubbornly
-set a low resolution. Fix is to change the guest display resolution to something high, like 1920x1200 -
-the image won't be chopped off but rather will correctly match the host window size.
+With AMD graphics: use the `QXL` video driver. Virtio with 3D acceleration is utter crap - slow & choppy
+Virtio without 3D acceleration is okay, but moving a window around the screen clearly shows that the performance is lacking.
+QXL is the smoothest, but needs the auto-resize workaround.
 
-* On my AMD GPU, Virtio with 3D acceleration is utter crap - slow & choppy
-* Virtio without 3D acceleration is okay, but moving a window around the screen clearly shows that the performance is lacking.
-  Yet, at least the "Auto-resize VM with window" seems to be working.
-* QXL is the smoothest, but the "Auto-resize VM with window" needs a workaround.
-* Bochs, VGA and ramfb are horribly slow, don't bother.
+With Intel graphics: `virtio` with 3d acceleration works smooth.
 
 ### Ubuntu 22.04 Host
 
 Use the `virtio` video driver, and make sure the 3D acceleration support is enabled.
-Then head to Display, select Spice and enable OpenGL. This is the best and fastest setting for smoothest UI.
-
-* Virtio without 3D still offers quite decent performance. If you don't want to enable 3D acceleration, I still recommend to use this driver.
-* QXL doesn't support 3D acceleration. The speed is fine, but the "Auto-resize VM with window" is very buggy with this driver
-  and stubbornly refuses to resize the screen of your VM.
-* Bochs driver is horribly slow.
-* Haven't tried others.
 
 Firefox+Wayland+Screen sharing: on all video drivers, if you try to share a screen where your VM is running, the screen will
 soon stop updating in Firefox. Workaround is to share just the virt-manager window with the VM and not the entire screen.

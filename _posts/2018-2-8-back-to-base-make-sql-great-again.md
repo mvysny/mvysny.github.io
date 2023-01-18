@@ -6,7 +6,7 @@ title: Back To Base (Make SQL Great Again)
 I have to admit upfront that my brain is somehow incompatible with JPA. Every time
 I try to use JPA, I will somehow wind up fighting weird issues, be it
 `LazyInitializationException` with Hibernate, or weird sequence generator preallocation
-issues with EclipseLink. I don't know what to use `merge()` for; I lack the mean
+issues with EclipseLink. I don't know what to use `merge()` for; I lack the means
 to reattach a bean and overwrite its values from the database.
 
 I don't want to

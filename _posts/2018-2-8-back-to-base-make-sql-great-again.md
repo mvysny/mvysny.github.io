@@ -7,18 +7,43 @@ I have to admit upfront that my brain is somehow incompatible with JPA. Every ti
 I try to use JPA, I will somehow wind up fighting weird issues, be it
 `LazyInitializationException` with Hibernate, or weird sequence generator preallocation
 issues with EclipseLink. I don't know what to use `merge()` for; I lack the mean
-to reattach a bean and overwrite its values from the database. I don't want to
+to reattach a bean and overwrite its values from the database.
+
+I don't want to
 bore you to death with all of the nitty-gritty details; all the reasons are summed
 in [Issue #3 Remove JPA](https://github.com/mvysny/vaadin-on-kotlin/issues/3).
-I think that the number 1 reason of why JPA is incompatible with me is that
-
-> JPA is built around the idea that the Java classes, not the database, is the source of truth.
-
-My way of thinking is the other way around: I think that the database (and not
-the JPA) is the source of truth. This way of thinking is however incompatible with
-the very core of the JPA technology and makes it impossible to use JPA for me.
+I think that the number 1 reason of why JPA is incompatible with me is that:
+JPA is built around the idea that the Java classes, not the database, is the source of truth.
 
 ## The Source Of Truth
+
+When you have a SQL database, that database is your primary and only storage of data.
+Every time you need to get data, you go to that database, you don't go anywhere else.
+You may cache the data temporarily, or mirror the database (akin to Master-Slave in MySQL);
+however, when in doubt (e.g. you suspect that the cache might be stale), you go to the
+database to see the actual, correct and up-to-date data.
+The database is *the* authority for data. It is the source of truth.
+
+The JPA works the other way around. The data stored in the in-memory JPA entities
+is the source of truth. You call a getter on the JPA entity when you need the most up-to-date data.
+You do not go to the database itself: the database is just an implementation detail,
+simply a way to store the data while the server is down. Of course, you can not load
+entire database into memory, but the Entity Manager tries to create an abstraction
+that you can: it loads the entity if it's not in memory yet, then it listens for changes in the entity
+and eventually updates the data in the database. The Entity Manager creates an
+abstraction that the beans are the source of truth.
+
+The idea is that you always go through the Entity Manager, and never directly into the SQL database.
+That's why there's no `reload()` function to update entity with data from the database -
+that goes against the entire principle of beans being the source-of-truth: why
+would you update the source-of-truth entity from some data dump? That's why JPA is free
+to ignore changes done in the database from outside of Entity Manager - you have
+to completely disable JPA cache to actually see the changes.
+
+If I want the database to be the source of truth and still want to use JPA, I'm going to suffer a lot:
+I'll have to fight the JPA API constantly.
+
+## JPA: The Object Database way
 
 To allow Java beans to be the source of truth, JPA defines certain techniques
 and requires Hibernate to sync Java beans with the database behind the scenes.
@@ -35,6 +60,13 @@ certain cases, and that's why JPA abstraction suffers from the following issues:
   the database contents - this goes against the idea of having Java class the source of truth.
 * By abstracting joins into Collections, it causes the programmers to unintentionally
   write code which suffers from the 1+N loading issues.
+
+I see the following issues with the entities being the source of truth:
+
+* My mindset is that the database is the source of truth
+* I don't want to use an object database; I want to use a SQL database
+* I don't want to use half-assed object database that heavily leaks the fact that it's running on SQL storage
+* I don't want to use loads of black magic employed by Entity Manager to track changes
 
 Since I'm very bullheaded, instead of trying to attune my mind towards JPA I
 explored the different approach: let's step back and make the database the source of truth again.
@@ -54,19 +86,22 @@ but need to be done explicitly by the developer. The developer is once again in 
 There - I have solved the whole detached/managed/lazy initialization exception
 nonsense for you :-)
 
-> The beans are once again POJOs with getters and setters, simply populated from the database by reading the data from the JDBC `ResultSet` and calling bean's setters.
+> The beans are once again POJOs with getters and setters, simply populated from
+> the database by reading the data from the JDBC `ResultSet` and calling bean's setters.
 
-That can be achieved by a simple reflection. Moreover, no runtime enhancement
+That can be achieved by a simple Java reflection. Moreover, no runtime enhancement
 is needed since the bean will never track changes; to save changes we will need to
 issue the `INSERT`/`UPDATE` statement. Also, since there's no
 runtime enhancement, the bean is really a POJO and can be actually made serializable
 and passed around in the app freely, which means that *you don't need DTOs anymore*.
 
-## The Vaadin-on-Kotlin Persistency Layer: [vok-orm](https://github.com/mvysny/vok-orm)
+## vok-orm
 
 There is a very handy library called [JDBI](https://jdbi.org/) which maps
-JDBC `ResultSet` to Java POJOs. This idea forms the very core of `vok-db`.
-To explain the data retrieving capabilities of the `vok-db` library,
+JDBC `ResultSet` to Java POJOs and nothing more.
+This idea forms the very core of [vok-orm](https://github.com/mvysny/vok-orm) (Kotlin)
+and [jdbi-orm](https://gitlab.com/mvysny/jdbi-orm) (Java).
+To explain the data retrieving capabilities of the `vok-orm` library,
 let's begin by implementing a simple function which finds a bean by its ID.
 
 ### vok-orm: Data Retrieval From Scratch
@@ -127,31 +162,20 @@ more automatized way to add those methods to every bean? Yes there is, by the me
 As a first attempt, we will define a Dao interface as follows:
 
 ```kotlin
-interface Dao<T> {
-  fun findById(clazz: Class<T>, id: Any): T? = db { connection.findById(clazz, id) }
+open class Dao<T>(val clazz: Class<T>) {
+  fun findById(id: Any): T? = db { connection.findById(clazz, id) }
 }
 ```
 
-Remember that the companion object is just a regular object, and as such it can implement interfaces?
+Remember that the companion object is just a regular object, and as such it can extend classes?
 
 ```kotlin
 class Person {
-  companion object : Dao<Person>
+  companion object : Dao<Person>(Person::class.java)
 }
 ```
 
 This allows us to call the finder method as follows:
-```kotlin
-val person = Person.findById(Person::class.java, 25L)
-```
-Not bad, but the `Person::class.java` is somewhat redundant. Is there a way to force Kotlin to fill it for us? Yes, by the means of extension methods and reified type parameters:
-
-```kotlin
-interface Dao<T> {}
-inline fun <ID: Any, reified T : Entity<ID>> Dao<T>.findById(id: ID): T? = db { con.findById(T::class.java, id) }
-```
-
-Now the finder code is perfect:
 ```kotlin
 val person = Person.findById(25L)
 ```

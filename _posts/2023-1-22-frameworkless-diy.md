@@ -5,7 +5,7 @@ title: Frameworkless/DIY
 
 I love the [Frameworkless Movement](https://www.frameworklessmovement.org/), and,
 most importantly, the [Frameworkless Manifesto](https://github.com/frameworkless-movement/manifesto).
-The manifesto can be misunderstood; here are a bunch of thoughts to clear things up.
+The movement ideas could be misunderstood rather easily; here are a bunch of thoughts to clear things up.
 
 The movement doesn't mean that you must avoid frameworks and libraries at all times.
 There is merit in the saying "standing on the shoulders of giants"; reusing a well-documented

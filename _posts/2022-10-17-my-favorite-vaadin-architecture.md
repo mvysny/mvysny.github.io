@@ -4,7 +4,7 @@ title: My Favorite Vaadin Architecture
 ---
 
 The best way that worked for me was a simple SOA architecture,
-no Spring, no JPA, no DI. Only use what you really need.
+no Spring, no JPA, no DI. Only use what you really need. [DIY](../frameworkless-diy/).
 
 If you use SQL database, plain JDBC is a pain in the ass. Use [jdbi-orm](https://gitlab.com/mvysny/jdbi-orm),
 or maybe [ActiveJDBC](https://javalite.io/activejdbc) even though I hated that you need a Maven plugin for that.

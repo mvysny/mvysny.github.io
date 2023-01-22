@@ -14,8 +14,8 @@ well-tested well-written code has its merits. The movement merely advises cautio
 * Some teams/architects would blindly and hastily include their favourite framework into the project,
   regardless of whether the framework has a value or not. The Movement simply exposes this
   kind of behavior as an anti-pattern.
-* Every framework has a tradeoff: it needs to be taught to all team newcomers - it introduces
-  a learning curve.
+* There is a tradeoff associated with every framework. For example, the framework 
+  needs to be taught to all team newcomers - that means that it introduces a learning curve.
 * The more magic the framework uses, the harder the project maintenance will be. [No Magic!](../no-magic/)
 * Case in study: Spring. Spring is a massive framework with 20 megabytes worth of jar files,
   the documentation is mediocre, there is a lot of magic going on behind the scenes, it introduces

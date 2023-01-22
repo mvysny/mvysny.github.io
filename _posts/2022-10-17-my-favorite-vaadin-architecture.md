@@ -57,3 +57,4 @@ and other crap. Additional rules apply:
   demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes
   for new developers to follow.
 * Package your app as a zip/jar via [Vaadin Boot](https://github.com/mvysny/vaadin-boot)
+* [Localization/Internationalization (l10n/i18n)](../vaadin-localization/)

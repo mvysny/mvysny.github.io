@@ -31,3 +31,9 @@ This leads me back to the DIY approach I firmly believe in:
 * Start with the Java `main()` function.
 * Add framework/library lazily, and only when you need it.
 * Either the architecture emerges, or think about a very basic architecture upfront. Also [My Favourite Vaadin Architecture](../my-favorite-vaadin-architecture/).
+
+I prefer to create their own solution, DIY exactly to fit my needs.
+I don't like to start by including a pre-fabricated application framework,
+complex and abstract enough to handle hundreds of use-cases.
+I don't have hundreds of use-cases: I only have one.
+I only use what you need. There lies maximum [simplicity](../on-simplicity/) which I can own, understand and can rely on.

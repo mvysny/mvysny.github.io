@@ -58,8 +58,10 @@ in order for the dialog to be actually drawn in the browser,
 the Vaadin UI thread must finish and produce response for the browser. But Vaadin UI
 thread can't finish since it's blocked in the `confirmDialog()` function.
 
-This is a fundamental problem of all web frameworks, not just of Vaadin.
+This is a fundamental problem of all web frameworks, not just of Vaadin. For more information
+on how 'event loops' work in server UI frameworks, please read [Event Loop (Session Lock) in Vaadin](../event-loop-session-lock-in-vaadin/).
 
 Such a code can be implemented using [Kotlin Coroutines](../vaadin-and-kotlin-coroutines/), but even then
-the code will not block - the kotlin compiler will break the code down into chunks and run
-them sequentially, to create an illusion of a blocking code.
+the code will not block - the kotlin compiler will break the code down into separate code chunks and run
+them at different times. That creates an illusion of a blocking code, but the code is not really
+blocking - it's just transformed into a bunch of callbacks by the compiler.

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cached Vaadin Routes
+title: Cached Vaadin Routes (UI-scoped Routes)
 ---
 
 If you need to preserve the state of certain route during the duration of

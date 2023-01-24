@@ -9,8 +9,9 @@ return to the form and fill it afterwards, or to create a multi-route wizard wit
 a back+forward navigation), you may use the following code to cache the route components
 in your session.
 
-**WARNING**: session-scoping a route is **very dangerous** since if the user opens two tabs,
+**WARNING**: **session-scoping** a route is **very dangerous** since if the user opens two tabs,
 the route instance will be shared between the two tabs, leading to unpredictable errors.
+See [Session-Scoped Routes](../session-scoped-route/) for more details.
 Scope to UI instead. Note that this can not be done properly, see [Vaadin UI/Tab Scoping](../vaadin-ui-scope/).
 
 The trick here is to create a customized `Instantiator` which, instead of creating

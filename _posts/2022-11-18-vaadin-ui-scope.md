@@ -11,3 +11,7 @@ you would cache a route for a tab. Such a cache is very hard to implement at the
   it doesn't survive browser back/forward button nor user typing a new URL manually.
 
 See [Issue #13468](https://github.com/vaadin/flow/issues/13468) for more details.
+
+If you are happy with the UI scope limitations as stated above, and you want to
+turn couple of your routes into UI-scoped, please see [Cached Vaadin Routes](../cached-vaadin-routes/)
+for more details.

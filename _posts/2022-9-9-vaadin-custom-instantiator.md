@@ -13,6 +13,16 @@ Instantiators:
   implementing the `InstantiatorFactory`. The file goes into the `/src/main/resources/META-INF/services`
   folder.
 
+The factory is simple:
+```java
+public class MyInstantiatorFactory implements InstantiatorFactory {
+  @Override
+  public Instantiator createInstantitor(VaadinService service) {
+    return new MyInstantiator(service);
+  }
+}
+```
+
 ## How to implement an Instantiator
 
 All Vaadins 14 - 23.2.0 does not implement instantiator chaining: there's no mechanism
@@ -31,7 +41,7 @@ public class MyInstantiator extends DefaultInstantiator {
     public <T extends HasElement> T createRouteTarget(Class<T> routeTargetType, NavigationEvent event) {
         if (routeTargetType == MainView.class) {
             // some special construction perhaps
-            final MainView view = RouteSessionCache.getOrCreate(MainView.class);
+            final MainView view = new MainView("Param 1", "Param 2");
             return ((T) view);
         }
         return super.createRouteTarget(routeTargetType, event);

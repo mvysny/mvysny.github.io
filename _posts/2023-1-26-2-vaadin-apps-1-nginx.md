@@ -121,7 +121,7 @@ server {
 }
 ```
 
-Now try all of the following links:
+Now try all the following links:
 
 * [myserver.fake/app1](http://myserver.fake/app1)
 * [myserver.fake/app2](http://myserver.fake/app2)

@@ -6,7 +6,7 @@ title: 2 Vaadin Apps 1 Nginx
 The goal is to setup 2 Vaadin apps on one Ubuntu machine:
 
 * 2 Vaadin apps are running in production mode in docker
-* Configure nginx as 'reverse proxy' so that the apps are accessible via http://localhost/app1 and http://localhost/app2,
+* Configure nginx as 'reverse proxy' so that the apps are accessible via http://myserver.fake/app1 and http://myserver.fake/app2,
   but also http://vaadin1.fake and http://vaadin2.fake
 * We'll make sure that the session cookies are changed properly, so that both apps are accessible at the same time.
 
@@ -48,5 +48,16 @@ interacting with the other app.
 
 We will fix that in nginx.
 
+## Faking the DNS addresses
+
+Edit `/etc/hosts` and add the following line to the end:
+```bash
+127.0.0.1 myserver.fake vaadin1.fake vaadin2.fake
+```
+Now when browsing to `http://myserver.fake`, the browser will report the hostname as `myserver.fake`,
+exactly as if the DNS name was provided by an actual DNS server. We can take advantage of this,
+to test as if on a real environment.
+
 ## nginx reverse proxy
 
+todo

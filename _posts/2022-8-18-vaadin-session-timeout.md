@@ -7,7 +7,7 @@ The Vaadin documentation at [Application Lifecycle: UI Expiration](https://vaadi
 is not very clear. The [Stack Overflow: Session Stays Open Indefinitely Answer](https://stackoverflow.com/a/60560014/377320)
 by Erik Lumme is much clearer.
 
-In short, if you want to set the session timeout to 30 minutes, make sure that you set all of the following:
+In short, if you want to set the session timeout to 30 minutes, make sure that you set all the following:
 
 * The web container session timeout is set to 30 (see below)
 * Set Vaadin's `DeploymentConfiguration.closeIdleSessions` to `true` (see below)
@@ -71,6 +71,14 @@ the last non-heartbeat request was made.
 
 In short, either Vaadin or web container will eventually close the session, regardless of
 whether there are browsers open or not.
+
+### Heartbeats
+
+The default heartbeat setting is 5 minute or 300 seconds. See `DefaultDeploymentConfiguration.getHeartbeatInterval()`
+for more details. You can override this value via Java System properties or via Servlet init parameter,
+see [Configuration Properties](https://vaadin.com/docs/latest/configuration/properties) for more details.
+
+The numeric value of the `heartbeatInterval` property denotes a number in seconds.
 
 ## FAQ
 

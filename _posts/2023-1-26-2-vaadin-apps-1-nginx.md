@@ -60,7 +60,73 @@ to test as if on a real environment.
 
 ## nginx reverse proxy
 
-todo
+[Nginx](https://www.nginx.com/) (pronounced Engine-X) is a web server offering lots of features.
+We'll use the 'reverse proxy' feature, which forwards all requests made to http://myserver.fake/app1
+to http://localhost:30000, then modify the response html (rewrites links and paths for example),
+so that the browser thinks it came from http://myserver.fake/app1
+
+Nginx is configured via the `/etc/nginx/nginx.conf` file, which includes `/etc/nginx/sites-enabled/*` and
+`/etc/nginx/conf.d/*.conf`. Let's create `/etc/nginx/conf.d/vaadin.conf` with the following contents:
+
+```
+server {
+  server_name myserver.fake;
+  location /app1/ {
+    proxy_pass http://localhost:30000/;
+    proxy_cookie_path / /app1/;
+    proxy_cookie_domain localhost $host;
+  }
+}
+```
+
+Restart nginx via `sudo systemctl reload nginx.service` and the first Vaadin app now runs
+at [myserver.fake/app1](http://myserver.fake/app1).
+
+Note the `proxy_cookie_path` and `proxy_cookie_domain`. Since the request to the Vaadin app
+comes from the nginx from localhost, Vaadin thinks that the path is `/` and the host is `localhost`
+and would produce such JSESSIONID cookie. The cookie would then be ignored by the browser (since
+the request went to `myserver.fake/app1`), which would mean that a new session would
+constantly get created. Try removing the `proxy_*` settings temporarily for yourself, to see
+the outcome.
+
+We're now ready to prepare the final configuration file:
+
+```
+server {
+  server_name myserver.fake;
+  location /app1/ {
+    proxy_pass http://localhost:30000/;
+    proxy_cookie_path / /app1/;
+    proxy_cookie_domain localhost $host;
+  }
+  location /app2/ {
+    proxy_pass http://localhost:30001/;
+    proxy_cookie_path / /app2/;
+    proxy_cookie_domain localhost $host;
+  }
+}
+server {
+  server_name vaadin1.fake;
+  location / {
+    proxy_pass http://localhost:30000/;
+    proxy_cookie_domain localhost $host;
+  }
+}
+server {
+  server_name vaadin2.fake;
+  location / {
+    proxy_pass http://localhost:30001/;
+    proxy_cookie_domain localhost $host;
+  }
+}
+```
+
+Now try all of the following links:
+
+* [myserver.fake/app1](http://myserver.fake/app1)
+* [myserver.fake/app2](http://myserver.fake/app2)
+* [vaadin1.fake](http://vaadin1.fake/)
+* [vaadin2.fake](http://vaadin2.fake/)
 
 ## https via Let's Encrypt
 
@@ -69,6 +135,13 @@ server running somewhere in the internet; then you have to register a bunch of d
 and make them point to the IP address where the server is running.
 
 Use Let's Encrypt and follow [Certbot instructions](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal).
-Generated nginx config files are compatible with certbot; Shepherd won't overwrite certbot configuration.
+The `sudo certbot --nginx` command will modify all active nginx configuration files
+referenced from `/etc/nginx/nginx.conf`: it will enable https, will download certificates and store them locally,
+and set up periodic refresh of the certificates.
 
-todo what exactly happened and what files were generated?
+You do not have to have any account at Let's Encrypt: the only requirement is to own the DNS domain and
+to have it pointing to the server's IP.
+
+## What's next
+
+Now that you understand how this basic setup works, we'll do the same setup, but with Kubernetes. Stay tuned.

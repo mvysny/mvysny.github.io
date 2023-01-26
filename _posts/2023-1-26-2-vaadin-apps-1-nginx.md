@@ -6,8 +6,8 @@ title: 2 Vaadin Apps 1 Nginx
 The goal is to setup 2 Vaadin apps on one Ubuntu machine:
 
 * 2 Vaadin apps are running in production mode in docker
-* Configure nginx as 'reverse proxy' so that the apps are accessible via http://myserver.fake/app1 and http://myserver.fake/app2,
-  but also http://vaadin1.fake and http://vaadin2.fake
+* Configure nginx as 'reverse proxy' so that the apps are accessible via `http://myserver.fake/app1` and `http://myserver.fake/app2`,
+  but also `http://vaadin1.fake` and `http://vaadin2.fake`
 * We'll make sure that the session cookies are changed properly, so that both apps are accessible at the same time.
 
 ## Setup
@@ -22,7 +22,8 @@ Now browse to [localhost](http://localhost) and check that you can see the "Welc
 The file is served from `/var/www/html/index.nginx-debian.html` via the rule present in the `/etc/nginx/sites-enabled/default` file.
 
 We'll run two Vaadin apps from docker: [vaadin-boot-example-gradle](https://github.com/mvysny/vaadin-boot-example-gradle)
-and [beverage-buddy-vok](https://github.com/mvysny/beverage-buddy-vok). Run the following in your terminal:
+and [beverage-buddy-vok](https://github.com/mvysny/beverage-buddy-vok). To build docker
+images out of those apps, run the following in your terminal:
 
 ```bash
 git clone https://github.com/mvysny/vaadin-boot-example-gradle
@@ -61,9 +62,9 @@ to test as if on a real environment.
 ## nginx reverse proxy
 
 [Nginx](https://www.nginx.com/) (pronounced Engine-X) is a web server offering lots of features.
-We'll use the 'reverse proxy' feature, which forwards all requests made to http://myserver.fake/app1
-to http://localhost:30000, then modify the response html (rewrites links and paths for example),
-so that the browser thinks it came from http://myserver.fake/app1
+We'll use the 'reverse proxy' feature, which forwards all requests made to `http://myserver.fake/app1`
+to `http://localhost:30000`, then modify the response html (rewrites links and paths for example),
+so that the browser thinks it came from `http://myserver.fake/app1`.
 
 Nginx is configured via the `/etc/nginx/nginx.conf` file, which includes `/etc/nginx/sites-enabled/*` and
 `/etc/nginx/conf.d/*.conf`. Let's create `/etc/nginx/conf.d/vaadin.conf` with the following contents:

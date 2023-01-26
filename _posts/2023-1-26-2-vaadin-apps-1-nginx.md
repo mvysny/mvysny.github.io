@@ -61,3 +61,14 @@ to test as if on a real environment.
 ## nginx reverse proxy
 
 todo
+
+## https via Let's Encrypt
+
+To enable https with Let's Encrypt, you obviously have to set up nginx on an actual
+server running somewhere in the internet; then you have to register a bunch of domains
+and make them point to the IP address where the server is running.
+
+Use Let's Encrypt and follow [Certbot instructions](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal).
+Generated nginx config files are compatible with certbot; Shepherd won't overwrite certbot configuration.
+
+todo what exactly happened and what files were generated?

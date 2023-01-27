@@ -83,12 +83,20 @@ server {
 Restart nginx via `sudo systemctl reload nginx.service` and the first Vaadin app now runs
 at [myserver.fake/app1](http://myserver.fake/app1).
 
-Note the `proxy_cookie_path` and `proxy_cookie_domain`. Since the request to the Vaadin app
-comes from the nginx from localhost, Vaadin thinks that the path is `/` and the host is `localhost`
-and would produce such JSESSIONID cookie. The cookie would then be ignored by the browser (since
-the request went to `myserver.fake/app1`), which would mean that a new session would
-constantly get created. Try removing the `proxy_*` settings temporarily for yourself, to see
-the outcome.
+Note the `proxy_cookie_path` and `proxy_cookie_domain`. When you open `http://myserver.fake/app1`
+in your browser, the request goes through nginx first. Nginx creates a completely new request
+and sends it to the Vaadin app. Nginx will basically open `http://localhost:30000/`, which means that
+the path is `/` and the host is `localhost`. Vaadin (or, rather, the servlet container, i.e. Jetty)
+sees that the request came from `localhost` and produces a JSESSIONID cookie targeted
+to host `localhost` and path `/`.
+
+If the `proxy_cookie_path` and `proxy_cookie_domain` rewrite rules would be missing from nginx config file,
+the cookie would go through nginx unmodified and would be ignored by the browser (since
+the request went to `myserver.fake/app1` but the cookie says `localhost`). The browser
+would not send the cookie back in the next request, which would cause Jetty to create a new session,
+and respond with `localhost` cookie, which would then be ignored, and so on and so forth.
+
+Try removing the `proxy_*` settings temporarily for yourself, to see the outcome.
 
 We're now ready to prepare the final configuration file:
 

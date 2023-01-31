@@ -8,30 +8,28 @@ title: Try out TeamCity quickly with Docker
 Luckily, with Docker, you can set up TeamCity very easily on any PC, without the fuss of installing the server and the agent. The following `docker-compose.yml` configuration file will direct Docker to download appropriate images both for TC server and for TC agent and run them. Create a folder named `teamcity` and drop the `docker-compose.yml` file in there:
 
 ```
-version: '2'
+version: "2.1"
 services:
-  teamcity-server:
-    image: jetbrains/teamcity-server:2019.2
-    environment:
-     - TEAMCITY_SERVER_MEM_OPTS=-Xmx2g -XX:MaxPermSize=270m -XX:ReservedCodeCacheSize=350m
+  server:
+    image: jetbrains/teamcity-server:latest
     ports:
-     - "127.0.0.1:8111:8111"
+      - "8111:8111"
     volumes:
-     - ./server/datadir:/data/teamcity_server/datadir
-     - ./server/logs:/opt/teamcity/logs
-  teamcity-agent:
-    image: jetbrains/teamcity-agent
+      - ./datadir:/data/teamcity_server/datadir
+      - ./logs:/opt/teamcity/logs
+  agent:
+    image: jetbrains/teamcity-agent:latest
+    volumes:
+      - ./agent_conf:/data/teamcity_agent/conf
     environment:
-     - SERVER_URL=http://teamcity-server:8111
-    volumes:
-     - ./agent/conf:/data/teamcity_agent/conf
+      - SERVER_URL=http://server:8111
 ```
 
 Then, create the following folders inside of the `teamcity` folder which will store both the server and the agent persistent folders:
 ```
-server/datadir
-server/logs
-agent/conf
+datadir
+logs
+agent_conf
 ```
 
 Now just start the containers with:

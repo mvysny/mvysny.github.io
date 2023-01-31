@@ -37,7 +37,7 @@ Now just start the containers with:
 docker-compose up
 ```
 
-Now you can direct your browser to http://localhost:8111 and configure TC to use the embedded database; then just head to agents and authorize the `teamcity-agent` so that TC server will trust it and will run the builds there.
+Now you can direct your browser to [http://localhost:8111](http://localhost:8111) and configure TC to use the embedded database; then just head to agents and authorize the `teamcity-agent` so that TC server will trust it and will run the builds there.
 
 ## Building Android APKs with TeamCity
 

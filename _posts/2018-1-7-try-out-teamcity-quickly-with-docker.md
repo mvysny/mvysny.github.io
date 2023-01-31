@@ -25,12 +25,14 @@ services:
       - SERVER_URL=http://server:8111
 ```
 
-Then, create the following folders inside of the `teamcity` folder which will store both the server and the agent persistent folders:
+Then, create the following folders inside the `teamcity` folder which will store both the server and the agent persistent folders:
 ```
 datadir
 logs
 agent_conf
 ```
+
+If your host user doesn't have uid of 1000, you'll need to chown those to uid of 1000.
 
 Now just start the containers with:
 ```

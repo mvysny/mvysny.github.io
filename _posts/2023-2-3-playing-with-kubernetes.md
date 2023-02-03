@@ -248,7 +248,7 @@ in order to avoid name clashes between resources.
 Namespace must be a valid [DNS Name](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names),
 which means that the project ID must:
 
-* contain at most 54 characters (63 characters DNS name, minus 9 characters `shepherd-` prefix)
+* contain at most 63 characters
 * contain only lowercase alphanumeric characters or '-'
 * start with an alphanumeric character
 * end with an alphanumeric character

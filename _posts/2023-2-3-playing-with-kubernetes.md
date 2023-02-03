@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2 Vaadin Apps 1 Nginx
+title: Playing with Kubernetes - microk8s
 ---
 
 [microk8s](https://microk8s.io/) is an excellent way to have a Kubernetes server

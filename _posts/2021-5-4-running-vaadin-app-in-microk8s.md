@@ -3,6 +3,8 @@ layout: post
 title: Running Vaadin-on-Kotlin app in microk8s
 ---
 
+TODO this is old tutorial and will be replaced in the future.
+
 [microk8s](https://microk8s.io/) is an excellent way to have a Kubernetes server
 up-and-running in no time on your Ubuntu machine. In this article
 we're going to have the [vaadin-kotlin-pwa](https://github.com/mvysny/vaadin-kotlin-pwa)

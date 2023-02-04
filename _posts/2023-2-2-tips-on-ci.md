@@ -13,7 +13,10 @@ Requirements:
 
 Evaluated CIs from [awesome-ci](https://github.com/ligurio/awesome-ci):
 
-* [Jenkins](https://www.jenkins.io/) - not bad but uses a whopping 4GB of RAM. Use TeamCity instead.
+* [Jenkins](https://www.jenkins.io/) - the default choice. Can be configured to use 512m of RAM only.
+  * Install [Jenkins on Linux](https://www.jenkins.io/doc/book/installing/linux)
+  * Note that you configure Jenkins via `systemctl edit jenkins`, then restart via `systemctl restart jenkins`.
+  * Logs accessible via `journalctl -u jenkins -f`
 * CircleCI - self-hosted option is not free. Skip.
 * Concourse-CI: The `fly` binary is suspicious; the YAML config is weird; simple git build example missing. Skip.
 * AppCircle.io: self-hosted option is not free. Skip.

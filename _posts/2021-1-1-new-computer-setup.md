@@ -57,7 +57,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git vim htop gparted fish doublecmd-gtk gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support
+sudo apt install git vim htop gparted fish doublecmd-gtk gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois
 sudo update-alternatives --config editor     # select vim.basic
 ```
 

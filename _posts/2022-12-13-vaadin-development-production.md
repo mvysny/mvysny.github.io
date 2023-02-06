@@ -3,6 +3,12 @@ layout: post
 title: Vaadin Production/Development mode and flow-build-info.json
 ---
 
+Vaadin apps contain a lot of javascript code, to make the components work in the client-side.
+That javascript code needs to be downloaded from somewhere, built, then distributed to the browser.
+For that we're using the JavaScript toolchain. Without going into details, think Maven for JavaScript - it's called npm.
+There's also "webpack" which takes stuff downloaded by npm, and creates one huge javascript file out of that.
+That's all you need to know about JavaScript part of Vaadin. Now, back to the point.
+
 Vaadin offers two concepts, which are orthogonal (can be combined independently):
 
 1. **Development** and **production** mode
@@ -33,7 +39,9 @@ The developers should definitely use the development mode on their development m
 
 ## Building JavaScript bundle on-the-fly VS prebuilt
 
-By default, Vaadin builds the JavaScript Bundle on-the-fly. The bundle is basically one huge javascript
+By default, Vaadin uses webpack builds the JavaScript Bundle on-the-fly.
+Vaadin will start something called Vaadin DevServer, which runs webpack under the hood, and uses it to build
+the JavaScript part. The bundle is basically one huge javascript
 file containing contents of all JS files, but also CSS files injected into webcomponents.
 The bundle always needs to be built at some point,
 otherwise it would be hard to transfer all those javascript files to the browser.

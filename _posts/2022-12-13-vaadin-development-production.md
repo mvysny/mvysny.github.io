@@ -3,7 +3,7 @@ layout: post
 title: Vaadin Production/Development mode and flow-build-info.json
 ---
 
-Vaadin apps contain a lot of javascript code, to make the components work in the client-side.
+Vaadin components are partly build in javascript, to make the components work in the client-side (in the browser).
 That javascript code needs to be downloaded from somewhere, built, then distributed to the browser.
 For that we're using the JavaScript toolchain. Without going into details, think Maven for JavaScript - it's called npm.
 There's also "webpack" which takes stuff downloaded by npm, and creates one huge javascript file out of that.

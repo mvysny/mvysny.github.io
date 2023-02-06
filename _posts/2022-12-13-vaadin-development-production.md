@@ -64,6 +64,8 @@ the app for the first time.
 
 In this mode, Vaadin Servlet expects pre-built bundle files in the `META-INF/VAADIN/build/` folder.
 Vaadin Servlet therefore doesn't start the DevServer/WebPack/Vite in this mode.
+The `node.js+npm+webpack` toolchain is instead invoked
+by the Vaadin Maven/Gradle plugin at build-time; produced the JavaScript files are then attached to the WAR file.
 
 You can enable this mode by running `mvn vaadin:prepare-frontend vaadin:build-frontend`
 or `./gradlew vaadinBuildFrontend` to build the JavaScript bundle.

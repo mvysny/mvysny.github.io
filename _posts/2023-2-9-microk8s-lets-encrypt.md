@@ -65,7 +65,7 @@ Q: I have `Error from server (InternalError): error when creating "letsencrypt.y
 A: If you just installed cert-manager addon, it may still be initializing. For me, the issue resolved itself in a minute or two.
    If that doesn't work, try to [completely uninstall cert-manager](https://cert-manager.io/v1.2-docs/installation/uninstall/kubernetes/).
 
-Q: The secret name has 5 alphanumeric characters appended (e.g. `v-herd-eu-ingress-tls-reya6` instead of `v-herd-eu-ingress-tls`)
+Q: The secret name has 5 alphanumeric characters appended in Kubernetes Dashboard (e.g. `v-herd-eu-ingress-tls-reya6` instead of `v-herd-eu-ingress-tls`)
 
 A: cert-manager is in the process of refreshing that secret. Wait a bit; check pods to find the certbot running.
   If that doesn't help, cert-manager could be stuck. Try completely uninstall cert-manager.

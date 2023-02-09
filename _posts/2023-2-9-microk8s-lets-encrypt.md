@@ -47,70 +47,13 @@ The `spec/tls` needs to be repeated otherwise Ingress HTTPS won't activate.
 
 ### When Annotation is not repeated
 
-I create a very simple nginx static backend service; the sole purpose is to activate CertManager
-auto-renewal:
+I was thinking of creating a very simple nginx static backend service; the sole purpose for it would be to activate CertManager
+auto-renewal for `my-dns.com`.
 
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: my-dns-com-static-nginx
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: deployment
-  namespace: my-dns-com-static-nginx
-spec:
-  selector:
-    matchLabels:
-      app: pod
-  template:
-    metadata:
-      labels:
-        app: pod
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:1.14.2
-          ports:
-            - containerPort: 80
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service
-  namespace: my-dns-com-static-nginx
-spec:
-  selector:
-    app: pod
-  ports:
-    - port: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress
-  namespace: my-dns-com-static-nginx
-  annotations:
-    cert-manager.io/cluster-issuer: lets-encrypt
-spec:
-  tls:
-  - hosts:
-    - my-dns.com
-    secretName: my-dns-com-ingress-tls
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Exact
-            backend:
-              service:
-                name: service
-                port:
-                  number: 80
-```
+The problem is that Secrets are namespaced and tied to that namespace; an app from a different namespace
+can not obtain access to a secret from another namespace: [#8083](https://github.com/kubernetes/ingress-nginx/issues/8083)
+and [#2170](https://github.com/kubernetes/ingress-nginx/issues/2170). But there's a way:
+[Syncing Secrets Across Namespaces](https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/).
+
+Looks like the [Nginx default certificate](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#default-ssl-certificate)
+is the simplest solution but only works for one DNS.

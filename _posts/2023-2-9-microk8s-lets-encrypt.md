@@ -24,8 +24,8 @@ CertManager will then store the signed certificate locally, and will provide it 
 when a https communication is attempted.
 
 This is where the Ingress configuration comes to play. Ingress is annotated with
-`cert-manager.io/cluster-issuer: letsencrypt` which tells CertManager that we are
-going to issue a certificate for this site, and we'll use the `letsencrypt` ClusterIssuer.
+`cert-manager.io/cluster-issuer: lets-encrypt` which tells CertManager that we are
+going to issue a certificate for this site, and we'll use the `lets-encrypt` ClusterIssuer.
 Certbot will take a look at the `tls/secretName` configuration, and will run the ACME
 certificate signing for all hosts mentioned, and will store the certificate to given secret `microbot-ingress-tls`.
 
@@ -34,4 +34,83 @@ If you omit this, Ingress will use a self-signed Kubernetes certificate which wi
 
 ## Multiple Ingress configurations pointing towards the same DNS
 
-TODO
+If you have multiple Ingress configuration resources for the same host split across multiple files,
+the question is, which parts of the Ingress configuration should be repeated, and which parts
+should not. There are two parts in question:
+
+* The `cert-manager.io/cluster-issuer: lets-encrypt` annotation which activates CertManager auto-renewal; and
+* `spec/tls` which configures Ingress HTTPS support for this resource.
+
+I think that the `cert-manager.io/cluster-issuer: lets-encrypt` annotation may or may not
+be repeated; if repeated, in the worst case CertManager may ask for signing too many times.
+The `spec/tls` needs to be repeated otherwise Ingress HTTPS won't activate.
+
+### When Annotation is not repeated
+
+I create a very simple nginx static backend service; the sole purpose is to activate CertManager
+auto-renewal:
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-dns-com-static-nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: my-dns-com-static-nginx
+spec:
+  selector:
+    matchLabels:
+      app: pod
+  template:
+    metadata:
+      labels:
+        app: pod
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service
+  namespace: my-dns-com-static-nginx
+spec:
+  selector:
+    app: pod
+  ports:
+    - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: my-dns-com-static-nginx
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+spec:
+  tls:
+  - hosts:
+    - my-dns.com
+    secretName: my-dns-com-ingress-tls
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: service
+                port:
+                  number: 80
+```

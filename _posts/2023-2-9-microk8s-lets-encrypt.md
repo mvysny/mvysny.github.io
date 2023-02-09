@@ -57,3 +57,10 @@ and [#2170](https://github.com/kubernetes/ingress-nginx/issues/2170). But there'
 
 Looks like the [Nginx default certificate](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#default-ssl-certificate)
 is the simplest solution but only works for one DNS.
+
+## Troubleshooting
+
+Q: I have `Error from server (InternalError): error when creating "letsencrypt.yaml": Internal error occurred: failed calling webhook "webhook.cert-manager.io": failed to call webhook: Post "https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s": dial tcp 10.152.183.130:443: connect: connection refused`
+
+A: If you just installed cert-manager addon, it may still be initializing. For me, the issue resolved itself in a minute or two.
+   If that doesn't work, try to [completely uninstall cert-manager](https://cert-manager.io/v1.2-docs/installation/uninstall/kubernetes/).

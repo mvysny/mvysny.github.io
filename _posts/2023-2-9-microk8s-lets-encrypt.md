@@ -26,11 +26,12 @@ when a https communication is attempted.
 This is where the Ingress configuration comes to play. Ingress is annotated with
 `cert-manager.io/cluster-issuer: lets-encrypt` which tells CertManager that we are
 going to issue a certificate for this site, and we'll use the `lets-encrypt` ClusterIssuer.
-Certbot will take a look at the `tls/secretName` configuration, and will run the ACME
+Certbot will take a look at the `tls/secretName` name (say it's `microbot-ingress-tls`), and will run the ACME
 certificate signing for all hosts mentioned, and will store the certificate to given secret `microbot-ingress-tls`.
 
 The `rules/host` is also important: it then tells Ingress https engine which certificate for which host to use.
-If you omit this, Ingress will use a self-signed Kubernetes certificate which will be rejected by the browsers.
+If you omit this, Ingress will use a default certificate (by default self-signed Kubernetes certificate but can be changed, see below)
+which will be rejected by the browsers.
 
 ## Multiple Ingress configurations pointing towards the same DNS
 
@@ -56,16 +57,18 @@ and [#2170](https://github.com/kubernetes/ingress-nginx/issues/2170). But there'
 [Syncing Secrets Across Namespaces](https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/).
 
 Looks like the [Nginx default certificate](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#default-ssl-certificate)
-is the simplest solution but only works for one DNS.
+is the simplest solution, but you can obviously make only one DNS the default one.
 
 ## Troubleshooting
 
 Q: I have `Error from server (InternalError): error when creating "letsencrypt.yaml": Internal error occurred: failed calling webhook "webhook.cert-manager.io": failed to call webhook: Post "https://cert-manager-webhook.cert-manager.svc:443/mutate?timeout=10s": dial tcp 10.152.183.130:443: connect: connection refused`
 
-A: If you just installed cert-manager addon, it may still be initializing. For me, the issue resolved itself in a minute or two.
+A: If you just installed cert-manager addon, it may still be initializing/downloading images for pods.
+   For me, the issue resolved itself in a minute or two.
    If that doesn't work, try to [completely uninstall cert-manager](https://cert-manager.io/v1.2-docs/installation/uninstall/kubernetes/).
 
 Q: The secret name has 5 alphanumeric characters appended in Kubernetes Dashboard (e.g. `v-herd-eu-ingress-tls-reya6` instead of `v-herd-eu-ingress-tls`)
 
-A: cert-manager is in the process of refreshing that secret. Wait a bit; check pods to find the certbot running.
-  If that doesn't help, cert-manager could be stuck. Try completely uninstall cert-manager.
+A: cert-manager is in the process of refreshing that secret. Wait a bit; check the pods list to find the certbot running. Once certbot is done,
+  it will rename the secret back to `v-herd-eu-ingress-tls`.
+  If that doesn't help, cert-manager could be stuck. Try completely uninstalling cert-manager.

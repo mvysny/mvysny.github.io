@@ -7,6 +7,9 @@ title: Let's Encrypt HTTPS/SSL for Microk8s
 The tutorial at [Microk8s addon: Cert Manager](https://microk8s.io/docs/addon-cert-manager)
 lists all the steps but doesn't explain much. Here's what I learned.
 
+Go with the [tutorial at Microk8s addon: Cert Manager](https://microk8s.io/docs/addon-cert-manager);
+I'll explain everything below.
+
 The first step is to create the `ClusterIssuer` resource. Such resources are not bound to namespaces,
 and therefore all apps are able to access that resource.
 Once you create the `ClusterIssuer` resource, CertManager will know how to issue the certificate.

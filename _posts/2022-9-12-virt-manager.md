@@ -54,6 +54,10 @@ Use the `virtio` video driver, and make sure the 3D acceleration support is enab
 Firefox+Wayland+Screen sharing: on all video drivers, if you try to share a screen where your VM is running, the screen will
 soon stop updating in Firefox. Workaround is to share just the virt-manager window with the VM and not the entire screen.
 
+## Shared folders
+
+See [Share Folder Between Guest and Host in virt-manager (KVM/Qemu/libvirt)](https://www.debugpoint.com/share-folder-virt-manager/).
+
 ## Quick VM cloning
 
 I miss the ability to clone the VM without having to clone the disk. VirtualBox

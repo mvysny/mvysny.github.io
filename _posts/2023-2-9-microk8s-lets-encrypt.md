@@ -78,3 +78,5 @@ it will rename the secret back to `v-herd-eu-ingress-tls`.
 If that doesn't help, cert-manager could be stuck. Try completely uninstalling cert-manager.
 You can check the `cert-manager-*` pod for logs.
 Alternative is to simply uninstall microk8s via `snap remove --purge microk8s`, then install it back.
+
+Note that cert-manager works with microk8s even when not in ha-cluster mode.

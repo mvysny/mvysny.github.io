@@ -76,3 +76,4 @@ A: cert-manager is in the process of refreshing that secret. Wait a bit; check t
 to find the certbot running. Once certbot is done,
 it will rename the secret back to `v-herd-eu-ingress-tls`.
 If that doesn't help, cert-manager could be stuck. Try completely uninstalling cert-manager.
+You can check the `cert-manager-*` pod for logs.

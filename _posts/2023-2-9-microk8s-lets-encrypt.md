@@ -73,9 +73,9 @@ If that doesn't work, try to [completely uninstall cert-manager](https://cert-ma
 Q: The secret name has 5 alphanumeric characters appended in Kubernetes Dashboard (e.g. `v-herd-eu-ingress-tls-reya6` instead of `v-herd-eu-ingress-tls`)
 
 A: cert-manager is in the process of refreshing that secret. Wait a bit; check the pods list for `cm-acme-http-solver`
-to find the certbot running. Once certbot is done,
+to find the certbot running. Once certbot is done (should be done in 10 seconds or so),
 it will rename the secret back to `v-herd-eu-ingress-tls`.
-If that doesn't help, cert-manager could be stuck. Try completely uninstalling cert-manager.
+If that doesn't work, cert-manager could be stuck. Try completely uninstalling cert-manager.
 You can check the `cert-manager-*` pod for logs.
 Alternative is to simply uninstall microk8s via `snap remove --purge microk8s`, then install it back.
 

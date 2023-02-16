@@ -24,6 +24,9 @@ Vaadin can therefore run in the following modes (essentially all combinations of
 
 By default, Vaadin runs in development mode and builds webpack on-the-fly.
 
+> Note: Please see the [Vaadin Development Mode documentation](https://vaadin.com/docs/next/configuration/development-mode)
+> for further explanation of these concepts.
+
 ## Development VS Production mode
 
 The development mode is active by default, unless you switch to production mode via `mvn -Pproduction`

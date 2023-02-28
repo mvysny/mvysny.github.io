@@ -59,8 +59,9 @@ and other crap. Additional rules apply:
   * Optionally, use TestBench to test the happy flow: a very simple scenario, mostly testing
     that the app renders in a web browser.
 * Create a reusable set of Java layouts such as `GreyDetailsPane`; then create a view called Sampler which
-  demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes
-  for new developers to follow.
+  demoes all layouts and proper ways to use components. This creates a documentation of all the layouts;
+  a catalogue of best practices if you will; a go-to posterboy source-code "recipes",
+  excellent source of copy-paste for new developers joining the team.
 * For security use [vaadin-simple-security](https://github.com/mvysny/vaadin-simple-security)
 * Read [Configuring your Vaadin apps](https://github.com/mvysny/vaadin-boot#configuration) on
   configuration tips.

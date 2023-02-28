@@ -22,7 +22,8 @@ public static class Services {
 Much simpler to reason about, much faster to start, much easier to debug and maintain.
 
 For stateful services you can use JVM singletons. For session-scoped services you can
-make the getter look up the service from Vaadin session.
+make the getter look up the service instance from Vaadin session; see [Stateful Service documentation](https://github.com/mvysny/vaadin-boot#services)
+for more details.
 
 Use [Karibu-Testing](https://github.com/mvysny/karibu-testing/) to test your app server-side.
 Either:

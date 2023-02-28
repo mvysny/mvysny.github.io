@@ -16,7 +16,18 @@ public class Tr {
 }
 ```
 
-Then you can static-import the `tr()` function everywhere and use it from anywhere.
+Then you can static-import the `tr()` function everywhere and use it from anywhere:
+
+```java
+import static com.example.Tr.tr;
+
+public class MyForm extends FormLayout {
+    public MyForm() {
+        TextField nameField = new TextField(tr("person.name"));
+        // ...
+    }
+}
+```
 
 ## Default I18nProvider?
 

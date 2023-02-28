@@ -35,19 +35,19 @@ There is no default `I18nProvider` implementation. You can check out
 [Vaadin documentation in Localization](https://vaadin.com/docs/v14/flow/advanced/tutorial-i18n-localization)
 on how to create a simple `ResourceBundle`-backed I18nProvider, or simply read on.
 
-For non-Spring projects, Vaadin recommends a funny way of registering your I18nProvider, via a system property or web init param.
-It looks funny but it works.
+For non-Spring projects, Vaadin recommends to register your I18nProvider via a system property or web init param.
+It looks funny but it works; I recommend this approach of having `ApplicationServlet` as shown in the Vaadin tutorial above.
 Alternatively you can define [your own Instantiator](../vaadin-custom-instantiator/),
 override `Instantiator.getI18nProvider()` and provide a singleton instance of your I18nProvider.
 
-With Spring, you can annotate your i18n provider class with `@Service` and Vaadin-Spring integration should pick it up
+With Spring, you can annotate your `I18nProvider`-implementing class with `@Service` and Vaadin-Spring integration should pick it up
 automatically.
 
 ## Resource Bundle
 
 The best way to localize in Java is to use the mechanism of Resource Bundles. It is widely
-supported by IDEs, used by default in Java world, has no significant shortcomings and therefore
-it's the recommended way.
+supported by IDEs, used by default in Java world, has no significant shortcomings, and therefore
+I recommended this way.
 
 In order to use Resource Bundles with Vaadin, you'll need to define the following i18n provider:
 
@@ -89,7 +89,7 @@ public class TranslationProvider implements I18NProvider {
 ```
 
 In the `getProvidedLocales()` you should return all locales for which you define resource bundles.
-Vaadin will then match the language coming from the browser in the http request to this list,
+Vaadin will then match the language list coming from the browser in the http request to this list,
 it will pick a match and will set it to the VaadinSession and all UIs. If no match
 is found, first locale is selected. Therefore:
 

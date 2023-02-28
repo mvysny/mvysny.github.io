@@ -52,9 +52,16 @@ and other crap. Additional rules apply:
 * Use [Component-oriented approach](../component-oriented-programming/) over MVP
 * Avoid EventBus unless your app is highly asynchronous in nature. Otherwise it will be hard
   for you to reason about code flow (since it's hard/impossible to tell which observers will react to given event).
-* Use TestBench for happy-flow testing (optional), use Karibu-Testing for everything else
+* Use Karibu-Testing for everything: from unit-testing your components to system-testing your app:
+  start your app with an actual database (use TestContainers to have the database up quickly); navigate to your login view via `UI.getCurrent().navigate()`,
+  then navigate throughout your app.
+  * Optionally, use TestBench to test the happy flow: a very simple scenario, mostly testing
+    that the app renders in a web browser.
 * Create a reusable set of Java layouts such as `GreyDetailsPane`; then create a view called Sampler which
   demoes all layouts and proper ways to use components. This creates a go-to posterboy recipes
   for new developers to follow.
+* For security use [vaadin-simple-security](https://github.com/mvysny/vaadin-simple-security)
+* Read [Configuring your Vaadin apps](https://github.com/mvysny/vaadin-boot#configuration) on
+  configuration tips.
 * Package your app as a zip/jar via [Vaadin Boot](https://github.com/mvysny/vaadin-boot)
 * [Localization/Internationalization (l10n/i18n)](../vaadin-localization/)

@@ -180,17 +180,17 @@ This allows us to call the finder method as follows:
 val person = Person.findById(25L)
 ```
 
-vok-db follows this idea and provides the `Dao` interface for you, along
+vok-orm follows this idea and provides the `Dao` interface for you, along
 with several of utility methods for your convenience. By the means of extension methods,
 you can define your own global finder methods, or you can simply attach finder methods to your beans as you see fit.
 
 You can even define an extension property on Dao which produces Vaadin's `DataProvider`,
 fetching all instances of that particular bean. Luckily, you don't have to do
-that since vok-db already provides one for you.
+that since vok-orm already provides one for you.
 
 Next up, data modification.
 
-### vok-db: Data Modification
+### vok-orm: Data Modification
 
 Unfortunately JDBI doesn't support persisting of the data, so we will have to
 do that ourselves. Luckily, it's very simple: all we need to do is to generate
@@ -235,3 +235,9 @@ person.save()
 Pure simplicity:
 
 ![vok-orm.jpeg]({{ site.baseurl }}/images/vok-orm.jpeg)
+
+## Wrap-up
+
+JPA is an object database on top of relational database, which everyone uses as a relational database in the first place.
+It's the mother of all leaky abstractions which is not even used properly; I'd even argue that it's impossible to be used properly.
+Avoid and use literally anything else: JOOQ, vok-orm (or jdbi-orm if Java is your thing), ActiveJDBC, JDBI directly.

@@ -17,6 +17,11 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 > Note: this breaks on EVERY Ubuntu upgrade for me. Be prepared to live without it
 > for a couple of weeks after Ubuntu upgrade.
 
+## Ubuntu 23.04
+
+Of course the fucking thing broke. I give up, I'm switching to [TopHat](https://extensions.gnome.org/extension/5219/tophat/).
+Install the `gnome-shell-extension-manager` via apt, then install the extension via the manager.
+
 ## Ubuntu 22.10
 
 Install the `gnome-shell-extension-manager` via apt:

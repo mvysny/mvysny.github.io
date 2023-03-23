@@ -109,10 +109,7 @@ Login to firefox account and sync.
 
 ### gnome system monitor extension
 
-Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
-
-1. Enable CPU, Memory, Swap and Net
-2. Set "Graph Width" to 40 and "Refresh Time" to 500.
+Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/) and install TopHat.
 
 ### git+sshkey
 

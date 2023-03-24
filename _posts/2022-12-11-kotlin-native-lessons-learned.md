@@ -80,3 +80,9 @@ Experimenting with Kotlin-Native taught me to value the JVM:
   across all CPUs, because of WORA.
 * You don't have to program in Java to use JDK. JDK is awesome, Java is ... average.
   However, JDK+Kotlin is simply brilliant.
+
+## Alternatives
+
+If you need to build for native, it's probably better to use something else, with a
+first class support for building to native. [Dart](https://dart.dev/) looks awesome;
+you can also try Go but I personally don't like the language at all.

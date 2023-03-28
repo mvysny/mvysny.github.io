@@ -84,5 +84,19 @@ Experimenting with Kotlin-Native taught me to value the JVM:
 ## Alternatives
 
 If you need to build for native, it's probably better to use something else, with a
-first class support for building to native. [Dart](https://dart.dev/) looks awesome;
-you can also try Go but I personally don't like the language at all.
+first class support for building to native. My absolute requirement is that the language
+must have a garbage collector, which rules out C, C++ and Rust. The language must be strongly-typed
+which rules out Ruby, Python and JavaScript.
+
+There is Go but I personally don't like the language at all - too low-level for my tastes,
+especially the strange decision of still having to deal with the pointers. Missing collections
+is a huge slap-in-the-face - having to deal with global functions to use arrays is unacceptable.
+
+[Dart](https://dart.dev/) looks awesome. All libraries can compile to native automatically, which
+is great - that basically implements the WORA property. I don't really need threading and the
+event/async model is more than enough for my needs; however I have access to other Isolates should I
+need it. There's no unified API for databases like JDBC in Dart unfortunately, but
+that's not a problem since there are clients for PostgreSQL and other databases as well.
+I'm loving Dart the language as well - it comes from the place of simplicity but offers
+much of the functionality. My personal highlight - Dart testing system offers the same `group{}`/`test{}`
+mechanism as [DynaTest](https://github.com/mvysny/dynatest).

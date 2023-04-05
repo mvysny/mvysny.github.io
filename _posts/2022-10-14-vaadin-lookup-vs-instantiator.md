@@ -20,7 +20,7 @@ implementation of Lookup is provided automatically (for example for the OSGi env
 
 What if you are tinkering with the servlet environment (perhaps
 [trying to run Vaadin in embedded jetty](https://github.com/mvysny/vaadin-embedded-jetty-gradle) or such),
-and suddenly you're getting `NullPointerException`s
+and suddenly you're getting `NullPointerException`s such as `Cannot invoke "com.vaadin.flow.server.StaticFileHandler.serveStaticResource(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)" because "this.staticFileHandler" is null`
 because `getContext().getAttribute(Lookup.class)` returned null? Who creates Lookup?
 
 Everything starts in `LookupServletContainerInitializer`. It implements `ServletContainerInitializer`

@@ -55,3 +55,21 @@ $ mkctl logs -f nginx-ingress-microk8s-controller-txgf2 --namespace ingress
 ```
 
 The `-f` will cause the command to follow the logs and print new log lines immediately as they're logged.
+
+## upstream-default-backend
+
+If a request isn't matched by any ingress rule, it will be redirected to the [default backend](https://kubernetes.github.io/ingress-nginx/user-guide/default-backend/)
+which contains the default 404 page. Example of the routing log for such event:
+
+```
+89.166.50.132 - - [12/Apr/2023:11:41:21 +0000] "GET / HTTP/2.0" 404 146 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0" 17 0.001 [upstream-default-backend] [] 127.0.0.1:8181 146 0.001 404 146c3077006d3b1ac838f2ab9f454aae
+```
+
+TODO:
+
+* How to customize the default backend: [Custom Errors](https://kubernetes.github.io/ingress-nginx/examples/customization/custom-errors/)
+* How to 'debug' the ingress decision tree - e.g. why a certain rule was not applied.
+
+## Further Links
+
+* Official documentation of the [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/)

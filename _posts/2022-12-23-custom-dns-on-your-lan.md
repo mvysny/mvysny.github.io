@@ -21,5 +21,12 @@ The steps are as follows:
     * allocate `192.168.0.10-254` IPs via DHCP, leaving space for the DNS machine with fixed IP `192.168.0.2`
     * Disable DNS relay
     * Override DNS servers and use just one: `192.168.0.2`
-5. Reboot your notebook and test. The notebook should have received IP of 192.168.0.10 or larger,
-   and should use the `192.168.0.2` DNS directly.
+
+Everything is now done. You can use any other device to test the new network, for example
+use your notebook machine. Reboot the machine, to start from the clean state.
+The notebook should have received IP of 192.168.0.10 or larger,
+and should use the `192.168.0.2` DNS directly. You can check that via the NetworkManager UI,
+or via the command-line:
+
+* Check the IP via `ifconfig`
+* Check the DNS via `resolvectl status`: [Linux DNS](../linux-dns/)

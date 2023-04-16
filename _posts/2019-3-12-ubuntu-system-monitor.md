@@ -22,6 +22,8 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 Of course the fucking thing broke. I give up, I'm switching to [TopHat](https://extensions.gnome.org/extension/5219/tophat/).
 Install the `gnome-shell-extension-manager` via apt, then install the extension via the manager.
 
+Don't forget to `sudo apt install gir1.2-gtop-2.0` as documented at [TopHat Installation Guide](https://github.com/fflewddur/tophat#installation).
+
 ## Ubuntu 22.10
 
 Install the `gnome-shell-extension-manager` via apt:

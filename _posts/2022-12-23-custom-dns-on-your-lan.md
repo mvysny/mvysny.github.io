@@ -29,4 +29,4 @@ and should use the `192.168.0.2` DNS directly. You can check that via the Networ
 or via the command-line:
 
 * Check the IP via `ifconfig`
-* Check the DNS via `resolvectl status`: [Linux DNS](../linux-dns/)
+* Check the DNS via `resolvectl status`; also check [Linux DNS](../linux-dns/)

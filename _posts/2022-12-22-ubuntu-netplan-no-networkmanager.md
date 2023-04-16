@@ -32,7 +32,9 @@ and your wifi should be up - you can verify that by running `ifconfig -a`.
 
 ## Ethernet
 
-[Example with netplan fixed IP address](https://linuxconfig.org/how-to-configure-static-ip-address-on-ubuntu-18-04-bionic-beaver-linux):
+This is an example of a fixed-IP configuration: the machine will have the IP of `192.168.1.222`
+on a network with netmask `255.255.255.0`, with gateway of `192.168.1.1` and two DNS
+servers, `8.8.8.8` and `8.8.4.4` (the Google ones):
 
 ```yaml
 # This file describes the network interfaces available on your system
@@ -50,6 +52,8 @@ network:
 ```
 
 Again, run `sudo netplan --debug apply` and verify that by running `ifconfig -a`.
+
+Origin: [Example with netplan fixed IP address](https://linuxconfig.org/how-to-configure-static-ip-address-on-ubuntu-18-04-bionic-beaver-linux):
 
 ## Checking The Stack
 

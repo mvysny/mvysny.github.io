@@ -57,4 +57,4 @@ Code size (only the stuff I had to develop, excluding any third-party libraries 
 
 * Kotlin/Native: 116760 characters, 47% bigger than Kotlin/JVM. By far the biggest since I had to develop File IO and Date-Time support from scratch.
 * Dart: 87415 characters, 10% bigger than Kotlin/JVM. Much smaller code-base than Kotlin/Native since I was able to reuse many existing Dart libraries and the awesome Dart stdlib.
-* Kotlin/JVM: 79346 characters (100%), even more reuse of both existing libraries AND the massively useful Java+Kotlin stdlib.
+* Kotlin/JVM: 79346 characters. Even more reuse of both existing libraries AND the massively useful Java+Kotlin stdlib.

@@ -52,3 +52,9 @@ Compiling speeds:
   pretty much in 10 seconds.
 * Dart can only produce linux/arm64 binary when compiling on RaspberryPI, which takes at least 2 minutes.
 * Kotlin+JVM: It's a WORA so you compile it anywhere and run it anywhere. It compiles on my x86-64 machine in 4 seconds.
+
+Code size (only the stuff I had to develop, excluding any third-party libraries I was able to use):
+
+* Kotlin/Native: 116760 characters, by far the biggest since I had to develop File IO and Date-Time support from scratch.
+* Dart: 87415 characters, much smaller code-base since I was able to reuse many existing Dart libraries and the awesome Dart stdlib.
+* Kotlin/JVM: 79346 characters, even more reuse of both existing libraries AND the massively useful Java+Kotlin stdlib.

@@ -16,7 +16,7 @@ are pretty much set in stone:
 
 I've tried three platforms:
 
-* [Kotlin Multiplatform Native](../kotlin-native-lessons-learned/)
+* [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)
 * [Dart](https://dart.dev/); my thoughts [on Dart](../on-dart/)
 * Kotlin on JVM
 
@@ -33,9 +33,9 @@ That reminded me of one thing: JVM WORA is a God-send. JVM is brilliant.
 
 I've written the same code three times:
 
-* [Kotlin Multiplatform Native](https://github.com/mvysny/solar-controller-client/)
-* [Dart](https://github.com/mvysny/renogy-client/)
-* [Kotlin+JVM](https://github.com/mvysny/renogy-klient/)
+* Kotlin Multiplatform Native: [solar-controller-client](https://github.com/mvysny/solar-controller-client/)
+* Dart: [Renogy Client](https://github.com/mvysny/renogy-client/)
+* Kotlin+JVM: [Renogy-Klient](https://github.com/mvysny/renogy-klient/)
 
 Here are some stats on Linux/ARM64. Memory usage (RSS as shown by htop):
 

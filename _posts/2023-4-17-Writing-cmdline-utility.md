@@ -41,7 +41,7 @@ Here are some stats on Linux/ARM64. Memory usage (RSS as shown by htop):
 
 * Kotlin Multiplatform native: 5-10mb, by far the smallest memory footprint.
 * Dart: 25-50mb, pretty good too.
-* Kotlin+JVM: 80-100mb. The memory usage simply wouldn't decrease regardless of `-Xmx32m`, `-Xmx20m`, `-Xmx16m` and `-Xss200k`.
+* Kotlin+JVM: 80-100mb. The memory usage simply wouldn't decrease regardless of `-Xmx32m`, `-Xmx20m`, `-Xmx16m` and `-Xss200k` and `-client`.
   The JVM definitely needs some kind of 'client' profile where it would focus on using as few memory as possible.
 
 Startup speed: pretty much instantaneous for Kotlin/Native and Dart, around 1 second for Kotlin+JVM which is quite acceptable.
@@ -69,3 +69,21 @@ of the app.
 
 Roughly speaking, a sensible code-base can be done in 79346 characters; anything on top of it
 is code caused by missing libraries.
+
+## Conclusion
+
+Looks like there is no free lunch: Kotlin/Native takes the least resources to run, but most resources to develop;
+Dart is somewhere in the middle, while Kotlin/JVM is on the other side of this spectrum.
+
+I was hoping for Kotlin/Native to deliver the free lunch: offer fast development known from Kotlin/JVM
+and fast runtime because of native. There could be a fundamental problem here though:
+in order to be sure that the library works on different CPUs, every library has to run all of its tests on all of those CPUs.
+That creates a CI nightmare: [neither GitHub nor GitLab offers ARM-based runners](https://github.com/orgs/community/discussions/25319)
+and so you have to set it up yourself. And even if you do, [Kotlin-Native doesn't support building on ARM](https://discuss.kotlinlang.org/t/kotlin-native-getting-unknown-host-target-linux-aarch64-on-raspberry-pi-3b-ubuntu-21-04-aarch64/22874),
+so you have to build on x86-64 for ARM, then run the tests on an ARM machine. Which is simply too complicated at the moment;
+therefore none of the kotlin-native libraries offer ARM ports.
+
+My preferred solution could be to have a very lightweight JVM which is slightly slower
+but eats up way less memory. Something like the `-client` switch but actually working.
+Alternatively I could use [GraalVM](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
+to cross-build arm64 binaries on my x86-64.

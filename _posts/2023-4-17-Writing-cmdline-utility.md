@@ -56,5 +56,16 @@ Compiling speeds:
 Code size (only the stuff I had to develop, excluding any third-party libraries I was able to use):
 
 * Kotlin/Native: 116760 characters, 47% bigger than Kotlin/JVM. By far the biggest since I had to develop File IO and Date-Time support from scratch.
-* Dart: 87415 characters, 10% bigger than Kotlin/JVM. Much smaller code-base than Kotlin/Native since I was able to reuse many existing Dart libraries and the awesome Dart stdlib.
+* Dart: 87415 characters, 10% bigger than Kotlin/JVM. Much smaller code-base than Kotlin/Native since
+  I was able to reuse many existing Dart libraries and the awesome Dart stdlib. Still, some bits are missing (e.g. `LocalDate`).
 * Kotlin/JVM: 79346 characters. Even more reuse of both existing libraries AND the massively useful Java+Kotlin stdlib.
+
+To be clear, this is not a competition to get a codebase with as few characters as possible.
+If I wanted that, I could write the whole thing
+in Scala, use smiley face operators everywhere and make the code completely unreadable.
+The metric here is to reuse as many libraries as possible to 'out-source' common tasks
+like parameter parsing and serial port comms, and being able to focus on just the main meat
+of the app.
+
+Roughly speaking, a sensible code-base can be done in 79346 characters; anything on top of it
+is code caused by missing libraries.

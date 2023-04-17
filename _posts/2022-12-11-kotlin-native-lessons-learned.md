@@ -88,23 +88,5 @@ first class support for building to native. My absolute requirement is that the 
 must have a garbage collector, which rules out C, C++ and Rust. The language must be strongly-typed
 which rules out Ruby, Python and JavaScript.
 
-There is Go but I personally don't like the language at all - too low-level for my tastes,
-especially the strange decision of still having to deal with the pointers. Missing collections
-is a huge slap-in-the-face - having to deal with global functions to use arrays is unacceptable.
-
-[Dart](https://dart.dev/) looks awesome. All libraries can compile to native automatically, which
-is great - that basically implements the WORA property. I don't really need threading and the
-event/async model is more than enough for my needs; however I have access to other Isolates should I
-need it. There's no unified API for databases like JDBC in Dart unfortunately, but
-that's not a problem since there are clients for PostgreSQL and other databases as well.
-I'm loving Dart the language as well - it comes from the place of simplicity but offers
-much of the functionality. My personal highlight - Dart testing system offers the same `group{}`/`test{}`
-mechanism as [DynaTest](https://github.com/mvysny/dynatest).
-
-That being said, even on a [small project](https://github.com/mvysny/renogy-client/), `dart bin/renogy_client`
-takes 4 seconds to start, which is just crazy (compared to 1-second JVM startup). It takes 21 seconds
-to `dart compile exe bin/renogy_client.dart` on my AMD Ryzen 7 PRO 4750U, and at least 2 minutes
-on Raspberry PI (dart compile can not cross-compile and must be run on the target platform).
-The native binary then consumes 25-50mb of memory, which is very close to a running JVM.
-Therefore, Dart doesn't seem to offer many advantages, except perhaps for the instantaneous
-startup time of the precompiled binary.
+Tried Go, [it sucks](../golang-sucks/). Loved [Dart](../on-dart/), but I'll probably
+go with Kotlin+JVM, see [Writing a Command-Line Utility - Lessons Learned](../Writing-cmdline-utility/).

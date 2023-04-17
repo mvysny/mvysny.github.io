@@ -37,7 +37,7 @@ I've written the same code three times:
 * [Dart](https://github.com/mvysny/renogy-client/)
 * [Kotlin+JVM](https://github.com/mvysny/renogy-klient/)
 
-Here are some stats on Linux/ARM64. Memory usage:
+Here are some stats on Linux/ARM64. Memory usage (RSS as shown by htop):
 
 * Kotlin Multiplatform native: 5-10mb, by far the smallest memory footprint.
 * Dart: 25-50mb, pretty good too.

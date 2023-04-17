@@ -87,3 +87,5 @@ My preferred solution could be to have a very lightweight JVM which is slightly 
 but eats up way less memory. Something like the `-client` switch but actually working.
 Alternatively I could use [GraalVM](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
 to cross-build arm64 binaries on my x86-64.
+Dart is an excellent middle-ground here: it offers built-in way to build native binary,
+and offers excellent development speed.

@@ -41,8 +41,8 @@ Here are some stats on Linux/ARM64. Memory usage (RSS as shown by htop):
 
 * Kotlin Multiplatform native: 5-10mb, by far the smallest memory footprint.
 * Dart: 25-50mb, pretty good too.
-* Kotlin+JVM: 80-100mb. The memory usage simply wouldn't decrease regardless of `-Xmx32m`, `-Xmx20m`, `-Xmx16m` and `-Xss200k` and `-client`.
-  The JVM definitely needs some kind of 'client' profile where it would focus on using as few memory as possible.
+* Kotlin+JVM: I use `-Xmx20m -Xss200k -client`. The memory usage starts at 80mb, climbs up to 100mb,
+  but goes down to 51mb after a day or so. That's pretty good too.
 
 Startup speed: pretty much instantaneous for Kotlin/Native and Dart, around 1 second for Kotlin+JVM which is quite acceptable.
 

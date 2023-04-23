@@ -39,6 +39,14 @@ which creates the volumes on a local machine, but that's more than enough for ou
 It creates the persistent volume automatically for us; therefore we only need to create a
 Persistent Volume Claims and microk8s will automatically connect them to the local volume.
 
+To enable the plugin, run:
+
+```bash
+$ microk8s enable hostpath-storage
+```
+
 ## Putting it all together
 
-TODO
+The entire setup is configured in one Kubernetes configuration file:
+[kubernetes-app.yaml](https://github.com/mvysny/jdbi-orm-vaadin-crud-demo/blob/master/kubernetes-app.yaml)
+Please see the contents of the file for further explanation.

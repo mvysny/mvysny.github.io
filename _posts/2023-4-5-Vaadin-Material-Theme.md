@@ -21,8 +21,3 @@ The situation differs for Vaadin 14 and Vaadin 23+.
    LumoUtility.java only works with custom themes: [Vaadin #13716](https://github.com/vaadin/flow/issues/13716).
 3. For the same reason [Badge](https://vaadin.com/docs/latest/components/badge)
    doesn't work: [#4916](https://github.com/vaadin/flow-components/issues/4916).
-
-## Vaadin 24
-
-Gossip says that Material theme will be deprecated in Vaadin 24.1 and removed in Vaadin 25. Take this
-with a grain of salt though, this is definitely not confirmed.

@@ -11,9 +11,6 @@ database. We'll learn how services talk to each other by the help of the [DNS pl
 and how to make PostgreSQL database files persistent using the [hostpath-storage](https://microk8s.io/docs/addon-hostpath-storage)
 plugin.
 
-> Note: this article borrows heavily from the excellent
-[Kubernetes series by Mark Gituma](https://markgituma.medium.com/kubernetes-local-to-production-with-django-3-postgres-with-migrations-on-minikube-31f2baa8926e).
-
 ## DNS
 
 We'll use the [microk8s DNS plugin](https://microk8s.io/docs/addon-dns):

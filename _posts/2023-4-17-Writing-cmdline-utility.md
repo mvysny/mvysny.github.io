@@ -10,11 +10,11 @@ Here are some lessons learned.
 Now I'm too old to start experimenting with fancy languages, so my requirements
 are pretty much set in stone:
 
-* Statically-compiled language, which rules out Ruby, Python and JavaScript.
+* Statically-typed language, which rules out Ruby, Python and JavaScript.
 * Has GC, which rules out C, C++ and Rust.
-* [Doesn't have pointers and error codes](../golang-sucks/)
+* [Doesn't have pointers and error codes](../golang-sucks/) which rules out Go.
 
-I've tried three platforms:
+I've tried three programming platforms:
 
 * [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)
 * [Dart](https://dart.dev/); my thoughts [on Dart](../on-dart/)

@@ -9,8 +9,9 @@ Suddenly you didn't had to remember all the time who's responsible for memory al
 is it the caller? Or the callee? This for even the most basic things like strings.
 
 Garbage Collector:
+
 * Removed the need for the memory management boilerplate code
-* Having lots of small classes was no longer scary since you didn't had to remember to
+* Having lots of small classes was no longer scary since you didn't have to remember to
   free them. That directly improved the coding style since lots of small classes
   is in line with the UNIX philosophy - do one thing and do it well.
 

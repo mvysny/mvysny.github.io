@@ -13,6 +13,7 @@ are pretty much set in stone:
 * Statically-typed language, which rules out Ruby, Python and JavaScript.
 * Has GC, which rules out C, C++ and Rust.
 * [Doesn't have pointers and error codes](../golang-sucks/) which rules out Go.
+* Has [extension functions](../extension-functions/)
 
 I've tried three programming platforms:
 

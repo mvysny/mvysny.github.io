@@ -7,7 +7,8 @@ Tried out golang, and I personally don't like the language at all. Thoughts:
 
 * Fast compile to native, with static types and GC - awesome.
 * Lack of collection API, global functions - lackluster.
-* Pointers, errorcodes, no extension functions, no "implements", no function blocks - dealbreaker.
+* Pointers, errorcodes, no [extension functions](../extension-functions/),
+  no compiler-verifiable "implements" contract, no function blocks - dealbreaker.
 
 Go feels too low-level for my tastes, especially the strange decision of still
 having to deal with the pointers.

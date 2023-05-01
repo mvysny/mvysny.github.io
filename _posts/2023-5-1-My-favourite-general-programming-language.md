@@ -87,7 +87,7 @@ now that I've seen the development speedup of being aided by GC and a VM.
 ## On sound memory model
 
 Prior Java 5, it was not possible to develop a multi-threaded software that was correct.
-Java 5 brang the wonder of JMM and a well-defined happens-before relationship which
+Java 5 brought the wonder of JMM and a well-defined happens-before relationship which
 is a small wonder in itself too.
 
 That being said, async programming and coroutines lessened the need to do thread programming

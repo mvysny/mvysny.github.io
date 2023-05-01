@@ -81,8 +81,8 @@ if (result != 0) {
 on every call to every function. On top of *that*, GC removed all the need to constantly
 having to free up memory, just because a function dared to return something more complex than an `int`.
 
-The wonders of GC and exceptions form a barrier which I'm personally not willing to cross,
-now that I've seen the development speedup of having GC and a VM.
+The wonders of GC and exceptions form a barrier which I'm personally not willing to cross back,
+now that I've seen the development speedup of being aided by GC and a VM.
 
 ## On sound memory model
 

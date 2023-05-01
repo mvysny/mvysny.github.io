@@ -12,7 +12,7 @@ I would fancy. They are as follows:
 * Has [extension functions](../extension-functions/) which rules out Java.
 * Focused on simplicity and maintainability instead of fancy features, which rules out Scala.
 
-So far I have three programming languages that survived the sieve above:
+I found the following programming languages that survived the sieve above:
 
 * Kotlin on JVM
 * [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)

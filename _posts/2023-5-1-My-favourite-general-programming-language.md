@@ -35,12 +35,15 @@ JavaEE, Spring and the "Java Enterprise".
 I recognize and admire the simplicity present in the world of Python and Ruby.
 Yet I also have to accept that I'm just too old and my mind isn't flexible enough
 to learn new APIs and the new world, without the aid if having IDE aided by static types.
-On top of that, I have seen the simplicity in the world of JVM; it's a pity that it's overwhelmingly
-not practiced by the Java folk. The Spring Enterprise money-printing propaganda is
-very strong I suppose. But I digress.
+On top of that, I have seen the simplicity in the world of JVM. It's a pity that simplicity is often
+not practiced by the Java folk. To be extra clear: simplicity is about leaving everything out until
+you need it, and not about 'simply having this and this annotation in your code', which is
+the narrative of the Spring money-making enterprise lobby.
+The annotation-based approach looks simple until you realize it's backed by a massive annotation processor,
+which is impossible to debug and understand, and thus impossible to maintain. But I digress.
 
 Why not C#? It looks like an awesome language, however my deep knowledge of the JVM
-world pretty much ties me to the JVM. I would have to throw the majority of that knowledge
+ecosystem pretty much ties me to the JVM. I would have to throw the majority of that knowledge
 away and start from scratch, which is almost impossible in my age. But, you never know;
 I was able to pick up bits of Dart rather quickly after all :) I'll probably stick
 to JVM in this life, because of the knowledge I amassed over the decades of working with Java.

@@ -28,12 +28,12 @@ and I don't mind paying for tools that make me productive
 
 Does it mean that all other languages are objectively worse? Not at all. All that is meant
 by this blog is that Kotlin on JVM suits my personal preferences the best. Your personal
-preferences may be different. Your personal experience may be different.
-I have a fondness towards developers that went through the hell that is
-JavaEE, Spring and the "Java Enterprise", and have sworn to never take another
-look at Java because of that, or at the statically-typed languages in general.
+preferences may differ, and your personal experience may differ.
+I have a fondness towards developers that sworn to never take another at Java
+(or at the statically-typed languages in general) because they went through the hell that is
+JavaEE, Spring and the "Java Enterprise".
 I recognize and admire the simplicity present in the world of Python and Ruby.
-I have to accept that I'm just too old and my mind isn't flexible enough
+Yet I also have to accept that I'm just too old and my mind isn't flexible enough
 to learn new APIs and the new world, without the aid if having IDE aided by static types.
 On top of that, I have seen the simplicity in the world of JVM; it's a pity that it's overwhelmingly
 not practiced by the Java folk. The Spring Enterprise money-printing propaganda is

@@ -14,8 +14,8 @@ I would fancy. They are as follows:
 
 So far I have three programming languages that survived the sieve above:
 
-* [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)
 * Kotlin on JVM
+* [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)
 * [Dart](https://dart.dev/); my thoughts [on Dart](../on-dart/)
 * C#
 

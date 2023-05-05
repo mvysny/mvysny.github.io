@@ -21,6 +21,9 @@ The situation differs for Vaadin 14 and Vaadin 23+.
    LumoUtility.java only works with custom themes: [Vaadin #13716](https://github.com/vaadin/flow/issues/13716).
 3. For the same reason [Badge](https://vaadin.com/docs/latest/components/badge)
    doesn't work: [#4916](https://github.com/vaadin/flow-components/issues/4916).
+4. Vaadin add-ons are generally NOT tested with the Material theme: you can expect that they
+   will not work with the Material theme properly. See this [Issue #40](https://github.com/vaadin-component-factory/vcf-pdf-viewer-flow/issues/40)
+   for more details.
 
 ## Vaadin 24+
 

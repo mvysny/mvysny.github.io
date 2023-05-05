@@ -42,6 +42,8 @@ Don't use JavaEE nor Spring-Boot: JavaEE is dead and an anti-pattern, Spring is 
 * Use [Vaadin-Boot](../vaadin-boot/) which uses an embedded Jetty
 * Or develop in Intellij with Tomcat, then [deploy into the Tomcat Docker image](../Launch-your-Vaadin-on-Kotlin-app-quickly-in-cloud/)
 
+[Use Lumo theme, don't use the Material theme](../Vaadin-Material-Theme/).
+
 For Vaadin-related suggestions: Vaadin actually can be used in a simple way, without Spring, Hibernate, JavaEE
 and other crap. Additional rules apply:
 

@@ -1,10 +1,17 @@
 ---
 layout: post
-title: My favourite general programming language
+title: My personal favourite general programming language
 ---
 
 Over the years I've come up with a set of rules for any programming language that
-I would fancy. They are as follows:
+really suit my programming style. It goes without saying that every person has their
+own preferences and/or tasks: you may prefer dynamically-typed languages, or you may have to develop
+a Linux kernel driver, and then you should not follow these rules.
+I would personally miss the benefits of a statically-typed language such as 100% auto-completion
+and automatic type checking, however you may not miss those things and instead appreciate other things offered by dynamically-typed
+languages. Please take this article as a highly subjective personalized rambling of one old man.
+
+My subjective rules are as follows:
 
 * Has GC and a sound memory model, which rules out C, C++ and Rust.
 * [Doesn't have pointers and error codes](../golang-sucks/) which rules out Go.

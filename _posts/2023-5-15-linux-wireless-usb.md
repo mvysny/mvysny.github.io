@@ -40,3 +40,5 @@ The problem is that, after 10 minutes or so, the link quality on the wlan interf
 for no apparent reason, and the wifi basically stops working.
 When pulling out the dongle from the machine, the black plastic wrap seems to move a bit,
 and the dongle feels warm. I'll observe this a bit more.
+This could be also caused by the Network Manager, skipping through access points like crazy.
+The wifi feels unreliable though.

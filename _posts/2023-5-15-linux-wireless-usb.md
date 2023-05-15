@@ -35,3 +35,8 @@ Bus 001 Device 005: ID 2001:331b D-Link Corp.
 `ifconfig -a` shows new interface and `iwconfig` is able to talk to it.
 Ubuntu Gnome Network Manager connects to the WiFi properly. Only 2.4Ghz band is supported
 though.
+
+The problem is that, after 10 minutes or so, the link quality on the wlan interface drops to 15/100
+for no apparent reason, and the wifi basically stops working.
+When pulling out the dongle from the machine, the black plastic wrap seems to move a bit,
+and the dongle feels warm. I'll observe this a bit more.

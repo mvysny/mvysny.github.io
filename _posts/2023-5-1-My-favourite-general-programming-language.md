@@ -14,7 +14,8 @@ languages. Please take this article as a highly subjective personalized rambling
 My subjective rules are as follows:
 
 * Has GC and a sound memory model, which rules out C, C++ and Rust.
-* [Doesn't have pointers and error codes](../golang-sucks/) which rules out Go.
+* Has exceptions and doesn't suggest to use error codes which [rules out Go](../golang-sucks/)
+* Everything is a pointer (except for primitive types) and things are passed by reference. No `char *f(char *)` stuff. 
 * Statically-typed language, which rules out Ruby, Python, JavaScript and Groovy.
 * Has [extension functions](../extension-functions/) which rules out Java.
 * Focused on simplicity and maintainability instead of fancy features, which rules out Scala.
@@ -55,7 +56,7 @@ away and start from scratch, which is almost impossible in my age. But, you neve
 I was able to pick up bits of Dart rather quickly after all :) I'll probably stick
 to JVM in this life, because of the knowledge I amassed over the decades of working with Java.
 
-## On VMs, GC and error codes
+## On VMs, GC, error codes and exceptions
 
 I grew up developing simple apps and text-based games on the good old Commodore 64 my
 dad smuggled from Germany. Back in the days of 1988, Czechoslovakia was occupied by Russia,

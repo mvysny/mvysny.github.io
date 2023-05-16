@@ -15,7 +15,7 @@ My subjective rules are as follows:
 
 * Has GC and a sound memory model, which rules out C, C++ and Rust.
 * Has exceptions and doesn't suggest to use error codes which [rules out Go](../golang-sucks/)
-* Everything is a pointer (except for primitive types) and things are passed by reference. No `char *f(char *)` stuff. 
+* Everything is a pointer (except for primitive types) and things are passed by reference. No `int* (*f) (char*, int*)` stuff. 
 * Statically-typed language, which rules out Ruby, Python, JavaScript and Groovy.
 * Has [extension functions](../extension-functions/) which rules out Java.
 * Focused on simplicity and maintainability instead of fancy features, which rules out Scala.

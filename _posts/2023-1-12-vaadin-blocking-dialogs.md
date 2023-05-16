@@ -65,3 +65,6 @@ Such a code can be implemented using [Kotlin Coroutines](../vaadin-and-kotlin-co
 the code will not block - the kotlin compiler will break the code down into separate code chunks and run
 them at different times. That creates an illusion of a blocking code, but the code is not really
 blocking - it's just transformed into a bunch of callbacks by the compiler.
+
+This kind of code can also be implemented using Java 20+ Virtual Threads/Project Loom -
+see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.

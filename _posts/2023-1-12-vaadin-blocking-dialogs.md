@@ -44,7 +44,7 @@ Consider the following Vaadin click handler:
 ```java
 deleteButton.addClickListener(e -> {
   if (confirmDialog("Are you sure?")) {
-    entity.delete()
+    entity.delete();
   }
 });
 ```
@@ -60,6 +60,8 @@ thread can't finish since it's blocked in the `confirmDialog()` function.
 
 This is a fundamental problem of all web frameworks, not just of Vaadin. For more information
 on how 'event loops' work in server UI frameworks, please read [Event Loop (Session Lock) in Vaadin](../event-loop-session-lock-in-vaadin/).
+
+## Solutions
 
 Such a code can be implemented using [Kotlin Coroutines](../vaadin-and-kotlin-coroutines/), but even then
 the code will not block - the kotlin compiler will break the code down into separate code chunks and run

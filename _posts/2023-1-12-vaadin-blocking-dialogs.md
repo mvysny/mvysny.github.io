@@ -85,25 +85,31 @@ on how 'event loops' work in server UI frameworks, please read [Event Loop (Sess
 
 So, what dark magic are we using to solve the problem above? The answer is the Java 20 Virtual Threads, or
 The Project Loom. Project Loom introduces the concept of a *virtual thread*, which
-differs from the good old native OS thread in a way that it can *suspend*. When a code running in a virtual thread blocks,
-it will pause its execution, it will store the current call stack and will lie dormant until
+differs from the good old native OS thread in a way that it can *suspend*. When a code running in a virtual thread
+calls a blocking function,
+its execution is paused, it will store the current call stack and will lie dormant until
 the function unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
 
 This of course needs a lot of support from the JVM itself. If you're interested, there's a very well written
-article  [Oracle article on virtual threads](https://blogs.oracle.com/javamagazine/post/java-loom-virtual-threads-platform-threads)
-which describes in layman terms how exactly the virtual thread execution suspends, unmounts from the carrier thread (fancy term
-for the good old native OS thread) and awaits until the blocking call ends, then mounts back on a carrier thread (the same
-thread or some other thread) and continues execution. That creates an illusion of a blocking code, but the code is not really
-blocking - it's lying around in the heap until unblocked.
+[Oracle article on virtual threads](https://blogs.oracle.com/javamagazine/post/java-loom-virtual-threads-platform-threads)
+which describes in layman terms:
+
+* how the virtual thread execution suspends, unmounts from the carrier thread (fancy term
+for the good old native OS thread)
+* how JVM awaits until the blocking call ends,
+* how JVM mounts the virtual thread back on a 'carrier thread' (not necessarily the same thread as before) and continues execution.
+
+That creates an illusion of a blocking code, but the code is no longer really
+blocking - it's lying around dormant in the heap until unblocked.
 
 Virtual threads preserve the `ThreadLocal` values and also the value of `UI.getCurrent()` even after the unmount+mount
-procedure, and therefore we could use it to run Vaadin UI code.
+procedure, which tells us that we could use it to run Vaadin UI code.
 
 To get back to the blocking dialogs: we could use this machinery to unmount the virtual thread from within the `confirmDialog()`
 function. That would allow the native thread running Vaadin UI code to finish and send the response to the browser, thus
 drawing the dialog, which is exactly what we need! We can use `CompletableFuture.get()` to block;
 after the user clicks a button, we can simply complete the `Future` which causes the `CompletableFuture.get()` call
-to unblock, mount to the Vaadin UI thread and continue execution.
+to unblock, mount the dormant virtual thread to the Vaadin UI thread and continue execution.
 
 The function will look like follows:
 ```java
@@ -126,7 +132,7 @@ public class Dialogs {
 
 The question is: how can we persuade the virtual thread mechanism to only use Vaadin UI threads as the carrier threads?
 
-## How exactly does that work?
+## Unwinding The Magic
 
 The whole magic happens in the `VirtualThread` class which quickly gets very technical, and so I won't dig in much
 (also because I don't understand the mechanism myself :-p ). The thread mechanism uses `Continuation.park()` to

@@ -46,8 +46,7 @@ yes. That raises a question: if a blocking dialog apparently blocks the event lo
 on the "Yes"/"No" button? The solution of this problem is as follows: the `JOptionPane.showConfirmDialog()` function
 runs a nested event loop which processes UI events until one of the buttons get clicked.
 That way, the `JOptionPane.showConfirmDialog()` function blocks until a button is clicked, but the app
-still responds to events since the event loop is in fact running, even if it's running temporarily inside
-of the `showConfirmDialog()` function.
+still responds to events since the event loop is in fact running, even if it's running temporarily inside the `showConfirmDialog()` function.
 
 Can we do the same thing with Vaadin?
 
@@ -84,9 +83,7 @@ on how 'event loops' work in server UI frameworks, please read [Event Loop (Sess
 ## But Actually Yes
 
 So, what dark magic are we using, to solve the problem above? The answer is Java 20 Virtual Threads, or
-you may remember it by its code name of The Project Loom.
-
-When a code runs in a virtual thread (as opposed to the good old native OS thread), and the code blocks,
+you may remember it by its code name of The Project Loom. When a code runs in a virtual thread (as opposed to the good old native OS thread), and the code blocks,
 it is possible to pause the execution, store the current call stack, and make the code lie dormant until
 the code unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
 
@@ -106,12 +103,52 @@ drawing the dialog, which is exactly what we need! We can use `CompletableFuture
 after the user clicks a button, we can simply complete the `Future` which causes the `CompletableFuture.get()` call
 to unblock, mount to the Vaadin UI thread and continue execution.
 
+The function will look like follows:
+```java
+public class Dialogs {
+    public static boolean confirmDialog(@NotNull String message) {
+        final CompletableFuture<Boolean> responseFuture = new CompletableFuture<>();
+        final ConfirmDialog dialog = new ConfirmDialog();
+        dialog.setText(message);
+        dialog.addConfirmListener(e -> responseFuture.complete(true));
+        dialog.addCancelListener(e -> responseFuture.complete(false));
+        dialog.open();
+
+        // this is where we'll block until the user clicks a button in the dialog
+        final boolean response = responseQueue.get();
+        return response;
+        dialog.close();
+    }
+}
+```
+
 The question is: how can we persuade the virtual thread mechanism to only use Vaadin UI threads as the carrier threads?
 
-TBD
+## How exactly does that work?
 
+The whole magic happens in the `VirtualThread` class which quickly gets very technical, and so I won't dig in much
+(also because I don't understand the mechanism myself :-p ). The thread mechanism uses `Continuation.park()` to
+unmount the thread and remember the call stack in a continuation object; `Continuation.unpark()` then resumes the
+execution. Virtual threads are constructed via the `Thread.ofVirtual().factory()` `ThreadFactory` and their API
+pretty much resembles the API of a regular thread. The default factory uses some default ForkJoinPool which
+runs tasks in good old native threads. The ForkJoinPool basically runs chunks of the virtual thread execution,
+up to a point where the virtual thread blocks.
 
-Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.
+Now we need two things:
+* Create a ForkJoinPool which runs tasks in the Vaadin UI thread,
+* Pass that ForkJoinPool into the virtual thread factory.
+
+The first item is easy. The virtual thread factory actually runs all tasks in an `Executor` which is an interface
+with just one method: `Executor.execute(Runnable)`. It's trivial to create an `Executor` which simply runs all submitted tasks in `ui.access()`.
+
+The latter item is a bit tricky. The virtual thread factory is implemented by the `java.lang.ThreadBuilders$VirtualThreadBuilder` class
+which is not part of a public API. Its constructor accepts an `Executor` but the constructor is also not public.
+That's not a problem though: we'll use a bit of reflection to create the builder.
+
+Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details:
+
+* The `SuspendingExecutor` runs submitted tasks in virtual threads, on given executor;
+* `VaadinSuspendingExecutor` uses the class above, while running the continuations in the Vaadin UI thread.
 
 ## Kotlin
 

@@ -41,12 +41,13 @@ when that thread finishes the app quits.
 If the event loop gets blocked in any way (e.g. by a long-running network call, which we can emulate simply by calling `Thread.sleep(10000)`),
 Swing app freezes - it won't respond to any mouse clicks, the windows won't move, and it will appear completely dead.
 
-The blocking dialog apparently blocks the event loop from the execution, since it awaits for the user to press a button before returning e.g. 0 for
-yes. That raises a question: if a blocking dialog apparently blocks the event loop, how come that the app still responds to the clicks
+The blocking dialog, as its name says, blocks the event loop from the execution.
+It awaits for the user to press a button before returning e.g. 0 for
+'yes'. That raises a question: if the blocking dialog blocks the event loop, how come that the app still responds to the clicks
 on the "Yes"/"No" button? The solution of this problem is as follows: the `JOptionPane.showConfirmDialog()` function
-runs a nested event loop which processes UI events until one of the buttons get clicked.
-That way, the `JOptionPane.showConfirmDialog()` function blocks until a button is clicked, but the app
-still responds to events since the event loop is in fact running, even if it's running temporarily inside the `showConfirmDialog()` function.
+runs a nested event loop which processes UI events until one of the buttons gets clicked.
+That is the reason why the app still responds to events: the event loop is in fact still running,
+it's just running temporarily inside the `showConfirmDialog()` function.
 
 Can we do the same thing with Vaadin?
 
@@ -68,13 +69,13 @@ public class MyView {
 ```
 
 Is there an implementation of `confirmDialog()` function that would show a Vaadin Dialog and block until a button
-is shown? We know the answer already, so let's focus on the 'no' part first.
+is shown? Well, we know the answer already, so let's focus on the 'no' part first.
 
 The above code can not be implemented with the regular thread-based approach.
 The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin
 UI thread to wait for the user to click the "Yes" or "No" button. However,
 in order for the dialog to be actually drawn in the browser,
-the Vaadin UI thread must finish and produce a response for the browser. But the Vaadin UI
+the Vaadin UI thread must finish and must produce a response for the browser. But the Vaadin UI
 thread can't finish since it's blocked in the `confirmDialog()` function.
 
 This is a fundamental problem of all web frameworks, not just of Vaadin. For more information
@@ -82,9 +83,9 @@ on how 'event loops' work in server UI frameworks, please read [Event Loop (Sess
 
 ## But Actually Yes
 
-So, what dark magic are we using, to solve the problem above? The answer is the Java 20 Virtual Threads, or
-Project Loom how it used to be called. Project Loom introduces the concept of a *virtual thread*, which
-differs from the good old native OS thread. When a code running in a virtual thread blocks,
+So, what dark magic are we using to solve the problem above? The answer is the Java 20 Virtual Threads, or
+The Project Loom. Project Loom introduces the concept of a *virtual thread*, which
+differs from the good old native OS thread in a way that it can *suspend*. When a code running in a virtual thread blocks,
 it will pause its execution, it will store the current call stack and will lie dormant until
 the function unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
 

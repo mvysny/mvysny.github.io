@@ -134,12 +134,12 @@ The question is: how can we persuade the virtual thread mechanism to only use Va
 
 ## Unwinding The Magic
 
-The whole magic happens in the `VirtualThread` class which quickly gets very technical, and so I won't dig in much
-(also because I don't understand the mechanism myself :-p ). The thread mechanism uses `Continuation.park()` to
+The whole magic happens in the `VirtualThread` class. The source code of that class gets very technical quickly,
+and so I won't dig into it further. The virtual thread suspending mechanism uses `Continuation.park()` to
 unmount the thread and remember the call stack in a continuation object; `Continuation.unpark()` then resumes the
-execution. Virtual threads are constructed via the `Thread.ofVirtual().factory()` `ThreadFactory` and their API
-pretty much resembles the API of a regular thread. The default factory uses some default ForkJoinPool which
-runs tasks in good old native threads. The ForkJoinPool basically runs chunks of the virtual thread execution,
+execution. Virtual threads are constructed via the `Thread.ofVirtual().factory()` factory of type `ThreadFactory`, and their API
+pretty much resembles the API of a regular thread. The default factory uses a dedicated ForkJoinPool which
+runs tasks in good old native threads. The ForkJoinPool basically runs a chunk of the virtual thread execution,
 up to a point where the virtual thread blocks.
 
 Now we need two things:
@@ -147,10 +147,25 @@ Now we need two things:
 * Pass that ForkJoinPool into the virtual thread factory.
 
 The first item is easy. The virtual thread factory actually runs all tasks in an `Executor` which is an interface
-with just one method: `Executor.execute(Runnable)`. It's trivial to create an `Executor` which simply runs all submitted tasks in `ui.access()`.
+with just one method: `Executor.execute(Runnable)`. It's trivial to create an `Executor` which simply runs all submitted tasks in `ui.access()`:
+
+```java
+private class UIExecutor implements Executor {
+    private final UI ui;
+
+    public UIExecutor(UI ui) {
+        this.ui = ui;
+    }
+
+    @Override
+    public void execute(Runnable command) {
+        ui.access((Command) command::run);
+    }
+}
+```
 
 The latter item is a bit tricky. The virtual thread factory is implemented by the `java.lang.ThreadBuilders$VirtualThreadBuilder` class
-which is not part of a public API. Its constructor accepts an `Executor` but the constructor is also not public.
+which is not part of the public API. It introduces a constructor which accepts an `Executor` but the constructor is also not public.
 That's not a problem though: we'll use a bit of reflection to create the builder.
 
 Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details:
@@ -167,4 +182,4 @@ Basically, the code is transformed into a bunch of callbacks by the compiler; a 
 method is created, which then keeps track which callback (or continuation) goes next.
 
 There is an inherent problem with this solution though: this solution doesn't work with `Thread.sleep()` and the regular Java blocking calls -
-you have to use their suspending counterparts.
+you'll have to use their suspending counterparts. Please find more in the [Kotlin Coroutines documentation](https://kotlinlang.org/docs/coroutines-overview.html).

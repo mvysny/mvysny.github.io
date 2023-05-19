@@ -86,10 +86,30 @@ on how 'event loops' work in server UI frameworks, please read [Event Loop (Sess
 So, what dark magic are we using, to solve the problem above? The answer is Java 20 Virtual Threads, or
 you may remember it by its code name of The Project Loom.
 
+When a code runs in a virtual thread (as opposed to the good old native OS thread), and the code blocks,
+it is possible to pause the execution, store the current call stack, and make the code lie dormant until
+the code unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
+
+This of course needs a lot of support from the JVM itself. If you're interested, there's a very well written
+article  [Oracle article on virtual threads](https://blogs.oracle.com/javamagazine/post/java-loom-virtual-threads-platform-threads)
+which describes in layman terms how exactly the virtual thread execution suspends, unmounts from the carrier thread (fancy term
+for the good old native OS thread) and awaits until the blocking call ends, then mounts back on a carrier thread (the same
+thread or some other thread) and continues execution. That creates an illusion of a blocking code, but the code is not really
+blocking - it's lying around in the heap until unblocked.
+
+Virtual threads preserve the `ThreadLocal` values and also the value of `UI.getCurrent()` even after the unmount+mount
+procedure, and therefore we could use it to run Vaadin UI code.
+
+To get back to the blocking dialogs: we could use this machinery to unmount the virtual thread from within the `confirmDialog()`
+function. That would allow the native thread running Vaadin UI code to finish and send the response to the browser, thus
+drawing the dialog, which is exactly what we need! We can use `CompletableFuture.get()` to block;
+after the user clicks a button, we can simply complete the `Future` which causes the `CompletableFuture.get()` call
+to unblock, mount to the Vaadin UI thread and continue execution.
+
+The question is: how can we persuade the virtual thread mechanism to only use Vaadin UI threads as the carrier threads?
+
 TBD
 
-That creates an illusion of a blocking code, but the code is not really
-blocking
 
 Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.
 

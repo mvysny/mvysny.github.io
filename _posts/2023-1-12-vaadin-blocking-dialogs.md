@@ -69,23 +69,23 @@ public class MyView {
 ```
 
 Is there an implementation of `confirmDialog()` function that would show a Vaadin Dialog and block until a button
-is shown? The answer is no. The above code can not be implemented with the regular Thread-based approach.
+is shown? We know the answer already, so let's focus on the 'no' part first.
 
+The above code can not be implemented with the regular thread-based approach.
 The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin
 UI thread to wait for the user to click the "Yes" or "No" button. However,
 in order for the dialog to be actually drawn in the browser,
-the Vaadin UI thread must finish and produce response for the browser. But Vaadin UI
+the Vaadin UI thread must finish and produce a response for the browser. But the Vaadin UI
 thread can't finish since it's blocked in the `confirmDialog()` function.
 
 This is a fundamental problem of all web frameworks, not just of Vaadin. For more information
 on how 'event loops' work in server UI frameworks, please read [Event Loop (Session Lock) in Vaadin](../event-loop-session-lock-in-vaadin/).
 
-## Solutions
+## But Actually Yes
 
-Such a code can be implemented using [Kotlin Coroutines](../vaadin-and-kotlin-coroutines/), but even then
-the code will not block - the kotlin compiler will break the code down into separate code chunks and run
-them at different times. That creates an illusion of a blocking code, but the code is not really
-blocking - it's just transformed into a bunch of callbacks by the compiler.
+So, what dark magic are we using, to solve the problem above? The answer is Java 20 Virtual Threads, or
+you may remember it by its code name of The Project Loom.
 
-This kind of code can also be implemented using Java 20+ Virtual Threads/Project Loom -
-see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.
+TBD
+
+Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.

@@ -3,7 +3,6 @@ layout: post
 title: Vaadin And The Problem of Blocking Dialogs
 ---
 
-Hold on dear reader before you close this blogpost, it's more interesting than in sounds :-D
 A blocking dialog is a dialog which blocks the code execution until an answer is obtained from the user.
 For example, in Swing, it is possible to write a code block which shows a confirm dialog, waits until the user clicked the "Yes"
 or "No" button, then resumes its execution on confirmation and finishes afterwards. Something akin to the following:
@@ -29,6 +28,7 @@ public class TicketPurchasingService {
 We could make the function more complex, for example by wrapping it in a `try{}catch` block, thus handling any purchase errors gracefully,
 but let's save that for later, and let's now focus on the `showConfirmDialog()` function for now.
 Is it possible to do such a thing in Vaadin, or in fact in any web framework? The answer is no, but actually yes, depending on which JVM you're running.
+Read on for more details.
 
 ## The Problem
 
@@ -82,10 +82,11 @@ on how 'event loops' work in server UI frameworks, please read [Event Loop (Sess
 
 ## But Actually Yes
 
-So, what dark magic are we using, to solve the problem above? The answer is Java 20 Virtual Threads, or
-you may remember it by its code name of The Project Loom. When a code runs in a virtual thread (as opposed to the good old native OS thread), and the code blocks,
-it is possible to pause the execution, store the current call stack, and make the code lie dormant until
-the code unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
+So, what dark magic are we using, to solve the problem above? The answer is the Java 20 Virtual Threads, or
+Project Loom how it used to be called. Project Loom introduces the concept of a *virtual thread*, which
+differs from the good old native OS thread. When a code running in a virtual thread blocks,
+it will pause its execution, it will store the current call stack and will lie dormant until
+the function unblocks. The call stack is then restored and the code resumes execution as if nothing special happened.
 
 This of course needs a lot of support from the JVM itself. If you're interested, there's a very well written
 article  [Oracle article on virtual threads](https://blogs.oracle.com/javamagazine/post/java-loom-virtual-threads-platform-threads)

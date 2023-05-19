@@ -88,4 +88,18 @@ you may remember it by its code name of The Project Loom.
 
 TBD
 
+That creates an illusion of a blocking code, but the code is not really
+blocking
+
 Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details.
+
+## Kotlin
+
+The [Kotlin language](https://kotlinlang.org) offers a solution that works on any JVM version, even on old
+JVM 8. The mechanism used is the [Kotlin Coroutines](../vaadin-and-kotlin-coroutines/). With this
+approach it's the kotlin compiler (rather than the JVM runtime) who will break the code down into separate code chunks.
+Basically, the code is transformed into a bunch of callbacks by the compiler; a state machine with the 'runNext()'
+method is created, which then keeps track which callback (or continuation) goes next.
+
+There is an inherent problem with this solution though: this solution doesn't work with `Thread.sleep()` and the regular Java blocking calls -
+you have to use their suspending counterparts.

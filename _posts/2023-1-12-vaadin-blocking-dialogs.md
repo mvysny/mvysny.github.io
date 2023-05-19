@@ -1,52 +1,71 @@
 ---
 layout: post
-title: Vaadin And Blocking Dialogs
+title: Vaadin And The Problem of Blocking Dialogs
 ---
 
-In Swing, it was possible to write a function which shows a confirm dialog, waits until the user clicked the "Yes"
-or "No" button, then does something on confirmation and only then finishes. Something akin to the following:
+Hold on dear reader before you close this blogpost, it's more interesting than in sounds :-D
+A blocking dialog is a dialog which blocks the code execution until an answer is obtained from the user.
+For example, in Swing, it is possible to write a code block which shows a confirm dialog, waits until the user clicked the "Yes"
+or "No" button, then resumes its execution on confirmation and finishes afterwards. Something akin to the following:
 
 ```java
-public class ConfirmDialog {
+public class TicketPurchasingService {
 
-    public static void confirm() {
-        int input = JOptionPane.showConfirmDialog(null, "Do you like bacon?");
-        // 0=yes, 1=no, 2=cancel
-        System.out.println(input);
+    public static void purchaseTicketForConcert(String singerOrBand) {
+        List<Concert> concerts = getAvailableConcertsFor(singerOrBand);
+        Concert soonestConcert = concerts.get(0);
+        // Waits for the user to click either the "Yes" or "No" button, then returns 0 for yes, 1 for no, 2 for cancel
+        int input = JOptionPane.showConfirmDialog(null, "Soonest concert available: " + soonestConcert + ". Would you like to continue with the purchase?");
+        if (input == 0) {
+            Purchase purchase = doPurchase(soonestConcert);
+            JOptionPane.showMessageDialog(null, "Concert " + soonestConcert + " purchased, thank you. Purchase details: " + purchase);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please come back again");
+        }
     }
 }
 ```
 
-Is it possible to do such a thing in Vaadin? No it's not. But first, let's see how this actually works.
+We could make the function more complex, for example by wrapping it in a `try{}catch` block, thus handling any purchase errors gracefully,
+but let's save that for later, and let's now focus on the `showConfirmDialog()` function for now.
+Is it possible to do such a thing in Vaadin, or in fact in any web framework? The answer is no, but actually yes, depending on which JVM you're running.
 
-## The Event Loop
+## The Problem
 
-All Swing apps have exactly one event loop which processes all UI events - mouse cursor moves, mouse clicks,
-etc. All the UI code is called from the event loop, and it is actually forbidden to manipulate
-UI components from outside the event loop. There is one thread, dedicated to run the event loop.
+All Swing apps have exactly one event loop which processes all UI events - mouse clicks,
+tracking the mouse cursor as it moves and firing hover events, and so on.
+All the UI code is called from this event loop, and it is actually forbidden to manipulate
+UI components from outside the event loop. There is exactly one thread, dedicated to run the event loop;
+when that thread finishes the app quits.
 
-If the event loop gets blocked (e.g. by `Thread.sleep(10000)`), Swing app freezes - it won't respond to any mouse clicks, the windows
-won't move.
+If the event loop gets blocked in any way (e.g. by a long-running network call, which we can emulate simply by calling `Thread.sleep(10000)`),
+Swing app freezes - it won't respond to any mouse clicks, the windows won't move, and it will appear completely dead.
 
-**Important note:** In this text, **Blocking** will always refer to an actual old-school Thread
-that is blocked (it's sleeping/waiting for lock/etc) and can not continue its execution at the moment.
-
-
-So, if a blocking dialog blocks the event, how come that it still responds to the clicks
-on the "Yes"/"No" button? The secret is that `JOptionPane.showConfirmDialog()` function
+The blocking dialog apparently blocks the event loop from the execution, since it awaits for the user to press a button before returning e.g. 0 for
+yes. That raises a question: if a blocking dialog apparently blocks the event loop, how come that the app still responds to the clicks
+on the "Yes"/"No" button? The solution of this problem is as follows: the `JOptionPane.showConfirmDialog()` function
 runs a nested event loop which processes UI events until one of the buttons get clicked.
-That way, the `JOptionPane.showConfirmDialog()` function blocks until a button is clicked.
+That way, the `JOptionPane.showConfirmDialog()` function blocks until a button is clicked, but the app
+still responds to events since the event loop is in fact running, even if it's running temporarily inside
+of the `showConfirmDialog()` function.
+
+Can we do the same thing with Vaadin?
 
 ## Blocking Dialogs in Vaadin
 
 Consider the following Vaadin click handler:
 
 ```java
-deleteButton.addClickListener(e -> {
-  if (confirmDialog("Are you sure?")) {
-    entity.delete();
-  }
-});
+public class MyView {
+    public MyView() {
+        Button deleteButton = new Button("Delete");
+        deleteButton.addClickListener(e -> {
+            if (confirmDialog("Are you sure?")) {
+                entity.delete();
+            }
+        });
+    }
+}
 ```
 
 Is there an implementation of `confirmDialog()` function that would show a Vaadin Dialog and block until a button

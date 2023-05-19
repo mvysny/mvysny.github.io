@@ -27,7 +27,7 @@ public class TicketPurchasingService {
 
 We could make the function more complex, for example by wrapping it in a `try{}catch` block, thus handling any purchase errors gracefully,
 but let's save that for later, and let's now focus on the `showConfirmDialog()` function for now.
-Is it possible to do such a thing in Vaadin, or in fact in any web framework? The answer is no, but actually yes, depending on which JVM you're running.
+Is it actually possible to do such a thing in Vaadin, or in fact in any web framework? The answer is no, but actually yes, depending on which JVM you're running.
 Read on for more details.
 
 ## The Problem

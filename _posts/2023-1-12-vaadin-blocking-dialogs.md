@@ -67,7 +67,7 @@ public class MyView {
 ```
 
 Is there an implementation of `confirmDialog()` function that would show a Vaadin Dialog and block until a button
-is shown? Well, we know the answer already, so let's focus on the 'no' part first.
+is clicked? Well, we know the answer already, so let's focus on the 'no' part first.
 
 The above code can not be implemented with the regular thread-based approach.
 The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin
@@ -92,10 +92,10 @@ This of course needs a lot of support from the JVM itself. If you're interested,
 [Oracle article on virtual threads](https://blogs.oracle.com/javamagazine/post/java-loom-virtual-threads-platform-threads)
 which describes in layman terms:
 
-* how the virtual thread execution suspends, unmounts from the carrier thread (fancy term
+* how the virtual thread execution suspends and unmounts from the carrier thread (fancy term
 for the good old native OS thread)
-* how JVM awaits until the blocking call ends,
-* how JVM mounts the virtual thread back on a 'carrier thread' (not necessarily the same thread as before) and continues execution.
+* how the JVM awaits until the blocking call ends,
+* how the JVM mounts the virtual thread back on a 'carrier thread' (not necessarily the same thread as before) and continues execution.
 
 That creates an illusion of a blocking code, but the code is no longer really
 blocking - it's lying around dormant in the heap until unblocked.
@@ -135,17 +135,19 @@ The question is: how can we persuade the virtual thread mechanism to only use Va
 The whole magic happens in the `VirtualThread` class. The source code of that class gets very technical quickly,
 and so I won't dig into it further. The virtual thread suspending mechanism uses `Continuation.park()` to
 unmount the thread and remember the call stack in a continuation object; `Continuation.unpark()` then resumes the
-execution. Virtual threads are constructed via the `Thread.ofVirtual().factory()` factory of type `ThreadFactory`, and their API
-pretty much resembles the API of a regular thread. The default factory uses a dedicated ForkJoinPool which
-runs tasks in good old native threads. The ForkJoinPool basically runs a chunk of the virtual thread execution,
+execution. Virtual threads are constructed via the `Thread.ofVirtual().factory()` factory (of type `ThreadFactory`),
+and they behave exactly like regular threads until they're blocked. The default factory uses a dedicated Executor
+(a ForkJoinPool really, but the difference is not important for this article) which
+runs tasks in good old native threads. The Executor basically runs a chunk of the virtual thread execution,
 up to a point where the virtual thread blocks.
 
 Now we need two things:
-* Create a ForkJoinPool which runs tasks in the Vaadin UI thread,
-* Pass that ForkJoinPool into the virtual thread factory.
+* Create an Executor which runs tasks in the Vaadin UI thread,
+* Pass that Executor into the virtual thread factory.
 
-The first item is easy. The virtual thread factory actually runs all tasks in an `Executor` which is an interface
-with just one method: `Executor.execute(Runnable)`. It's trivial to create an `Executor` which simply runs all submitted tasks in `ui.access()`:
+The first item is easy. The `Executor` is an interface
+with just one method: `Executor.execute(Runnable)`.
+It's trivial to create an `Executor` which simply runs all submitted tasks in `ui.access()`:
 
 ```java
 private class UIExecutor implements Executor {
@@ -168,8 +170,8 @@ That's not a problem though: we'll use a bit of reflection to create the builder
 
 Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-loom) for more details:
 
-* The `SuspendingExecutor` runs submitted tasks in virtual threads, on given executor;
-* `VaadinSuspendingExecutor` uses the class above, while running the continuations in the Vaadin UI thread.
+* The `SuspendingExecutor` class runs submitted tasks in virtual threads, on given executor;
+* `VaadinSuspendingExecutor` class uses the class above, while running the continuations in the Vaadin UI thread.
 
 ## Kotlin
 

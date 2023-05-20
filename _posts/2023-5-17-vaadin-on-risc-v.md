@@ -57,6 +57,10 @@ Then, unpack the Vaadin app via `tar xvf vaadin-boot-example-gradle.tar`.
 Finally, run the Vaadin app via `cd vaadin-boot-example-gradle/bin` and `./vaadin-boot-example-gradle`.
 
 After the app starts, open the browser and navigate to [http://localhost:8080](http://localhost:8080).
+On my rather fast AMD Ryzen 7 PRO 4750U x86-64 machine the qemu emulation of RISC-V is a bit slow and it takes some time for the
+mechine to boot up (95 seconds) and the app to boot up (26 seconds), then additional 70 seconds to render the first page
+(mostly because of computing various sizes of the PWA icon set).
+However, after the app is fully initialized it is very responsive and fast to respond.
 
 ## StarFive VisionFive 2
 

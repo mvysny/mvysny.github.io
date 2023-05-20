@@ -122,8 +122,8 @@ public class Dialogs {
 
         // this is where we'll block until the user clicks a button in the dialog
         final boolean response = responseQueue.get();
-        return response;
         dialog.close();
+        return response;
     }
 }
 ```

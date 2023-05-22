@@ -79,9 +79,11 @@ to create a virtual thread which executes on an `Executor` supplied by us. The `
 will then simply execute submitted continuations synchronously.
 
 > Note: Continuation is a partial execution: you execute a function up to a point, then you suspend,
-> then you continue executing that function.
+> then you continue executing that function further. In order to do that,
+> all the variables and the stack gets remembered
+> while the execution is suspended.
 
-Let's therefore rewrite the algorithm:
+Let's therefore implement the iterator one more time:
 
 1. `Iterator.next()` gets called.
 2. It creates a virtual thread for the generator block, with synchronous execution of continuations.

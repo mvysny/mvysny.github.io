@@ -87,7 +87,8 @@ Let's therefore rewrite the algorithm:
 2. It creates a virtual thread for the generator block, with synchronous execution of continuations.
 3. It calls `VirtualThread.start()`, which submits the execution for the first continuation. Since the executor is synchronous,
    the execution starts right away.
-4. The generator block runs until it calls `yield()`. `yield()` will block. We can e.g. use an empty `BlockingQueue`; `yield()` can block while
+4. The generator block runs until it calls `yield()`. `yield()` has to block somehow, in order for
+   the virtual thread to suspend. We can e.g. use an empty `BlockingQueue`; `yield()` can block while
    trying to take an item from the queue.
 5. Since the virtual thread is blocked, the continuation returns, which causes `VirtualThread.start()` to return as well.
 6. `Iterator.next()` can now return the value passed to the `yield()` function.
@@ -99,12 +100,14 @@ What happens when the `Iterator.next()` gets called again?
 3. Offering an item will unblock the virtual thread immediately - it will immediately submit a new continuation for execution.
    The continuation takes the item from the queue and continues the generator code.
    Since we're using the same synchronous executor as above, the continuation starts running immediately, from within the `BlockingQueue.offer()` call.
-4. The generator runs until it suspends itself again, by calling `BlockingQueue.take()` on a queue which is now again empty.
+4. The generator runs until it suspends itself again, by calling `BlockingQueue.take()` on a queue which is now empty again. Note that
+   the `BlockingQueue.offer()` is *still* running :-D
 5. Suspending of the generator concludes the execution of the continuation, and we're finally allowed to bail out of `BlockingQueue.offer()`.
 6. We continue executing the `Iterator.next()`, checking what happened: if the generator ended,
    we'll end the iteration. Otherwise, we return the value passed to the `yield()` function.
 
-Whew.
+Phew, that's complicated. Hopefully the explanation above makes sense. Just try to re-read it
+a couple of times if it isn't clear on the first read.
 
 ## Example Code
 

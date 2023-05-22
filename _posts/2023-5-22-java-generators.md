@@ -70,5 +70,44 @@ for more information.
 
 Virtual threads have the capability to suspend when a blocking call is called - for example `Thread.sleep()`,
 or `blockingQueue.take()`, or `future.get()` and similar. That's exactly what we need! It's therefore clear
-that the generator block needs to be run inside of a virtual thread, and the `yield()` function will
+that the generator block needs to be run inside a virtual thread, and the `yield()` function will
 have to call a blocking function, in order to suspend.
+
+The other problem is calling the virtual threads synchronously. By default, virtual threads execute
+asynchronously, in their own dedicated ForkJoinPool. However, with a bit of reflection, it is possible
+to create a virtual thread which executes on an `Executor` supplied by us. The `Executor`
+will then simply execute submitted continuations synchronously.
+
+> Note: Continuation is a partial execution: you execute a function up to a point, then you suspend,
+> then you continue executing that function.
+
+Let's therefore rewrite the algorithm:
+
+1. `Iterator.next()` gets called.
+2. It creates a virtual thread for the generator block, with synchronous execution of continuations.
+3. It calls `VirtualThread.start()`, which submits the execution for the first continuation. Since the executor is synchronous,
+   the execution starts right away.
+4. The generator block runs until it calls `yield()`. `yield()` will block. We can e.g. use an empty `BlockingQueue`; `yield()` can block while
+   trying to take an item from the queue.
+5. Since the virtual thread is blocked, the continuation returns, which causes `VirtualThread.start()` to return as well.
+6. `Iterator.next()` can now return the value passed to the `yield()` function.
+
+What happens when the `Iterator.next()` gets called again?
+
+1. `Iterator.next()` gets called again.
+2. We know that a virtual thread is blocked on a `BlockingQueue`. We'll call `BlockinQueue.offer()` with some dummy item to unblock the virtual thread.
+3. Offering an item will unblock the virtual thread immediately - it will immediately submit a new continuation for execution.
+   The continuation takes the item from the queue and continues the generator code.
+   Since we're using the same synchronous executor as above, the continuation starts running immediately, from within the `BlockingQueue.offer()` call.
+4. The generator runs until it suspends itself again, by calling `BlockingQueue.take()` on a queue which is now again empty.
+5. Suspending of the generator concludes the execution of the continuation, and we're finally allowed to bail out of `BlockingQueue.offer()`.
+6. We continue executing the `Iterator.next()`, checking what happened: if the generator ended,
+   we'll end the iteration. Otherwise, we return the value passed to the `yield()` function.
+
+Whew.
+
+## Example Code
+
+Please see the [vaadin-loom](https://github.com/mvysny/vaadin-loom) example project for the actual
+implementation of the generator pattern; namely, see the `Iterators.fibonacci()` static function
+for more details.

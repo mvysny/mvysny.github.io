@@ -50,9 +50,8 @@ Download the files named `visionfive2_fw_payload.img`
 and `u-boot-spl.bin.normal.out` from [starfive's github](https://github.com/starfive-tech/VisionFive2/releases/).
 You can also download & copy `sdcard.img` to your SD Card then boot off it - the image is
 intended to assist you with the U-Boot upgrade. It's not clear whether you need to follow "4.3.1 Updating SPL and U-Boot of Flash",
-or "4.3.2. Updating SPL and U-Boot of SD Card and eMMC" or both, I went with both and now the UI no longer
-shows. Oh well, the device still works though and I can ssh to it, so that works for me.
-For `4.3.1` obviously choose the `flashcp` version.
+or "4.3.2. Updating SPL and U-Boot of SD Card and eMMC" or both, I went with both
+and the device still works. For `4.3.1` obviously choose the `flashcp` version.
 
 The device feels very fast over ssh and runs all commands very quickly. The device shows a lot of promise.
 

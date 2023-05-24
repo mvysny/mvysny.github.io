@@ -62,3 +62,11 @@ The `202303` folder contains Debian 11 with kernel 5.15.0; I'll also try out the
 out that this is the newest distro to use](https://www.cnx-software.com/2023/02/12/starfive-visionfive-2-sbc-review-debian-12/),
 but it only works with the newest U-Boot (which we upgraded above). I'll test it out and let you know.
 The article however failed to boot up the device into UI, so probably it's pointless to try.
+
+Anyway, I've downloaded `starfive-jh7110-VF2_515_v2.5.0-69.img.bz2` from the link above, from the `image69` folder,
+then copied to SDCard via
+```bash
+bzcat starfive-jh7110-VF2_515_v2.5.0-69.img.bz2 |sudo dd of=/dev/sda status=progress conv=fsync
+```
+
+TODO

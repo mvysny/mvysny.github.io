@@ -64,7 +64,15 @@ However, after the app is fully initialized it is very responsive and fast to re
 
 ## StarFive VisionFive 2
 
-TODO
+Installing this device was a major PITA, but I managed to do it without the UART-TTL device.
+See my [starfive-visionfive2 installation guide](../starfive-visionfive2/) for more details.
+
+Installing openjdk-20-jre-headless doesn't work because of [Bug #1023748](https://groups.google.com/g/linux.debian.bugs.dist/c/-vfxBsw5fkg?pli=1),
+simply install `openjdk-17-jre-headless`.
+
+Rebuild vaadin-boot-example-gradle with the `@PWA` annotation removed, otherwise it will take ages to resize
+the PWA icons (they're resized after Vaadin app boots up and prints "running in production mode").
+The app boots up in 26 seconds then serves the pages pretty swiftly. It occupies 80mb of RAM which is great.
 
 ## Sipeed Lichee RV Dock
 

@@ -68,5 +68,6 @@ then copied to SDCard via
 ```bash
 bzcat starfive-jh7110-VF2_515_v2.5.0-69.img.bz2 |sudo dd of=/dev/sda status=progress conv=fsync
 ```
-
-TODO
+This image is huge though, you'll need 32GB+ SD Card. Unpacked size is 17GB and it took almost 2 hours to copy to a SD Card.
+Then, after you switch the boot mode to QSPI, it draws the VisionFive2 logo and doesn't boot.
+Fuck it, I'm tired, I'm going to sleep.

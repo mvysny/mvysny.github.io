@@ -41,7 +41,7 @@ Check out the PDF manual on how to flip the boot switches, this part is actually
 Then, insert the SD Card, Ethernet cable and the power. You can also connect the device to the monitor -
 if everything goes well you'll see the system booting up. Success!
 
-The system starts in pink mode for some unknown reason, and blinks like crazy. The best way is to
+The system starts in 1024x768 resolution in pink mode for some unknown reason, and blinks like crazy. The best way is to
 figure out the IP address assigned to the device, then ssh to it via `ssh user@192.168.0.36`, password
 `starfive`.
 
@@ -54,6 +54,7 @@ or "4.3.2. Updating SPL and U-Boot of SD Card and eMMC" or both, I went with bot
 and the device still works. For `4.3.1` obviously choose the `flashcp` version.
 
 The device feels very fast over ssh and runs all commands very quickly. The device shows a lot of promise.
+Having Ubuntu Server with all drivers in the mainline kernel would definitely be awesome.
 
 ## Further Experiments
 

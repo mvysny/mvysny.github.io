@@ -5,6 +5,7 @@ title: Starfive VisionFive2 Installation Guide
 
 Getting this device up and running is almost impossible for the uninitiated, but finally
 I managed to get this bloody device up-and-running WITHOUT having to connect to UART-TTL.
+The [Starfive VisionFive2 homepage](https://www.starfivetech.com/en/site/boards).
 
 First, the [official visionfive2 manual](https://doc-en.rvspace.org/VisionFive2/PDF/VisionFive2_QSG.pdf)
 is almost useless. It's not clear which distribution to download, which boot mode to choose,

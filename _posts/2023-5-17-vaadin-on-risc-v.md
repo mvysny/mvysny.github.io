@@ -76,4 +76,10 @@ The app boots up in 26 seconds then serves the pages pretty swiftly. It occupies
 
 ## Sipeed Lichee RV Dock
 
+[Sipeed Lichee RV Dock homepage](https://wiki.sipeed.com/hardware/en/lichee/RV/Dock.html). Note that the
+device lacks ethernet port and only introduces one USB A host, but that's enough. USB-C
+used to power the device; the device is pretty low-power, thus a cellphone charger should be enough.
+
+Ubuntu installation instructions look easy: [Ubuntu RISC-V Lichee](https://wiki.ubuntu.com/RISC-V/LicheeRV).
+
 TODO

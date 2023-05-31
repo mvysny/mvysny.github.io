@@ -78,8 +78,15 @@ The app boots up in 26 seconds then serves the pages pretty swiftly. It occupies
 
 [Sipeed Lichee RV Dock homepage](https://wiki.sipeed.com/hardware/en/lichee/RV/Dock.html). Note that the
 device lacks ethernet port and only introduces one USB A host, but that's enough. USB-C
-used to power the device; the device is pretty low-power, thus a cellphone charger should be enough.
+used to power the device; the device is pretty low-power, thus a cellphone charger is enough to power the device.
 
 Ubuntu installation instructions look easy: [Ubuntu RISC-V Lichee](https://wiki.ubuntu.com/RISC-V/LicheeRV).
+The Ubuntu 23.04 preinstalled image doesn't work: Lichee's Power LED slowly blinks and nothing boots up.
+The Ubuntu 22.04 preinstalled image works though, just be patient: even after the system shows
+`ubuntu login` on HDMI screen, the `ubuntu`/`ubuntu` user/password doesn't work initially: it
+says "login incorrect" until the CloudInit finishes, which may take up to 5 minutes. Be patient and you'll be able
+to log in eventually.
+
+The device is much much slower than StarFive VisionFive 2.
 
 TODO

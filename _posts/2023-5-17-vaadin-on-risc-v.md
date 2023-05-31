@@ -88,9 +88,6 @@ says "login incorrect" until the CloudInit finishes, which may take up to 5 minu
 to log in eventually.
 
 The device is much much slower than StarFive VisionFive 2. It's a single-core-only machine.
-In fact the device is so slow, the wifi driver + wifi encryption is too demanding for the poor chip,
-effectively limiting the wifi network speed to roughly 100kb/s, and eth network speed to roughly 1000kb/s.
-
 When shutting off, the device doesn't reveal in any way that it's shut off. Both the orange
 and the green LED stays lit even after Linux shuts down, which is kinda annoying.
 

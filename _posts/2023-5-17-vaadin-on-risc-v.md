@@ -87,6 +87,10 @@ The Ubuntu 22.04 preinstalled image works though, just be patient: even after th
 says "login incorrect" until the CloudInit finishes, which may take up to 5 minutes. Be patient and you'll be able
 to log in eventually.
 
-The device is much much slower than StarFive VisionFive 2.
+The device is much much slower than StarFive VisionFive 2. It's a single-core-only machine.
+In fact the device is so slow, the wifi driver + wifi encryption is too demanding for the poor chip,
+effectively limiting the wifi network speed to roughly 100kb/s, and eth network speed to roughly 1000kb/s.
 
-TODO
+The Vaadin app boots up in 2 minutes. First page is served quite slowly, but afterwards the app
+works quite well. However, there is slight but noticeable delay in requests (the requests usually take 200-300ms to complete).
+Definitely usable, but the device slowness shows a bit.

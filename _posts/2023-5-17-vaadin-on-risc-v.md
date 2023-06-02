@@ -62,6 +62,13 @@ mechine to boot up (95 seconds) and the app to boot up (26 seconds), then additi
 (mostly because of computing various sizes of the PWA icon set).
 However, after the app is fully initialized it is very responsive and fast to respond.
 
+Tip: you can decrease the CPU to 1 and memory to 1024 by passing in `-m 1024 -smp 4`.
+However, don't go down to 512Mb of memory, otherwise Ubuntu will fail to boot and will get stuck at
+
+```
+[    0.009150] printk: bootconsole [ns16550a0] disabled
+```
+
 ## StarFive VisionFive 2
 
 Installing this device was a major PITA, but I managed to do it without the UART-TTL device.

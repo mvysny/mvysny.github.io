@@ -94,9 +94,10 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 chsh -s /usr/bin/fish
 ```
 
-To add environment variables, put them to `~/.config/fish/config.fish`:
+To add environment variables, add them at the end of the `~/.config/fish/config.fish` file:
 ```
-export M2_HOME=$HOME/local/apache-maven
+export M2_HOME="$HOME/local/apache-maven"
+export PATH="$PATH:$M2_HOME/bin"
 ```
 
 ### Firefox

@@ -75,7 +75,9 @@ Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https:
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 * "Launch Terminal" to `Super+t`
-* "Move Window" set to **Disabled** (press Backspace to clear the shortcut): conflict with Intellij
+* "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
+  This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
+* "Move Window one workspace to the right" set to **Shift+Super+Page Down**, setting it to the same setting as before.
 
 ### gnome text editor
 

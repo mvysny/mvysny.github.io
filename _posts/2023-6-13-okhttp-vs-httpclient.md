@@ -19,7 +19,8 @@ The only disadvantage is the missing URIBuilder.
 URIBuilder is useful when you need to programatically create the URI, e.g. programatically add query parameters and escape them correctly.
 URIBuilder is not baked in JVM, and it's surprisingly hard to find a decent library that only provides URIBuilder:
 
-* Apache HttpClient offers URIBuilder but also the HttpClient itself and a tons of dependencies
+* [Apache HttpCore5](https://hc.apache.org/httpcomponents-core-5.2.x/) offers URIBuilder. It doesn't require any additional dependencies, which is great; but the jar itself is 900kb long.
+  Still, this is the best way to go forward at the moment.
 * There's a rs URIBuilder baked in JavaEE7, but that also brings tons of deps
 * Spring has URIBuilder too, but that also brings tons of deps
 * [URIBuilder-tiny](https://github.com/moznion/uribuilder-tiny) lacks support for duplicate query parameters, useful e.g. when you need to create a filter query such as
@@ -28,4 +29,4 @@ URIBuilder is not baked in JVM, and it's surprisingly hard to find a decent libr
 * [httpcache4j uribuilder](https://github.com/httpcache4j/uribuilder) is immutable which is just plain dumb to create an immutable builder
   (which is by definition a mutable builder used to build immutable objects).
 
-I'll probably add yet-another-library to the mix. TODO
+An ideal solution would be to copy URIBuilder out of Apache HttpCore5 and add nothing else to the jar.

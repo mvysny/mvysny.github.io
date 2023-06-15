@@ -18,6 +18,7 @@ The only disadvantage is the missing URIBuilder.
 
 URIBuilder is useful when you need to programatically create the URI, e.g. programatically add query parameters and escape them correctly.
 URIBuilder is not baked in JVM, but you can easily use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library.
+Alternatively, this [urlbuilder project](https://github.com/mikaelhg/urlbuilder) looks good too.
 
 There are other ways of getting the URIBuilder class, but they're inferior:
 

@@ -17,7 +17,9 @@ The only disadvantage is the missing URIBuilder.
 ## URIBuilder
 
 URIBuilder is useful when you need to programatically create the URI, e.g. programatically add query parameters and escape them correctly.
-URIBuilder is not baked in JVM, and it's surprisingly hard to find a decent library that only provides URIBuilder:
+URIBuilder is not baked in JVM, but you can easily use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library.
+
+There are other ways of getting the URIBuilder class, but they're inferior:
 
 * [Apache HttpCore5](https://hc.apache.org/httpcomponents-core-5.2.x/) ([sources on github](https://github.com/apache/httpcomponents-core/tree/master/httpcore5/src/main/java/org/apache/hc/core5/net))
   offers URIBuilder. It doesn't require any additional dependencies, which is great; but the jar itself is 900kb long.
@@ -29,5 +31,3 @@ URIBuilder is not baked in JVM, and it's surprisingly hard to find a decent libr
 * [uri-builder-java](https://github.com/BastiaanJansen/uri-builder-java) is barebones and doesn't even support escaping
 * [httpcache4j uribuilder](https://github.com/httpcache4j/uribuilder) is immutable which is just plain dumb to create an immutable builder
   (which is by definition a mutable builder used to build immutable objects).
-
-An ideal solution would be to copy URIBuilder out of Apache HttpCore5 and add nothing else to the jar.

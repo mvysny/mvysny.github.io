@@ -23,3 +23,17 @@ the appropriate links.
 
 For 2. simply make sure that `avahi-daemon` is installed: `sudo apt install avahi-daemon`. After the daemon
 is installed, it immediately starts responding to broadcast requests.
+
+## Troubleshooting
+
+Verify that `avahi-daemon` is actually running:
+
+```bash
+$ ps -ef|grep avahi-daemon
+avahi     104107       1  0 12:56 ?        00:00:00 avahi-daemon: running
+avahi     104119  104107  0 12:56 ?        00:00:00 avahi-daemon: chroot helper
+$ systemctl status avahi-daemon
+```
+
+In my case, avahi was not running, and it suddenly sprung to life after I run `systemctl status avahi-daemon`...
+wtf systemd?

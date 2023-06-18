@@ -37,3 +37,9 @@ $ systemctl status avahi-daemon
 
 In my case, avahi was not running, and it suddenly sprung to life after I run `systemctl status avahi-daemon`...
 wtf systemd?
+
+In case of host name conflict, avahi adds the `-2` suffix to the host name; you can verify that by ping/ssh
+`machine-2.local`. If that works, browse the logs via
+`journalctl -u avahi-daemon` and search for the "Host name conflict" line.
+You can try a bunch of tips from [this archlinux forum](https://bbs.archlinux.org/viewtopic.php?id=284081), e.g. disable ipv6 for
+avahi, or just restart avahi-daemon via `systemctl restart avahi-daemon`.

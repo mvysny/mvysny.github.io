@@ -91,13 +91,17 @@ Ubuntu installation instructions look easy: [Ubuntu RISC-V Lichee](https://wiki.
 The Ubuntu 23.04 preinstalled image doesn't work: Lichee's Power LED slowly blinks and nothing boots up.
 The Ubuntu 22.04 preinstalled image works though, just be patient: even after the system shows
 `ubuntu login` on HDMI screen, the `ubuntu`/`ubuntu` user/password doesn't work initially: it
-says "login incorrect" until the CloudInit finishes, which may take up to 5 minutes. Be patient and you'll be able
+says "login incorrect" until the CloudInit finishes, which may take up to 5 minutes. Be patient, and you'll be able
 to log in eventually.
 
-The device is much much slower than StarFive VisionFive 2. It's a single-core-only machine.
+The device is much, much slower than StarFive VisionFive 2. It's a single-core-only machine.
 When shutting off, the device doesn't reveal in any way that it's shut off. Both the orange
 and the green LED stays lit even after Linux shuts down, which is kinda annoying.
 
 The Vaadin app boots up in 2 minutes. First page is served quite slowly, but afterwards the app
 works quite well. However, there is slight but noticeable delay in requests (the requests usually take 200-300ms to complete).
 Definitely usable, but the device slowness shows a bit.
+
+WIFI is supported, via the `licheerv-rtl8723ds-dkms` package. The disadvantage is that the
+dkms module needs to be built from sources which takes an hour. The dkms module also needs
+to be rebuilt on every kernel upgrade, which means that every kernel upgrade will take an hour at least.

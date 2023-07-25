@@ -27,6 +27,13 @@ are sluggish as hell.
 The default username/password is `ubuntu`/`ubuntu`, but you can only log in after cloud-init configured the user.
 Just wait a bit for a line that says `cloud-init v xyz finished at xyz`.
 
+## Networking
+
+The network may be down since netplan refers to the eth0 interface,
+while you will most probably have something starting with `enx7.....`.
+List your network interfaces with `ip link show`, then run `sudo dhclient enx7......` to configure
+the interface for your network.
+
 ## Wifi
 
 [Using netplan with ubuntu](https://linuxconfig.org/ubuntu-20-04-connect-to-wifi-from-command-line)

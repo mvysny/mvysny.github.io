@@ -7,14 +7,24 @@ Random thoughts on having the Ubuntu Server 21.10 running on top of Raspberry PI
 
 ## Installation
 
-Simply follow the [Raspberry PI Ubuntu Page](https://ubuntu.com/download/raspberry-pi)
-tutorial, download appropriate image, flash it and boot it. I'm running aarch64 Ubuntu Server
+* [Raspberry PI Ubuntu Page](https://ubuntu.com/download/raspberry-pi)
+* Tutorial on [how to install Ubuntu server on your RPI](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi)
+
+Download the appropriate image from the download page, flash it according to the tutorial, and boot it. I'm running aarch64 Ubuntu Server
 on my Raspberry PI 3 with 1GB of RAM, however there's no real advantage over aarch32
 and aarch32 takes up less disk space and memory, therefore I advise you to go with aarch32.
+
+You can either use the `rpi-imager` tool, or flash the microsd card from cmdline:
+```bash
+xzcat ubuntu-23.04-preinstalled-server-armhf+raspi.img.xz |sudo dd of=/dev/XYZ bs=1M conv=fsync status=progress
+```
 
 I'd recommend not to go with Ubuntu Desktop - Raspberry PI 3 is simply not powerful enough /
 doesn't have enough RAM to run Ubuntu Desktop properly - both Gnome Shell and KDE
 are sluggish as hell.
+
+The default username/password is `ubuntu`/`ubuntu`, but you can only log in after cloud-init configured the user.
+Just wait a bit for a line that says `cloud-init v xyz finished at xyz`.
 
 ## Wifi
 

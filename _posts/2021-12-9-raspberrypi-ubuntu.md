@@ -18,6 +18,7 @@ You can either use the `rpi-imager` tool, or flash the microsd card from cmdline
 ```bash
 xzcat ubuntu-23.04-preinstalled-server-armhf+raspi.img.xz |sudo dd of=/dev/XYZ bs=1M conv=fsync status=progress
 ```
+Ubuntu will resize the filesystem automatically on first boot, to span over the entire microsd card.
 
 I'd recommend not to go with Ubuntu Desktop - Raspberry PI 3 is simply not powerful enough /
 doesn't have enough RAM to run Ubuntu Desktop properly - both Gnome Shell and KDE

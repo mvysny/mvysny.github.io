@@ -3,7 +3,8 @@ layout: post
 title: Raspberry PI 3 and Ubuntu Server aarch64
 ---
 
-Random thoughts on having the Ubuntu Server 21.10 running on top of Raspberry PI 3.
+Random thoughts on having the Ubuntu Server 21.10 running on top of Raspberry PI 3, and 23.04 running on Raspberry
+PI Zero 2 W.
 
 ## Installation
 
@@ -34,7 +35,7 @@ while you will most probably have something starting with `enx7.....`.
 List your network interfaces with `ip link show`, then run `sudo dhclient enx7......` to configure
 the interface for your network.
 
-## Wifi
+### Wifi
 
 [Using netplan with ubuntu](https://linuxconfig.org/ubuntu-20-04-connect-to-wifi-from-command-line)
 works for me well: when configured properly, Raspberry PI will automatically connect

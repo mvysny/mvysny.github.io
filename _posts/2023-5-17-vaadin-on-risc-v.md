@@ -105,3 +105,15 @@ Definitely usable, but the device slowness shows a bit.
 WIFI is supported, via the `licheerv-rtl8723ds-dkms` package. The disadvantage is that the
 dkms module needs to be built from sources which takes an hour. The dkms module also needs
 to be rebuilt on every kernel upgrade, which means that every kernel upgrade will take an hour at least.
+
+## Raspberry PI Zero 2W
+
+I know, I know, RPI it's ARM-based and not RISC-V-based; still I'm including it for comparison.
+
+[Installing ubuntu is very easy](../raspberrypi-ubuntu/); everything works out-of-the-box, no drivers are necessary
+for WIFI or anything. The device feels very quick, snappy and responsive, much faster than the Lichee RV Dock.
+It's a 4-core machine with 512mb of RAM, which is plenty for experiments. I've used 32bit Ubuntu.
+
+The Vaadin app boots up in 11 seconds on `openjdk-20-jre-headless`. First page is served slowly, afterwards the app
+is very responsive; http requests are served in 10-40ms. JVM uses 80mb of RAM initially, then climbs up to 128 MB
+and stays there.

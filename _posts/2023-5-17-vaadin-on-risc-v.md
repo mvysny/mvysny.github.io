@@ -119,7 +119,7 @@ First page is served slowly (because of PWA annotation - Java has to resize favi
 is very responsive; http requests are served in 10-40ms. JVM uses 80mb of RAM initially, then climbs up to 128 MB
 and stays there.
 
-For comparison, on `openjdk-20-jre-headless` on aarch64 (64bit ARM), the server starts
+For comparison, on RPI 3B+, `openjdk-20-jre-headless` on aarch64 (64bit ARM), the server starts
 in 10,2s and initially uses 109MB of RAM which climbs up to 163MB after the first page.
 The app is again very responsive, http requests are served in 10-40ms.
 

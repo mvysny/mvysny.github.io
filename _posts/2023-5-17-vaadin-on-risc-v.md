@@ -114,6 +114,12 @@ I know, I know, RPI it's ARM-based and not RISC-V-based; still I'm including it 
 for WIFI or anything. The device feels very quick, snappy and responsive, much faster than the Lichee RV Dock.
 It's a 4-core machine with 512mb of RAM, which is plenty for experiments. I've used 32bit Ubuntu.
 
-The Vaadin app boots up in 11 seconds on `openjdk-20-jre-headless`. First page is served slowly, afterwards the app
+The Vaadin app boots up in 11 seconds on `openjdk-20-jre-headless` on armv7l (32bit ARM).
+First page is served slowly (because of PWA annotation - Java has to resize favicons), afterwards the app
 is very responsive; http requests are served in 10-40ms. JVM uses 80mb of RAM initially, then climbs up to 128 MB
 and stays there.
+
+For comparison, on `openjdk-20-jre-headless` on aarch64 (64bit ARM), the server starts
+in 10,2s and initially uses 109MB of RAM which climbs up to 163MB after the first page.
+The app is again very responsive, http requests are served in 10-40ms.
+

@@ -163,3 +163,7 @@ then *Create a InfluxDB data source*:
 - Default Bucket: grott
 
 Press *Save & Test* - the connection is tested, it should succeed and the data connection is now saved.
+
+> Tip: you can start Grafana from a separate docker-compose; you then need to
+> [register `host.docker.internal`](https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container)
+> as a DNS for the host machine, then change the URL to `http://host.docker.internal:8086`.

@@ -65,7 +65,8 @@ e.g. `/home/user/grott`. Download `https://github.com/johanmeijer/grott/blob/mas
 folder and [patch it according to these instructions](https://github.com/johanmeijer/grott/issues/103#issuecomment-1663948264).
 Then, create a folder named `db` which will store the database contents.
 
-To store Grafana data, create a folder named `grafana-data`.
+To store Grafana data, create a folder named `grafana_data`. Run `chmod 0777 grafana_data` to
+allow Grafana to write to that folder.
 
 Now, create the following `docker-compose.yaml` file:
 
@@ -147,8 +148,18 @@ After 1-5 minutes, a first entry should be created in the InfluxDB2 database. Ti
 
 ## Grafana Revisited
 
-Navigate to [localhost:3000](http://localhost:3000) and configure Grafana. The
+Navigate to [localhost:3000](http://localhost:3000). Since anonymous access is enabled, you'll
+see the welcome screen. Login via the link in the upper-right corner. The
 default username/password is `admin`/`admin`, change the password but leave the default
 organization as "Main Org." since it's referred to via the anonymous access above.
 
-TODO more
+Let's create a connection to the InfluxDB database. Navigate to *Connections / Add new connection / InfluxDB*,
+then *Create a InfluxDB data source*:
+- Select "Flux" as the query language
+- URL is `http://influxdb.dc:8086`
+- Uncheck Basic Auth
+- Organization: my_org
+- Token: The InfluxDB admin token from above
+- Default Bucket: grott
+
+Press *Save & Test* - the connection is tested, it should succeed and the data connection is now saved.

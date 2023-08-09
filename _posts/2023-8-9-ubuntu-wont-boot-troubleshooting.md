@@ -46,7 +46,8 @@ previous crashes.
 If you identify that the crash is coming from `nouveau` (the open-source Nvidia driver) with the new kernel,
 you can try to use the proprietary Nvidia drivers; note this will disable Wayland and
 force you to use X11. Try to boot up on older kernel, then open the "Additional drivers"
-program and install the proprietary drivers.
+program and install the proprietary drivers. Also check [Ubuntu #2030894](https://bugs.launchpad.net/ubuntu/+source/linux-signed-hwe-5.19/+bug/2030894)
+for more info.
 
 Once you have the kernel crash log, you can file a bug in Ubuntu: type `ubuntu-bug linux`
 and follow through with the bug report, pasting the kernel log part which contains the crash into the report.

@@ -4,7 +4,7 @@ title: Ubuntu doesn't boot into GUI - Troubleshooting
 ---
 
 This article lists a couple of tips to try out. First, let's talk about GRUB since it's responsible
-for booting up your Linux. This tips apply to Ubuntu 22.04 and higher.
+for booting up your Linux. These tips apply to Ubuntu 22.04 and higher.
 
 ## GRUB Tips
 

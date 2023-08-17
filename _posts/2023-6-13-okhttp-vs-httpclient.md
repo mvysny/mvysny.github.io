@@ -32,3 +32,12 @@ There are other ways of getting the URIBuilder class, but they're inferior:
 * [uri-builder-java](https://github.com/BastiaanJansen/uri-builder-java) is barebones and doesn't even support escaping
 * [httpcache4j uribuilder](https://github.com/httpcache4j/uribuilder) is immutable which is just plain dumb to create an immutable builder
   (which is by definition a mutable builder used to build immutable objects).
+
+## Android
+
+What about Android? The `java.net.http.HttpClient` is missing; Android instead packages
+Apache HttpClient by default. The quality of that one is unknown, but I'm not sure whether
+it's portable to JDK. Everyone else seems to be using okhttp so I'll go with that for the time being.
+
+Beware: okhttp 3.13+ requires Android 5.0 (SDK 21); you can use 3.12+ but it lacks support for TLS 1.2+.
+I think that everyone switched to Android 5.0 already, so going with okhttp 4+ is probably a good choice.

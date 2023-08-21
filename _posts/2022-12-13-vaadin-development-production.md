@@ -91,3 +91,5 @@ Please make sure to read the following articles, to get more insight:
 
 1. [Official Vaadin Troubleshooting](https://vaadin.com/docs/latest/production/troubleshooting)
 2. [My Vaadin Troubleshooting](../Vaadin-troubleshooting/)
+3. [My Vaadin Troubleshooting: Browser](../Vaadin-troubleshooting-browser/)
+

@@ -46,3 +46,8 @@ Using `-Xmx32M` (32 megs of heap space), after startup and serving of one page:
 * The Embedded Jetty project used 151M of RAM but was noticeable slower to start - 2462ms
 * Spring Boot starts in 3307ms but fails to serve a page and throws `OutOfMemoryError: Java heap space`
    * With `-Xmx64M` the app starts in 3800ms and uses 317M of RAM.
+
+## Update
+
+Tried running the [vaadin-boot-example-gradle](https://github.com/mvysny/vaadin-boot-example-gradle)
+on 32bit openjdk-20: it's Jetty 12 + Vaadin 24.1.7 project; the project starts quickly and uses 97 MB of RAM.

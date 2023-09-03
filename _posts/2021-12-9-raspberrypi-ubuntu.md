@@ -35,6 +35,28 @@ while you will most probably have something starting with `enx7.....`.
 List your network interfaces with `ip link show`, then run `sudo dhclient enx7......` to configure
 the interface for your network.
 
+## Upgrading & cleaning up
+
+You can remove `snapd`:
+
+```bash
+$ sudo apt autoremove --purge snapd
+```
+
+Then upgrade the system:
+```bash
+$ sudo apt update
+$ sudo apt -V dist-upgrade
+```
+
+If you'll get an error during update that "Release file not valid yet", set the timezone correctly,
+[using timedatectl](https://linuxhint.com/set-change-timezone-ubuntu-22-04/):
+
+```bash
+$ timedatectl
+$ sudo timedatectl set-timezone Europe/Helsinki
+```
+
 ### Wifi
 
 [Using netplan with ubuntu](https://linuxconfig.org/ubuntu-20-04-connect-to-wifi-from-command-line)

@@ -83,6 +83,9 @@ and your wifi should be up - you can verify that by running `ifconfig -a`.
 
 Also see [Ubuntu Netplan no NetworkManager](../ubuntu-netplan-no-networkmanager/).
 
+Note that RPI may not see 5G networks, only 2,5G ones. Run `iwlist wlan0 scan` to see
+access points available to RPI.
+
 ## Controlling GPIO
 
 * Python: see [gpiozero](https://gpiozero.readthedocs.io/en/stable/)

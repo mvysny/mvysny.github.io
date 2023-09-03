@@ -257,3 +257,10 @@ Boot Ubuntu 22.04 Desktop Installer.
 1. Decrypt the root device: `sudo cryptsetup luksOpen TODO`
 2. mount the root fs: TODO
 3. mount subvolumes according to fstab
+
+## Server Setup
+
+More tips on when you're setting up a server:
+
+* Create a [Byobu Startup](../byobu-startup/) script which runs all necessary stuff in Byobu windows
+* [Setup a network using netplan](../ubuntu-netplan-no-networkmanager/)

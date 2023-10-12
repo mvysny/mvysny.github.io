@@ -57,9 +57,11 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git vim htop gparted fish doublecmd-gtk gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois exa duf tldr
+sudo apt install git vim htop gparted fish doublecmd-qt gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois exa duf tldr
 sudo update-alternatives --config editor     # select vim.basic
 ```
+
+*Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).
 
 Uninstall gedit:
 ```bash

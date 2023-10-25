@@ -222,11 +222,86 @@ The Bean-to-ID translation goes as follows:
    then used in Grid server-client communication.
 
 You can override `DataProvider.getId()` and use any of the strategy above, to fix the grid formatting issue.
-However, the selection will continue using the beans themselves in the Set, therefore
+However, the multi-select grid will still stuff the beans themselves into a `Set`, continuing to use the bean's
+broken `hashCode()/equals()` implementation underneath. Therefore,
 this fix won't work with multi-select Grid (even though it will work with single-select Grid).
 
 ## Wrapper class
 
 You can create a `Wrapper` class which wraps your bean and calculates `hashCode()/equals()` properly.
 The problem is that instead of having `Grid<T>` you'll have `Grid<Wrapper<T>>`, which
-might or might not suit your need.
+brings a lot of complexities down the road:
+
+* The `DataProvider` needs to be modified to return `Wrapper<T>` instead of `T`
+* All column formatters and `ValueProvider`s must accept `Wrapper<T>` instead of `T` as their parameters
+* To read/write the selection, you need to wrap/unwrap `Set<Wrapper<T>>` into `List<T>` (remember the broken `hashCode()/equals()`) constantly.
+* When using Grid's editor, binding `Wrapper` via a binder is more tricky.
+
+Because of these annoyances, we don't recommend this pattern.
+
+## DTOs
+
+You can copy all the data from the backend beans to your own DTO classes which you fully control,
+and then pass those DTOs around 
+
+```java
+public class PersonDTO implements Serializable {
+    public String name;
+    public Person(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersonDTO && ((PersonDTO) obj).getName().equals(getName());
+    }
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    public static PersonDTO from(Person person) {
+        return new PersonDTO(person.getName());
+    }
+    public Person toPerson() {
+        return new Person(name);
+    }
+}
+```
+
+This is the cleanest approach: the UI layer simply always uses DTOs - the original beans are not used at all,
+and all `ValueProvider`s simply work with DTOs from the beginning. There are no `Wrapper`s or anything like that -
+all DataProviders, ValueProviders and Binders operate directly on the DTOs. You can also add
+validation annotations to the DTOs, then using BeanValidatingBinder which makes validations a breeze.
+
+The downside is that you're essentially duplicating all of your backend beans - for every database table
+a DTO needs to be written, and a code converting the bean to DTO and back needs to be written and maintained as well.
+
+## Extending the original bean
+
+You'll introduce a `FixedPerson` class which extends the original `Person` class and fixes `hashCode()/equals()`:
+
+```java
+public class FixedPerson extends Person {
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof FixedPerson && ((FixedPerson) obj).getName().equals(getName());
+    }
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+    public static FixedPerson from(Person person) {
+        return new FixedPerson(person.getName());
+    }
+}
+```
+
+You'll still need to modify the `DataProvider` to serve `FixedPerson`s instead of `Person`s, but
+you don't have to convert the selection anymore, and all existing `ValueProvider`s will happily continue to
+work as expected - the advantage over the `Wrapper` pattern is clear. Also, since `FixedPerson` is a Person as well,
+you may not have to convert `FixedPerson` to a `Person` as it is with the DTO approach.
+
+However, this may not work with JPA though - JPA managed beans may be proxy classes,
+dynamically created from `Person` in order to track the changes, but this is beyond
+the scope of this article.

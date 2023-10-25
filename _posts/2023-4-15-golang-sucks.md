@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Golang sucks
+title: I don't like Golang
 ---
 
 Tried out golang, and I personally don't like the language at all. Thoughts:
@@ -24,6 +24,7 @@ is a huge slap-in-the-face - having to deal with global functions to use arrays 
 Would I prefer golang over C and C++? Definitely.
 
 Over Kotlin-native? That's a toughie. Kotlin is IMHO far better language than golang,
-but [kotlin-native on arm64 is severely crippled](../kotlin-native-lessons-learned/).
+but [kotlin-native on arm64 is severely crippled](../kotlin-native-lessons-learned/). So, if I'd target x86 then Kotlin definitely;
+if not, well, I've heard that okio works on arm64 these days...
 
 Also, am I the only one who thinks that the Go mascot looks retarded?

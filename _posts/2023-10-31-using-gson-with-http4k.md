@@ -29,12 +29,12 @@ fun <T> Gson.fromJsonArray(reader: Reader, itemClass: Class<T>): List<T> {
 fun <T> Body.json(gson: Gson, clazz: Class<T>): T = gson.fromJson(stream.buffered().reader(), clazz)
 
 /**
- * Parses the response as a JSON array and converts it into a list of Java object with given [clazz] using [HttpClientVokPlugin.gson].
+ * Parses the response as a JSON array and converts it into a list of Java object with given [clazz].
  */
 fun <T> Body.jsonArray(gson: Gson, clazz: Class<T>): List<T> = gson.fromJsonArray(stream.buffered().reader(), clazz)
 
 /**
- * Parses the response as a JSON array and converts it into a list of Java object with given [clazz] using [HttpClientVokPlugin.gson].
+ * Parses the response as a JSON array and converts it into a list of Java object with given [clazz].
  */
 inline fun <reified T> Body.jsonArray(gson: Gson): List<T> = jsonArray(gson, T::class.java)
 ```
@@ -65,9 +65,7 @@ class PersonRestClient {
 
   fun getAllCategories(): List<Category> {
     val request = Request(Method.GET, "categories").acceptJson()
-    return client(request).use {
-      it.body.jsonArray<Category>(gson)
-    }
+    return client(request).use { response -> response.body.jsonArray<Category>(gson) }
   }
 }
 ```

@@ -12,13 +12,17 @@ You can check out the [HttpClient overview on Baeldung](https://www.baeldung.com
 [HttpClient javadoc](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html) is
 very well written and contains examples to get you started quickly.
 
-The only disadvantage is the missing URIBuilder.
+The only disadvantage is the missing URIBuilder, and a bit of bare-bones API.
 
 ## URIBuilder
 
-URIBuilder is useful when you need to programatically create the URI, e.g. programatically add query parameters and escape them correctly.
-URIBuilder is not baked in JVM, but you can easily use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library.
-Alternatively, this [urlbuilder project](https://github.com/mikaelhg/urlbuilder) looks good too.
+URIBuilder is useful when you need to programmatically create the URI, e.g. programmatically add query parameters and escape them correctly.
+URIBuilder is unfortunately not baked in JVM. Fear not, there are these solutions:
+
+* Use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library. It's a fork of Apache HttpCore5 but with just the URIBuilder
+* Alternatively, this [urlbuilder project](https://github.com/mikaelhg/urlbuilder) looks good too.
+* Alternatively use [http4k](https://www.http4k.org/guide/howto/client_as_a_function/) with a bit of
+  [error-checking code](../using-gson-with-http4k/)
 
 There are other ways of getting the URIBuilder class, but they're inferior:
 
@@ -37,7 +41,7 @@ There are other ways of getting the URIBuilder class, but they're inferior:
 
 What about Android? The `java.net.http.HttpClient` is missing; Android instead packages
 Apache HttpClient by default. The quality of that one is unknown, but I'm not sure whether
-it's portable to JDK. Everyone else seems to be using okhttp so I'll go with that for the time being.
+it's portable to JDK. Everyone else seems to be using okhttp, so I'll go with that for the time being.
 
 Beware: okhttp 3.13+ requires Android 5.0 (SDK 21); you can use 3.12+ but it lacks support for TLS 1.2+.
 I think that everyone switched to Android 5.0 already, so going with okhttp 4+ is probably a good choice.

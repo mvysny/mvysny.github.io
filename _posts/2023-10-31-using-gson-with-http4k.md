@@ -4,6 +4,7 @@ title: Using Gson with Http4k
 ---
 
 An example code to use [Gson](https://github.com/google/gson) with [http4k](https://www.http4k.org).
+See [beverage-buddy-jooq](https://github.com/mvysny/beverage-buddy-jooq) to see this code in action.
 
 First, some basic utility methods for Gson:
 

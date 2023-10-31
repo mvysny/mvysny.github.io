@@ -36,19 +36,20 @@ fun <T> Body.jsonArray(gson: Gson, clazz: Class<T>): List<T> = gson.fromJsonArra
  * Parses the response as a JSON array and converts it into a list of Java object with given [clazz] using [HttpClientVokPlugin.gson].
  */
 inline fun <reified T> Body.jsonArray(gson: Gson): List<T> = jsonArray(gson, T::class.java)
-
-fun Response.checkOk() {
-  if (!status.successful) {
-    if (status.code == 404) throw FileNotFoundException(this.toMessage())
-    throw IOException(this.toMessage())
-  }
-}
 ```
 
 The client code:
 
 ```kotlin
-val CheckOk = Filter { next -> { next(it).apply { checkOk() } } }
+private fun Response.checkOk(request: Request) {
+    if (!status.successful) {
+        val msg = "$request ====> $this"
+        if (status.code == 404) throw FileNotFoundException(msg)
+        throw IOException(msg)
+    }
+}
+
+val CheckOk = Filter { next -> { next(it).apply { checkOk(it) } } }
 
 fun Request.accept(contentType: ContentType): Request = header("Accept", contentType.toHeaderValue())
 

@@ -45,11 +45,15 @@ The client code:
 private fun Response.checkOk(request: Request) {
     if (!status.successful) {
         val msg = "$request ====> $this"
+        close() // close the streams in case of StreamResponse
         if (status.code == 404) throw FileNotFoundException(msg)
         throw IOException(msg)
     }
 }
 
+/**
+ * Makes sure that the [Response]'s code is 200..299. Fails with an exception if it's not.
+ */
 val CheckOk = Filter { next -> { next(it).apply { checkOk(it) } } }
 
 fun Request.accept(contentType: ContentType): Request = header("Accept", contentType.toHeaderValue())

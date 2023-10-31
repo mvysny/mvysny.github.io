@@ -19,7 +19,7 @@ The only disadvantage is the missing URIBuilder, and a bit of bare-bones API.
 URIBuilder is useful when you need to programmatically create the URI, e.g. programmatically add query parameters and escape them correctly.
 URIBuilder is unfortunately not baked in JVM. Fear not, there are these solutions:
 
-* Use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library. It's a fork of Apache HttpCore5 but with just the URIBuilder
+* Use the [apache-uribuilder](https://gitlab.com/mvysny/apache-uribuilder) library. It's a fork of Apache HttpCore5 but with just the URIBuilder part.
 * Alternatively, this [urlbuilder project](https://github.com/mikaelhg/urlbuilder) looks good too.
 * Alternatively use [http4k](https://www.http4k.org/guide/howto/client_as_a_function/) with a bit of
   [error-checking code](../using-gson-with-http4k/)
@@ -36,6 +36,10 @@ There are other ways of getting the URIBuilder class, but they're inferior:
 * [uri-builder-java](https://github.com/BastiaanJansen/uri-builder-java) is barebones and doesn't even support escaping
 * [httpcache4j uribuilder](https://github.com/httpcache4j/uribuilder) is immutable which is just plain dumb to create an immutable builder
   (which is by definition a mutable builder used to build immutable objects).
+
+## Usage Tips
+
+See [HttpClient Usage Tips](../httpclient-error-checking/).
 
 ## Android
 

@@ -158,7 +158,7 @@ Go to Configuration:
 * Folder tabs / "Show tab header also when there is only one tab" - uncheck
 * Fonts:
   * Main Font: Ubuntu 11 Regular
-  * Viewer font: Monospace 11
+  * Viewer font: Ubuntu Mono 13
 * Icons / File panel: 16x16
 * Keys / Hot Keys:
   * cm_RunTerm: `F2`

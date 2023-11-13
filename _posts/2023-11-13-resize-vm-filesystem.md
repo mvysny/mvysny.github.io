@@ -12,7 +12,8 @@ $ qemu-img resize disk.qcow2 60G
 ```
 
 After that's done, you can start up the VM again. Now we need to increase both the
-partition size, and the filesystem size. To increase the partition size, run
+partition size, and the filesystem size. To increase the partition size, run this command
+*from within the VM*:
 
 ```bash
 $ sudo growpart /dev/vda 2

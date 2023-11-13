@@ -3,7 +3,7 @@ layout: post
 title: Resize Root Filesystem in a VM
 ---
 
-It's possible to increase the size of the Linux VM machine, quite easily.
+It's possible to increase the root filesystem size of the Linux VM machine, quite easily.
 
 First, shut down the VM and increase the size of the qcow2 file:
 

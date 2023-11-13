@@ -111,4 +111,4 @@ java.lang.IllegalStateException: Can't move a node from one state tree to anothe
 ```
 
 A: Yes, if using `RouteSessionCache` (WHICH YOU SHOULDN'T), you must call `route.getElement().removeFromTree();` to cleanly detach the component from the previous UI.
-Note that this is a very bad idea, also see [Issue #9376](https://github.com/vaadin/flow/issues/9376#issuecomment-1807618311) for more details.
+Note that this is a very bad idea (see the top of this article); also see [Issue #9376](https://github.com/vaadin/flow/issues/9376#issuecomment-1807618311) for more details.

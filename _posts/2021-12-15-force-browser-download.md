@@ -5,7 +5,7 @@ title: Force the browser to download the content
 
 The best way to achieve that is to use the Vaadin `Anchor` component, setting `href` to
 appropriate `StreamResource`. That way, the browser will correctly open the download dialog by default,
-working as expected.
+working as expected. Tags: `FileDownloader`.
 
 If you want to have a download icon, you can simply add the `Icon` component into `Anchor` like follows:
 

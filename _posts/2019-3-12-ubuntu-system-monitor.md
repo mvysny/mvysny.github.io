@@ -17,6 +17,19 @@ To easily monitor those in your Ubuntu desktop, you can install the System Monit
 > Note: this breaks on EVERY Ubuntu upgrade for me. Be prepared to live without it
 > for a couple of weeks after Ubuntu upgrade.
 
+## Ubuntu 23.10
+
+Of course TopHat stopped being ported to newer GNOME. Back to the trusty
+[system-monitor-next](https://extensions.gnome.org/extension/3010/system-monitor-next/).
+Install `gnome-shell-extension-manager`, run it and search for `mgalgs`
+(searching for `system-monitor-next` yields shitty unrelated results).
+
+Make sure you have all the necessary dependencies installed:
+
+```bash
+sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
+```
+
 ## Ubuntu 23.04
 
 Of course the fucking thing broke. I give up, I'm switching to [TopHat](https://extensions.gnome.org/extension/5219/tophat/).

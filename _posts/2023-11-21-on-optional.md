@@ -86,6 +86,9 @@ java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false
   readMethod=public java.util.Optional com.vaadin.starter.skeleton.Main.getFoo()]
 ```
 
+The `writeMethod` is gone, making the property read-only; furthermore the property type changed
+to `Optional`, thus losing the `String` type information.
+
 ## Conclusion
 
 I personally think Kotlin nullability feature is vastly better and produces more readable code

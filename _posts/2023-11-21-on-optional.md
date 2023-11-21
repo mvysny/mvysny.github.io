@@ -52,7 +52,11 @@ public final class Main {
 prints
 
 ```
-java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false; hidden=false; enumerationValues=[Ljava.lang.Object;@60c6f5b; required=false}; propertyType=class java.lang.String; readMethod=public java.lang.String com.vaadin.starter.skeleton.Main.getFoo(); writeMethod=public void com.vaadin.starter.skeleton.Main.setFoo(java.lang.String)]
+java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false; hidden=false;
+  enumerationValues=[Ljava.lang.Object;@60c6f5b; required=false};
+  propertyType=class java.lang.String;
+  readMethod=public java.lang.String com.vaadin.starter.skeleton.Main.getFoo();
+  writeMethod=public void com.vaadin.starter.skeleton.Main.setFoo(java.lang.String)]
 ```
 
 while
@@ -76,7 +80,10 @@ public final class Main {
 prints
 
 ```
-java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false; hidden=false; enumerationValues=[Ljava.lang.Object;@60c6f5b; required=false}; propertyType=class java.util.Optional; readMethod=public java.util.Optional com.vaadin.starter.skeleton.Main.getFoo()]
+java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false; hidden=false;
+  enumerationValues=[Ljava.lang.Object;@60c6f5b; required=false};
+  propertyType=class java.util.Optional;
+  readMethod=public java.util.Optional com.vaadin.starter.skeleton.Main.getFoo()]
 ```
 
 ## Conclusion

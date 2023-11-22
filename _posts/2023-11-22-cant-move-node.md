@@ -10,8 +10,10 @@ read on.
 The problem is that a component, which is already attached to one UI, is being inserted into
 another UI as well. This usually happens when:
 
-* using DI scopes in a bad way on a component, e.g. [SessionScoped or Singleton scoped component - a very bad idea](../session-scoped-route/) 
-* placing a component (e.g. VaadinIcon) into a static field (or into an enum)
+* using DI scopes in a bad way on a component, e.g. [SessionScoped or Singleton scoped component - a very bad idea](../session-scoped-route/).
+  For example, you need to add a scope to a Spring component like `@UIScope` or `@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)`.
+  If you don't add any scope then it's a singleton = the same component is shared for all the views/users and it leads to this stacktrace.
+* placing a component (e.g. `VaadinIcon`) into a static field (or into an enum).
 
 Moving a component from one UI to another will cause the component to disappear from the original UI
 for no apparent reasons, causing a lot of headscratching for the developer, and therefore this is definitely not a good practice.

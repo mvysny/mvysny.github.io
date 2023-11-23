@@ -11,23 +11,25 @@ Longer version of the above: [Session Replication in the World of Vaadin](https:
 
 There is a [Vaadin and Hazelcast](https://vaadin.com/learn/tutorials/hazelcast) tutorial
 which describes how to enable automatic session replication in Tomcat with Hazelcast-backed
-distributed session storage. However, the article doesn't refute any of the issues stemming from this approach,
-as described in the "Session Replication in the World of Vaadin" article above, and
-therefore this setup will suffer from issues mentioned in the article.
+distributed session storage. However, the issues described in the "Session Replication in the World of Vaadin" article
+are fundamental: even the solution described in the "Vaadin and Hazelcast" article suffers
+from all the issues connected to session replication.
 
 ## Additional issues with session replication
 
 ### ConcurrentModificationException
 
-The servlet spec doesn't specify, at what time Tomcat (or any servlet container) is
-allowed to perform the session replication. From that follows that Tomcat may
-start the session replication process even if there's an active request ongoing.
-That means that there could be one thread manipulating UI components (the Vaadin UI thread),
+The servlet spec lacks the precise specification of at what time Tomcat (or any servlet container) is
+allowed to perform the session replication. Therefore, Tomcat is free to
+start the session replication process anytime, even if there's an active request ongoing.
+That means that the following situation is entirely possible:
+there could be one thread manipulating UI components (the Vaadin UI thread),
 and another thread concurrently serializing/reading the state of those components.
 And that may lead to `ConcurrentModificationException` thrown randomly.
 
 See [Issue #7328](https://github.com/vaadin/framework/issues/7328) for more details
-and for a possible workaround.
+and for a possible workaround; the workaround was found not to be perfect,
+for reasons that haven't been investigated yet.
 
 ### Session replication not serializing the state of Vaadin 14+
 
@@ -78,8 +80,8 @@ Disable session replication, enable sticky sessions and keep as much state as po
 in the database. That way, even if a Vaadin node dies, the user can re-login and continue
 her work easily since everything is saved in the database.
 
-### Use Vaadin Fusion
+### Use Vaadin Hilla
 
-Use [Vaadin Fusion](https://vaadin.com/blog/reintroducing-vaadin-flow-and-fusion):
+Use [Vaadin Hilla](https://hilla.dev/) (previously [Vaadin Fusion](https://vaadin.com/blog/reintroducing-vaadin-flow-and-fusion)):
 you'll have the entire UI in the browser, reducing backend to a set of stateless service calls.
 Downside: you'll need to implement the entire UI in JavaScript or in TypeScript.

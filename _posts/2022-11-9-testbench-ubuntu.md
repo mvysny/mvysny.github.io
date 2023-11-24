@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Running Vaadin TestBench/Selenium on Ubuntu
+title: Running Vaadin TestBench or Selenium on Ubuntu
 ---
 
 Running TestBench on Ubuntu is a nightmare. The ChromeDriver will block endlessly and won't work,

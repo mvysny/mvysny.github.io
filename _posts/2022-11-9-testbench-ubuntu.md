@@ -1,11 +1,31 @@
 ---
 layout: post
-title: Running Vaadin TestBench on Ubuntu
+title: Running Vaadin TestBench/Selenium on Ubuntu
 ---
 
 Running TestBench on Ubuntu is a nightmare. The ChromeDriver will block endlessly and won't work,
 while FirefoxDriver will either segfault snap or fail with some other crazy error. On top of that,
 Selenium has problems with Chromium and Firefox installed as snap. Fear not, there's a way.
+
+## Ubuntu 23.10
+
+This works on Ubuntu 23.10 with chromium 119 installed via snap:
+```java
+public abstract class AbstractViewTest extends TestBenchTestCase {
+    @Before
+    public void setup() throws Exception {
+        System.setProperty("webdriver.chrome.driver", "/snap/bin/chromium.chromedriver");
+        setDriver(new ChromeDriver());
+    }
+
+    @After
+    public void stop() {
+        getDriver().close();
+    }
+}
+```
+
+## Ubuntu 22.10
 
 Note that these instructions are working on Ubuntu 22.10, with JDK 11 and snap chromium 107.0.5304.87. These
 instructions may not work in the future since the browser drivers tend to break with every browser release;

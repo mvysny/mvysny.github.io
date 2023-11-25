@@ -135,7 +135,7 @@ Login to firefox account and sync.
 
 ### gnome system monitor extension
 
-Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/) and install TopHat.
+Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
 
 ### git+sshkey
 

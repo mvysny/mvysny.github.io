@@ -23,3 +23,8 @@ You can now grow the ext4 filesystem of the root FS while the OS is running:
 ```bash
 $ sudo resize2fs /dev/vda2
 ```
+
+btrfs can be resized via
+```bash
+$ sudo btrfs filesystem resize max /
+```

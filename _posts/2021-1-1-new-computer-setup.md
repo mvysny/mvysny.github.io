@@ -35,19 +35,28 @@ Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthed
 Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition; also
 run `sudo dmsetup ls --tree -o blkdevname`.
 
+Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
+
+### ext4 only
+
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
-Enable dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
+Regarding additional fs flags:
+* `user_xattr` is enabled by default on ext4; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
+  and also [user_xattr ubuntu forums thread](https://ubuntuforums.org/showthread.php?t=2400092)
+* `extents` - ext4: unknown. There's no longer a mount option `extent` or `extents`,
+  probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
+
+### btrfs only
+
+Trim doesn't need to be enabled since
+[btrfs by default performs async discard since kernel 6.2](https://btrfs.readthedocs.io/en/latest/Trim.html).
 
 Make sure there are no btrfs errors: `dmesg|grep -i btrfs`.
 
-Optimize systemd journal: `sudo chattr +C /var/log/journal`
+Optimize systemd journal by disabling copy-on-write (COW): `sudo chattr +C /var/log/journal`
 
-Regarding additional fs flags:
-* `user_xattr` is enabled by default on ext4 and btrfs; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
-  and also [user_xattr ubuntu forums thread](https://ubuntuforums.org/showthread.php?t=2400092)
-* `extents` - used by default by btrfs; ext4: unknown. There's no longer a mount option `extent` or `extents`,
-  probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
+Both user_xattr and extends are enabled automatically for btrfs.
 
 Reboot.
 

@@ -66,7 +66,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git vim htop gparted fish doublecmd-qt gnome-console gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois exa duf tldr
+sudo apt install git vim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois exa duf tldr
 sudo update-alternatives --config editor     # select vim.basic
 ```
 
@@ -74,10 +74,17 @@ sudo update-alternatives --config editor     # select vim.basic
 
 Uninstall gedit:
 ```bash
-sudo apt autoremove --purge gedit nautilus-extension-gnome-terminal
+sudo apt autoremove --purge gedit
 ```
 
 ### gnome console
+
+DEPRECATED: looks like gnome-terminal is here to stay, and is more mature + optimized. Keep.
+
+```bash
+sudo apt install gnome-console
+sudo apt autoremove --purge nautilus-extension-gnome-terminal
+```
 
 Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
 
@@ -95,6 +102,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 * Settings Cog wheel > Show Line numbers
 * Settings Cog wheel > Show Right Margin
 * Settings Cog wheel > disable "Text Wrapping"
+* Settings Cog wheel > disable "Check Spelling"
 * Preferences > Appearance: select 2nd row 2nd column.
 * Preferences > Highlight current line
 * Preferences > Display overview map

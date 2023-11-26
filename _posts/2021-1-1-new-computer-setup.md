@@ -152,6 +152,7 @@ Create the `~/.gitconfig` file:
 [push]
   default = current
   followTags = true
+  autoSetupRemote = true
 [core]
   editor = vim
   autocrlf = input
@@ -256,14 +257,12 @@ Make it executable, then right-click it on the Desktop and check "Allow Launchin
 Go to Settings. Then:
 
 * Appearance > Color: select blue
-* Search > disable completely - turn off the main switch in window's caption bar
 * Multitasking > Application Switching > Include Apps From Current Workspace only
 * Privacy
   * Location Services > Turn on
   * File History & trash
-    * Disable File History; also click the "Clear History"
     * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
-  * Screen Lock: Blank Screen Display: Never; 
+  * Screen Lock: Blank Screen Display: Never 
 * Date & Time: Enable Automatic Time Zone
 * Keyboard: Add "Slovak QWERTY" and "Finnish".
 

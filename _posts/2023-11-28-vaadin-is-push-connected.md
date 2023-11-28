@@ -33,7 +33,7 @@ public class MyServlet extends VaadinServlet {
 }
 ```
 
-It's not known it can be checked that the message was delivered successfully.
+I don't know whether it's possible to check that the Atmosphere heartbeat message was delivered successfully.
 
 Conclusion: You can never be 100% sure, but with the heartbeat frequency of 1 minute, you can
 be reasonably sure.

@@ -16,7 +16,10 @@ is to send a "ping" request and wait for a reply. Vaadin performs this automatic
 the client-side Vaadin javascript sends heartbeats to the server periodically, as described
 in [Application Lifecycle: UI Expiration](https://vaadin.com/docs/latest/advanced/application-lifecycle#application.lifecycle.ui-expiration).
 
-Therefore, to increase the probability of knowing whether websocket pipe is actually alive,
+Therefore, to increase the probability of knowing accurately whether websocket pipe is actually alive,
 you can increase the heartbeat frequency to 1 heartbeat every minute, then checking
 the value of `ui.getInternals().getLastHeartbeatTimestamp()`: if the difference between
 the current timestamp is less than a minute, the websocket pipe can be considered "up".
+
+You can never be 100% sure, but with the heartbeat frequency of 1 minute, you can
+be reasonably sure.

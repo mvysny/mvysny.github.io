@@ -4,7 +4,8 @@ title: Vaadin - Is Push WebSocket connected?
 ---
 
 You can call `UI.getCurrent().getInternals().getPushConnection().isConnected()`
-to figure out whether Atmosphere websocket pipe is connected.
+to figure out whether Atmosphere websocket pipe is connected. The question is,
+is the pipe actually alive and healthy?
 
 However, it's trickier than that. WebSocket [runs over TCP/IP](https://stackoverflow.com/a/9204009/377320)
 and never runs over UDP. While TCP/IP guarantees that the packets are not reordered,

@@ -22,5 +22,11 @@ you can increase the heartbeat frequency to 1 heartbeat every minute, then check
 the value of `ui.getInternals().getLastHeartbeatTimestamp()`: if the difference from now
 is less than a minute, the websocket pipe can be considered "up".
 
-You can never be 100% sure, but with the heartbeat frequency of 1 minute, you can
+In Vaadin 24+, Atmosphere now by default sends a small message every 1 minute.
+See the `HeartbeatInterceptor` class for details. The message only consists of one letter "X",
+contrary to what `HEARTBEAT_PADDING_CHAR` says. It's not known whether the interval
+can be currently changed from Vaadin, and whether it can be checked that the message
+was delivered successfully.
+
+Conclusion: You can never be 100% sure, but with the heartbeat frequency of 1 minute, you can
 be reasonably sure.

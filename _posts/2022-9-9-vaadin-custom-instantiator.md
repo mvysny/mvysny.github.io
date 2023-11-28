@@ -3,6 +3,9 @@ layout: post
 title: Vaadin 14+ Custom Instantiator
 ---
 
+The [Custom Instantiator Official Vaadin documentation](https://vaadin.com/docs/latest/advanced/custom-instantiators)
+is now available, check it out. I'm keeping this text for historic reasons mostly.
+
 The official recommended way now is to introduce your own custom `InstantiatorFactory` which creates
 Instantiators:
 

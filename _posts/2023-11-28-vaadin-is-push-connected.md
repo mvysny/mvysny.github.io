@@ -18,8 +18,8 @@ in [Application Lifecycle: UI Expiration](https://vaadin.com/docs/latest/advance
 
 Therefore, to increase the probability of knowing accurately whether websocket pipe is actually alive,
 you can increase the heartbeat frequency to 1 heartbeat every minute, then checking
-the value of `ui.getInternals().getLastHeartbeatTimestamp()`: if the difference between
-the current timestamp is less than a minute, the websocket pipe can be considered "up".
+the value of `ui.getInternals().getLastHeartbeatTimestamp()`: if the difference from now
+is less than a minute, the websocket pipe can be considered "up".
 
 You can never be 100% sure, but with the heartbeat frequency of 1 minute, you can
 be reasonably sure.

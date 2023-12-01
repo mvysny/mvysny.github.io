@@ -43,3 +43,7 @@ truly dumb (like expose a Vaadin component via a static field to multiple sessio
 When accessing Vaadin component from a background thread, always use `ui.access()`. Never
 try to outsmart Vaadin or JVM by using nifty techniques from the interwebz - if you think
 you understand the happens-before relationship and the Java Memory Model (JMM), you most probably don't.
+
+## Debugging these issues
+
+See [Vaadin and ConcurrentModificationException](../vaadin-concurrentmodificationexception/).

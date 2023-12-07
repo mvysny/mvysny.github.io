@@ -85,6 +85,10 @@ The numeric value of the `heartbeatInterval` property denotes a number in second
 ## FAQ
 
 * Q: If `closeIdleSessions` is set to `false`, will the session ever close if the user just idles?
-* A: When `closeIdleSessions` is `false`, heartbeat requests will effectively keep the session active for as long as the user has at least one tab open, using up server memory.
+* A: When `closeIdleSessions` is `false`, heartbeat requests will effectively keep the session active for as long as the user has at least one tab open.
 * Q: Will Tomcat's session-to-disk storage help with memory consumption?
 * A: No. Session-to-disk only works for passivated sessions, which doesn't happen by default. That also requires all session objects to implement `Serializable`.
+* Q: How long does it then take for the session to close if there's an open browser tab but the user is doing nothing?
+* A: If `closeIdleSessions` is `false` then never since heartbeat requests will effectively keep the session active.
+     Otherwise, Vaadin will eventually close the UI (after the age of the UI surpasses the session timeout) which will stop the communication from the browser to the server.
+     Servlet container will then close the session after the session timeout elapses. That means that the session is closed roughly after the session timeout times two.

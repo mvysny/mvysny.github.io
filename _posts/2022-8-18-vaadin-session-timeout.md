@@ -10,7 +10,7 @@ by Erik Lumme is much clearer.
 In short, if you want to set the session timeout to 30 minutes, make sure that you set all the following:
 
 * The web container session timeout is set to 30 (see below)
-* Set Vaadin's `DeploymentConfiguration.closeIdleSessions` to `true` (see below)
+* Set Vaadin's `DeploymentConfiguration.closeIdleSessions` from the default `false` to `true` (see below)
 
 ## Configuring web container session timeout
 
@@ -26,6 +26,8 @@ public class MyWebListener implements ServletContextListener {
     }
 }
 ```
+
+or by calling `VaadinSession.getSession()).getHttpSession().setMaxInactiveInterval(30 * 60)` for every session created.
 
 If you're still using `web.xml`, you can set `<session-timeout>30</session-timeout>`, see [Java Session Timeout](https://www.baeldung.com/servlet-session-timeout).
 

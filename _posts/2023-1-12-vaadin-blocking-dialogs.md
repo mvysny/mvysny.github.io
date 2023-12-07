@@ -25,8 +25,7 @@ public class TicketPurchasingService {
 }
 ```
 
-Is it actually possible to do such a thing in Vaadin? The answer is no, but actually yes, depending on which JVM you're running.
-Read on for more details.
+Is it actually possible to do such a thing in Vaadin?
 
 ## The Problem
 
@@ -49,7 +48,7 @@ it's just running temporarily inside the `showConfirmDialog()` function.
 
 Can we do the same thing with Vaadin?
 
-## Blocking Dialogs in Vaadin
+### Blocking Dialogs in Vaadin
 
 Consider the following Vaadin click handler:
 
@@ -67,9 +66,7 @@ public class MyView {
 ```
 
 Is there an implementation of `confirmDialog()` function that would show a Vaadin Dialog and block until a button
-is clicked? Well, we know the answer already, so let's focus on the 'no' part first.
-
-The above code can not be implemented with the regular thread-based approach.
+is clicked? The answer is no if you can't send a response before blocking.
 The problem here is as follows: assume that `confirmDialog()` function blocks the Vaadin
 UI thread to wait for the user to click the "Yes" or "No" button. However,
 in order for the dialog to be actually drawn in the browser,
@@ -79,9 +76,12 @@ thread can't finish since it's blocked in the `confirmDialog()` function.
 This is a fundamental problem of all web frameworks, not just of Vaadin. For more information
 on how 'event loops' work in server UI frameworks, please read [Event Loop (Session Lock) in Vaadin](../event-loop-session-lock-in-vaadin/).
 
-## But Actually Yes
+EDIT: There's a very interesting solution which forces Vaadin to send the response "in the middle of" the UI thread,
+before the UI thread finishes. Please see the end of this blogpost for more information.
 
-So, what dark magic are we using to solve the problem above? The answer is the Java 20 Virtual Threads, or
+## The Virtual Threads Solution
+
+So, what dark magic are we using to solve the problem above? The answer is the Java 21 Virtual Threads, or
 The Project Loom. Project Loom introduces the concept of a *virtual thread*, which
 differs from the good old native OS thread in a way that it can *suspend*. When a code running in a virtual thread
 calls a blocking function,
@@ -130,7 +130,7 @@ public class Dialogs {
 
 The question is: how can we persuade the virtual thread mechanism to only use Vaadin UI threads as the carrier threads?
 
-## Unwinding The Magic
+### Unwinding The Magic
 
 The whole magic happens in the `VirtualThread` class. The source code of that class gets very technical quickly,
 and so I won't dig into it further. The virtual thread suspending mechanism uses `Continuation.park()` to
@@ -173,6 +173,10 @@ Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-lo
 * The `SuspendingExecutor` class runs submitted tasks in virtual threads, on given executor;
 * `VaadinSuspendingExecutor` class uses the class above, while running the continuations in the Vaadin UI thread.
 
+WARNING: the code above uses a non-public API to force virtual threads to use a custom executor.
+While the solution fundamentally works, it could be prone to strange errors, for example
+it's possible to [deadlock using one lock only](https://twitter.com/mariofusco/status/1659245444252172310).
+
 ## Kotlin
 
 The [Kotlin language](https://kotlinlang.org) offers a solution that works on any JVM version, even on old
@@ -183,3 +187,39 @@ method is created, which then keeps track which callback (or continuation) goes 
 
 There is an inherent problem with this solution though: this solution doesn't work with `Thread.sleep()` and the regular Java blocking calls -
 you'll have to use their suspending counterparts. Please find more in the [Kotlin Coroutines documentation](https://kotlinlang.org/docs/coroutines-overview.html).
+
+## Pushing Response During the UI Thread execution
+
+In the discussion of the [vaadin.com blogpost on blocking dialogs](https://vaadin.com/blog/tackling-blocking-dialogs-in-web-applications-with-vaadin),
+Matthias shared a very interesting solution. The solution is as follows: in the middle
+of the UI request, you can unlock Vaadin session and call `UI.push()` to send all accumulated
+UI changes to the client-side, causing the dialog to draw before the UI thread
+actually finishes. Now the thread is no longer the "UI thread" (since the session lock is gone),
+and so you are to block. After the blocking is done, you can reacquire the UI lock and continue execution.
+
+Since this solution doesn't require any specific Java features, this will work on any JVM, however
+there are things to look out for:
+
+1. You must have push enabled (obviously).
+2. You also need to run the UI code from within a `ui.accessSynchronously(() -> {})` block.
+   `ui.access()` may not work since the UI code will be executed as pendingAccessTasks as a part
+   of this UI request. That's problematic, since you can't call `push()` from pendingAccessTasks since
+   the push function itself will run pendingAccessTasks processing again, thus potentially forming
+   an endless loop, or causing the pending tasks to reorder, or other side-effects. TODO rethink this.
+3. You may need to call `VaadinSession.unlock()` multiple times since the lock is reentrant and may be locked
+   multiple times from the current thread. You then also need to lock the session multiple times.
+4. Final call of `VaadinSession.unlock()` also pushes the changes automatically (if `Push.AUTOMATIC`) is used.
+
+Beware: the http-handling thread will remain locked while waiting for the user to respond. If the
+user closes the browser, the thread may remain locked indefinitely. This way, you can run out of
+http-handling threads, thus rendering the servlet container unable to respond to requests, and to appear dead.
+You can monitor session or UI detach and interrupt the wait, or you can wait in a loop and periodically
+check whether the UI is still attached.
+
+This solution also relies on the fact that `VaadinSession.unlock()`/`ui.push()` pushes the most recent UI state
+immediately to the client-side, and doesn't wait until this thread progresses. Namely,
+the push() javadoc reads "If push is enabled, but the push connection is not currently open, the push will be done when the connection is established.",
+and that might (or might not) create a problem.
+
+Matthias plans to create a public GitHub project that demoes this approach in the future;
+when he does, I'll gladly add a link from this article.

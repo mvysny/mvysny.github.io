@@ -173,9 +173,20 @@ Please see the [Vaadin Loom example project](https://github.com/mvysny/vaadin-lo
 * The `SuspendingExecutor` class runs submitted tasks in virtual threads, on given executor;
 * `VaadinSuspendingExecutor` class uses the class above, while running the continuations in the Vaadin UI thread.
 
+### Reporting Bugs
+
 WARNING: the code above uses a non-public API to force virtual threads to use a custom executor.
 While the solution fundamentally works, it could be prone to strange errors, for example
 it's possible to [deadlock using one lock only](https://twitter.com/mariofusco/status/1659245444252172310).
+
+I tried to open a feature request to make the API public.
+Unfortunately, [openjdk at github](https://github.com/openjdk/loom)
+doesn't allow you to create tickets using the built-in github bug system, and it tells you to go to
+[bugs.openjdk.org](https://bugs.openjdk.org).
+Unfortunately, as per [JDK Bug System Wiki](https://wiki.openjdk.org/display/general/JBS+Overview)
+self-service account creation is not supported and users can create anonymous reports at [bugreport.java.com](https://bugreport.java.com/bugreport/).
+That's exactly what I did, but the feature request never made it public, and I do not have any
+link to the submitted report.
 
 ## Kotlin
 

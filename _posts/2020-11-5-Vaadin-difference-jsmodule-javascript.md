@@ -106,3 +106,11 @@ because the code snippet running via `executeJs()` would have to import the modu
 That is currently not possible, please see [Flow bug #5094](https://github.com/vaadin/flow/issues/5094)
 for more details.
 
+### Exporting a module function to window
+
+You can define a `frontend/app.js` with this content:
+```javascript
+import { MyThing } from './mything.js';
+window.MyThing = MyThing;
+```
+Then import it via `@JsModule` or `@JavaScript`; now you can access `window.MyThing` from anywhere.

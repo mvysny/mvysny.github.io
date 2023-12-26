@@ -46,6 +46,25 @@ Couple of tips from the article above:
 You need to search for WiFi routers which support configuring themselves in the AP mode; luckily
 almost all of them do. Then, simply setup the router via a wizard and configure it to run in the AP
 mode; then plug the ethernet cable into the WLAN socket of your AP and connect it to your main router. 
+Alternatively you can use WiFi extenders which can run in Access-Point mode, e.g. [TP-Link RE200 AC750](https://www.alza.sk/tp-link-re200-ac750-dual-band-d2294024.htm).
+
+## Connecting to Access Points
+
+After the access points have been configured, they'll become invisible in your network. Since they can change IP address upon
+restart, you can only identify them by their MAC address. Therefore, upon configuration of the access point,
+make sure to write down the username/password and their MAC address to a text file. You
+can then find the device backwards by running
+
+```bash
+$ sudo nmap -sn 192.168.1.0/24
+```
+
+Modify the `192.168.1.0` accordingly depending on your network: run `ifconfig` and write down your IP
+address (e.g. `192.168.1.32`). Then replace the last number with zero.
+
+Run `iwconfig` to find out your wireless network interface, e.g. `wlp3s0`. You can then run
+`sudo iwlist wlp3s0 scan` to see all nearby networks, with their MAC addresses, channels and frequencies.
+You can use the output of this command to make sure that the channels of your APs are allocated correctly.
 
 ## Linux and The Network Manager
 

@@ -31,7 +31,8 @@ and will run fully.
 
 ## FROM-CACHE
 
-Additionally, Gradle can store the output files in its build cache. That way, even if `build/` folder is
+Additionally, Gradle can store the output files in its build cache, stored in the `~/.gradle/caches/build-cache-1` folder.
+That way, even if `build/` folder is
 deleted via `./gradlew clean`, Gradle will simply fill in the output class files from its
 cache and will skip the actual run of the `compileJava` task. This behavior is not enabled by default and
 is enabled via `--build-cache`. This is what happens when the task is marked `FROM-CACHE`:

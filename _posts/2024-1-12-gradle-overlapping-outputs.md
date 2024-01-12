@@ -105,6 +105,7 @@ Task ':compileJava' is not up-to-date because:
 Loaded cache entry for task ':compileJava' with cache key ce864edaed586425c96101bb691844fa
 ```
 
-## The Vaadin Plugin Case
+## Probably a Good Idea TM
 
-TODO
+This is most probably a feature and not a bug: the plugin might be buggy and might be writing stuff randomly;
+not caching those things is probably a good idea as documented in [Gradle 7.0 seems to take an overzealous approach to inter-task dependencies](https://discuss.gradle.org/t/gradle-7-0-seems-to-take-an-overzealous-approach-to-inter-task-dependencies/39656/2).

@@ -46,7 +46,7 @@ Loaded cache entry for task ':compileJava' with cache key ce864edaed586425c96101
 ```
 
 Even though the task was not up-to-date (since we deleted the `build/` folder via `./gradlew clean`), Gradle was still
-able to avoid running the task since it re-used the build cache and copied the output files from its cache.
+able to avoid running the task since it leveraged its build cache and copied the output files from its cache.
 
 To force the re-run of the task, either omit the `--build-cache` command-line switch,
 or delete the build cache:

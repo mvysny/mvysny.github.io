@@ -35,7 +35,7 @@ $ echo "foo" >build/classes/java/main/playground/DatabaseUtils.class
 $ ./gradlew --build-cache --info compileJava
 > Task :compileJava
 Caching disabled for task ':compileJava' because:
-  Gradle does not know how file 'build/classes/java/main/playground/DatabaseUtils.class' was created (output property 'destinationDirectory'). Task output caching requires exclusive access to output paths to guarantee correctness (i.e. multiple tasks are not allowed to produce output in the same location).
+  Gradle does not know how file 'build/classes/java/main/playground/DatabaseUtils.class' was created (output property 'destinationDirectory'). Task output caching requires exclusive access to output paths to guarantee correctness (i.e. multiple tasks are not allowed to produce output in the same location). [OVERLAPPING_OUTPUTS]
 Task ':compileJava' is not up-to-date because:
   Output property 'destinationDirectory' file /home/mavi/work/my/jdbi-orm-playground/build/classes/java/main/playground/DatabaseUtils.class has changed.
 The input changes require a full rebuild for incremental task ':compileJava'.

@@ -114,3 +114,12 @@ import { MyThing } from './mything.js';
 window.MyThing = MyThing;
 ```
 Then import it via `@JsModule` or `@JavaScript`; now you can access `window.MyThing` from anywhere.
+
+## Further Resources
+
+[JSLoader for Vaadin](https://github.com/parttio/vaadin-js-loader) can easily also load JS (and CSS)
+resources directly from Java classpath (e.g. `src/main/resources`):
+
+```
+JSLoader.loadJavaResource(uiInstance, MyAddon.class, "myaddon","somescript.js", "somestyles.css");
+```

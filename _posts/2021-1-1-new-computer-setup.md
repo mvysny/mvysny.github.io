@@ -79,14 +79,10 @@ sudo apt autoremove --purge gedit
 
 ### gnome console
 
-DEPRECATED: looks like gnome-terminal is here to stay, and is more mature + optimized. Keep.
+Keep gnome-terminal. Set the color scheme to:
 
-```bash
-sudo apt install gnome-console
-sudo apt autoremove --purge nautilus-extension-gnome-terminal
-```
-
-Follow [How to Install Gnome Console as Default Terminal in Ubuntu 22.04](https://fostips.com/gnome-console-default-terminal-ubuntu-2204/).
+* Secure machine: Colors from the system theme + slightly transparent background
+* Unsecure/VM: Tango Light
 
 ### gnome keyboard shortcuts
 

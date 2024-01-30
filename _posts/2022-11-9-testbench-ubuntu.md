@@ -30,10 +30,9 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
 
 Of course the whole thing breaks with newest Chromium. The following might help:
 
-1. Try to use Chrome instead of Chromium. On my machine, Chromium 121 would run but then do nothing, and then Selenium will crash 
-   with some bullshit Session-related exception. The hard part is to match [ChromeDriver version](https://chromedriver.chromium.org/downloads/version-selection)
-2. Scratch that, use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome"
-   and "chromedriver" - they should work well together.
+1. Use Chrome instead of Chromium. On my machine, Chromium 121 would run but then do nothing, and then Selenium will crash 
+   with `org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: session not created: DevToolsActivePort file doesn't exist`.
+2. Use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome" and "chromedriver" - they should work well together.
 3. According to [Testbench: installing WebDrivers](https://vaadin.com/docs/latest/testing/end-to-end/installing-webdrivers),
    either add Java system property `webdriver.chrome.driver` pointing to the `chromedriver` binary, or add the chromedriver binary to your `$PATH`.
 4. No idea how to make ChromeDriver run chrome from the downloaded folder, maybe also add it to the `$PATH`.

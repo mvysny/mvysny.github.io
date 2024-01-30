@@ -5,7 +5,10 @@ title: Running Vaadin TestBench or Selenium on Ubuntu
 
 Running TestBench on Ubuntu is a nightmare. The ChromeDriver will block endlessly and won't work,
 while FirefoxDriver will either segfault snap or fail with some other crazy error. On top of that,
-Selenium has problems with Chromium and Firefox installed as snap. Fear not, there's a way.
+Selenium has problems with Chromium and Firefox installed as snap.
+
+The best thing what you can do is: fuck Selenium and fuck TestBench and use [Playwright](https://playwright.dev/).
+It just works, even on Linux.
 
 ## Ubuntu 23.10
 
@@ -24,6 +27,15 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
     }
 }
 ```
+
+Of course the whole thing breaks with newest Chromium. The following might help:
+
+1. Try to use Chrome instead of Chromium; but then you need to match [ChromeDriver version](https://chromedriver.chromium.org/downloads/version-selection)
+2. Scratch that, use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome"
+   and "chromedriver" - they should work well together.
+3. According to [Testbench: installing WebDrivers](https://vaadin.com/docs/latest/testing/end-to-end/installing-webdrivers),
+   either add Java system property `webdriver.chrome.driver` pointing to the `chromedriver` binary, or add the chromedriver binary to your `$PATH`.
+4. No idea how to make ChromeDriver run chrome from the downloaded folder, maybe also add it to the `$PATH`.
 
 ## Ubuntu 22.10
 

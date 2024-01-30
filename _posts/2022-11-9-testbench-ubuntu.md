@@ -30,7 +30,8 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
 
 Of course the whole thing breaks with newest Chromium. The following might help:
 
-1. Try to use Chrome instead of Chromium; but then you need to match [ChromeDriver version](https://chromedriver.chromium.org/downloads/version-selection)
+1. Try to use Chrome instead of Chromium. On my machine, Chromium 121 would run but then do nothing, and then Selenium will crash 
+   with some bullshit Session-related exception. The hard part is to match [ChromeDriver version](https://chromedriver.chromium.org/downloads/version-selection)
 2. Scratch that, use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome"
    and "chromedriver" - they should work well together.
 3. According to [Testbench: installing WebDrivers](https://vaadin.com/docs/latest/testing/end-to-end/installing-webdrivers),

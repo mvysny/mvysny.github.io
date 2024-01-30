@@ -7,8 +7,8 @@ Running TestBench on Ubuntu is a nightmare. The ChromeDriver will block endlessl
 while FirefoxDriver will either segfault snap or fail with some other crazy error. On top of that,
 Selenium has problems with Chromium and Firefox installed as snap.
 
-The best thing what you can do is: fuck Selenium and fuck TestBench and use [Playwright](https://playwright.dev/).
-It just works, even on Linux.
+Use [Playwright](https://playwright.dev/). It just works, even on Linux. But if you can't
+do that, read on.
 
 ## Ubuntu 23.10
 

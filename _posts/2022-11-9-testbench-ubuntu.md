@@ -12,6 +12,18 @@ do that, read on.
 
 ## Ubuntu 23.10
 
+ChromeDriver can't control Chromium - Chromium is launched but it just sits there with no
+activity until finally Selenium times out with `org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: session not created: DevToolsActivePort file doesn't exist`.
+
+1. Uninstall Chromium.
+2. Use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome" and "chromedriver" - they should work well together.
+3. According to [Testbench: installing WebDrivers](https://vaadin.com/docs/latest/testing/end-to-end/installing-webdrivers),
+   either add Java system property `webdriver.chrome.driver` pointing to the `chromedriver` binary, or add the chromedriver binary to your `$PATH`.
+4. Add Chrome binary to the `$PATH` as well.
+5. Launch the tests, no other configuration necessary: now the chromedriver from PATH is launched, and it will launch chrome from the PATH.
+
+## Ubuntu 23.04
+
 This works on Ubuntu 23.10 with chromium 119 installed via snap:
 ```java
 public abstract class AbstractViewTest extends TestBenchTestCase {
@@ -27,15 +39,6 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
     }
 }
 ```
-
-Of course the whole thing breaks with newest Chromium. The following might help:
-
-1. Use Chrome instead of Chromium. On my machine, Chromium 121 would run but then do nothing, and then Selenium will crash 
-   with `org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: session not created: DevToolsActivePort file doesn't exist`.
-2. Use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome" and "chromedriver" - they should work well together.
-3. According to [Testbench: installing WebDrivers](https://vaadin.com/docs/latest/testing/end-to-end/installing-webdrivers),
-   either add Java system property `webdriver.chrome.driver` pointing to the `chromedriver` binary, or add the chromedriver binary to your `$PATH`.
-4. No idea how to make ChromeDriver run chrome from the downloaded folder, maybe also add it to the `$PATH`.
 
 ## Ubuntu 22.10
 

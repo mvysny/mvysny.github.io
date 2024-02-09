@@ -8,6 +8,13 @@ I switch to another one and suddenly the Vaadin session expires immediately,
 or Vaadin complains that the cookies are disabled. What does this bug mean
 and how can we work around that?
 
+The check is done by Vaadin in `VaadinServlet.ensureCookiesEnabled()`.
+It basically checks that `request.getRequestedSessionId() != null`;
+`request.getRequestedSessionId()` then comes directly from the servlet container.
+That means that it's a misconfiguration of the servlet container and NOT Vaadin's fault;
+Vaadin is just trying to be helpful and trying to detect that there's no session
+even though there should be one.
+
 The user session is typically identified by the `JSESSIONID` cookie. If the
 cookie isn't there, then the session will be `null` server-side. This is
 actually managed by the web container such as Jetty or Tomcat, so Vaadin
@@ -78,10 +85,14 @@ improves.
 Alternatively try making sure that session replication is enabled and configured
 properly.
 
-## Proxy
+## (Reverse) Proxy
 
 Are the users accessing the application behind a proxy?
-Sometimes proxies can cause problems with Vaadin applications (TODO how exactly?)
+Sometimes proxies can cause problems with Vaadin applications - e.g. if the reverse
+proxy rewrites paths (e.g. a Vaadin app publicly hosted at https://something.com) is
+internally hosted at http://host/myapp and there's a reverse proxy unwrapping https
+and rewriting those paths, from `/` to `/myapp` and back), then care must be taken
+that the cookies paths are rewritten as well. For nginx take a look at [proxy_cookie_path](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cookie_path).
 
 ## Vaadin Closing Sessions
 

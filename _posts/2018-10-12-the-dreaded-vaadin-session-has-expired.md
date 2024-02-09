@@ -28,6 +28,13 @@ Yes I know, unlikely. Still, just make sure that
 Make sure there is no extension in your browser that's deleting the cookie
 (e.g. the [Clear Session](https://chrome.google.com/webstore/detail/clear-session/maejjihldgmkjlfmgpgoebepjchengka) extension).
 
+* Could be that the cookie has `Secure` set to true, and you're accessing the webpage
+  via `http://`
+* Could be that `SameSite` is set to `Strict` and it's an AJAX request (unlikely)
+* Take a look at the requests in your browser, whether the `JSESSIONID` cookie was
+  received during the first request, and was then sent subsequently by the browser in
+  all follow-up requests.
+
 ## Conflicting Cookies
 
 This happens especially on development machines. You tend to develop and

@@ -24,7 +24,8 @@ on openjdk-11 on Ubuntu 22.04 x86-64 machine with "AMD Ryzen 7 PRO 4750U" CPU:
 
 Not bad - very usable. The UI performance is perfect with 3D acceleration enabled, but only on
 Intel GPUs: AMD GPUs offer choppy performance even with 3d acceleration enabled and are
-unusable for any professional work.
+unusable for any professional work. However, increasing the GPU-allocated memory to 2GB in BIOS
+seem to help a bit.
 
 ## Video
 

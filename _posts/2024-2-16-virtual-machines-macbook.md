@@ -41,7 +41,7 @@ GPU drivers to use:
 
 Network card:
 
-* Maybe switch to `virtio-net-pci`. TODO investigate the best option.
+* Switch to `virtio-net-pci`: it's [recommended by UTM](https://docs.getutm.app/settings-qemu/devices/network/network/).
 
 ### Troubleshooting
 

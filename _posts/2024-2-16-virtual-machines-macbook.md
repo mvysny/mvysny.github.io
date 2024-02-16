@@ -14,16 +14,16 @@ General Settings:
 
 * Application / Prevent system from sleeping -> on
 * Input: Option Is Meta Key, that allows Meta key combinations in Ubuntu.
-  * If you don't check this, then "Cmd" will be the Meta key.
+  * If you don't check this, then "Cmd" will be the Meta key. Alt+Tab will become unintuitive.
   * For some reason this does nothing. TODO investigate.
 * Input: invert scrolling
 
 Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
 
 * Home = Fn+ArrowLeft
-* End = Fn+ArrowRight -> Type this in Parallels Configuration of keyboard in Windows
-* PgUp = Fn+ArrowUp -> Type this in Parallels Configuration of keyboard in Windows
-* PgDown = Fn+ArrowDown -> Type this in Parallels Configuration of keyboard in Windows
+* End = Fn+ArrowRight
+* PgUp = Fn+ArrowUp
+* PgDown = Fn+ArrowDown
 * Backspace = Fn+Delete
 
 GPU drivers to use:
@@ -34,13 +34,16 @@ GPU drivers to use:
 
 Network card:
 
-* Maybe switch to `virtio-net-pci`.
+* Maybe switch to `virtio-net-pci`. TODO investigate the best option.
 
 ### Troubleshooting
 
+A lot of these issues comes from the fact that I installed from ubuntu-server image then installed `ubuntu-desktop` package. Probably
+should have went with ubuntu-desktop instead.
+
 Q: Ubuntu prints `9pnet_virtio: no channels available for device share`
 
-A: No idea what that is. Ubuntu eventually boots up.
+A: No idea what that is. Ubuntu eventually boots up. The messages went away, probably because I uninstalled `lxd-agent-loader` (below).
 
 Q: `lxd-agent.service` fails to start.
 
@@ -50,7 +53,9 @@ No idea what that is, removed it with `sudo apt autoremove --purge lxd-agent-loa
 
 Q: Boot blocked by "Job systemd-networkd-wait-online.service/start running"
 
-A: No idea. TODO if you installed ubuntu-server then it might be netplan waiting for eth to come up?
+A: `cloud-init` configures `netplan` to initialize network interfaces upon boot.
+I've uninstalled `cloud-init` and removed `/etc/netplan/50-cloud-init.yaml`. That didn't help.
+Ultimately [systemctl disable systemd-networkd.service](https://askubuntu.com/a/1501504/22996) helped.
 
 ## Parallels
 

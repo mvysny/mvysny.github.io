@@ -4,7 +4,8 @@ title: Ubuntu with netplan and no NetworkManager
 ---
 
 To disable NetworkManager and control your network configuration from command-line only, even
-on Ubuntu Desktop, use netplan and change the `renderer` from `NetworkManager` to `networkd`.
+on Ubuntu Desktop, use [netplan](https://netplan.io/), edit files in `/etc/netplan/`
+and change the `renderer` from `NetworkManager` to `networkd`.
 
 ## Wifi
 

@@ -22,7 +22,9 @@ on openjdk-11 on Ubuntu 22.04 x86-64 machine with "AMD Ryzen 7 PRO 4750U" CPU:
 * Docker image: 2m 12s
 * Ubuntu 22.04 Guest in virt-manager: 2m 31s
 
-Not bad - very usable. The UI performance is perfect with 3D acceleration enabled.
+Not bad - very usable. The UI performance is perfect with 3D acceleration enabled, but only on
+Intel GPUs: AMD GPUs offer choppy performance even with 3d acceleration enabled and are
+unusable for any professional work.
 
 ## Video
 
@@ -38,6 +40,12 @@ Video drivers:
    But the "Auto-resize VM with window" needs a workaround: change the guest display resolution to something high, like 1920x1200 -
   the image won't be chopped off but rather will correctly match the host window size.
 * Bochs, VGA and ramfb are horribly slow, don't bother.
+
+### Ubuntu 23.10 Host
+
+Intel: `virtio` with 3d acceleration works smooth.
+
+AMD GPUs: `virtio` with 3d acceleration works best, but is far from smooth. Use Intel.
 
 ### Ubuntu 22.10 Host
 

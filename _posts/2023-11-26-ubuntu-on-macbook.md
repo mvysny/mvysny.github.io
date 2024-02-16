@@ -27,3 +27,5 @@ Interestingly, IDEA works perfectly when running in video-accelerated VM on an U
 
 The mouse scrolling wheel works in a really annoying way for some reason, but that's
 just a nitpick and hopefully can be solved.
+
+For more detailed info please see [Virtual Machines on MacBook](../virtual-machines-macbook/).

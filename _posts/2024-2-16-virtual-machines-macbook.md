@@ -3,7 +3,8 @@ layout: post
 title: Virtual Machines on MacBook
 ---
 
-I've tested two VMs: [UTM](https://getutm.app/) and Parallels.
+I've tested two VMs: [UTM](https://getutm.app/) and Parallels. Testing hardware is
+an old MacBook Air 2015 x86-64.
 
 ## UTM
 
@@ -13,10 +14,16 @@ support the developers.
 General Settings:
 
 * Application / Prevent system from sleeping -> on
-* Input: Option Is Meta Key, that allows Meta key combinations in Ubuntu.
-  * If you don't check this, then "Cmd" will be the Meta key. Alt+Tab will become unintuitive.
-  * For some reason this does nothing. TODO investigate.
+* Input: "Option Is Meta Key" -> ignore this. I thought it swaps "Cmd" and "Alt", allowing
+  Cmd to function as Alt and Alt/Option as Super, but I was wrong: [it's some gimmick for Emacs](https://docs.getutm.app/preferences/macos/#option-is-meta-key).
+* [To swap "Cmd" and "Alt"](https://unix.stackexchange.com/a/417708/256417),
+  causing the Mac keyboard having the same modifier key order as a PC keyboard "Fn, Ctrl, Super, Alt":
+  * install `gnome-tweaks`, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior", "Alt is swapped with Win"
 * Input: invert scrolling
+
+VM Settings:
+
+* QEMU / Balloon Device -> on
 
 Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
 
@@ -39,7 +46,7 @@ Network card:
 ### Troubleshooting
 
 A lot of these issues comes from the fact that I installed from ubuntu-server image then installed `ubuntu-desktop` package. Probably
-should have went with ubuntu-desktop instead.
+should have went with ubuntu-desktop iso instead.
 
 Q: Ubuntu prints `9pnet_virtio: no channels available for device share`
 

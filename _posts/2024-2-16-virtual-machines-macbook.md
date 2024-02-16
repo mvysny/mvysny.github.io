@@ -24,8 +24,6 @@ Additional keyboard shortcuts I [found for Parallels but work for UTM too](https
 * PgUp = Fn+ArrowUp -> Type this in Parallels Configuration of keyboard in Windows
 * PgDown = Fn+ArrowDown -> Type this in Parallels Configuration of keyboard in Windows
 * Backspace = Fn+Delete
-* Fn+Shift+ArrowRight+Alt/Opt (Windows) = Cmd+Shift+ArrowRight (MacOS) = Select all texts from that point to the right -> this is silly of Parallels & Windows because in Windows PC, Fn+Shift+ArrowRight = Move to End without needing the Alt key!
-* Fn+Shift+ArrowLeft+Alt/Opt (Windows) = Cmd+Shift+ArrowLeft (MacOS) = Select all texts from that point to the left -> this is silly of Parallels & Windows because in Windows PC, Fn+Shift+ArrowLeft = Move to Beginning without needing the Alt key!
 
 GPU drivers to use:
 

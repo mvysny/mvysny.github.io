@@ -36,6 +36,13 @@ which wraps the message "1|X" (the message 'X' of size 1) to "3|1|X" (the messag
 
 TODO how to solve this.
 
+## History
+
+The `X` message used to be hard-coded in Vaadin client; changing it server-side would cause the
+client to fail. The algorithm was changed since then to detect the padding character from the first message,
+see [this flow commit](https://github.com/vaadin/flow/commit/06acf8caedf66512dc071fa6392ebdcb34cafc31#diff-37194d184a27de45e10d3957a18ae87c3b9c4feaca5da99c02a544c04325b8a3)
+for more details.
+
 ## Workarounds
 
 Workaround is to disable Atmosphere heartbeat mechanism, relying on Vaadin's

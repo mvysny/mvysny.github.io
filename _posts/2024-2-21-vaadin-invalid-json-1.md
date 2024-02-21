@@ -7,7 +7,7 @@ If Vaadin is failing with "Invalid JSON from server: 1|X", read on.
 The problem is that Vaadin expects an UIDL JSON message over the websocket pipe and can't parse `1|X`. Where did `1|X` came from?
 
 Atmosphere sends data in the format of `length|message`, which means that
-this is an Atmosphere message "X" of length 1. It's a
+`1|X` is an Atmosphere message "X" of length 1. It's a
 [HeartbeatInterceptor](https://github.com/Atmosphere/atmosphere/blob/24a1456c137e36dfe7c7a6b180ebe299713fb457/modules/cpr/src/main/java/org/atmosphere/interceptor/HeartbeatInterceptor.java#L81)
 message which should be part of the internal Atmosphere heartbeat mechanism and should
 be filtered out by Atmosphere and thus ignored by Vaadin.

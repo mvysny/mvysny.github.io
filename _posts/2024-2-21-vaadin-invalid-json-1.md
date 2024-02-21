@@ -42,6 +42,12 @@ Workaround is to disable Atmosphere heartbeat mechanism, relying on Vaadin's
 heartbeat mechanism only. Increase `org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds` to some absurdly high value,
 see `ApplicationConfig.HEARTBEAT_INTERVAL_IN_SECONDS` in Atmosphere for more details.
 
+## Configuring Atmosphere
+
+Create a servlet which extends VaadinSevlet and add init parameters such as `org.atmosphere.interceptor.HeartbeatInterceptor.paddingChar`
+to it. Atmosphere is configured in Vaadin's `PushRequestHandler` class.
+
 ## TODO
 
 TODO needs further investigation
+

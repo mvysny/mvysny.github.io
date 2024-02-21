@@ -24,7 +24,7 @@ learn the effective value.
 
 On the client side, you can check for the effective value of the padding character as follows:
 the first message sent over Vaadin Push looks like this: `41|52a917c0-9c19-455a-a0d4-b155f46a3ed3|0|X|`. Pay attention
-to the end of the message: the `0|X` configures the heartbeat padding to the `X` character.
+to the end of the message: the `0|X|` configures the heartbeat padding to the `X` character.
 Vaadin then configures Atmosphere to the 'X' padding character, causing Atmosphere to automatically ignore `1|X` messages.
 It could be that your server sends a different padding character, e.g. `A` but then proceeds to send `1|X` heartbeat
 messages, which then get passed to Vaadin, which then fails since Vaadin expects the UIDL JSON document.

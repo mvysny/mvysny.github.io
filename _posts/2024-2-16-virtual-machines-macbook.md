@@ -27,11 +27,12 @@ VM Settings:
 
 Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
 
-* Home = Fn+ArrowLeft
-* End = Fn+ArrowRight
-* PgUp = Fn+ArrowUp
-* PgDown = Fn+ArrowDown
-* Backspace = Fn+Delete
+* Home = `Fn+ArrowLeft`
+* End = `Fn+ArrowRight`
+* PgUp = `Fn+ArrowUp`
+* PgDown = `Fn+ArrowDown`
+* Delete = `Fn+Backspace`
+* Insert - couldn't find any Fn combination for this. Press `I` to insert in vim.
 
 GPU drivers to use:
 

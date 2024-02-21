@@ -248,6 +248,11 @@ Make it executable, then right-click it on the Desktop and check "Allow Launchin
 * Preferences > Plugins > Disable "Alternative Toolbar", "DAAP Music Sharing", "Last FM", "Portable Players"
 * `cd Music && ln -s "../Resilio Sync/muf-music/music" ./`
 
+Install additional Gstreamer plugins:
+
+* `gstreamer1.0-libav` to add support for m4a and mpc
+* `gstreamer1.0-plugins-bad` to add support for mod
+
 ## GNOME Settings
 
 Go to Settings. Then:

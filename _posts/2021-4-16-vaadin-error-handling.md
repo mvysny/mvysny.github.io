@@ -111,7 +111,8 @@ public class MainView extends VerticalLayout {
     }
 }
 ```
-This is where things get interesting. Vaadin 24.3.5 lets the exception bubble out from VaadinServlet,
+This is where things get interesting. Vaadin 24.3.5 doesn't re-handle the exception with
+the `DefaultErrorHandler` - instead it lets the exception bubble out from VaadinServlet,
 which causes the servlet container to catch the exception, log it to stdout and then respond with HTTP 500 Internal Server Error.
 The browser will **not display anything**. This applies both for development and for production mode.
 

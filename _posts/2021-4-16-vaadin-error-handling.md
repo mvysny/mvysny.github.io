@@ -36,6 +36,7 @@ Example of the page in production mode:
 
 ## ErrorHandler
 
+[Official Vaadin documentation](https://vaadin.com/docs/latest/advanced/custom-error-handler).
 The ErrorHandler takes effect after the navigation is complete and the view is fully displayed.
 It handles exceptions coming from:
 
@@ -49,7 +50,7 @@ the steps to take (e.g. where to report the error). However, when the view faile
 render, it might not even be possible to show a Dialog on a blank page since the JavaScript stuff
 might be missing etc.
 
-By default the ErrorHandler only logs the exception to slf4j: it *doesn't* display anything
+By default the ErrorHandler only logs the exception to slf4j: it **doesn't display anything**
 in the UI, so the user has no feedback that there was an exception. The best way is
 to display a dialog which says "We're sorry but an application error occurred: #123871".
 You would generate some random number, log it along with the exception and show it in the error message.

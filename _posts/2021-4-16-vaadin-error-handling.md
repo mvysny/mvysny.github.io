@@ -94,6 +94,15 @@ public class MainView extends VerticalLayout {
     }
 }
 ```
+
+**Important:** the `UI.getCurrent()` might be `null` in ErrorHandler, and in such case
+it is not possible to display a Dialog or a Notification. In such case only log the exception,
+don't try to show a Dialog or a Notification.
+[#10533](https://github.com/vaadin/flow/issues/10533) made sure
+that `UI.getCurrent()` is non-null in more cases; please make sure you're using newest Vaadin.
+In certain very specific cases `UI.getCurrent()` may still be null though; employ the null check in ErrorHandler.
+Also if you encounter such case, please report it to [Vaadin bug tracker](https://github.com/vaadin/flow/issues).
+
 ### When ErrorHandler itself throws
 
 What happens when the `ErrorHandler` itself throws? E.g.
@@ -194,4 +203,10 @@ Customizable maybe by placing an `error.html` into your webapp root folder.
 Both. Usually the `ErrorHandler` shows a Dialog or a Notification while the error
 page shows a page, but the contents of the dialog and the page can be made similar.
 
-In all cases, it's a good idea to log the exception.
+In all cases:
+
+* It's always a good idea to log the exception; by default Vaadin always logs the exception.
+* It's always a good idea to notify the user about the error; Vaadin's DefaultErrorHandler breaks this
+  so you should implement your own ErrorHandler, but make sure that your ErrorHandler doesn't throw
+  an exception while processing the original exception.
+* 

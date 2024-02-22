@@ -45,15 +45,22 @@ It handles exceptions coming from:
 
 > Note: It's not possible to use one unified solution, for example only have an `ErrorHandler` handling
 the routing exceptions. The error handler is for example supposed to show a notification or a dialog detailing
-the steps to take (e.g. where to report the error). However when the view failed to initialize and
+the steps to take (e.g. where to report the error). However, when the view failed to initialize and
 render, it might not even be possible to show a Dialog on a blank page since the JavaScript stuff
 might be missing etc.
 
-An example of an `ErrorHandler` implementation can be found at [Vaadin Forums: The 'Vaadin Error Handling' Question](https://vaadin.com/forum/thread/18453061/18462964).
+By default the ErrorHandler only logs the exception to slf4j: it *doesn't* display anything
+in the UI, so the user has no feedback that there was an exception. The best way is
+to display a dialog which says "We're sorry but an application error occurred: #123871".
+You would generate some random number, log it along with the exception and show it in the error message.
+That way, you can search for the stacktrace easily, without revealing the exception message to the user,
+since the message may contain sensitive data such as username or even password.
+
+Another example of an `ErrorHandler` implementation can be found at [Vaadin Forums: The 'Vaadin Error Handling' Question](https://vaadin.com/forum/thread/18453061/18462964).
 
 You don't have to extend Vaadin Servlet to customize `ErrorHandler` - you can
 add a session initializer which sets the `ErrorHandler` as described in the
-[Vaadin 14 SessionInitListener](../vaadin-sessioninitlistener/).
+[Vaadin SessionInitListener](../vaadin-sessioninitlistener/).
 Then:
 
 ```java
@@ -77,6 +84,6 @@ public class ApplicationServiceInitListener
 ## Which one to override for customized error handling?
 
 Both. Usually the `ErrorHandler` shows a Dialog or a Notification while the error
-page shows a page, but the contents of the dialog and the page may be made similar.
+page shows a page, but the contents of the dialog and the page can be made similar.
 
 In all cases, it's a good idea to log the exception.

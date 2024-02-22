@@ -140,11 +140,11 @@ for more details. The "Internal Error" window is created in `VaadinService.handl
 probably too late to do any UIDL/component state repairs, and so the only way is to show the error window and then perform
 full client state resynchronization.
 
-However, when a custom `ErrorHandler` is set, then the error handler receives the exception and the "Internal Error" window **is not shown**.
+With newer Vaadins (for example 23.3.33 or 24.3.5), when a custom `ErrorHandler` is set, then the error handler receives the exception and the "Internal Error" window **is not shown**.
 The reason is that the exception is handled way sooner, in `StateTree.runExecutionsBeforeClientResponse()`, and at
 that point it's possible to recover from the exception without damaging the component state synchronization.
 
-When the `ErrorHandler` itself throws an exception, that exception reaches `VaadinService.handleExceptionDuringRequest()` and the "Internal Error" is shown.
+However, when the `ErrorHandler` itself **throws an exception**, that exception reaches `VaadinService.handleExceptionDuringRequest()` and the "Internal Error" is shown.
 
 To reconfigure the error title and/or message, see Vaadin's `SystemMessages` class.
 

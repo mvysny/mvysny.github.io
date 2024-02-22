@@ -82,6 +82,42 @@ public class ApplicationServiceInitListener
 }
 ```
 
+For quick-and-dirty experiments you can set the error handler from your route:
+```java
+@Route("")
+public class MainView extends VerticalLayout {
+
+    public MainView() {
+        VaadinSession.getCurrent().setErrorHandler((ErrorHandler) event -> {
+            throw new RuntimeException("Simulated");
+        });
+    }
+}
+```
+### When ErrorHandler itself throws
+
+What happens when the `ErrorHandler` itself throws? E.g.
+```java
+@Route("")
+public class MainView extends VerticalLayout {
+
+    public MainView() {
+        VaadinSession.getCurrent().setErrorHandler((ErrorHandler) event -> {
+            throw new RuntimeException("Simulated");
+        });
+        add(new Button("Click me", e -> {
+            throw new RuntimeException("Failed!");
+        }));
+    }
+}
+```
+This is where things get interesting. Vaadin 24.3.5 lets the exception bubble out from VaadinServlet,
+which causes the servlet container to catch the exception, log it to stdout and then respond with HTTP 500 Internal Server Error.
+The browser will **not display anything**. This applies both for development and for production mode.
+
+The best way is to wrap ErrorHandler in `try{}catch` block; when it throws, log the exception
+and then try to display the "Internal error #31313" dialog; when that fails, try to show a notification at least.
+
 ## JavaScript errors
 
 Third category of errors are JavaScript errors, for example when an incorrect JavaScript code is executed:

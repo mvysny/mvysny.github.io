@@ -128,6 +128,26 @@ The browser will **not display anything**. This applies both for development and
 The best way is to wrap ErrorHandler in `try{}catch` block; when it throws, log the exception
 and then try to display the "Internal error #31313" dialog; when that fails, try to show a notification at least.
 
+## Internal Error
+
+"Internal Error: Please notify the administrator. Take note of any unsaved data, and click here or press ESC to continue".
+
+![error-internal.png]({{ site.baseurl }}/images/2021-4-16/error-internal.png)
+
+This kind of error happens when the exception is thrown while the UIDL is being written, for example
+from a `Renderer` rendering contents of a Grid Column. Please see [#14091](https://github.com/vaadin/flow/issues/14091)
+for more details. The "Internal Error" window is created in `VaadinService.handleExceptionDuringRequest()` when it's
+probably too late to do any UIDL/component state repairs, and so the only way is to show the error window and then perform
+full client state resynchronization.
+
+However, when a custom `ErrorHandler` is set, then the error handler receives the exception and the "Internal Error" window **is not shown**.
+The reason is that the exception is handled way sooner, in `StateTree.runExecutionsBeforeClientResponse()`, and at
+that point it's possible to recover from the exception without damaging the component state synchronization.
+
+When the `ErrorHandler` itself throws an exception, that exception reaches `VaadinService.handleExceptionDuringRequest()` and the "Internal Error" is shown.
+
+To reconfigure the error title and/or message, see Vaadin's `SystemMessages` class.
+
 ## JavaScript errors
 
 Third category of errors are JavaScript errors, for example when an incorrect JavaScript code is executed:

@@ -128,6 +128,9 @@ gets disabled: [#18782](https://github.com/vaadin/flow/issues/18782).
 
 ![error-js-prod.png]({{ site.baseurl }}/images/2021-4-16/error-js-prod.png)
 
+See [Vaadin - Troubleshooting the Browser](../Vaadin-troubleshooting-browser/) for more tips
+on troubleshooting JavaScript, e.g. to deobfuscate the JavaScript stacktrace.
+
 ## Which one to override for customized error handling?
 
 Both. Usually the `ErrorHandler` shows a Dialog or a Notification while the error

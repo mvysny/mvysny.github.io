@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin 14 - Troubleshooting the Browser
+title: Vaadin - Troubleshooting the Browser
 ---
 
 Sometimes Vaadin 14 fails mysteriously, which is very unfortunate: it now uses

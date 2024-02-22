@@ -131,6 +131,27 @@ gets disabled: [#18782](https://github.com/vaadin/flow/issues/18782).
 See [Vaadin - Troubleshooting the Browser](../Vaadin-troubleshooting-browser/) for more tips
 on troubleshooting JavaScript, e.g. to deobfuscate the JavaScript stacktrace.
 
+## Bootstrap Error
+
+When Vaadin Servlet fails to start, for example because Vite failed to compile your JavaScript files,
+the following screen is shown (this screen is servlet container dependent; on Tomcat it looks like this but on Jetty
+it might look differently):
+
+![error-bootstrap.png]({{ site.baseurl }}/images/2021-4-16/error-bootstrap.png)
+
+To reproduce, just place this file into your project into `frontend/src/my-test-element.js`:
+```javascript
+class MyTestElement extends LitElement {
+  render() {
+    return html`
+      <h2>Hello ${throw}</h2>
+    `;
+  }
+}
+```
+
+Customizable maybe by placing an `error.html` into your webapp root folder.
+
 ## Which one to override for customized error handling?
 
 Both. Usually the `ErrorHandler` shows a Dialog or a Notification while the error

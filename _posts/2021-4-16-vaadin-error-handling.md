@@ -123,7 +123,8 @@ public class MainView extends VerticalLayout {
 This is where things get interesting. Vaadin 24.3.5 doesn't re-handle the exception with
 the `DefaultErrorHandler` - instead it lets the exception bubble out from VaadinServlet,
 which causes the servlet container to catch the exception, log it to stdout and then respond with HTTP 500 Internal Server Error.
-The browser will **not display anything**. This applies both for development and for production mode.
+The browser will **not display anything** (unless the request is an UIDL request, in such case the "Internal Error" div is shown, see below).
+This applies both for development and for production mode.
 
 The best way is to wrap ErrorHandler in `try{}catch` block; when it throws, log the exception
 and then try to display the "Internal error #31313" dialog; when that fails, try to show a notification at least.

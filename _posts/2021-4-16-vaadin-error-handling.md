@@ -10,20 +10,29 @@ There are two main entrypoints of error handling in Vaadin:
 
 ## Router Exception Handling
 
-Described in the [Router Exception Handling Vaadin Tutorial](https://vaadin.com/docs/v14/flow/routing/tutorial-routing-exception-handling).
+Described in the [Router Exception Handling Vaadin Tutorial](https://vaadin.com/docs/latest/routing/exceptions).
 Triggered when the server failed to produce a view because of an exception.
-This is akin to performing HTTP GET and receiving an HTTP 500 Internal Server Error page.
+In the browser there is HTTP GET request which receives an HTTP 500 Internal Server Error page
+(actually oddly enough the HTTP GET returns 200 OK! Filed as [#18781](https://github.com/vaadin/flow/issues/18781)).
 
 This handling is triggered when the Route class fails to initialize:
 for example an exception is thrown in the View class constructor, or Spring/CDI/JavaEE failed to inject beans into the view.
 
-By default, the `InternalServerError` Java class is rendered, which shows the exception stacktrace.
+By default, the `InternalServerError` Java class is rendered, which shows the exception stacktrace and returns HTTP 500 (actually 200 OK, see [#18781](https://github.com/vaadin/flow/issues/18781)).
 The stacktrace is however shown only in development mode - it's not shown in production mode.
-See the `InternalServerError` java class sources for more details.
+See the `InternalServerError` java class sources for more details. The exception stacktrace is always logged in to slf4j though.
 
 To register a custom page, simply create a Java class, extending Vaadin Component,
 implementing `HasErrorParameter<Exception>` - Vaadin will then start using this class instead
 of the default `InternalServerError` one.
+
+Example of the page in dev mode:
+
+![error-route-dev.png]({{ site.baseurl }}/images/2021-4-16/error-route-dev.png)
+
+Example of the page in production mode:
+
+![error-route-dev.png]({{ site.baseurl }}/images/2021-4-16/error-route-prod.png)
 
 ## ErrorHandler
 

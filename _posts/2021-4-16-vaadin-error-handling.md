@@ -89,7 +89,7 @@ public class MainView extends VerticalLayout {
 
     public MainView() {
         VaadinSession.getCurrent().setErrorHandler((ErrorHandler) event -> {
-            throw new RuntimeException("Simulated");
+            // TODO implement
         });
     }
 }

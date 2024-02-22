@@ -52,9 +52,9 @@ see `ApplicationConfig.HEARTBEAT_INTERVAL_IN_SECONDS` in Atmosphere for more det
 ## Configuring Atmosphere
 
 Create a servlet which extends VaadinSevlet and add init parameters such as `org.atmosphere.interceptor.HeartbeatInterceptor.paddingChar`
-to it. Atmosphere is configured in Vaadin's `PushRequestHandler` class.
+to it. See `ApplicationConfig` for more configuration options. Atmosphere is configured in Vaadin's `PushRequestHandler` class - you can place
+a breakpoint there and check whether your changes took any effect.
 
 ## TODO
 
 TODO needs further investigation
-

@@ -209,4 +209,4 @@ In all cases:
 * It's always a good idea to notify the user about the error; Vaadin's DefaultErrorHandler breaks this
   so you should implement your own ErrorHandler, but make sure that your ErrorHandler doesn't throw
   an exception while processing the original exception.
-* 
+  * Remember that `UI.getCurrent()` might be null in ErrorHandler.

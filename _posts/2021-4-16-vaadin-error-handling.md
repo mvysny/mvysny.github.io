@@ -198,7 +198,7 @@ class MyTestElement extends LitElement {
 
 Customizable maybe by placing an `error.html` into your webapp root folder.
 
-## Which one to override for customized error handling?
+## Which one to override for customized error handling? Best Practices
 
 Both. Usually the `ErrorHandler` shows a Dialog or a Notification while the error
 page shows a page, but the contents of the dialog and the page can be made similar.
@@ -210,3 +210,5 @@ In all cases:
   so you should implement your own ErrorHandler, but make sure that your ErrorHandler doesn't throw
   an exception while processing the original exception.
   * Remember that `UI.getCurrent()` might be null in ErrorHandler.
+* JS `executeJs()`: Until [#17485](https://github.com/vaadin/flow/issues/17485) is fixed, make sure to
+  call `then()`; simply throw an exception in the error closure which will cause Vaadin to call `ErrorHandler`.

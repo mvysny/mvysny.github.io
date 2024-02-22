@@ -32,7 +32,7 @@ Example of the page in dev mode:
 
 Example of the page in production mode:
 
-![error-route-dev.png]({{ site.baseurl }}/images/2021-4-16/error-route-prod.png)
+![error-route-prod.png]({{ site.baseurl }}/images/2021-4-16/error-route-prod.png)
 
 ## ErrorHandler
 
@@ -81,6 +81,52 @@ public class ApplicationServiceInitListener
     }
 }
 ```
+
+## JavaScript errors
+
+Third category of errors are JavaScript errors, for example when an incorrect JavaScript code is executed:
+```java
+@Route("")
+public class MainView extends VerticalLayout {
+    public MainView() {
+        add(new Button("Click me", e -> UI.getCurrent().getPage().executeJs("aksdalkdalk")));
+    }
+}
+```
+
+Such exceptions are not logged in server-side slf4j unfortunately; see+vote for [#17485](https://github.com/vaadin/flow/issues/17485).
+Workaround is to call `then()` as follows:
+```java
+@Route("")
+public class MainView extends VerticalLayout {
+    public MainView() {
+        add(new Button("Click me", e -> UI.getCurrent().getPage().executeJs("aksdalkdalk").then(
+                json -> {},
+                error -> { throw new RuntimeException("JS failed: " + error); }
+        )));
+    }
+}
+```
+Now the exception goes through `ErrorHandler` which by default logs it to slf4j, including the class name and line number,
+so you can quickly fix the JavaScript script:
+```
+2024-02-22 10:40:21.910 [qtp1484171695-28] ERROR com.vaadin.flow.server.DefaultErrorHandler - 
+java.lang.RuntimeException: JS failed: ReferenceError: aksdalkdalk is not defined
+	at com.vaadin.starter.skeleton.MainView.lambda$new$2f364bb9$2(MainView.java:20)
+	at com.vaadin.flow.component.internal.PendingJavaScriptInvocation.completeExceptionally(PendingJavaScriptInvocation.java:112)
+```
+
+In development mode, the exception is logged in the JavaScript console in the browser and a red Vaadin logo starts blinking, to notify
+you that there's a problem in JavaScript. Unfortunately when you call `then()` in Java, this functionality
+gets disabled: [#18782](https://github.com/vaadin/flow/issues/18782).
+
+![error-js-dev.png]({{ site.baseurl }}/images/2021-4-16/error-js-dev.png)
+
+In production mode, the exception is logged in the JavaScript console in the browser
+but the red Vaadin logo isn't shown. Unfortunately when you call `then()` in Java, this functionality
+gets disabled: [#18782](https://github.com/vaadin/flow/issues/18782).
+
+![error-js-prod.png]({{ site.baseurl }}/images/2021-4-16/error-js-prod.png)
 
 ## Which one to override for customized error handling?
 

@@ -10,8 +10,8 @@ Pretty happy so far with my Linux-in-Linux setup:
 
 * clipboard works out-of-the-box on the Spice/Virtio video driver since `spice-vdagent`
   (client required for the Spice protocol to work flawlessly) comes preinstalled with Ubuntu 22.04
-* The UI performance is brilliant after I enabled the 3d acceleration. It's rock-solid on both AMD and Intel
-  GPUs so far.
+* The UI performance is brilliant after I enabled the 3d acceleration. It's rock-solid Intel
+  GPUs so far, not so great on AMD cards.
 
 ## Performance
 
@@ -118,3 +118,20 @@ $ qemu-img commit -f qcow2 -d image-1.qcow2.
 
 This will merge all data from `image-1` to `image` and will delete `image-1`. You'll
 need to modify your VM to refer to the `image.qcow2`.
+
+## Bridging
+
+If you want to expose the Virtual Machine fully on your LAN, so that it's accessible from other
+LAN machines and mDNS lookup works, read on. Based on excellent [KVM Bridged](https://www.dedoimedo.com/computers/kvm-bridged.html).
+
+First, create a bridge interface, add your network card to it and make DHCP assign an address to it:
+
+```bash
+$ sudo brctl addbr br0
+$ sudo brctl addif br0 eth0   # use ifconfig to find your eth address; doesn't work with wifi interfaces
+$ sudo dhclient br0
+```
+`br0` must have its own IP address otherwise it won't work. dhclient should assign one to it.
+
+Now, open virt manager and edit the NIC properties of your VM. Set the "Network Source:" to "Bridge devices..."
+and enter `br0` into "Device name:". Start the VM - it is now exposed on your LAN network.

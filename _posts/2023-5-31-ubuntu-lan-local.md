@@ -12,14 +12,15 @@ and [LLMNR](https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution);
 of listening to broadcasts. Basically, when a computer needs to resolve `foo.local` to an IP address
 it will perform a broadcast query on the LAN; the `foo` machine will then respond to the broadcast
 with an answer which contains its IP address. mDNS is primarily used by Linux, LLMNR is used primarily by Windows.
+I'll focus on mDNS.
 
 In order for this to work, you need two things:
 
-1. mDNS or LLMNR needs to be enabled on the machine that's trying to resolve `foo.local` to the IP address.
-2. The `foo` machine needs to listen to the broadcasts.
+1. mDNS needs to be enabled on the client machine that's trying to resolve `foo.local` to the IP address.
+2. The `foo` machine needs to listen to the mDNS query broadcasts.
 
-For 1. you can run `resolvectl status` from command line, to check whether there is `+LLMNR` or `+mDNS` on
-the appropriate links. See [Linux DNS](../linux-dns/) on how to configure Linux client-side DNS resolution.
+For 1. you can run `ping` from command line, to check whether the machine is discoverable. 
+For troubleshooting see [Linux DNS](../linux-dns/) on how to configure Linux client-side DNS resolution.
 
 For 2. simply make sure that `avahi-daemon` is installed: `sudo apt install avahi-daemon`. After the daemon
 is installed, it immediately starts responding to broadcast requests.

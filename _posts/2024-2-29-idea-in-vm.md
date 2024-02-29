@@ -40,14 +40,14 @@ But here's the catch: on AMD+Radeon the performance is sometimes excellent but s
 the CPU skyrockets after every character typed and the performance descends to mediocre.
 Intel drivers offer almost-perfect experience, but I need to retest this.
 
-## Mac
+## MacBook Intel
 
 UTM on old MacBook 2015 x86-64: UTM only offers GPU acceleration for Ubuntu 24.04 guests (because of some mesa patches). Unfortunately,
 IDEA starts but only shows a black rectangle, making it completely unusable. Might be Xwayland issue, or
 some kind of incompatibility between UTM and Java rendering; IDEA Wayland or Mesa upgrades might improve things.
 IDEA works when the VM is started without GPU acceleration, but the speed is bad.
 
-### Apple Silicon
+## MacBook Apple Silicon
 
 Ubuntu offers ARM builds which should work well on Apple Silicon-based hypervisor. Unfortunately
 there's [no IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),

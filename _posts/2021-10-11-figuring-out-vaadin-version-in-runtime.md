@@ -10,7 +10,7 @@ in your project.
 ## From Java
 
 For Vaadin 14: You can look up the `NpmPackage` annotation from the `VaadinCoreShrinkWrap` class to learn the
-Vaadin version. This works with Vaadin 14 and higher.
+Vaadin version. This however only works with Vaadin 14: newer Vaadin no longer contains the `VaadinCoreShrinkWrap` class.
 
 For Vaadin 23 and higher: you can load the `META-INF/maven/com.vaadin/vaadin-core/pom.properties` resource file
 as `Properties`; the version is stored in the `"version"` key.

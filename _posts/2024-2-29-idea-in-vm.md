@@ -22,7 +22,8 @@ Rating system:
 
 ## Windows
 
-[VirtualBox 7.0.14](https://www.virtualbox.org/wiki/Downloads) offered horrible performance.
+[VirtualBox 7.0.14](https://www.virtualbox.org/wiki/Downloads) offered unexpectedly bad performance.
+Ubuntu took long to install, suggesting some kind of performance issues on the disk side.
 Even with 3D acceleration enabled and guest additions installed, the performance was mediocre
 and IDEA suffered from [rendering issues](https://youtrack.jetbrains.com/issue/IDEA-345192/VMWare-with-3D-acceleration-Rendering-Button-Issue).
 

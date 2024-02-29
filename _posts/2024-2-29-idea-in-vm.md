@@ -45,7 +45,7 @@ VirtualBox: untested.
 But here's the catch: on AMD+Radeon the performance is sometimes "excellent", often "good" but sometimes the IDEA starts performing sluggish,
 the CPU skyrockets after every character typed and the performance descends to "mediocre".
 
-Intel drivers offer excellent experience - the performance was a bit slower than native,
+Intel drivers offer "excellent" experience - the performance was a bit slower than native,
 but nothing impeding professional work.
 
 ## MacBook Intel

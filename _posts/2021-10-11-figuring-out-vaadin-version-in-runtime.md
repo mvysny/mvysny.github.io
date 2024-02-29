@@ -9,10 +9,13 @@ in your project.
 
 ## From Java
 
-You can look up the `NpmPackage` annotation from the `VaadinCoreShrinkWrap` class to learn the
+For Vaadin 14: You can look up the `NpmPackage` annotation from the `VaadinCoreShrinkWrap` class to learn the
 Vaadin version. This works with Vaadin 14 and higher.
 
-> Tip: that's what `VaadinVersion.get` from [karibu-tools](https://github.com/mvysny/karibu-tools/) does.
+For Vaadin 23 and higher: you can load the `META-INF/maven/com.vaadin/vaadin-core/pom.properties` resource file
+as `Properties`; the version is stored in the `"version"` key.
+
+> Tip: Or simply use `VaadinVersion.get` from [karibu-tools](https://github.com/mvysny/karibu-tools/) does.
 
 ## From JavaScript
 
@@ -20,11 +23,13 @@ This one is trickier.
 
 ### In both dev mode and in production
 
-For Vaadin 20+ the Vaadin component versions is in sync with the version of Vaadin itself.
+For Vaadin 20+ the Vaadin component versions is usually in sync with the version of Vaadin itself.
 Therefore, running `customElements.get('vaadin-button').version` should return
-something like `"21.0.2"` which exactly matches the Vaadin version.
+something like `"21.0.2"` which should exactly match the Vaadin version.
 
-Unfortunately, on Vaadin 14 this doesn't work since `customElements.get('vaadin-button').version`
+> Note: there are exceptions: e.g. for Vaadin 23.3.33 the Vaadin Button returns 23.3.30
+
+Vaadin 14: Unfortunately, this doesn't work since `customElements.get('vaadin-button').version`
 will print something like `"2.4.0"` and you have to figure out the Vaadin version from that somehow.
 
 One way would be to realize that certain Vaadin version pulls in certain Vaadin Button version,

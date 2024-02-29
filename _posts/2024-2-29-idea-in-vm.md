@@ -49,6 +49,11 @@ IDEA works when the VM is started without GPU acceleration, but the speed is bad
 
 ### Apple Silicon
 
+Ubuntu offers ARM builds which should work well on Apple Silicon-based hypervisor. Unfortunately
+there's [no IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),
+so you'll either have to install it via flatpak or download+unzip (since [JetBrains ToolBox](https://www.jetbrains.com/toolbox-app/)
+[doesn't support Linux+ARM](https://youtrack.jetbrains.com/issue/TBX-8561/Native-build-for-Linux-ARM64)).
+
 UTM: untested yet (I lack the hardware :)
 
 Parallels: untested, but I have high hopes for this kind of setup since I've seen people *gaming*

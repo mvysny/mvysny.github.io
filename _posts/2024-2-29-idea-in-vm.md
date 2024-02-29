@@ -42,10 +42,14 @@ Intel drivers offer almost-perfect experience, but I need to retest this.
 
 ## Mac
 
-UTM only offers GPU acceleration for Ubuntu 24.04 guests (because of some mesa patches). Unfortunately,
+UTM on old MacBook 2015 x86-64: UTM only offers GPU acceleration for Ubuntu 24.04 guests (because of some mesa patches). Unfortunately,
 IDEA starts but only shows a black rectangle, making it completely unusable. Might be Xwayland issue, or
 some kind of incompatibility between UTM and Java rendering; IDEA Wayland or Mesa upgrades might improve things.
 IDEA works when the VM is started without GPU acceleration, but the speed is bad.
+
+### Apple Silicon
+
+UTM: untested yet (I lack the hardware :)
 
 Parallels: untested, but I have high hopes for this kind of setup since I've seen people *gaming*
 this way. I'll test and update this blogpost.

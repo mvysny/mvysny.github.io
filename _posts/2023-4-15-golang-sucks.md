@@ -27,4 +27,7 @@ Over Kotlin-native? That's a toughie. Kotlin is IMHO far better language than go
 but [kotlin-native on arm64 is severely crippled](../kotlin-native-lessons-learned/). So, if I'd target x86 then Kotlin definitely;
 if not, well, I've heard that okio works on arm64 these days...
 
+I'd definitely go Swift over Go: even though Swift only has reference counting as opposed to full GC,
+I like Swift's language much more than Go's.
+
 Also, am I the only one who thinks that the Go mascot looks retarded?

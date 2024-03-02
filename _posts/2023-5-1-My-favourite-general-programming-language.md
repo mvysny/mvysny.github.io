@@ -26,6 +26,7 @@ I found the following programming languages that survived the sieve above:
 * [Kotlin Multiplatform Native](https://kotlinlang.org/docs/native-overview.html)
 * [Dart](https://dart.dev/); my thoughts [on Dart](../on-dart/)
 * C#
+* [Swift](https://www.swift.org/)
 
 My choice is therefore Kotlin and JVM. It implies that I have to have an IDE with the Kotlin plugin,
 in order to develop Kotlin-based apps in a sane way, and to take advantage of the auto-completion.

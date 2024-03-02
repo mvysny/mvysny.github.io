@@ -89,16 +89,55 @@ java.beans.PropertyDescriptor[name=foo; values={expert=false; visualUpdate=false
 The `writeMethod` is gone, making the property read-only; furthermore the property type changed
 to `Optional`, thus losing the `String` type information.
 
+## Optional in other languages
+
+We'll compare Java to Kotlin and Swift by rewriting this block of code:
+```java
+String process(String s) {
+    return Optional.ofNullable(s).orElseGet(this::getDefault);
+}
+public static String getCity(Person p) {
+    return Optional.ofNullable(p).map(Person::getAddress).map(Address::getCity).orElse(null);
+}
+```
+
+### Kotlin
+
+Kotlin has nullable types with language-built-in operators which offer static compile-time checks for nulls:
+```kotlin
+fun getDefault(s: String?): String = s ?: ""
+fun process(s: String?): String = s ?: getDefault(s)
+fun getCity(p: Person?): String? = p?.address?.city
+```
+Much easier to read, and no worry that `Optional` itself may be null.
+
+### Swift
+
+Swift has a built-in `Optional` type. The wrapping and unwrapping is done behind the scenes,
+it offers almost-nullable-types and many language features; this is almost on-par with Kotlin nullable types:
+```swift
+func getDefault(_ s: String?) -> String { s ?? "" }
+func process(_ s: String?) -> String { s ?? getDefault(s) }
+func getCity(_ p: Person?) -> String { p?.address?.city ?? "" }
+```
+Much easier to read than Java. Unfortunately you can have `Optional of Optional of String`
+via `let s: String?? = nil`, but probably only a crazy person would do that.
+
 ## Conclusion
 
 I personally think Kotlin nullability feature is vastly better and produces more readable code
-than any usage of Optional - another case where the lack of language features causes broken-by-design
-API to appear, causing the library landscape to suffer. Given the reasons
+than any usage of Optional. Given the reasons
 above I prefer to use the `@Nullable` annotation instead. `@Nullable` annotation causes
 your IDE to warn you if you don't check for null, fixing the "*overwhelmingly* likely to cause errors"
 part of Brian Goetz quote.
 
 Optional may make sense in some highly specific scenario, e.g. when using [RxJava](https://github.com/ReactiveX/RxJava),
 but in all other scenarios it produces ugly hard-to-read code and should be avoided.
+
+`Optional` is another yet another proof that the lack of a language feature causes broken-by-design
+API to appear, causing programmers to suffer. Java designers overwhelmingly
+rejects language features and instead opts for chatty bloated classes. The designers may shoot
+for language purity, but what they get is a chatty language which is harder to read and maintain
+than Kotlin or Swift.
 
 Just because you can do something doesn't mean that you should do it.

@@ -68,8 +68,12 @@ What happens when `@PreserveOnRefresh` enters the scene? We know that UI is thro
 * If you navigate to some other view from MainView, then the predictable chain is printed: `beforeLeave()`, `onDetach()`.
 * If you click the "Main" RouterLink, then the same thing happens as above: `beforeLeave()`, `beforeEnter()`, `afterNavigation()`.
 
-Shit hits the fan when you reload the page. This gets called on page reload (`F5`): `onDetach()`, `beforeEnter()`, `onAttach()` and `afterNavigation()`.
-Note that `beforeLeave()` was **not called** - I'm not sure whether this is intended or a bug, but you can't rely on it anymore.
+This gets called on page reload (`F5`): `onDetach()`, `beforeEnter()`, `onAttach()` and `afterNavigation()`.
+This is pretty much expected: the view instance should be preserved, that's why view's constructor is
+not called. The UI is also recreated as [documented at Vaadin's doc](https://vaadin.com/docs/latest/advanced/preserving-state-on-refresh),
+so the view needs to be detached from the old UI and attached to the new UI,
+that's why the `onDetach()` and `onAttach()` are called. However, note that `beforeLeave()` was **not called**.
+This is where shit hits the fan. I'm not sure whether this is intended or a bug, but you can't rely on it anymore.
 
 What's even crazier, now when you start mashing that "Main" link NOTHING happens: none of the navigation lifecycle methods get called.
 This is definitely unexpected and definitely requires an explanation.

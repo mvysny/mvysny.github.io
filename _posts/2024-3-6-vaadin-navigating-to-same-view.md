@@ -68,8 +68,17 @@ What happens when `@PreserveOnRefresh` enters the scene? We know that UI is thro
 * If you navigate to some other view from MainView, then the predictable chain is printed: `beforeLeave()`, `onDetach()`.
 * If you click the "Main" RouterLink, then the same thing happens as above: `beforeLeave()`, `beforeEnter()`, `afterNavigation()`.
 
-Shit hits the fan when you reload the page. This gets called on F5: `onDetach()`, `beforeEnter()`, `onAttach()` and `afterNavigation()`.
+Shit hits the fan when you reload the page. This gets called on page reload (`F5`): `onDetach()`, `beforeEnter()`, `onAttach()` and `afterNavigation()`.
 Note that `beforeLeave()` was **not called** - I'm not sure whether this is intended or a bug, but you can't rely on it anymore.
 
 What's even crazier, now when you start mashing that "Main" link NOTHING happens: none of the navigation lifecycle methods get called.
 This is definitely unexpected and definitely requires an explanation.
+
+## Conclusion
+
+When you want your view to refresh on self-navigation, initialize (and de-initialize) in
+`afterNavigation()` and hope that your view doesn't use PreserveOnRefresh AND the user reloaded the page:
+
+* `@PreserveOnRefresh` disables navigation lifecycle after refresh as seen above;
+* `@PreserveOnRefresh` causes Vaadin to fail to call `beforeLeave()` on page reload, so you can't rely on that being called.
+

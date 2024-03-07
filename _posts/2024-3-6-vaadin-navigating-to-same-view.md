@@ -85,5 +85,4 @@ When you want your view to refresh on self-navigation, initialize (and de-initia
 
 * `@PreserveOnRefresh` disables navigation lifecycle after refresh as seen above;
 * `@PreserveOnRefresh` causes Vaadin to fail to call `beforeLeave()` on page reload,
-   so you can't rely to de-initialize your view there.
-
+   so you can't rely on de-initializing your view there.

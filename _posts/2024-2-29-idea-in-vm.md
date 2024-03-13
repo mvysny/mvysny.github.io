@@ -67,7 +67,10 @@ there's [no IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDE
 so you'll either have to install it via flatpak or download+unzip (since [JetBrains ToolBox](https://www.jetbrains.com/toolbox-app/)
  does [not support Linux+ARM](https://youtrack.jetbrains.com/issue/TBX-8561/Native-build-for-Linux-ARM64)).
 
-UTM: untested yet (I lack the hardware :)
+UTM: Ubuntu 24.04 works quite well, including the GPU performance. It's not as smooth as with Parallels, but still highly usable.
+Unfortunately IDEA doesn't work and will simply display a black rectangle instead.
 
-Parallels: untested, but I have high hopes for this kind of setup since I've seen people *gaming*
-this way. I'll test and update this blogpost.
+Parallels: Parallels will automatically download and install Ubuntu 22.04 for you, and will also
+install parallels tools into the VM. The GUI itself and IDEA runs incredibly smooth; it runs even better
+than natively on my AMD notebook, suggesting that AMD's GPU drivers in Linux suck. I rate the experience "excellent".
+The only issue are vastly different keybindings for Mac and for Ubuntu, but I guess there's nothing we can do about it.

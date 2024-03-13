@@ -67,4 +67,5 @@ Ultimately [systemctl disable systemd-networkd.service](https://askubuntu.com/a/
 
 ## Parallels
 
-TODO
+Parallels offers to install Ubuntu 22.04 and that's what you should do: then Parallels automatically
+installs the guest tools and the GUI speed is just brilliant.

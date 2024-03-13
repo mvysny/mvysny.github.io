@@ -23,9 +23,6 @@ It will also create a 3G swapfile, you can resize it later.
 
 Name the machine after its expected usage, e.g. `mavi-macbook-vm-experiments`.
 
-Install & reboot. Select no updates and just a minimum installation - we'll add
-everything later on, after we verify that the system boots :-D
-
 ## Post-installation
 
 Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthedocs.io/en/latest/Swapfile.html).
@@ -34,7 +31,8 @@ Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and 
 
 ### ext4 only
 
-Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
+Enable trim. You need to enable discard for all of your ext4 partitions: simply add the `discard` option to
+`/etc/fstab`. Note that swap on a swap partition will perform discard automatically.
 
 Regarding additional fs flags:
 * `user_xattr` is enabled by default on ext4; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
@@ -49,6 +47,7 @@ sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
 sudo apt install git vim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois
+sudo apt autoremove --purge rhythmbox thunderbird
 sudo update-alternatives --config editor     # select vim.basic
 ```
 

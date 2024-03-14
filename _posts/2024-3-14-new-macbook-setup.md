@@ -49,9 +49,10 @@ Go into its settings > Hotkeys:
 
 In Parallels Desktop Settings:
 
-* Shortcuts / macOS System Shortcuts / Send macOS system shortcuts: Always.
-  * This not only enables Alt+Tab to work properly in your VM, but also enables Ctrl+Left/Right arrow to
-    properly skip words in IDEA.
+* Shortcuts
+  * macOS System Shortcuts / Send macOS system shortcuts: Always.
+    * This not only enables Alt+Tab to work properly in your VM, but also enables Ctrl+Left/Right arrow to
+      properly skip words in IDEA.
   * To stop Parallels interfering with IDEA shortcuts, go to Application Shortcuts and disable shortcuts for:
     * Preferences
     * Toggle Coherence

@@ -19,7 +19,7 @@ The only way that worked for me is to let Parallels download and install Ubuntu 
 
 When auto-installing, Parallels will create two partitions using the GPT partitioning table: 1GB efi and 64GB ext4. I'd argue ext4 is better
 for VM disks since btrfs uses COW and would balloon the VM disk size much more than ext4.
-It will also create a 3G swapfile, you can resize it later.
+Therefore let's use ext4. It will also create a 3G swapfile, you can resize it later.
 
 Name the machine after its expected usage, e.g. `mavi-macbook-vm-experiments`.
 
@@ -29,7 +29,7 @@ Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthed
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
 
-### ext4 only
+### ext4
 
 Enable trim. You need to enable discard for all of your ext4 partitions: simply add the `discard` option to
 `/etc/fstab`. Note that swap on a swap partition will perform discard automatically.
@@ -71,17 +71,6 @@ I tend to configure Gnome to swap Alt and Meta keys, so that ⌥ works as "Meta"
 [To swap "Cmd" and "Alt"](https://unix.stackexchange.com/a/417708/256417),
 causing the Mac keyboard having the same modifier key order as a PC keyboard "Fn, Ctrl, Super, Alt":
 install `gnome-tweaks`, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior", "Alt is swapped with Win"
-
-Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
-
-* Home = `Fn+ArrowLeft`
-* End = `Fn+ArrowRight`
-* PgUp = `Fn+ArrowUp`
-* PgDown = `Fn+ArrowDown`
-* Delete = `Fn+Backspace`
-* Insert - couldn't find any Fn combination for this. Press `I` to insert in vim.
-
-Even better is to get the 
 
 ### gnome text editor
 
@@ -180,12 +169,9 @@ Additional configuration, to make Double Commander navigation similar to Mac's C
   * cm_Open: Alt+Right
   * cm_ChangeDirToParent: Alt+Left
 
-### Mac Keyboard Shortcuts
+### MacBook
 
-Install Commander One, then go into its settings > Hotkeys:
-
-* "Open file": add a secondary key ⌘→
-* "Go to enclosing folder" : ⌘←
+Follow [New MacBook Setup](../new-macbook-setup/).
 
 ### Intellij
 
@@ -197,8 +183,6 @@ Make sure to:
 
 1. overwrite local settings from jetbrains account
 2. enable "sync plugins silently"
-
-To get rid of fish-related `read-only file system` uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
 
 ## GNOME Settings
 

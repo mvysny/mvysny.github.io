@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ubuntu in Parallels Apple Silicon
+title: New MacBook Setup
 ---
 
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.

@@ -89,7 +89,7 @@ to edit the "Linux profile" and add the following mapping:
 
 ## Fixing Keyboard Backtick/Tilde
 
-The ISO keyboard has one huge disadvantage: the tilde/backtick key is located above "Option" instead of below "Esc".
+The ISO keyboard has one huge disadvantage: the tilde/backtick key is located above "Option" ⌥ instead of below "Esc".
 We'll fix that using [Ukelele](https://software.sil.org/ukelele/):
 
 * Install [Ukelele](https://software.sil.org/ukelele/) and run it

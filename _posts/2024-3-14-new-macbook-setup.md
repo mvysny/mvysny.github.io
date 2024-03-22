@@ -90,7 +90,7 @@ to edit the "Linux profile" and add the following mapping:
 
 ## Fixing Keyboard Backtick/Tilde
 
-The ISO keyboard has one huge disadvantage: the tilde/backtick key is located above "Option" ⌥ instead of below "Esc".
+The ISO English International keyboard has one huge disadvantage: the tilde/backtick key is located above "Option" ⌥ instead of below "Esc".
 We'll fix that using [Ukelele](https://software.sil.org/ukelele/):
 
 * Install [Ukelele](https://software.sil.org/ukelele/) and run it
@@ -140,3 +140,8 @@ Links:
 * View / Dock Icon / Show CPU Usage (need to re-check this after reboot)
 * Press ⌘3 to show CPU history window, ⌘4 to show GPU history
 * Switch to "Memory" tab, to see the memory pressure chart.
+
+## More
+
+If you want to go all crazy and completely unify Linux+Mac shorcuts, see
+[Unifying Mac+Linux keyboard, or making Mac work like Linux](../unifying-mac-linux/).

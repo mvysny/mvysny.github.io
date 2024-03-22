@@ -76,6 +76,8 @@ Run Remapper, then create a new preset named "ctrl+cmd-switched" and map:
 * `Alt L` to `Super_L`
 * `Control L` to `Alt_L`
 
+(it will take some time for you to understand the logic of the UI; don't worry you'll get there).
+
 Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
 the remapping should now be active.
 

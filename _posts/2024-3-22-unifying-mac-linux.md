@@ -24,7 +24,9 @@ Go to "System settings", "Keyboard", "Keyboard Shortcuts", "Modifier Keys", and 
 * "Control ^ key" to work as: ⌘ Command
 * "Command (⌘) key" to work as: ^ Control
 
-Also go to "Keyboard" and change "Move focus to next window" to ⌥` (Option+backtick).
+Also go to:
+* "Keyboard" and change "Move focus to next window" to ⌘` (Remember to press Ctrl to get ⌘ :-).
+* "Spotlight" and change "Show Spotlight Search" to ^Space
 
 ### Fixing Home/End/PgUp/PgDn keys
 
@@ -58,9 +60,11 @@ Links:
 
 ## Parallels
 
-Go into "Devices" / "Keyboard" / "Customize" and make sure all ⌘X, ⌘C etc keyboard mappings are turned off.
+Go to "Parallels Desktop", "Preferences, "Shortcuts", "Application Shortcuts" and turn off everything except for the last one, "Release Focus".
 
-* IDEA: Add ^Backspace mapped to Ctrl+Insert
+Then, go below to "Virtual Machines", click one of the machine, then select the "Linux" profile
+and make sure all ⌘X, ⌘C etc keyboard mappings are turned off.
+For IDEA: Add ^Backspace mapped to Ctrl+Insert.
 
 ## Linux Ubuntu 22.04 in Parallels
 
@@ -85,4 +89,7 @@ the remapping should now be active.
 
 Alt+Tab won't work unfortunately, and it can't even be assigned to a shortcut: the combo simply appears completely dead.
 We'll therefore map app switching to Ctrl+Tab. Go to "Settings", "Keyboard", "Keyboard Shortcuts", "View and customize",
-"Navigation" and set "Switch Windows" to "Ctrl+Tab".
+"Navigation" and set:
+
+* "Switch Windows" to "Ctrl+Tab".
+* "Switch Windows of an application" to Ctrl+` (backtick)

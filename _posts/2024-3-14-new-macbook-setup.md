@@ -110,10 +110,6 @@ Uninstall Ukelele.
 Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the following content:
 ```
 {
-
-// keys: http://xahlee.info/kbd/osx_keybinding_key_syntax.html
-// commands: https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding
-
     "^$\UF702" = moveWordBackwardAndModifySelection:;  // ctrl+left arrow
     "^$\UF703" = moveWordForwardAndModifySelection:;  // ctrl+right arrow
     "^\UF702" = moveWordBackward:;  // ctrl+left arrow - doesn't work for some reason?
@@ -132,6 +128,12 @@ Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the followin
     "$\UF72D"  = (moveDownAndModifySelection:,moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:); // page down - shift+move down 30 lines.
 }
 ```
+You'll need to restart individual apps for them to pick up the new configuration.
+
+Links:
+* List of keyboard key codes: [osx keybinding](http://xahlee.info/kbd/osx_keybinding_key_syntax.html)
+* [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
+* [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
 
 ## Activity Monitor
 

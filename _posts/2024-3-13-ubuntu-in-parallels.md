@@ -72,6 +72,8 @@ I tend to configure Gnome to swap Alt and Meta keys, so that ⌥ works as "Meta"
 causing the Mac keyboard having the same modifier key order as a PC keyboard "Fn, Ctrl, Super, Alt":
 install `gnome-tweaks`, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior", "Alt is swapped with Win"
 
+In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
+
 ### gnome text editor
 
 * Settings Cog wheel > Show Line numbers

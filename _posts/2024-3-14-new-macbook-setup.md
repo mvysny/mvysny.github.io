@@ -105,6 +105,34 @@ Reboot, and add the ABC Copy keyboard.
 
 Uninstall Ukelele.
 
+### Fixing Home/End/PgUp/PgDn keys
+
+Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the following content:
+```
+{
+
+// keys: http://xahlee.info/kbd/osx_keybinding_key_syntax.html
+// commands: https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding
+
+    "^$\UF702" = moveWordBackwardAndModifySelection:;  // ctrl+left arrow
+    "^$\UF703" = moveWordForwardAndModifySelection:;  // ctrl+right arrow
+    "^\UF702" = moveWordBackward:;  // ctrl+left arrow - doesn't work for some reason?
+    "^\UF703" = moveWordForward:;  // ctrl+right arrow - doesn't work for some reason?
+    "\UF729"  = moveToBeginningOfLine:; // home
+    "\UF72B"  = moveToEndOfLine:; // end
+    "^\UF729"  = moveToBeginningOfDocument:; // ctrl+home
+    "^\UF72B"  = moveToEndOfDocument:; // ctrl+end
+    "^$\UF729"  = moveToBeginningOfDocumentAndModifySelection:; // ctrl+shift+home
+    "^$\UF72B"  = moveToEndOfDocumentAndModifySelection:; // ctrl+shift+end
+    "$\UF729" = moveToBeginningOfLineAndModifySelection:; // shift-home
+    "$\UF72B" = moveToEndOfLineAndModifySelection:; // shift-end
+    "\UF72C"  = (moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:); // page up - move up 30 lines.
+    "\UF72D"  = (moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:); // page down - move down 30 lines.
+    "$\UF72C"  = (moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,); // shift+page up - move up 30 lines.
+    "$\UF72D"  = (moveDownAndModifySelection:,moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:moveDownAndModifySelection:); // page down - shift+move down 30 lines.
+}
+```
+
 ## Activity Monitor
 
 * View / Dock Icon / Show CPU Usage (need to re-check this after reboot)

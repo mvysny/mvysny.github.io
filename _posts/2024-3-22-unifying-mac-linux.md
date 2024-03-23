@@ -30,7 +30,7 @@ Ideal scenario would be:
 Unfortunately this ideal scenario can not be achieved since MacOS intercepts certain keys, making them unavailable for the VM:
 
 * F1-F4 are intercepted and can not be remapped. You would need to press the "Fn" key along with F1-F4 and we want to avoid the "Fn" key.
-* F5-F12 can be remapped, but with limitations. For example, Option+F12 always opens the sound settings in MacOS as well; F11 and F12 always also
+* F5-F12 can be remapped, but with limitations. For example, ⌥+F12 always opens the sound settings in MacOS as well; F11 and F12 always also
   increase/decrease volume on MacOS.
 
 Therefore, the only way is to go to "System settings", "Keyboard", "Keyboard Shortcuts", "Function Keys"
@@ -91,6 +91,10 @@ For IDEA: Add ^Backspace mapped to Ctrl+Insert.
 
 ### Fix Ctrl/Super/Alt buttons
 
+I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
+so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
+exactly the same.
+
 Install Input-Remapper:
 ```bash
 sudo apt install input-remapper-daemon input-remapper-gtk
@@ -114,3 +118,7 @@ We'll therefore map app switching to Ctrl+Tab. Go to "Settings", "Keyboard", "Ke
 
 * "Switch Windows" to "Ctrl+Tab".
 * "Switch Windows of an application" to Ctrl+` (backtick)
+
+### Intellij IDEA
+
+The default XWin keyboard shortcuts work very well, so just select that.

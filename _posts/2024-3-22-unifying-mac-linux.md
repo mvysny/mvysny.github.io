@@ -16,6 +16,7 @@ WARNING: WORK IN PROGRESS. There are still outstanding issues, for example:
 * Mac: App switching now works via ^Tab instead of ⌘Tab
 * Mac: Whenever learning a new keyboard shortcut: You have to mentally juggle the fact that ⌘ is now the rightmost-bottom key.
 * Linux: App switching now works via Ctrl+Tab instead of Alt+Tab
+* Mac: Home/End stops scrolling the viewport (e.g. the page in Safari)
 
 ## MacBook
 
@@ -75,6 +76,8 @@ Links:
 * List of keyboard key codes: [osx keybinding](http://xahlee.info/kbd/osx_keybinding_key_syntax.html)
 * [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
 * [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
+
+Warning: This effectively stops Home/End from scrolling the viewport on MacOS (e.g. the page in Safari).
 
 ## Parallels
 

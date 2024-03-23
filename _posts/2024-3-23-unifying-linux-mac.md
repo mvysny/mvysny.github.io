@@ -67,6 +67,10 @@ Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor sk
 
 ## Linux Ubuntu 22.04 in Parallels
 
+I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
+so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
+exactly the same as in MacOS.
+
 ### Fix Ctrl/Super/Alt buttons
 
 Install Input-Remapper:
@@ -111,11 +115,11 @@ and set "Switch Applications" to "Alt+Tab" and "Switch Windows" to "Super+Tab" (
 Unfortunately the "macOS" keymap can not be used since it doesn't work at all in Linux:
 the ⌘Command key is activated by Meta key but it's not getting through to Intellij - basically
 IDEA never sees any key combination with Meta in it, which effectively disables all essential shortcuts.
-On top of that, I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
-so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
-exactly the same.
+On top of that, since I have ⌘Command mapped to Alt and not Meta in Linux, all Meta-based
+shortcuts in IDEA would need to be activated by pressing the ⌥Option physical key, which completely messes up
+the shortcuts.
 
-TODO Explore more
+I think we need to completely rewrite the "macOS" keymap and modify all shortcuts from Meta to Alt... TODO Explore more
 
 
 TODO TODO

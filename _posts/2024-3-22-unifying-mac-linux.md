@@ -6,7 +6,7 @@ title: Unifying Mac+Linux keyboard, or making Mac work like Linux
 The general advice is to bite the bullet and learn Mac keyboard shortcuts. That doesn't help in my case though:
 I'm working with Linux in VM/Parallels on a daily basis and it's impossible for me to constantly switch
 between two very different layouts. Therefore, I've decided to try and modify Mac to work as much as Linux.
-That means that: Ctrl+Q closes app, Ctrl+Home moves the cursor to the top. I've also avoided installing
+That means that, for example, Ctrl+Q closes app (and not ⌘Q), Ctrl+Home moves the cursor to the top. I've also avoided installing
 all third-party apps on Mac, and only using [Input Remapper](https://github.com/sezanzeb/input-remapper)
 which is available in official Ubuntu repository for both Ubuntu 22.04 and 24.04, so this method
 is future-proof.

@@ -26,7 +26,7 @@ Ideal scenario would be:
 Unfortunately this ideal scenario can not be achieved since MacOS intercepts certain keys, making them unavailable for the VM:
 
 * F1-F4 are intercepted and can not be remapped. You would need to press the "Fn" key along with F1-F4 and we want to avoid the "Fn" key.
-* F5-F12 can be remapped, but with limitations. For example, Option+F12 always opens the sound settings in MacOS as well; F11 and F12 always also
+* F5-F12 can be remapped, but with limitations. For example, ⌥Option+F12 always opens the sound settings in MacOS as well; F11 and F12 always also
   increase/decrease volume on MacOS.
 
 Therefore, the only way is to go to "System settings", "Keyboard", "Keyboard Shortcuts", "Function Keys"
@@ -77,12 +77,17 @@ Install Input-Remapper:
 ```bash
 sudo apt install input-remapper-daemon input-remapper-gtk
 ```
+
 Run Remapper, then create a new preset named "ctrl+cmd-switched" and map:
+(it will take some time for you to understand the logic of the Remapper UI; don't worry you'll get there).
 
 * `Alt L` to `Super_L`
-* `Super L` to `Alt_L`
+* `Super L` to `Control_L`
+* `Control L` to `Alt_L`
 
-(it will take some time for you to understand the logic of the UI; don't worry you'll get there).
+This basically makes Linux `Alt` be activated by pressing `^Control`, `Meta/Super` to be activated by pressing
+`⌥Option` and pressing `⌘` works as `Control`. This sounds crazy until you realize that this basically makes
+`⌘C` copy, `⌘V` paste, `⌘S` save, even `⌘,` to go into preferences in gnome-text-editor! Let's keep this.
 
 Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
 the remapping should now be active.
@@ -90,9 +95,9 @@ the remapping should now be active.
 #### Cursor movement
 
 We need Remapper 2 in order for these advanced key combinations to work. For example, `Super_L + Right` (`⌘→`) would map to `KEY_END`.
-The problem is that Remapper 1 keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
+The problem is that Remapper 1 (which comes with Ubuntu 22.04) keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
 
-TODO How to upgrade to Remapper 2 on Ubuntu 22.04
+The easiest way is to upgrade Ubuntu to 23.10, simply by running `sudo do-release-upgrade` on the command-line.
 
 Shortcuts to be configured in Remapper:
 
@@ -100,15 +105,23 @@ Shortcuts to be configured in Remapper:
 * `Alt L + Left` maps to `Home`
 * `Alt L + Up` maps to `Control_L + Home`
 * `Alt L + Down` maps to `Control_L + End`
+* `Control L + Up` maps to `Prior`
+* `Control L + Down` maps to `Next`
 
 Unfortunately `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped. We'll have to keep using
 `Control_L + Left/Right` for advancing cursor one word left/right. AND this doesn't work in MacOS - trying to reconfigure
 `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
 
-### Fix app switching
+#### Other modifications?
+
+TODO go through Firefox and gnome-text-editor and check that they feel intuitive to MacOS user.
+
+### Fix app switching and other global key shortcuts
 
 To mimic Alt+Tab going through apps (and not windows), open the "Settings" / "Keyboard" / "View and customize Shortcuts" / "Navigation"
 and set "Switch Applications" to "Alt+Tab" and "Switch Windows" to "Super+Tab" (or remove the shortcut entirely).
+
+Also go to "Windows" and set "Close Window" to "Alt+Q".
 
 ### Intellij IDEA
 

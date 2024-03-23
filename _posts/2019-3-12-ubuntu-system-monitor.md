@@ -94,6 +94,13 @@ all the necessary dependencies installed:
 sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
 ```
 
+### Workarounds
+
+If you'll get `invalid language tag: C.UTF-8`, then switch to a different language (C.UTF-8 didn't work
+for me even though it was generated). Edit `/etc/environment` and add `LANGUAGE=en_US.UTF-8`. Then, run
+`sudo locale-gen en_US en_US.UTF-8` and `sudo dpkg-reconfigure locales` and `sudo update-locale LANG=en_US`
+and reboot.
+
 ## Ubuntu 21.10
 
 There are two ways to have the extension installed:

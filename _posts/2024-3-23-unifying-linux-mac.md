@@ -6,6 +6,12 @@ title: Unifying Linux+Mac keyboard, or making Linux work like Mac
 I'm working with Linux in VM/Parallels on a daily basis, and it's impossible for me to constantly switch
 between two very different layouts. Therefore, I've decided to try and modify Linux to work as much as MacOS.
 
+What doesn't work:
+
+* It's not possible to have one key combo for moving cursor one word left/right:
+  * ⌥← and ⌥→ go one word prev/next doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
+  * trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
+
 EXPLORATORY STATE: WORK IN PROGRESS
 
 ## MacBook
@@ -55,6 +61,10 @@ Links:
 * [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
 * [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
 
+Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor skip words: trying to reconfigure
+`^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything. Also,
+⌥← and ⌥→ can't be remapped in Linux.
+
 ## Linux Ubuntu 22.04 in Parallels
 
 ### Fix Ctrl/Super/Alt buttons
@@ -75,10 +85,21 @@ the remapping should now be active.
 
 #### Cursor movement
 
-TODO we're screwed. On Ubuntu 22.04, this doesn't work in Remapper: `Super_L + Right` (`⌘→`) would map to `KEY_END`.
-The problem is that Remapper keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
+We need Remapper 2 in order for these advanced key combinations to work. For example, `Super_L + Right` (`⌘→`) would map to `KEY_END`.
+The problem is that Remapper 1 keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
 
-TODO test on Ubuntu 24.04
+TODO How to upgrade to Remapper 2 on Ubuntu 22.04
+
+Shortcuts to be configured in Remapper:
+
+* `Alt L + Right` maps to `End`  (this also handles selection with Shift)
+* `Alt L + Left` maps to `Home`
+* `Alt L + Up` maps to `Control_L + Home`
+* `Alt L + Down` maps to `Control_L + End`
+
+Unfortunately `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped. We'll have to keep using
+`Control_L + Left/Right` for advancing cursor one word left/right. AND this doesn't work in MacOS - trying to reconfigure
+`^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
 
 ### Fix app switching
 

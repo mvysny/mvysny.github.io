@@ -16,11 +16,11 @@ implement the following cursor controlling scheme:
 * ⌥↑ and ⌥↓ go one page up/down
 
 Unfortunately it's not possible to use the same physical keys for ⌥-based shortcuts:
-* ⌥← and ⌥→ go one word prev/next doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
+* ⌥← and ⌥→ doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
 * trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
   apparently captures ^Control+arrows for window switching purposes
 
-So, we'll map ⌥arrows shortcuts to ^Control+arrows.
+So, you'll have to press the `^Control` key instead of `⌥Option` key.
 
 ## Linux Ubuntu 22.04 in Parallels
 

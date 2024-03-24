@@ -1,0 +1,100 @@
+---
+layout: post
+title: Mac-like cursor control in Linux 22.04/Parallels 19
+---
+
+I'm working with Linux in VM/Parallels on a daily basis, and it's impossible for me to constantly switch
+between two very different layouts. Therefore, I've decided to try and modify Linux to work as much as MacOS.
+
+We'll keep the MacOS logic and won't really use the Home/End/PgUp/PgDown physical buttons (since they're only on the extended Magic Keyboard anyway, and not on laptop keyboards):
+
+* ⌘↑ and ⌘↓ go to the beginning/end of the document
+* ⌘← and ⌘→ go to the beginning/end of the line
+* ⌥← and ⌥→ go one word prev/next
+* ⌥↑ and ⌥↓ go one page up/down
+
+Unfortunately it's not possible to have one key combo for moving cursor one word left/right:
+* ⌥← and ⌥→ go one word prev/next doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
+* trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
+  apparently captures ^Control+arrows for window switching purposes
+
+So, we'll map ⌥arrows shortcuts to ^Control+arrows.
+
+## Linux Ubuntu 22.04 in Parallels
+
+I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
+so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
+exactly the same as in MacOS.
+
+First, install `gnome-tweaks` via apt, and make sure the ⌥Option button works as Meta, and the ⌘Command button
+works as Alt: run Tweaks, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior" and select
+"Alt is swapped with Win". Remapper will stack its modifications on top of these ones - these mappings won't fight each other.
+
+## Remapper 2
+
+We need Remapper 2 in order for these advanced key combinations to work. For example, `Super_L + Right` (`⌘→`) would map to `KEY_END`.
+The problem is that Remapper 1 (which comes with Ubuntu 22.04) keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
+
+The easiest way is to upgrade Ubuntu to 23.10, simply by running `sudo do-release-upgrade` on the command-line.
+However, that's not the best idea since Parallels 19 is not entirely compatible with kernel 6.5.0
+and dmesg shows terrifying crashes:
+
+```
+- UBSAN: array-index-out-of-bounds in /var/lib/dkms/parallels-tools/19.3.0.54924/build/prl_fs/SharedFolders/Guest/Linux/prl_fs/file.c:244:15
+    - [   28.390410] index 1 is out of range for type 'char [1]'
+```
+
+Therefore, we'll install Remapper 2 into Ubuntu 22.04.
+
+### Installation
+
+Go to [Input Remapper Releases page](https://github.com/sezanzeb/input-remapper/releases) and download the `input-remapper-2.0.1.deb`.
+Then, install via `sudo apt install -f ./input-remapper-2.0.1.deb` - this will install the app including all dependencies.
+
+Run the remapper from terminal via `input-remapper-gtk`. The remapper will ask for root password - this is okay.
+
+### Configuration
+
+It will take some time for you to understand the logic of the Remapper UI; don't worry you'll get there.
+Just click "Parallels Virtual Keyboard", "new preset" and register the following shortcuts:
+
+* `Alt L + Right` maps to `End`  (this also handles selection with Shift)
+* `Alt L + Left` maps to `Home`
+* `Alt L + Up` maps to `Control_L + Home`
+* `Alt L + Down` maps to `Control_L + End`
+* `Control L + Up` maps to `Prior`
+* `Control L + Down` maps to `Next`
+
+Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
+the remapping should now be active.
+
+## MacOS implementation of pageup/pagedown
+
+We'll modify the logic of the ⌥↑ and ⌥↓ in MacOS, so that they don't use the vague concept of paragraph but act as PgUp and PgDn.
+
+Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the following content:
+```
+{
+    // Option+uparrow moves 30 lines up, emulating pgup
+    "~\UF700"  = (moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:);
+    // Option+downarrow moves 30 lines down, emulating pgdown
+    "~\UF701"  = (moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:); // page down - move down 30 lines.
+    // The same, but with selection
+    "~$\UF700"  = (moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:);
+    "~$\UF701"  = (moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:);
+}
+```
+You'll need to restart individual apps for them to pick up the new configuration.
+
+Links:
+* List of keyboard key codes: [osx keybinding](http://xahlee.info/kbd/osx_keybinding_key_syntax.html)
+* [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
+* [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
+
+Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor skip words: trying to reconfigure
+`^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
+
+## IDEA
+
+The ⌘← shortcut will disable the "Navigation/Back" button which is mapped to Ctrl+Alt+Left. The easiest way
+is to redefine "Navigation/Back" to `^<` and "Navigation/Forward" to `^Shift<`.

@@ -34,36 +34,7 @@ and enable the "Use F1, F2, etc. keys as standard function keys".
 
 ### Arrow Keys/Home/End/PgUp/PgDn
 
-We'll keep the MacOS logic and won't really use the Home/End/PgUp/PgDown physical buttons (since they're on the extended Magic Keyboard anyway):
-
-* ⌘↑ and ⌘↓ go to the beginning/end of the document
-* ⌘← and ⌘→ go to the beginning/end of the line
-* ⌥← and ⌥→ go one word prev/next
-
-We'll modify the logic of the ⌥↑ and ⌥↓ though, so that they don't use the vague concept of paragraph but act as PgUp and PgDn.
-
-Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the following content:
-```
-{
-    // Option+uparrow moves 30 lines up, emulating pgup
-    "~\UF700"  = (moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:, moveUp:);
-    // Option+downarrow moves 30 lines down, emulating pgdown
-    "~\UF701"  = (moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:,moveDown:); // page down - move down 30 lines.
-    // The same, but with selection
-    "~$\UF700"  = (moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:,moveUpAndModifySelection:);
-    "~$\UF701"  = (moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:,moveDownAndModifySelection:);
-}
-```
-You'll need to restart individual apps for them to pick up the new configuration.
-
-Links:
-* List of keyboard key codes: [osx keybinding](http://xahlee.info/kbd/osx_keybinding_key_syntax.html)
-* [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
-* [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
-
-Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor skip words: trying to reconfigure
-`^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything. Also,
-⌥← and ⌥→ can't be remapped in Linux.
+See [Mac-like cursor control in Linux 22.04/Parallels 19](../mac-like-cursor-control-in-linux/).
 
 ## Linux Ubuntu 22.04 in Parallels
 
@@ -92,26 +63,6 @@ This basically makes Linux `Alt` be activated by pressing `^Control`, `Meta/Supe
 Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
 the remapping should now be active.
 
-#### Cursor movement
-
-We need Remapper 2 in order for these advanced key combinations to work. For example, `Super_L + Right` (`⌘→`) would map to `KEY_END`.
-The problem is that Remapper 1 (which comes with Ubuntu 22.04) keeps `Super_L` pressed, which effectively maps to `Super_L`+`KEY_END`, which does nothing.
-
-The easiest way is to upgrade Ubuntu to 23.10, simply by running `sudo do-release-upgrade` on the command-line.
-
-Shortcuts to be configured in Remapper:
-
-* `Alt L + Right` maps to `End`  (this also handles selection with Shift)
-* `Alt L + Left` maps to `Home`
-* `Alt L + Up` maps to `Control_L + Home`
-* `Alt L + Down` maps to `Control_L + End`
-* `Control L + Up` maps to `Prior`
-* `Control L + Down` maps to `Next`
-
-Unfortunately `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped. We'll have to keep using
-`Control_L + Left/Right` for advancing cursor one word left/right. AND this doesn't work in MacOS - trying to reconfigure
-`^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
-
 #### Other modifications?
 
 TODO go through Firefox and gnome-text-editor and check that they feel intuitive to MacOS user.
@@ -133,68 +84,3 @@ shortcuts in IDEA would need to be activated by pressing the ⌥Option physical 
 the shortcuts.
 
 I think we need to completely rewrite the "macOS" keymap and modify all shortcuts from Meta to Alt... TODO Explore more
-
-
-TODO TODO
-
-
-
-
-That means that, for example, Ctrl+Q closes app (and not ⌘Q), Ctrl+Home moves the cursor to the top. I've also avoided installing
-all third-party apps on Mac, and only using [Input Remapper](https://github.com/sezanzeb/input-remapper)
-which is available in official Ubuntu repository for both Ubuntu 22.04 and 24.04, so this method
-is future-proof.
-
-WARNING: WORK IN PROGRESS. There are still outstanding issues, for example:
-
-* Mac: App switching now works via ^Tab instead of ⌘Tab
-* Mac: Whenever learning a new keyboard shortcut: You have to mentally juggle the fact that ⌘ is now the rightmost-bottom key.
-* Linux: App switching now works via Ctrl+Tab instead of Alt+Tab
-* Mac: Home/End stops scrolling the viewport (e.g. the page in Safari)
-
-### Reverting ^ and ⌘
-
-Go to "System settings", "Keyboard", "Keyboard Shortcuts", "Modifier Keys", and configure
-
-* "Control ^ key" to work as: ⌘ Command
-* "Command (⌘) key" to work as: ^ Control
-
-Also go to:
-* "Keyboard" and change "Move focus to next window" to ⌘` (Remember to press Ctrl to get ⌘ :-).
-* "Spotlight" and change "Show Spotlight Search" to ^Space
-
-## Parallels
-
-Go to "Parallels Desktop", "Preferences, "Shortcuts", "Application Shortcuts" and turn off everything except for the last one, "Release Focus".
-
-Then, go below to "Virtual Machines", click one of the machine, then select the "Linux" profile
-and make sure all ⌘X, ⌘C etc keyboard mappings are turned off.
-For IDEA: Add ^Backspace mapped to Ctrl+Insert.
-
-## Linux Ubuntu 22.04 in Parallels
-
-### Fix Ctrl/Super/Alt buttons
-
-Install Input-Remapper:
-```bash
-sudo apt install input-remapper-daemon input-remapper-gtk
-```
-Run Remapper, then create a new preset named "ctrl+cmd-switched" and map:
-
-* `Super L` to `Control_L`
-* `Alt L` to `Super_L`
-* `Control L` to `Alt_L`
-
-(it will take some time for you to understand the logic of the UI; don't worry you'll get there).
-
-Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
-the remapping should now be active.
-
-### Fix app switching
-
-Alt+Tab won't work unfortunately, and it can't even be assigned to a shortcut: the combo simply appears completely dead.
-We'll therefore map app switching to Ctrl+Tab. Go to "Settings", "Keyboard", "Keyboard Shortcuts", "View and customize",
-"Navigation" and set:
-
-* "Switch Windows" to "Ctrl+Tab".
-* "Switch Windows of an application" to Ctrl+` (backtick)

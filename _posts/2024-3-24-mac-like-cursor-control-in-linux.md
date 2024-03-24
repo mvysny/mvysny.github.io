@@ -15,7 +15,7 @@ implement the following cursor controlling scheme:
 * ⌥← and ⌥→ go one word prev/next
 * ⌥↑ and ⌥↓ go one page up/down
 
-Unfortunately it's not possible to have one key combo for moving cursor one word left/right:
+Unfortunately it's not possible to use the same physical keys for ⌥-based shortcuts:
 * ⌥← and ⌥→ go one word prev/next doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
 * trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
   apparently captures ^Control+arrows for window switching purposes

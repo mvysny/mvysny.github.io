@@ -6,7 +6,9 @@ title: Mac-like cursor control in Linux 22.04/Parallels 19
 I'm working with Linux in VM/Parallels on a daily basis, and it's impossible for me to constantly switch
 between two very different layouts. Therefore, I've decided to try and modify Linux to work as much as MacOS.
 
-We'll keep the MacOS logic and won't really use the Home/End/PgUp/PgDown physical buttons (since they're only on the extended Magic Keyboard anyway, and not on laptop keyboards):
+We'll keep the MacOS logic and won't really use the Home/End/PgUp/PgDown physical buttons
+(since they're only on the extended Magic Keyboard anyway, and not on laptop keyboards). Instead, we'll
+implement the following cursor controlling scheme:
 
 * ⌘↑ and ⌘↓ go to the beginning/end of the document
 * ⌘← and ⌘→ go to the beginning/end of the line

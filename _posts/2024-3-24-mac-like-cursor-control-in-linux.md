@@ -46,7 +46,7 @@ and dmesg shows terrifying crashes:
     - [   28.390410] index 1 is out of range for type 'char [1]'
 ```
 
-Therefore, we'll install Remapper 2 into Ubuntu 22.04.
+Therefore, we'll keep Ubuntu 22.04 and install Remapper 2 into it.
 
 ### Installation
 

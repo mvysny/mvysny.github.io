@@ -121,14 +121,14 @@ Remapper.
 
 Now all that's left to do is to add Alt+Left to "Navigation/Back" in IDEA.
 
-## The failed attempt of mapping ⌘Command to Ctrl
+## Huge change: mapping ⌘Command to Ctrl
 
 To further replicate Mac's keyboard you may wish for `⌘Command` to act as `Ctrl` key. This would have numerous advantages:
 
 * `⌘C`, `⌘V`, `⌘Z` would start behaving exactly as in Mac;
 * In Firefox, `⌘T` would open a new tab while `⌘W` would close the current one.
 
-Unfortunately, I failed to make this work since I seem to be hitting limits of how I can remap the keyboard. Let's split this into two cases:
+Let's split this into two cases:
 
 * `⌥Option` continues acting as `Super_L`, which makes `^Control` act as `Alt`. That means that `^Control`/`⌥Option`/`⌘Command` maps to `Alt`/`Win`/`Ctrl`
 * `⌥Option` changes to `Alt_L`, which makes `^Control` act as `Super_L`. That means that `^Control`/`⌥Option`/`⌘Command` maps to `Win`/`Alt`/`Ctrl`
@@ -150,7 +150,11 @@ moves to the end of the document! The reason is that two rules got activated in 
 `Super_L` as `Control_L`, and `Super_L + Right` as `End`, causing the resulting key combination to be
 `Ctrl+End` which indeed scrolls to the end of the document. I wonder whether this could be fixed in
 Remapper - TODO go through [Remapper Issues](https://github.com/sezanzeb/input-remapper/issues) and try to figure it out.
- 
+
+In other way, it is currently fundamentally impossible to use Remapper both for modifier key changes and for
+key combination definition. Therefore, let's switch back to the tried&trusted combo of Tweaks handling modifier key changes,
+while Remapper handling key combo mappings.
+
 ### `Win`/`Alt`/`Ctrl`
 
 Sounds like remapping both individual modifiers and the key combos is not the right way to go -

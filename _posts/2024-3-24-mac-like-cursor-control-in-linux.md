@@ -151,3 +151,19 @@ Sounds like remapping both individual modifiers and the key combos is not the ri
 a better way is a two-level system where modifiers are remapped in Gnome Tweaks and key-combos further on in the Remapper.
 Let's try it out. Open Gnome Tweaks and activate "Additional Layout Options" / "Ctrl position" / "Swap Left Win with Left Ctrl".
 LOG OUT and log in again - this is very important otherwise Remapper will output strange key combinations.
+Then, add the following mappings to the Remapper:
+
+* `Alt_L + Down` to `Next`
+* `Alt_L + Left` to `Control_L + Left`
+* `Alt_L + Right` to `Control_L + Right`
+* `Alt_L + Up` to `Prior`
+* `Control_L + Down` to `Control_L + End`
+* `Control_L + Left` to `Home`
+* `Control_L + Right` to `End`
+* `Control_L + Up` to `Control_L + Home`
+
+And it works! Don't forget to go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts", "Navigation"
+and modify "Switch Applications" to "Ctrl+Tab" and "Switch windows of an app" to "Ctrl+`".
+Now the cursor movement mapping is identical to Apple.
+
+EDIT: doesn't work 100%: press `↓` two times, then `⌘↓` - the current line gets selected instead! TODO observe.

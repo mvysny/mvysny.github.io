@@ -15,22 +15,19 @@ implement the following cursor controlling scheme:
 * ⌥← and ⌥→ go one word prev/next
 * ⌥↑ and ⌥↓ go one page up/down
 
-Unfortunately it's not possible to use the same physical keys for ⌥-based shortcuts:
-* ⌥← and ⌥→ doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
-* trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
-  apparently captures ^Control+arrows for window switching purposes
-
-So, you'll have to press the `^Control` key instead of `⌥Option` key.
+Unfortunately, things aren't 100% smooth - read on.
 
 ## Linux Ubuntu 22.04 in Parallels
 
-I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
-so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
+I tend to remap the keyboard so that `⌥Option` acts as `Meta/Super/Win` in Linux, and `⌘Command` acts like `Alt` in Linux,
+so that `Alt+Tab` and `Alt+BackTick` in Linux is activated by pressing `⌘Tab` and/or ⌘` respectively, and acts
 exactly the same as in MacOS.
 
 First, install `gnome-tweaks` via apt, and make sure the ⌥Option button works as Meta, and the ⌘Command button
 works as Alt: run Tweaks, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior" and select
 "Alt is swapped with Win". Remapper will stack its modifications on top of these ones - these mappings won't fight each other.
+But you must log out after you change Tweaks settings, otherwise Remapper will receive strange keyboard shortcuts.
+So, logout and login.
 
 ## Remapper 2
 
@@ -70,9 +67,18 @@ Just click "Parallels Virtual Keyboard", "new preset" and register the following
 Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
 the remapping should now be active.
 
+Unfortunately it's not possible to use the same physical keys for ⌥-based shortcuts:
+
+* `⌥←` and `⌥→` doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
+* trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
+  apparently captures `^Control`+arrows for window switching purposes
+
+So, you'll have to press the `^Control` key instead of `⌥Option` key in Linux. This is the disadvantage of
+the `Ctrl`/`Win`/`Alt` setting.
+
 ## MacOS implementation of pageup/pagedown
 
-We'll modify the logic of the ⌥↑ and ⌥↓ in MacOS, so that they don't use the vague concept of paragraph but act as PgUp and PgDn.
+We'll modify the logic of the `⌥↑` and `⌥↓` in MacOS, so that they don't use the vague concept of paragraph but act as `PgUp` and `PgDn`.
 
 Create the file `~/Library/KeyBindings/DefaultKeyBinding.dict` with the following content:
 ```
@@ -93,12 +99,12 @@ Links:
 * [Supported commands](https://developer.apple.com/documentation/appkit/nsstandardkeybindingresponding)
 * [Tips for DefaultKeyBinding.dict](https://apple.stackexchange.com/questions/127023/how-do-i-know-what-to-put-in-defaultkeybinding-dict)
 
-Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor skip words: trying to reconfigure
+Unfortunately it's not possible to reconfigure `^←`/`^→` to make cursor skip words: trying to reconfigure
 `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything.
 
 ## IDEA
 
-The ⌘← shortcut will disable the "Navigation/Back" button which is mapped to Ctrl+Alt+Left. The easiest way
+The `⌘←` shortcut will disable the "Navigation/Back" button which is mapped to Ctrl+Alt+Left. The easiest way
 is to redefine "Navigation/Back" to `^<` and "Navigation/Forward" to `^Shift<`.
 
 Even better you can make CapsLock+Left to perform the same functionality.
@@ -163,7 +169,10 @@ Then, add the following mappings to the Remapper:
 * `Control_L + Up` to `Control_L + Home`
 
 And it works! Don't forget to go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts", "Navigation"
-and modify "Switch Applications" to "Ctrl+Tab" and "Switch windows of an app" to "Ctrl+`".
+and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
 Now the cursor movement mapping is identical to Apple.
 
-EDIT: doesn't work 100%: press `↓` two times, then `⌘↓` - the current line gets selected instead! TODO observe.
+To fix IDEA Navigate/Back: in MacOS, go to Keyboard Modifier Keys and make sure Caps Lock is set to `⌥Option`.
+
+EDIT: there are strange artifacts and this solution doesn't work 100%: press `↓` two times, then `⌘↓` -
+the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect. TODO observe.

@@ -100,3 +100,54 @@ Unfortunately it's not possible to reconfigure Ctrl+Left/Right to make cursor sk
 
 The ⌘← shortcut will disable the "Navigation/Back" button which is mapped to Ctrl+Alt+Left. The easiest way
 is to redefine "Navigation/Back" to `^<` and "Navigation/Forward" to `^Shift<`.
+
+Even better you can make CapsLock+Left to perform the same functionality.
+In your Mac, you can redefine "Caps Lock" to act as "⌘Command" button, in "Settings" / "Keyboard" / "Modifier Keys".
+Pressing "Caps Lock" now performs the same thing as if the *right* ⌘Command was pressed. Then:
+
+* In the VM, this acts as if the R_Super was pressed.
+* R_Super is replaced by R_Alt by Gnome Tweaks
+* The `Alt L + Left` Remapper rule is not triggered since it only targets left alt
+* Therefore, the Alt+Left IDEA shortcut is triggered, which performs the "Navigate/Back"
+
+The *right* part is very important: if it would emit the left ⌘Command then it would be captured by
+Remapper.
+
+Now all that's left to do is to add Alt+Left to "Navigation/Back" in IDEA.
+
+## The failed attempt of mapping ⌘Command to Ctrl
+
+To further replicate Mac's keyboard you may wish for `⌘Command` to act as `Ctrl` key. This would have numerous advantages:
+
+* `⌘C`, `⌘V`, `⌘Z` would start behaving exactly as in Mac;
+* In Firefox, `⌘T` would open a new tab while `⌘W` would close the current one.
+
+Unfortunately, I failed to make this work since I seem to be hitting limits of how I can remap the keyboard. Let's split this into two cases:
+
+* `⌥Option` continues acting as `Super_L`, which makes `^Control` act as `Alt`. That means that `^Control`/`⌥Option`/`⌘Command` maps to `Alt`/`Win`/`Ctrl`
+* `⌥Option` changes to `Alt_L`, which makes `^Control` act as `Super_L`. That means that `^Control`/`⌥Option`/`⌘Command` maps to `Win`/`Alt`/`Ctrl`
+
+### `Alt`/`Win`/`Ctrl`
+
+There is no way to swap modifier keys this way in Gnome Tweaks (believe me I tried, but be my guest and try it out for yourself: I'd be happy to be proven wrong).
+Therefore, we'll remap everything in the Remapper. Make sure to turn off Alt+Win swapping in Tweaks
+(select "Alt and Win behavior" to "Disabled") then *log out* otherwise the setting will stay in effect and you'll
+get very strange behavior in the Remapper. Then, fire up Remapper:
+
+* `Control_L` as `Alt_L`
+* `Alt_L` as `Super_L`
+* `Super_L` as `Control_L`
+* `Super_L + Right` as `End`
+
+Hit Apply and test it out in a text editor by pressing `⌘→`. The cursor, instead of moving to the end of the line,
+moves to the end of the document! The reason is that two rules got activated in Remapper: both
+`Super_L` as `Control_L`, and `Super_L + Right` as `End`, causing the resulting key combination to be
+`Ctrl+End` which indeed scrolls to the end of the document. I wonder whether this could be fixed in
+Remapper - TODO go through [Remapper Issues](https://github.com/sezanzeb/input-remapper/issues) and try to figure it out.
+ 
+### `Win`/`Alt`/`Ctrl`
+
+Sounds like remapping both individual modifiers and the key combos is not the right way to go -
+a better way is a two-level system where modifiers are remapped in Gnome Tweaks and key-combos further on in the Remapper.
+Let's try it out. Open Gnome Tweaks and activate "Additional Layout Options" / "Ctrl position" / "Swap Left Win with Left Ctrl".
+LOG OUT and log in again - this is very important otherwise Remapper will output strange key combinations.

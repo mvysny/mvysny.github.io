@@ -151,7 +151,7 @@ moves to the end of the document! The reason is that two rules got activated in 
 `Ctrl+End` which indeed scrolls to the end of the document. I wonder whether this could be fixed in
 Remapper - TODO go through [Remapper Issues](https://github.com/sezanzeb/input-remapper/issues) and try to figure it out.
 
-In other way, it is currently fundamentally impossible to use Remapper both for modifier key changes and for
+In other words, it is currently fundamentally impossible to use Remapper both for modifier key changes and for
 key combination definition. Therefore, let's switch back to the tried&trusted combo of Tweaks handling modifier key changes,
 while Remapper handling key combo mappings.
 

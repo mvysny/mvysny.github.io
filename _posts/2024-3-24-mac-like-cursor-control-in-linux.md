@@ -177,6 +177,8 @@ and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to
 Now the cursor movement mapping is identical to Apple.
 
 To fix IDEA Navigate/Back: in MacOS, go to Keyboard Modifier Keys and make sure Caps Lock is set to `⌥Option`.
+Now of course this is a huge change and IDEA keyboard shortcuts are most probably completely unusable now. But more on
+that in some other article.
 
 EDIT: there are strange artifacts and this solution doesn't work 100%: press `↓` two times, then `⌘↓` -
 the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect. TODO observe.

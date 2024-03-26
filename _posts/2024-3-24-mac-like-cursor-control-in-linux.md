@@ -121,7 +121,7 @@ Remapper.
 
 Now all that's left to do is to add Alt+Left to "Navigation/Back" in IDEA.
 
-## Huge change: mapping ⌘Command to Ctrl
+## Huge change: mapping `⌘Command` to `Ctrl`
 
 To further replicate Mac's keyboard you may wish for `⌘Command` to act as `Ctrl` key. This would have numerous advantages:
 

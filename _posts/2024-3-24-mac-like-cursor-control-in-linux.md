@@ -104,6 +104,10 @@ Unfortunately it's not possible to reconfigure `^←`/`^→` to make cursor skip
 
 ## IDEA
 
+NOTE: only do this if you want to stick to the XWin or Gnome keyboard layout in IDEA. However, I recommend
+to switch to MacOS layout and update it accordingly. In the MacOS layout, "Back"/"Forward" is mapped to
+`⌘[` and `⌘]`, respectively. But the follow-up text is a good read on how the mapping craziness work.
+
 The `⌘←` shortcut will disable the "Navigation/Back" button which is mapped to Ctrl+Alt+Left. The easiest way
 is to redefine "Navigation/Back" to `^<` and "Navigation/Forward" to `^Shift<`.
 
@@ -172,13 +176,13 @@ Then, add the following mappings to the Remapper:
 * `Control_L + Right` to `End`
 * `Control_L + Up` to `Control_L + Home`
 
-And it works! Don't forget to go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts", "Navigation"
-and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
-Now the cursor movement mapping is identical to Apple.
+And it works! Now the cursor movement mapping is identical to Apple.
 
-To fix IDEA Navigate/Back: in MacOS, go to Keyboard Modifier Keys and make sure Caps Lock is set to `⌥Option`.
-Now of course this is a huge change and IDEA keyboard shortcuts are most probably completely unusable now. But more on
-that in some other article.
+Don't forget to go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts", "Navigation"
+and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
+Also "Windows" / "Close window" set to `Ctrl+Q`.
 
 EDIT: there are strange artifacts and this solution doesn't work 100%: press `↓` two times, then `⌘↓` -
-the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect. TODO observe.
+the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect.
+But this only occurs in IDEA for some reason... maybe it's some kind of Remapper+Java+XWayland incompatibility.
+It's not that bad.

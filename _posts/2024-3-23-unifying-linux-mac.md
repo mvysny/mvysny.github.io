@@ -6,7 +6,12 @@ title: Unifying Linux+Mac keyboard, or making Linux work like Mac
 I'm working with Linux in VM/Parallels on a daily basis, and it's impossible for me to constantly switch
 between two very different layouts. Therefore, I've decided to try and modify Linux to work as much as MacOS.
 
-EXPLORATORY STATE: WORK IN PROGRESS
+Status: it works, and it works surprisingly well:
+
+* The cursor keys works exactly as in MacOS
+* The app shortcuts are now remarkably close to MacOS
+* IDEA keymap is almost identical to the typical MacOS layout employed by all other "native" MacBook apps
+* You no longer need the "Numeric Keypad" part of your Magic Keyboard - the notebook keyboard is exactly as usable in this setup.
 
 ## MacBook
 
@@ -64,6 +69,7 @@ The way is to go through all keybindings and alter them:
 * Add Selection for Next Occurrence -> `Ctrl+G` (won't conflict with "Find Next" since this is only used when outside of the Find/Replace mode)
 * Unselect Occurrence -> `Ctrl+Shift+G`
 * Terminal -> `Ctrl+F12` or just `F12`
+* Tool windows (e.g. Project) -> Remap them to `Ctrl+1` and mercilessly remove the existing bookmark-related shortcuts.
 
 #### Fixing ArrowKey-based shortcuts
 

@@ -23,8 +23,8 @@ I tend to remap the keyboard so that `⌥Option` acts as `Meta/Super/Win` in Lin
 so that `Alt+Tab` and `Alt+BackTick` in Linux is activated by pressing `⌘Tab` and/or ⌘` respectively, and acts
 exactly the same as in MacOS.
 
-First, install `gnome-tweaks` via apt, and make sure the ⌥Option button works as Meta, and the ⌘Command button
-works as Alt: run Tweaks, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior" and select
+First, install `gnome-tweaks` via apt, and make sure the `⌥Option` button works as `Meta`, and the `⌘Command` button
+works as `Alt`: run Tweaks, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior" and select
 "Alt is swapped with Win". Remapper will stack its modifications on top of these ones - these mappings won't fight each other.
 But you must log out after you change Tweaks settings, otherwise Remapper will receive strange keyboard shortcuts.
 So, logout and login.

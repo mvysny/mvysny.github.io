@@ -24,13 +24,13 @@ WARNING: WORK IN PROGRESS. There are still outstanding issues, for example:
 
 Ideal scenario would be:
 
-* In MacOS: The F1-F12 keys would be in the "special feature mode" (e.g. pressing F8 acts as play/pause, and you need to press Fn to achieve F8)
-* In the VM: F1-F12 keys would act as F1-F12 without you having to press the "Fn" button.
+* In MacOS: The `F1`-`F12` keys would be in the "special feature mode" (e.g. pressing `F8` acts as play/pause, and you need to press `Fn` to achieve `F8`)
+* In the VM: `F1`-`F12` keys would act as `F1`-`F12` without you having to press the `Fn` button.
 
 Unfortunately this ideal scenario can not be achieved since MacOS intercepts certain keys, making them unavailable for the VM:
 
-* F1-F4 are intercepted and can not be remapped. You would need to press the "Fn" key along with F1-F4 and we want to avoid the "Fn" key.
-* F5-F12 can be remapped, but with limitations. For example, ⌥+F12 always opens the sound settings in MacOS as well; F11 and F12 always also
+* `F1`-`F4` are intercepted and can not be remapped. You would need to press the `Fn` key along with `F1`-`F4` and we want to avoid the `Fn` key.
+* `F5`-`F12` can be remapped, but with limitations. For example, `⌥Option+F12` always opens the sound settings in MacOS as well; `F11` and `F12` always also
   increase/decrease volume on MacOS.
 
 Therefore, the only way is to go to "System settings", "Keyboard", "Keyboard Shortcuts", "Function Keys"

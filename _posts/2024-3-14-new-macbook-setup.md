@@ -141,6 +141,13 @@ Links:
 * Press ⌘3 to show CPU history window, ⌘4 to show GPU history
 * Switch to "Memory" tab, to see the memory pressure chart.
 
+## Global Keyboard Shortcuts
+
+Open "Settings", "Keyboard", "Keyboard Shortcuts", "App Shortcuts" and add:
+
+* "Show Help menu" set to `⌥⌘/` (can't use `⇧⌘/` since some apps launch help with `⌘?`)
+* "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
+
 ## More
 
 If you want to go all crazy and completely unify Linux+Mac shorcuts, see

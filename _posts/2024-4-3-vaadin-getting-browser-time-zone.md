@@ -21,6 +21,9 @@ public final class BrowserTimeZone {
 		VaadinSession.getCurrent().setAttribute(ExtendedClientDetails.class, extendedClientDetails);
 	}
 
+    /**
+     * Call this from the UI Init Listener.
+     */
 	public static void fetch() {
 		if (getExtendedClientDetails() == null) {
 			UI.getCurrent().getPage().retrieveExtendedClientDetails(BrowserTimeZone::setExtendedClientDetails);

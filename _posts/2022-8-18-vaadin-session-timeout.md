@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vaadin Session Timeout
+title: Vaadin Session Timeout / Heartbeats
 ---
 
 The Vaadin documentation at [Application Lifecycle: UI Expiration](https://vaadin.com/docs/latest/advanced/application-lifecycle#application.lifecycle.ui-expiration)
@@ -27,7 +27,8 @@ public class MyWebListener implements ServletContextListener {
 }
 ```
 
-or by calling `VaadinSession.getSession()).getHttpSession().setMaxInactiveInterval(30 * 60)` for every session created.
+or by calling `VaadinSession.getSession()).getHttpSession().setMaxInactiveInterval(30 * 60)` for every session created;
+or by setting `server.servlet.session.timeout=1h` when using Spring Boot.
 
 If you're still using `web.xml`, you can set `<session-timeout>30</session-timeout>`, see [Java Session Timeout](https://www.baeldung.com/servlet-session-timeout).
 
@@ -43,6 +44,7 @@ Simply define your own servlet which extends VaadinServlet:
 public class MyServlet extends VaadinServlet {
 }
 ```
+Or set `vaadin.closeIdleSessions=true` in `application.properties` if using Spring Boot.
 
 To check whether the configuration was applied, call the following e.g. from your main route:
 ```java
@@ -82,6 +84,42 @@ see [Configuration Properties](https://vaadin.com/docs/latest/configuration/prop
 
 The numeric value of the `heartbeatInterval` property denotes a number in seconds.
 
+### The purpose of heartbeats
+
+The purpose of heartbeats is to close unused UIs sooner than when the session is destroyed. Say you have two open tabs
+and you close one of them. With the default heartbeat of 5 minutes, the UI for that tab is closed after 15-20 minutes.
+Closing a UI requires an ongoing request; since there's the second tab/UI which sends heartbeats, these requests will
+eventually detect three missed heartbeats of the closed UI/tab and will close it.
+
+However, this mechanism doesn't work when there's just one tab and is closed. The heartbeats stop coming to the server;
+since there's nobody else performing requests, Vaadin Servlet is not invoked and can not run the UI cleanup loop.
+Therefore, the UI is kept open until the session is eventually closed by the servlet container.
+
+#### Turning off heartbeats
+
+What happens when we turn off the heartbeat mechanism? You can turn off the heartbeat mechanism by setting it to `-1` or any negative value.
+The documentation says that UIs are closed after 3 missed heartbeats;
+however there are no heartbeats and so the UI cleanup loop never closes any UI. The UIs are therefore kept around until
+the session is ultimately destroyed by the servlet container.
+
+In the case of having just one tab open, the situation doesn't really change when disabling heartbeats: the UI stays open until the session is destroyed.
+
+However, when we have multiple tabs open and we close some of them, the UIs will still stay opened until the session is destroyed,
+potentially keeping lots of unused UIs around in memory. That means that the heartbeat mechanism helps save server memory.
+
+Therefore, the best way is to keep the heartbeat mechanism turned on.
+
+#### Hypothetical case: no heartbeats
+
+Hypothetical case: what if there would be no heartbeat mechanism, but we still want to close UIs sooner? We can override `VaadinService.isUIActive()`,
+keep track of requests and return false if the last request is older than, say, 15 minutes.
+
+In case of having just one tab open, nothing changes: the UI stays open until the session is destroyed.
+
+When multiple tabs are open and we close some of them, the UIs are closed, but only after there is a request from some of the UIs still active.
+If there's no activity on the open tabs, there are no heartbeats to keep the server processing requests, and therefore the UIs
+stay around until the session is destroyed by the servlet container.
+
 ## FAQ
 
 * Q: If `closeIdleSessions` is set to `false`, will the session ever close if the user just idles?
@@ -92,3 +130,8 @@ The numeric value of the `heartbeatInterval` property denotes a number in second
 * A: If `closeIdleSessions` is `false` then never since heartbeat requests will effectively keep the session active.
      Otherwise, Vaadin will eventually close the UI (after the age of the UI surpasses the session timeout) which will stop the communication from the browser to the server.
      Servlet container will then close the session after the session timeout elapses. That means that the session is closed roughly after the session timeout times two.
+* Q: Can UI survive session closing?
+* A: No. UIs are owned by the session; closing a session closes all UIs.
+* Q: Is UI equal to the browser tab?
+* A: Yes - there's one UI per browser tab. However, in Vaadin 23+ when the page is reloaded, the old UI instance is thrown away and a new one is constructed,
+  so in practice there's no way to reliably identify browser tab instance from the UI instance.

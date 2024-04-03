@@ -117,7 +117,7 @@ keep track of requests and return false if the last request is older than, say, 
 In case of having just one tab open, nothing changes: the UI stays open until the session is destroyed.
 
 When multiple tabs are open and we close some of them, the UIs are closed, but only after there is a request from some of the UIs still active.
-If there's no activity on the open tabs, there are no heartbeats to keep the server processing requests, and therefore the UIs
+If there's no activity on the open tabs, there are no requests to trigger the server, which means that the UI cleanup loop is not run, and therefore the UIs
 stay around until the session is destroyed by the servlet container.
 
 ## FAQ

@@ -133,5 +133,5 @@ stay around until the session is destroyed by the servlet container.
 * Q: Can UI survive session closing?
 * A: No. UIs are owned by the session; closing a session closes all UIs.
 * Q: Is UI equal to the browser tab?
-* A: Yes - there's one UI per browser tab. However, in Vaadin 23+ when the page is reloaded, the old UI instance is thrown away and a new one is constructed,
+* A: Yes - there's at most one UI per browser tab. However, in Vaadin 23+ when the page is reloaded, the old UI instance is thrown away and a new one is constructed,
   so in practice there's no way to reliably identify browser tab instance from the UI instance. See [Vaadin UI Scope](../vaadin-ui-scope/) for more details.

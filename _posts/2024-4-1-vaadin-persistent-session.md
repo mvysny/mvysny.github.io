@@ -7,6 +7,11 @@ To enable session persistence, set the `server.servlet.session.persistent=true` 
 The property value is `false` by default; however, it is overwritten by spring-devtools, which sets it to true.
 It's quite convenient since you remain logged in over redeploys without any special configuration.
 
+Advantages of enabling persistent sessions:
+
+* The session survives server restarts and app upgrades. In theory, you can upgrade your app, and the users
+  stay logged in and can continue working as if nothing happened.
+
 Disadvantages of enabling persistent sessions:
 
 * Everything stored in the session has to be serializable. All the basic building blocks of Vaadin are already serializable, 
@@ -26,3 +31,14 @@ Disadvantages of enabling persistent sessions:
 * The UI state will still not be persisted in dev mode, so that only the relevant part of the session (logged-in user for example)
   can still be serialized. You need to also set Vaadin's `devmode.sessionSerialization.enabled`.
   See [Vaadin configuration properties](https://vaadin.com/docs/latest/configuration/properties) for more info.
+
+## Fallback strategy
+
+You can enable the persistent session and observe what’s going on with the system. In the worst case, if the session is incompatible,
+there will be a deserialization exception and the session will simply be thrown away, which may be acceptable from time to time.
+You can also place all of your session state into one class, say `MySession`, and then make extra sure to modify the class
+in a compatible way serialization-wise.
+
+Even better, you can prepare a `MyUserStorage` interface with two implementations: one would store stuff into session,
+the other one into cookies. If you discover the need to disable the session persistency,
+this will allow you to quickly switch to alternative implementation of `MyUserStorage` which uses cookies.

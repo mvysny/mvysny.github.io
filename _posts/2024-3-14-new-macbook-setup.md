@@ -42,8 +42,11 @@ Install from the App Store:
 
 Go into its settings > Hotkeys:
 
-* "Open file": add a secondary key ⌘→
-* "Go to enclosing folder" : ⌘←
+* "Go to enclosing folder" : `Backspace`
+* "Compress file with options": `⌘P`
+* "Extract file": `⌘U`
+* "Equalize Panels": `⌘=`
+* "Go to Home": ` (back tick)
 
 ## Parallels
 

@@ -164,6 +164,9 @@ while Remapper handling key combo mappings.
 Sounds like remapping both individual modifiers and the key combos is not the right way to go -
 a better way is a two-level system where modifiers are remapped in Gnome Tweaks and key-combos further on in the Remapper.
 Let's try it out. Open Gnome Tweaks and activate "Additional Layout Options" / "Ctrl position" / "Swap Left Win with Left Ctrl".
+
+> Note: When using a Windows laptop, use the "Left Alt as Ctrl, Left Ctrl as Win, Left Win as Left Alt" option instead.
+
 LOG OUT and log in again - this is very important otherwise Remapper will output strange key combinations.
 Then, add the following mappings to the Remapper:
 
@@ -178,9 +181,9 @@ Then, add the following mappings to the Remapper:
 
 And it works! Now the cursor movement mapping is identical to Apple.
 
-Don't forget to go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts", "Navigation"
-and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
-Also "Windows" / "Close window" set to `Ctrl+Q`.
+Don't forget to modify Gnome shortcuts as well: go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts". Then:
+* "Navigation" and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
+* "Windows" / "Close window" set to `Ctrl+Q`.
 
 EDIT: there are strange artifacts and this solution doesn't work 100%: press `↓` two times, then `⌘↓` -
 the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect.

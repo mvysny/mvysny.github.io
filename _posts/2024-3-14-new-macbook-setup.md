@@ -47,6 +47,8 @@ Go into its settings > Hotkeys:
 * "Extract file": `⌘U`
 * "Equalize Panels": `⌘=`
 * "Go to Home": ` (back tick)
+* "Change drive in left panel": `⌘F1`
+* "Change drive in right panel": `⌘F2`
 
 ## Parallels
 

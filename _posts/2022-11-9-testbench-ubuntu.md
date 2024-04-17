@@ -22,6 +22,14 @@ activity until finally Selenium times out with `org.openqa.selenium.SessionNotCr
 4. Add Chrome binary to the `$PATH` as well.
 5. Launch the tests, no other configuration necessary: now the chromedriver from PATH is launched, and it will launch chrome from the PATH.
 
+Unfortunately, Chrome for Testing isn't available for linux-arm64. I've tried fiddling with [Parallels+Rosetta](https://kb.parallels.com/129871);
+but even after I installed all dependencies chrome still failed with:
+```
+assertion failed [arm::is_brk_instruction(instruction)]: SIGTRAP from kernel was not from a BRK
+(ThreadContextRuntimeSignals.cpp:371 translate_sigtrap)
+ fish: Job 1, './chrome' terminated by signal SIGTRAP (Trace or breakpoint trap)
+```
+
 ## Ubuntu 23.04
 
 This works on Ubuntu 23.10 with chromium 119 installed via snap:

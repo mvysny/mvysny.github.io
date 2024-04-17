@@ -14,6 +14,7 @@ do that, read on.
 
 ChromeDriver can't control Chromium - Chromium is launched but it just sits there with no
 activity until finally Selenium times out with `org.openqa.selenium.SessionNotCreatedException: Could not start a new session. Response code 500. Message: session not created: DevToolsActivePort file doesn't exist`.
+Reported as [Chromium Bug](https://issues.chromium.org/issues/335373503), please upvote.
 
 1. Uninstall Chromium.
 2. Use [Chrome for Testing](https://googlechromelabs.github.io/chrome-for-testing/#stable). Download both "chrome" and "chromedriver" - they should work well together.
@@ -29,6 +30,8 @@ assertion failed [arm::is_brk_instruction(instruction)]: SIGTRAP from kernel was
 (ThreadContextRuntimeSignals.cpp:371 translate_sigtrap)
  fish: Job 1, './chrome' terminated by signal SIGTRAP (Trace or breakpoint trap)
 ```
+
+I've opened a [feature request](https://issues.chromium.org/issues/335383220), please upvote.
 
 ## Ubuntu 23.04
 

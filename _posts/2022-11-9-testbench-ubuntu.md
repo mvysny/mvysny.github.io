@@ -33,6 +33,9 @@ assertion failed [arm::is_brk_instruction(instruction)]: SIGTRAP from kernel was
 
 I've opened a [feature request](https://issues.chromium.org/issues/335383220), please upvote.
 
+Downloading official [Chrome](https://www.google.com/chrome/) only yields amd64 deb package. It installs and draws a welcome window,
+but then segfaults and that's it. Also, the deb package doesn't contain chromedriver.
+
 ## Ubuntu 23.04
 
 This works on Ubuntu 23.10 with chromium 119 installed via snap:

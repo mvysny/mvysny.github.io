@@ -13,10 +13,10 @@ is future-proof.
 
 WARNING: WORK IN PROGRESS. There are still outstanding issues, for example:
 
-* Mac: App switching now works via ^Tab instead of ⌘Tab
+* Mac: App switching now works via `^Tab` instead of `⌘Tab`
 * Mac: Whenever learning a new keyboard shortcut: You have to mentally juggle the fact that ⌘ is now the rightmost-bottom key.
-* Linux: App switching now works via Ctrl+Tab instead of Alt+Tab
-* Mac: Home/End stops scrolling the viewport (e.g. the page in Safari)
+* Linux: App switching now works via `Ctrl`+`Tab` instead of `Alt`+`Tab`
+* Mac: `Home`/`End` stops scrolling the viewport (e.g. the page in Safari)
 
 ## MacBook
 

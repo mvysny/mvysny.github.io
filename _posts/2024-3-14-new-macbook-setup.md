@@ -34,6 +34,10 @@ System Settings:
   * Tracking speed: 4th fastest
 * Accessibility / Pointer Control / Trackpad Options / Dragging style: Three-finger Drag
 * Keyboard / Keyboard Shortcuts / Function keys / Enable "Use F1, F2, etc"
+* Control Center
+  * Sound: always show in Menu Bar
+  * Battery: Show Percentage
+  * Spotlight: Don't Show
 
 Finder / Settings:
 
@@ -61,6 +65,8 @@ Go into its settings > Hotkeys:
 * "Go to Home": ` (back tick)
 * "Change drive in left panel": `⌘F1`
 * "Change drive in right panel": `⌘F2`
+
+Then, enable "Show all files".
 
 ## Parallels
 
@@ -118,7 +124,7 @@ We'll fix that using [Ukelele](https://software.sil.org/ukelele/):
 * Save the bundle.
 * Using Finder, copy the bundle to `/Library/Keyboard Layouts`
 
-Reboot, and add the ABC Copy keyboard.
+Reboot, and add the "ABC Copy" keyboard.
 
 Uninstall Ukelele.
 

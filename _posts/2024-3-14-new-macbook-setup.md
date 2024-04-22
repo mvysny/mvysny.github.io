@@ -53,6 +53,9 @@ Install from the App Store:
 * Commander One
 * UTM
 * Libre Office
+* Slack
+
+Install Firefox from the Firefox download page.
 
 ## Commander One
 
@@ -161,6 +164,22 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts", "App Shortcuts" and add:
 
 * "Show Help menu" set to `⌥⌘/` (can't use `⇧⌘/` since some apps launch help with `⌘?`)
 * "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
+
+## Safari
+
+* General
+  * Safari opens with: All windows from last session
+  * New window open with: Empty page
+  * New tabs open with: Empty page
+  * Homepage: blank
+* Tabs:
+  * Always show website titles in tabs
+* Search:
+  * Search engine: DuckDuckGo
+* Advanced
+  * Enable "Show full website address"
+  * Default encoding: UTF-8
+  * Enable "Show features for web developers"
 
 ## More
 

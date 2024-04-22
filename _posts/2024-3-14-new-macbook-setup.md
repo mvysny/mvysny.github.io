@@ -14,14 +14,25 @@ Make sure to buy MacBook with the [ISO International English](https://support.ap
 * Don't go for British English: it has GBP character in place of #
 * At least 36 GB of RAM and 1 TB of disk space, because of VM
 
+## During installation
+
+Make sure to enable encryption: turn on FileVault during the installation, or afterwards. Also,
+
+* Enable Location services, but only share the location with Home, Maps and Wallet.
+* Disable Siri
+
 ## Initial setup
 
-Make sure to enable encryption: turn on FileVault during the installation, or afterwards.
+Then, make sure both the OS and the apps are up-to-date; turn on everything in Settings / General/ Software Update / Automatic Updates.
 
 System Settings:
 
 * Mouse: turn off Natural scrolling
-* Trackpad / Scroll & Zoom / Natural scrolling: turn off
+* Trackpad:
+  * Scroll & Zoom / Natural scrolling: turn off
+  * Tap to click
+  * Tracking speed: 4th fastest
+* Accessibility / Pointer Control / Trackpad Options / Dragging style: Three-finger Drag
 
 Finder / Settings:
 

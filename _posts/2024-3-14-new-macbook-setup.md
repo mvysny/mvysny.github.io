@@ -33,6 +33,7 @@ System Settings:
   * Tap to click
   * Tracking speed: 4th fastest
 * Accessibility / Pointer Control / Trackpad Options / Dragging style: Three-finger Drag
+* Keyboard / Keyboard Shortcuts / Function keys / Enable "Use F1, F2, etc"
 
 Finder / Settings:
 

@@ -103,6 +103,8 @@ export PATH="$PATH:$M2_HOME/bin"
 Firefox should run in Wayland mode by default; verify in the `about:support` page: the "Window Protocol"
 setting should read "wayland" instead of "xwayland".
 
+Make sure to disable "smooth scrolling" in settings.
+
 ### gnome system monitor extension
 
 Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).

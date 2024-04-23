@@ -38,6 +38,8 @@ System Settings:
   * Sound: always show in Menu Bar
   * Battery: Show Percentage
   * Spotlight: Don't Show
+* [Enable Desktop & Document folder syncing over iCloud](https://support.apple.com/en-us/109344)
+* Desktop & Dock / Desktop & Stage Manager / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
 
 Finder / Settings:
 

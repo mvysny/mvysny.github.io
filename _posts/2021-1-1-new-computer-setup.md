@@ -300,7 +300,7 @@ Add your user to the docker group:
 ```bash
 sudo usermod -aG docker parallels
 ```
-Log out & back, and test it out:
+Reboot, and test it out:
 ```bash
 docker run --rm -ti ubuntu /bin/bash
 ```

@@ -205,3 +205,18 @@ Go to the "Updates" tab and set:
 
 LTS: the reason is that Parallels only supports Ubuntu 22.04; it shows scary segfaults on Ubuntu 23.10+.
 Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this may require Parallels 20+.
+
+## Docker
+
+```bash
+sudo apt install docker docker-compose
+```
+
+Add your user to the docker group:
+```bash
+sudo usermod -aG docker parallels
+```
+Log out & back, and test it out:
+```bash
+docker run --rm -ti ubuntu /bin/bash
+```

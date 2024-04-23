@@ -289,3 +289,18 @@ More tips on when you're setting up a server:
 
 * Create a [Byobu Startup](../byobu-startup/) script which runs all necessary stuff in Byobu windows
 * [Setup a network using netplan](../ubuntu-netplan-no-networkmanager/)
+
+## Docker
+
+```bash
+sudo apt install docker docker-compose
+```
+
+Add your user to the docker group:
+```bash
+sudo usermod -aG docker parallels
+```
+Log out & back, and test it out:
+```bash
+docker run --rm -ti ubuntu /bin/bash
+```

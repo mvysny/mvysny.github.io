@@ -88,10 +88,15 @@ Keep gnome-terminal. Set the color scheme to:
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
-* "Launch Terminal" to `Super+t`
-* "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
-  This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
-* "Move Window one workspace to the right" set to **Shift+Super+Page Down**, setting it to the same setting as before.
+* "Launchers" / "Launch Terminal" to `Super+t`
+* Navigation:
+  * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
+    This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
+  * "Move Window one workspace to the right" set to **Shift+Super+Page Down**, setting it to the same setting as before.
+* "Windows":
+  * "Hide window": disabled
+  * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
+  * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
 ### gnome text editor
 

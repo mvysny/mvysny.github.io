@@ -154,10 +154,12 @@ Go to Configuration:
 * Icons / File panel: 16x16
 * Keys / Hot Keys:
   * cm_RunTerm: `F2`
-  * cm_PackFiles: `Alt+P`
-  * cm_ExtractFiles: `Alt+U`
+  * cm_PackFiles: `Alt+P` (or `Ctrl+P` when in Mac mode)
+  * cm_ExtractFiles: `Alt+U` (or `Ctrl+U` when in Mac mode)
+  * cm_TargetEqualSource: `Alt+=` (or `Ctrl+=` when in Mac mode)
   * cm_ChangeDirToHome: ` (grave accent)
   * cm_RenameOnly: `F9`
+  * cm_Search: `Ctrl+Alt+F`
 * Tools / Editor:
   * Use External Program;
   * executable: `gnome-text-editor`

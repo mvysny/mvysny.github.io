@@ -160,10 +160,13 @@ Links:
 
 ## Global Keyboard Shortcuts
 
-Open "Settings", "Keyboard", "Keyboard Shortcuts", "App Shortcuts" and add:
+Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
-* "Show Help menu" set to `⌥⌘/` (can't use `⇧⌘/` since some apps launch help with `⌘?`)
-* "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
+* "App Shortcuts" and add:
+  * "Show Help menu" set to `⌥⌘/` (can't use `⇧⌘/` since some apps launch help with `⌘?`)
+  * "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
+* Modifier Keys
+  * `Caps Lock` as `^ Control`
 
 ## Safari
 

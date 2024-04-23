@@ -33,7 +33,10 @@ System Settings:
   * Tap to click
   * Tracking speed: 4th fastest
 * Accessibility / Pointer Control / Trackpad Options / Dragging style: Three-finger Drag
-* Keyboard / Keyboard Shortcuts / Function keys / Enable "Use F1, F2, etc"
+* Keyboard
+  * Keyboard Shortcuts / Function keys / Enable "Use F1, F2, etc"
+  * Text input / Edit... / All Input Sources:
+    * Disable "Correct spelling automatically", "Capitalize words automatically", "Show inline predictive text" and "Add period with double-space"
 * Control Center
   * Sound: always show in Menu Bar
   * Battery: Show Percentage

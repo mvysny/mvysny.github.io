@@ -220,3 +220,7 @@ Log out & back, and test it out:
 ```bash
 docker run --rm -ti ubuntu /bin/bash
 ```
+
+## Terminal
+
+Set Initial terminal size in the "Profile" setting to 160x50.

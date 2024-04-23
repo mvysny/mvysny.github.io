@@ -165,12 +165,6 @@ Go to Configuration:
 
 Sort by extension.
 
-Additional configuration, to make Double Commander navigation similar to Mac's Commander one:
-
-* Keys / Hot Keys:
-  * cm_Open: Alt+Right
-  * cm_ChangeDirToParent: Alt+Left
-
 ### MacBook
 
 Follow [New MacBook Setup](../new-macbook-setup/).
@@ -203,4 +197,7 @@ Go to Settings. Then:
 
 Go to the "Updates" tab and set:
 * When there are other updates: Display Immediately
-* Notify me of new Ubuntu version: For any new version
+* Notify me of new Ubuntu version: For LTS only
+
+LTS: the reason is that Parallels only supports Ubuntu 22.04; it shows scary segfaults on Ubuntu 23.10+.
+Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this may require Parallels 20+.

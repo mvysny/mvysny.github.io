@@ -54,6 +54,8 @@ jobs:
       run: ./gradlew clean build '-Pvaadin.productionMode' --stacktrace --info --no-daemon
 ```
 
+> Note: remove the `\` character from `{\{` in the example above. 
+
 Fourth step: if you're running UI unit tests (which you should), you need to enable production mode for the tests, otherwise
 the server license key will be ignored and your build will fail with:
 ```

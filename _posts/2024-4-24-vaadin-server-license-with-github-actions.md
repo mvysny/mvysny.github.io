@@ -14,7 +14,8 @@ the key itself.
 
 Second, go to your GitHub project home page, then click "Settings". In "Security" there's "Secrets and variables"; click the "Actions" link
 within. In the secrets tab, click "New repository secret" and add a secret. The name can be anything, let's go with `VAADINOFFLINEKEY`;
-paste the Vaadin server license key into the "Secret" field.
+paste the Vaadin server license key into the "Secret" field. Read more on secrets in [GitHub Actions: Secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+documentation.
 
 Third, you need to create the environment variable in your build, populated by the contents of this secret.
 Go to your project `.github/workflows/` folder and add the environment variable to one of the steps.

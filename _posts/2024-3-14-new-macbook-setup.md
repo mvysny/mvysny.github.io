@@ -42,7 +42,11 @@ System Settings:
   * Battery: Show Percentage
   * Spotlight: Don't Show
 * [Enable Desktop & Document folder syncing over iCloud](https://support.apple.com/en-us/109344)
-* Desktop & Dock / Desktop & Stage Manager / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
+* Desktop & Dock:
+  * "Dock" / Minimize windows using: "Scale effect"
+  * "Dock" / "Position on screen": "Left"
+  * "Desktop & Stage Manager" / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
+  * Hot Corners...: disable all hot corners
 
 Finder / Settings:
 

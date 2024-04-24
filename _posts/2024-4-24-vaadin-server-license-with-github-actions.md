@@ -32,14 +32,14 @@ jobs:
         os: [ubuntu-latest]
         java: [11]
 
-    runs-on: $\{{ matrix.os }}
+    runs-on: ${\{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK $\{{ matrix.java }}
+    - name: Set up JDK ${\{ matrix.java }}
       uses: actions/setup-java@v3
       with:
-        java-version: $\{{ matrix.java }}
+        java-version: ${\{ matrix.java }}
         distribution: 'temurin'
     - name: Cache Gradle packages
       uses: actions/cache@v2
@@ -47,10 +47,10 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: $\{{ runner.os }}-gradle-$\{{ hashFiles('**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties', 'gradle.properties') }}
+        key: ${\{ runner.os }}-gradle-${\{ hashFiles('**/*.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties', 'gradle.properties') }}
     - name: Build with Gradle
       env:
-        VAADIN_OFFLINE_KEY: $\{{ secrets.VAADINOFFLINEKEY }}
+        VAADIN_OFFLINE_KEY: ${\{ secrets.VAADINOFFLINEKEY }}
       run: ./gradlew clean build '-Pvaadin.productionMode' --stacktrace --info --no-daemon
 ```
 

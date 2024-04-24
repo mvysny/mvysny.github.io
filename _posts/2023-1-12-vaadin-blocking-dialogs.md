@@ -202,7 +202,7 @@ you'll have to use their suspending counterparts. Please find more in the [Kotli
 ## Pushing Response During the UI Thread execution
 
 In the discussion of the [vaadin.com blogpost on blocking dialogs](https://vaadin.com/blog/tackling-blocking-dialogs-in-web-applications-with-vaadin),
-Matthias shared a very interesting solution. The solution is as follows: in the middle
+Matthias shared a very interesting solution, which he's demoing in his [Blocking Dialogs GitHub repository](https://github.com/mperktold/blocking-dialogs/). The solution is as follows: in the middle
 of the UI request, you can unlock Vaadin session and call `UI.push()` to send all accumulated
 UI changes to the client-side, causing the dialog to draw before the UI thread
 actually finishes. Now the thread is no longer the "UI thread" (since the session lock is gone),

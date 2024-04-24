@@ -206,7 +206,7 @@ Matthias shared a very interesting solution, which he's demoing in his [Blocking
 of the UI request, you can unlock Vaadin session and call `UI.push()` to send all accumulated
 UI changes to the client-side, causing the dialog to draw before the UI thread
 actually finishes. Now the thread is no longer the "UI thread" (since the session lock is gone),
-and so you are to block. After the blocking is done, you can reacquire the UI lock and continue execution.
+and so you can block freely. After the blocking is done, you can reacquire the UI lock and continue execution.
 
 Since this solution doesn't require any specific Java features, this will work on any JVM, however
 there are things to look out for:

@@ -19,20 +19,19 @@ The only way that worked for me is to let Parallels download and install Ubuntu 
 
 When auto-installing, Parallels will create two partitions using the GPT partitioning table: 1GB efi and 64GB ext4. I'd argue ext4 is better
 for VM disks since btrfs uses COW and would balloon the VM disk size much more than ext4.
-Therefore let's use ext4. It will also create a 3G swapfile, you can resize it later.
+Therefore, let's use ext4. It will also create a 2G swapfile, you can resize it later.
 
 Name the machine after its expected usage, e.g. `mavi-macbook-vm-experiments`.
 
 ## Post-installation
-
-Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthedocs.io/en/latest/Swapfile.html).
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
 
 ### ext4
 
 Enable trim. You need to enable discard for all of your ext4 partitions: simply add the `discard` option to
-`/etc/fstab`. Note that swap on a swap partition will perform discard automatically.
+`/etc/fstab`. Note that swap on a swap partition will perform discard automatically. Make sure the VM disk supports trim:
+`lsblk --discard` should print non-zero value in DISC-GRAN for `sda`.
 
 Regarding additional fs flags:
 * `user_xattr` is enabled by default on ext4; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
@@ -72,7 +71,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
-I tend to configure Gnome to swap Alt and Meta keys, so that ⌥ works as "Meta" and ⌘ works as "Alt" in guest.
+I tend to configure Gnome to swap `Alt` and `Meta` keys, so that `⌥` works as `Meta` and `⌘` works as `Alt` in guest.
 [To swap "Cmd" and "Alt"](https://unix.stackexchange.com/a/417708/256417),
 causing the Mac keyboard having the same modifier key order as a PC keyboard "Fn, Ctrl, Super, Alt":
 install `gnome-tweaks`, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior", "Alt is swapped with Win"
@@ -214,7 +213,7 @@ Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this
 ## Docker
 
 ```bash
-sudo apt install docker docker-compose
+sudo apt install docker.io docker-compose
 ```
 
 Add your user to the docker group:

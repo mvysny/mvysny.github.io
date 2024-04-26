@@ -63,7 +63,9 @@ Q: Boot blocked by "Job systemd-networkd-wait-online.service/start running"
 
 A: `cloud-init` configures `netplan` to initialize network interfaces upon boot.
 I've uninstalled `cloud-init` and removed `/etc/netplan/50-cloud-init.yaml`. That didn't help.
-Ultimately [systemctl disable systemd-networkd.service](https://askubuntu.com/a/1501504/22996) helped.
+`sudo systemctl disable systemd-networkd-wait-online.service` worked around the problem,
+but it's better to decide to use either networkd or NetworkManager with [netplan](https://netplan.io)
+and stick to that - networkd on ubuntu-server, NetworkManager on ubuntu-desktop.
 
 ## Parallels
 

@@ -52,6 +52,8 @@ Then, install via `sudo apt install -f ./input-remapper-2.0.1.deb` - this will i
 
 Run the remapper from terminal via `input-remapper-gtk`. The remapper will ask for root password - this is okay.
 
+If you have Ubuntu 24.04 or later, you can install Remapper via apt: `sudo apt install input-remapper-gtk`.
+
 ### Configuration
 
 It will take some time for you to understand the logic of the Remapper UI; don't worry you'll get there.

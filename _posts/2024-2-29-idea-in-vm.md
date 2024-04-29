@@ -51,10 +51,9 @@ but nothing impeding professional work.
 ## MacBook Intel
 
 UTM on old MacBook Air 2015 x86-64: UTM only offers GPU acceleration for Ubuntu 24.04 guests
-(because of some mesa patches which are only included in Ubuntu 24.04+). Unfortunately,
-IDEA starts but only shows a black rectangle, making it completely unusable. Might be Xwayland issue, or
-some kind of incompatibility between UTM and Java rendering; IDEA Wayland or Mesa upgrades might improve things.
-IDEA works when the VM is started without GPU acceleration, but the speed is just "mediocre"-to-"bad".
+(because of some mesa patches which are only included in Ubuntu 24.04+). To fix IDEA, 
+edit `idea64.vmoptions`, comment out `-Dsun.java2d.metal=true` and
+enable `-Dsun.java2d.opengl=true`. Unfortunately, IDEA is very slow in this mode, making it unusable for any sensible work.
 
 However, the testing machine is very old and visibly slow: maybe the Apple Silicon might be able to compensate.
 But then again, the inefficiencies of not having proper 3D acceleration will drain the battery and extort strain

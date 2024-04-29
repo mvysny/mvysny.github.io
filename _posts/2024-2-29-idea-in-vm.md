@@ -68,7 +68,8 @@ so you'll either have to install it via flatpak or download+unzip (since [JetBra
  does [not support Linux+ARM](https://youtrack.jetbrains.com/issue/TBX-8561/Native-build-for-Linux-ARM64)).
 
 UTM: Ubuntu 24.04 works quite well, including the GPU performance. It's not as smooth as with Parallels, but still highly usable.
-Unfortunately IDEA doesn't work and will simply display a black rectangle instead.
+To make IDEA work in UTM, edit the `idea64.vmoptions` file, comment out `-Dsun.java2d.metal=true` and
+enable `-Dsun.java2d.opengl=true`. Unfortunately, IDEA is very slow in this mode, making it unusable for any sensible work.
 
 Parallels: Parallels will automatically download and install Ubuntu 22.04 for you, and will also
 install parallels tools into the VM. The GUI itself and IDEA runs incredibly smooth; it runs even better

@@ -61,7 +61,7 @@ sudo apt autoremove --purge gedit
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
-* "Launchers" / "Launch Terminal" to `Super+t`
+* "Launchers" / "Launch Terminal" to `^T`
 * Navigation:
   * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
     This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
@@ -71,10 +71,8 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
-I tend to configure Gnome to swap `Alt` and `Meta` keys, so that `⌥` works as `Meta` and `⌘` works as `Alt` in guest.
-[To swap "Cmd" and "Alt"](https://unix.stackexchange.com/a/417708/256417),
-causing the Mac keyboard having the same modifier key order as a PC keyboard "Fn, Ctrl, Super, Alt":
-install `gnome-tweaks`, then "Keyboard & Mouse", "Additional Layout Options", "Alt and Win behavior", "Alt is swapped with Win"
+I tend to configure Gnome to swap `Alt`, `Ctrl` and `Meta` keys, so that `^` works as `Meta`, `⌥` works as Alt and `⌘` works as `Ctrl` in guest.
+To configure this, follow [Mac-like cursor control: Win/Alt/Ctrl scenario](../mac-like-cursor-control-in-linux/).
 
 In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
 
@@ -158,14 +156,15 @@ Go to Configuration:
   * Main Font: Ubuntu 11 Regular
   * Viewer font: Ubuntu Mono 13
 * Icons / File panel: 16x16
+* Keys: "Ctrl+Alt+Letters": None
 * Keys / Hot Keys:
   * cm_RunTerm: `F2`
-  * cm_PackFiles: `Alt+P` (or `Ctrl+P` when in Mac mode)
-  * cm_ExtractFiles: `Alt+U` (or `Ctrl+U` when in Mac mode)
-  * cm_TargetEqualSource: `Alt+=` (or `Ctrl+=` when in Mac mode)
+  * cm_PackFiles: `⌘P`
+  * cm_ExtractFiles: `⌘U`
+  * cm_TargetEqualSource: `⌘=`
   * cm_ChangeDirToHome: ` (grave accent)
   * cm_RenameOnly: `F9`
-  * cm_Search: `Ctrl+Alt+F`
+  * cm_Search: `⇧⌘F`
 * Tools / Editor:
   * Use External Program;
   * executable: `gnome-text-editor`

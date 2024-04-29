@@ -77,7 +77,7 @@ Go into its settings > Hotkeys:
 * "Go to Home": ` (back tick)
 * "Change drive in left panel": `⌘F1`
 * "Change drive in right panel": `⌘F2`
-* "Search": `⌘F`
+* "Search": `⇧⌘F`
 
 Then, enable "Show all files".
 

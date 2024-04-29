@@ -183,14 +183,15 @@ Go to Configuration:
   * Main Font: Ubuntu 11 Regular
   * Viewer font: Ubuntu Mono 13
 * Icons / File panel: 16x16
+* Keys: "Ctrl+Alt+Letters": None
 * Keys / Hot Keys:
   * cm_RunTerm: `F2`
-  * cm_PackFiles: `Alt+P` (or `Ctrl+P` when in Mac mode)
-  * cm_ExtractFiles: `Alt+U` (or `Ctrl+U` when in Mac mode)
-  * cm_TargetEqualSource: `Alt+=` (or `Ctrl+=` when in Mac mode)
+  * cm_PackFiles: `Alt+P` (or `⌘P` when in Mac mode)
+  * cm_ExtractFiles: `Alt+U` (or `⌘U` when in Mac mode)
+  * cm_TargetEqualSource: `Alt+=` (or `⌘=` when in Mac mode)
   * cm_ChangeDirToHome: ` (grave accent)
   * cm_RenameOnly: `F9`
-  * cm_Search: `Ctrl+Alt+F`
+  * cm_Search: `Shift+Alt+F`
 * Tools / Editor:
   * Use External Program;
   * executable: `gnome-text-editor`

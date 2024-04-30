@@ -118,5 +118,8 @@ microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome
 microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.key}'|base64 --decode >/etc/ngins/secret/tls.key
 systemctl reload nginx
 ```
+
+Don't forget to `chmod a+x /etc/cron.monthly/nginx-update-tls`.
+
 This way, you can easily expose services, which are running outside kubernetes, yet they will still be protected by https.
 The only disadvantage is that they'll run on a different port, in this case 9443.

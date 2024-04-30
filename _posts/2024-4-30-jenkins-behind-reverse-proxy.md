@@ -51,6 +51,10 @@ Save, then restart Jenkins.
 Now, the rewrite rule in Nginx is simplified:
 ```
 location /jenkins/ {
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Forwarded-Host v-herd.eu;
+    proxy_set_header X-Forwarded-Port 8443;
     proxy_pass http://localhost:8080;
 }
 ```
+Regarding the `X-Forwarded-` thingies, see [Jenkins: Reverse Proxy - Issues](https://www.jenkins.io/doc/book/system-administration/reverse-proxy-configuration-troubleshooting/).

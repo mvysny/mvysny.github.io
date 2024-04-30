@@ -80,3 +80,43 @@ You can check the `cert-manager-*` pod for logs.
 Alternative is to simply uninstall microk8s via `snap remove --purge microk8s`, then install it back.
 
 Note that cert-manager works with microk8s even when not in ha-cluster mode.
+
+# Getting The Certificates
+
+Cert Manager stores the SSL certificate and private key in the kubernetes secret as a pair of keys: the `tls.crt` and `tls.key`.
+To see the SSL certificate from command-line, enter:
+```bash
+$ microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.crt}'|base64 --decode
+```
+To obtain the private key:
+```bash
+$ microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.key}'|base64 --decode
+```
+
+## nginx
+
+If you store those files on a filesystem, you can then feed them for example to an external nginx:
+```
+server {
+	listen 9443 ssl default_server;
+	listen [::]:9443 ssl default_server;
+	ssl_certificate /etc/nginx/secret/tls.crt;
+	ssl_certificate_key /etc/nginx/secret/tls.key;
+    location / {
+      proxy_pass http://localhost:8080/;
+      # proxy_cookie_path / /foo; # use this if you mount your app to `location /foo/`
+      proxy_cookie_domain localhost $host;
+    }
+}
+```
+You can periodically update the certificates, e.g. once per month. Create a file named `/etc/cron.monthly/nginx-update-tls` with
+these contents:
+```bash
+#!/bin/bash
+set -e
+microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.crt}'|base64 --decode >/etc/nginx/secret/tls.crt
+microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.key}'|base64 --decode >/etc/ngins/secret/tls.key
+systemctl reload nginx
+```
+This way, you can easily expose services, which are running outside kubernetes, yet they will still be protected by https.
+The only disadvantage is that they'll run on a different port, in this case 9443.

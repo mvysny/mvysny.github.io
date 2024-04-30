@@ -115,7 +115,7 @@ these contents:
 #!/bin/bash
 set -e
 microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.crt}'|base64 --decode >/etc/nginx/secret/tls.crt
-microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.key}'|base64 --decode >/etc/ngins/secret/tls.key
+microk8s kubectl get secret v-herd-eu-ingress-tls  --namespace v-herd-eu-welcome-page -o jsonpath='{.data.tls\.key}'|base64 --decode >/etc/nginx/secret/tls.key
 systemctl reload nginx
 ```
 

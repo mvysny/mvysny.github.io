@@ -34,6 +34,8 @@ location /jenkins/ {
 }
 ```
 
+> Note: make sure Nginx supports sub_filters: run `nginx -V` and check it contains `--with-http_sub_module`
+
 But the proper solution is to force Jenkins to use the `/jenkins` context root.
 
 ## Proper solution

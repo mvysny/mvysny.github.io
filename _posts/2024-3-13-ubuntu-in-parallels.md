@@ -242,3 +242,13 @@ network:
   version: 2
   renderer: NetworkManager
 ```
+
+## Scripts
+
+`~/shutdown`:
+
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo shutdown -h now
+```

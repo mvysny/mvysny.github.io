@@ -252,3 +252,18 @@ network:
 set -e -o pipefail
 sudo shutdown -h now
 ```
+
+`~/update`:
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo apt update
+sudo apt -V dist-upgrade
+sudo apt autoremove --purge
+sudo snap refresh
+```
+
+To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
+```sudoers
+parallels ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge
+```

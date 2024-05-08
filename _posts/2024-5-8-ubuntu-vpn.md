@@ -21,7 +21,7 @@ the file which will be named `something.conf`. Copy the file to `/etc/wireguard/
 run:
 
 ```bash
-$ wg-quick up ./something.conf
+$ sudo wg-quick up ./something.conf
 ```
 
 If wireguard fails with `/usr/bin/wg-quick: line 32: resolvconf: command not found`,
@@ -33,7 +33,7 @@ $ sudo apt install resolvconf
 To stop VPN, run:
 
 ```bash
-$ wg-quick down ./something.conf
+$ sudo wg-quick down ./something.conf
 ```
 
 ## OpenVPN
@@ -53,3 +53,4 @@ you can find those in the `mullvad_userpass.txt` file:
 
 - first line is the username, a bunch of numbers
 - second line is the password, in my case it's just one character
+

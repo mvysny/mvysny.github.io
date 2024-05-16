@@ -16,6 +16,23 @@ Enable trim. You need to enable discard for all of your ext4 partitions: simply 
 `/etc/fstab`. Note that swap on a swap partition will perform discard automatically. Make sure the kernel supports trim on RPI flash card:
 `lsblk --discard` should print non-zero value in DISC-GRAN.
 
+### swap
+
+512mb of RAM isn't enough for running software and apt update at the same time - it will crash
+RPI.
+
+```bash
+sudo fallocate -l 2G /swap
+sudo chmod 0600 /swap
+sudo mkswap /swap
+sudo swapon /swap
+```
+
+Add this to `/etc/fstab`:
+```
+/swap	none	swap	sw	0	0
+```
+
 ### Setup wifi & remote access (ssh)
 
 * Set new hostname, e.g. `rpizero`: `sudo hostnamectl set-hostname rpizero`

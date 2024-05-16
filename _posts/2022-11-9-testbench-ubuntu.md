@@ -23,6 +23,38 @@ Reported as [Chromium Bug](https://issues.chromium.org/issues/335373503), please
 4. Add Chrome binary to the `$PATH` as well.
 5. Launch the tests, no other configuration necessary: now the chromedriver from PATH is launched, and it will launch chrome from the PATH.
 
+## Ubuntu 22.04 arm64
+
+EDIT: There's a way! Install [old arm64 Chromium debs using this tutorial](https://stackoverflow.com/questions/76857893/is-there-a-known-working-configuration-for-using-selenium-on-linux-arm64).
+Then, create this class:
+
+```java
+public class MyTest extends AbstractBrowserDriverTestBase {
+    @BeforeEach
+    public void setupBrowser() {
+        final ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--no-sandbox");
+        final ChromeDriver driver = new ChromeDriver(options);
+        setDriver(driver);
+        getDriver().get("http://localhost:8080/");
+    }
+
+    @AfterEach
+    public void shutdown() {
+        getDriver().close();
+    }
+
+    @Test
+    public void clickingButtonAddsParagraph() {
+        Assertions.assertFalse($(ParagraphElement.class).exists());
+        $(ButtonElement.class).first().click();
+        Assertions.assertTrue($(ParagraphElement.class).exists());
+    }
+}
+```
+
+### Old shit for reference
+
 Unfortunately, Chrome for Testing isn't available for linux-arm64. I've tried fiddling with [Parallels+Rosetta](https://kb.parallels.com/129871);
 but even after I installed all dependencies chrome still failed with:
 ```

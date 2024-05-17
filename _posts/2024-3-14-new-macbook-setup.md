@@ -47,6 +47,14 @@ System Settings:
   * "Dock" / "Position on screen": "Left"
   * "Desktop & Stage Manager" / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
   * Hot Corners...: disable all hot corners
+* Battery / Options
+  * "Prevent automatic sleeping on power adapter": on
+  * "Wake for network access": "Never"
+  * "Optimize video streaming": off
+* General
+  * Storage: "Empty Trash Automatically": enable
+* Lock screen
+  * "Require password": "After 5 seconds"
 
 Finder / Settings:
 

@@ -69,7 +69,7 @@ Just click "Parallels Virtual Keyboard", "new preset" and register the following
 Make sure "Autoload" is on (this way the setting will be activated automatically when you log in). Press the "Apply" button -
 the remapping should now be active.
 
-Unfortunately it's not possible to use the same physical keys for ⌥-based shortcuts:
+Unfortunately it's not possible to use the same physical keys for `⌥`-based shortcuts:
 
 * `⌥←` and `⌥→` doesn't work in Linux: `SuperL + Left` and `SuperL + Right` is hijacked by Gnome shell and can not be remapped.
 * trying to reconfigure `^\UF702` (Control+Left) in `DefaultKeyBinding.dict` doesn't do anything - MacOS
@@ -182,6 +182,44 @@ Then, add the following mappings to the Remapper:
 * `Control_L + Up` to `Control_L + Home`
 
 And it works! Now the cursor movement mapping is identical to Apple.
+
+Don't forget to modify Gnome shortcuts as well: go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts". Then:
+* "Navigation" and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.
+* "Windows" / "Close window" set to `Ctrl+Q`.
+
+EDIT: there are strange artifacts and this solution doesn't work 100%: press `↓` two times, then `⌘↓` -
+the current line gets selected instead! You need to press `⌘↓` multiple times for it to take effect.
+But this only occurs in IDEA for some reason... maybe it's some kind of Remapper+Java+XWayland incompatibility.
+It's not that bad.
+
+### `Ctrl`/`Alt`/`Ctrl`
+
+This is an improvement over `Win`/`Alt`/`Ctrl`, mapping `Win` to `CapsLock`. It has the following advantages:
+
+* `Caps Lock` now works as `Win`, activates Gnome Overview and enables other Win-based shortcuts such as `Win←↑→` to manage your windows.
+* Left `Control` still works like control, allowing you to expand selection with Intellij and pressing `Ctrl+C` in console.
+* `⌘C` is Copy, `⌘T` opens a new tab in Firefox.
+
+Open Gnome Tweaks, then "Keyboard & Mouse":
+
+* Overview shortcut: set to "Right Super"
+* "Additional Layout Options":
+  * "Alt&Win behavior": set to "Ctrl is mapped to Win and the usual Ctrl"
+  * "Ctrl position": check "Swap Right Win with Left Ctrl".
+
+> Note: When using a Windows laptop, use the TODO option instead.
+
+LOG OUT and log in again - this is very important otherwise Remapper will output strange key combinations.
+Then, add the following mappings to the Remapper:
+
+* `Alt_L + Down` to `Next`
+* `Alt_L + Left` to `Control_L + Left`
+* `Alt_L + Right` to `Control_L + Right`
+* `Alt_L + Up` to `Prior`
+* `Control_L + Down` to `Control_L + End`
+* `Control_L + Left` to `Home`
+* `Control_L + Right` to `End`
+* `Control_L + Up` to `Control_L + Home`
 
 Don't forget to modify Gnome shortcuts as well: go into "Gnome Settings", "Keyboard", "Keyboard Shortcuts". Then:
 * "Navigation" and modify "Switch Applications" to `Ctrl+Tab` and "Switch windows of an app" to `Ctrl+backtick`.

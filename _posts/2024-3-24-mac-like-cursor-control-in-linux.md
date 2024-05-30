@@ -205,7 +205,7 @@ Open Gnome Tweaks, then "Keyboard & Mouse":
 * Overview shortcut: set to "Right Super"
 * "Additional Layout Options":
   * "Alt&Win behavior": set to "Ctrl is mapped to Win and the usual Ctrl"
-  * "Ctrl position": check "Swap Right Win with Left Ctrl".
+  * "Ctrl position": check "Swap Right Win with Right Ctrl".
 
 > Note: When using a Windows laptop, use the TODO option instead.
 

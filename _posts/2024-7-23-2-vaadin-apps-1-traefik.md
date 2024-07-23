@@ -136,6 +136,8 @@ To enable https with Let's Encrypt, you obviously have to set up Traefik on an a
 server running somewhere in the internet; then you have to register a bunch of domains
 and make them point to the IP address where the server is running.
 
+See [Traefik: Let's Encrypt documentation](https://doc.traefik.io/traefik/https/acme/).
+
 Use Let's Encrypt and follow [Certbot instructions](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal).
 The `sudo certbot --nginx` command will modify all active nginx configuration files
 referenced from `/etc/nginx/nginx.conf`: it will enable https, will download certificates and store them locally,
@@ -144,6 +146,12 @@ and set up periodic refresh of the certificates.
 You do not have to have any account at Let's Encrypt: the only requirement is to own the DNS domain and
 to have it pointing to the server's IP.
 
-## What's next
+## DNS Wildcard mode
 
-Now that you understand how this basic setup works, we'll do the same setup, but with Kubernetes. Stay tuned.
+It's possible to set up your DNS record to handle wildcard requests, e.g. having your Traefik handle
+`http://*.yourdomain.com`. For this to work, you need two things:
+
+1. Enable wildcard support with your DNS provider.  E.g. with GoDaddy, click on the domain, then "Manage Domain",
+   the "DNS" tab, then "Add New Record": Type: A, Name: `*` (an asterisk), Data: the IP address of your server. Hit save -
+   the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
+2. Configure Traefik's Let's Encrypt integration for a proper wildcard support TODO

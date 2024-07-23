@@ -29,6 +29,7 @@ To import a database dump:
 $ mysql -u dude -p'my-secret-pw' -h 127.0.0.1 -P 3306 -D mydb <dump.sql
 ```
 
-JDBC URL: `jdbc:mysql://localhost:3306/mydb`
+* JDBC URL: `jdbc:mysql://localhost:3306/mydb`
+* To supply username/password in the URL: `jdbc:mysql://localhost:3306/mydb?user=dude&password=my-secret-pw`
 
 More info at [MySQL at Docker Hub](https://hub.docker.com/_/mysql/).

@@ -141,7 +141,7 @@ Also see [DigitalOcean documentation on Traefik](https://www.digitalocean.com/co
 You do not have to have any account at Let's Encrypt: the only requirement is to own the DNS domain and
 to have it pointing to the server's IP.
 
-## DNS Wildcard mode
+### DNS Wildcard mode
 
 It's possible to set up your DNS record to handle wildcard requests, e.g. having your Traefik handle
 `http://*.yourdomain.com`. For this to work, you need two things:
@@ -151,4 +151,12 @@ It's possible to set up your DNS record to handle wildcard requests, e.g. having
    the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
 2. Configure Traefik's Let's Encrypt integration for a proper wildcard support
 
-TODO how to do this
+https with DNS wildcard is tricky: Let's Encrypt only supports the [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/)
+type when verifying wildcard DNS. In short, the ACME client needs to briefly add a specific TXT record to your DNS entry.
+In order to do that, the ACME client needs to go to where your DNS is registered, and temporarily modify the DNS record.
+In other words, with Traefik:
+
+1. You need to use [dnsChallenge](https://doc.traefik.io/traefik/https/acme/#dnschallenge)
+2. You need to let Traefik know which provider you use, and configure proper access.
+
+Here's an example of [GoDaddy integration](https://stackoverflow.com/questions/61234489/cannot-get-wildcard-certificate-with-traefik-v2-and-godaddy).

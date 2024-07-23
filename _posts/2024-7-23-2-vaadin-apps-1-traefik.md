@@ -130,18 +130,13 @@ Verify that you can access those apps: [app1.myserver.fake](http://app1.myserver
 
 ## https via Let's Encrypt
 
-TODO
-
 To enable https with Let's Encrypt, you obviously have to set up Traefik on an actual
 server running somewhere in the internet; then you have to register a bunch of domains
 and make them point to the IP address where the server is running.
 
 See [Traefik: Let's Encrypt documentation](https://doc.traefik.io/traefik/https/acme/).
 
-Use Let's Encrypt and follow [Certbot instructions](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal).
-The `sudo certbot --nginx` command will modify all active nginx configuration files
-referenced from `/etc/nginx/nginx.conf`: it will enable https, will download certificates and store them locally,
-and set up periodic refresh of the certificates.
+Also see [DigitalOcean documentation on Traefik](https://www.digitalocean.com/community/tutorials/how-to-use-traefik-v2-as-a-reverse-proxy-for-docker-containers-on-ubuntu-20-04).
 
 You do not have to have any account at Let's Encrypt: the only requirement is to own the DNS domain and
 to have it pointing to the server's IP.
@@ -154,4 +149,6 @@ It's possible to set up your DNS record to handle wildcard requests, e.g. having
 1. Enable wildcard support with your DNS provider.  E.g. with GoDaddy, click on the domain, then "Manage Domain",
    the "DNS" tab, then "Add New Record": Type: A, Name: `*` (an asterisk), Data: the IP address of your server. Hit save -
    the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
-2. Configure Traefik's Let's Encrypt integration for a proper wildcard support TODO
+2. Configure Traefik's Let's Encrypt integration for a proper wildcard support
+
+TODO how to do this

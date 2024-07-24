@@ -245,21 +245,27 @@ public class ContextMenuEvent<C extends Component> extends ComponentEvent<C> {
               ", metaKey=" + metaKey +
               '}';
    }
+
+    /**
+     * Adds a right-click/context-click listener to this component.
+     *
+     * @param listener
+     *            the listener to add, not <code>null</code>
+     * @return a handle that can be used for removing the listener
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @NotNull
+    public static <T extends Component> Registration addListenerTo(
+            @NotNull T component,
+            @NotNull ComponentEventListener<ContextMenuEvent<T>> listener) {
+        return ComponentUtil.addListener(component, ContextMenuEvent.class,
+                (ComponentEventListener) listener, d -> d.preventDefault());
+    }
 }
 ```
 
 Now you can register the listener:
-```java
-final ComponentEventListener<ContextMenuEvent<Component>> listener = new ComponentEventListener<>() {
-   @Override
-   public void onComponentEvent(ContextMenuEvent event) {
-      System.out.println(event);
-   }
-};
-ComponentUtil.<ContextMenuEvent>addListener(button, ContextMenuEvent.class,
-    (ComponentEventListener) listener,
-        d -> {
-            d.preventDefault(); // don't show the browser-default context menu.
-        });
+```
+ContextMenuEvent.addListenerTo(button, e -> System.out.println(e));
 ```
 The `preventDefault()` is missing for Vaadin 23, just use `d.addEventData("event.preventDefault()")`.

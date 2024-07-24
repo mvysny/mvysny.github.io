@@ -259,6 +259,7 @@ final ComponentEventListener<ContextMenuEvent<Component>> listener = new Compone
 ComponentUtil.<ContextMenuEvent>addListener(button, ContextMenuEvent.class,
     (ComponentEventListener) listener,
         d -> {
-            d.preventDefault();
+            d.preventDefault(); // don't show the browser-default context menu.
         });
 ```
+The `preventDefault()` is missing for Vaadin 23, just use `d.addEventData("event.preventDefault()")`.

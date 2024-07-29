@@ -24,7 +24,7 @@ In order for a persistence framework to be usable with Vaadin, it should offer e
 it carries a lot of weight. Exposed supports so-called DAO mode where you can read database rows to entities.
 
 Disadvantages:
-* Requires kotlin-reflect.jar which is a huge 3,1mb library
+* Requires `kotlin-reflect.jar` which is a huge 3,1mb library
 * Unfortunately, the entities are strongly tied to a transaction, they're not POJOs, the modifications emit SQL UPDATEs automatically,
   and the entities can not be modified from outside the transaction.
 
@@ -37,7 +37,14 @@ Example projects: TODO
 
 ## Ktorm
 
-[Ktorm](https://github.com/kotlin-orm/ktorm) is unofficial but looks really popular. TODO Evaluate.
+[Ktorm](https://github.com/kotlin-orm/ktorm) is unofficial but looks really popular. The example
+`employee.flushChanges()` looks promising that the SQL UPDATEs won't be emitted automatically.
+
+Disadvantages:
+* Requires `kotlin-reflect.jar` which is a huge 3,1mb library
+* Not as popular as Exposed
+* Doesn't support H2
+* The entities are not POJOs but rather interfaces, so their detachment from the transaction is very questionable.
 
 Example projects: TODO
 

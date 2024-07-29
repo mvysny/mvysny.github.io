@@ -22,8 +22,11 @@ In order for a persistence framework to be usable with Vaadin, it should offer e
 
 [Exposed](https://github.com/JetBrains/Exposed) is an ORM framework officially endorsed by JetBrains, therefore
 it carries a lot of weight. Exposed supports so-called DAO mode where you can read database rows to entities.
-Unfortunately, the entities are strongly tied to a transaction, they're not POJOs, the modifications emit SQL UPDATEs automatically,
-and the entities can not be modified from outside of the transaction.
+
+Disadvantages:
+* Requires kotlin-reflect.jar which is a huge 3,1mb library
+* Unfortunately, the entities are strongly tied to a transaction, they're not POJOs, the modifications emit SQL UPDATEs automatically,
+  and the entities can not be modified from outside the transaction.
 
 Related feature requests:
 
@@ -41,8 +44,10 @@ Example projects: TODO
 ## vok-orm
 
 I've created [vok-orm](https://github.com/mvysny/vok-orm) in a way to be directly usable with Vaadin, and therefore
-it complies with all the above-mentioned properties. The code base is really simple as well. The disadvantage is that it's
-not really popular, so getting bugs fixed might be tricky.
+it complies with all the above-mentioned properties. The code base is really simple as well.
+
+Disadvantages:
+* not really popular, so getting bugs fixed might be tricky.
 
 Example projects:
 

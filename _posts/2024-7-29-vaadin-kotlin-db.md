@@ -63,3 +63,19 @@ Example projects:
 * [vok-security-demo](https://github.com/mvysny/vok-security-demo): uses vok-orm to load users
 * [vaadin-kotlin-pwa](https://github.com/mvysny/vaadin-kotlin-pwa): demoes Vaadin+Kotlin+CRUD as well
 * [vaadin-simple-security-example](https://github.com/mvysny/vaadin-simple-security-example) - uses jdbi-orm to load users from the database and store salted passwords
+
+## JOOQ
+
+[JOOQ](https://www.jooq.org) is very popular in Java world and also supports Kotlin bindings.
+It can generate detached POJOs which check all the boxes above.
+Unfortunately, the generator can't be configured much and will overwrite our JSR-303 annotations,
+so you need to be extra-careful when re-generating POJOs.
+
+Example projects:
+
+* [beverage-buddy-jooq](https://github.com/mvysny/beverage-buddy-jooq)
+
+
+## JPA
+
+No.

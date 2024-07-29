@@ -37,14 +37,17 @@ Example projects: TODO
 
 ## Ktorm
 
-[Ktorm](https://github.com/kotlin-orm/ktorm) is unofficial but looks really popular. The example
-`employee.flushChanges()` looks promising that the SQL UPDATEs won't be emitted automatically.
+[Ktorm](https://github.com/kotlin-orm/ktorm) is unofficial but looks really popular. The SQL UPDATEs aren't emitted automatically,
+and Ktorm ticks all the rules:
+
+1. Even though entities are interfaces, they're detached.
+2. They don't emit SQL UPDATEs
+3. They're beans.
 
 Disadvantages:
 * Requires `kotlin-reflect.jar` which is a huge 3,1mb library
 * Not as popular as Exposed
-* [Doesn't seem support H2](https://github.com/kotlin-orm/ktorm/issues/569)
-* The entities are not POJOs but rather interfaces, so their detachment from the transaction is very questionable.
+* [Supports H2 with a quirk](https://github.com/kotlin-orm/ktorm/issues/569)
 
 Example projects: TODO
 

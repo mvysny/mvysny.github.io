@@ -43,7 +43,7 @@ Example projects: TODO
 Disadvantages:
 * Requires `kotlin-reflect.jar` which is a huge 3,1mb library
 * Not as popular as Exposed
-* Doesn't support H2
+* [Doesn't seem support H2](https://github.com/kotlin-orm/ktorm/issues/569)
 * The entities are not POJOs but rather interfaces, so their detachment from the transaction is very questionable.
 
 Example projects: TODO

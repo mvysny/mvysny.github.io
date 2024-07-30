@@ -49,7 +49,9 @@ Disadvantages:
 * Not as popular as Exposed
 * [Supports H2 with a quirk](https://github.com/kotlin-orm/ktorm/issues/569)
 
-Example projects: TODO
+Example projects:
+
+* [beverage-buddy-ktorm](https://github.com/mvysny/beverage-buddy-ktorm)
 
 ## vok-orm
 

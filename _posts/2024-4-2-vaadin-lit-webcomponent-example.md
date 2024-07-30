@@ -90,3 +90,46 @@ Additional tips:
 
 * The client-to-server RPC stops working: make sure your component is enabled and not covered by a modal dialog. See [Client-Server RPC](https://vaadin.com/docs/latest/create-ui/element-api/client-server-rpc)
   and the `@AllowInert` for more documentation.
+
+## JavaScript instead of TypeScript
+
+Here you go
+
+`frontend/src/my-component.js`:
+```javascript
+import {css, html, LitElement} from 'lit';
+
+class MyComponent extends LitElement {
+    static get properties() {
+        return {
+            atTime: {type: String},
+            atDate: {type: String},
+        };
+    }
+
+    static styles = css`
+		.timer-card {
+			flex: 1 1 100%;
+			align-items: center;
+			justify-content: center;
+			padding: 15px 15px 14px 16px;
+			border-radius: var(--lumo-border-radius-m);
+			box-shadow: var(--lumo-box-shadow-xs);
+			background: var(--lumo-tint);
+			border: 1px solid var(--lumo-contrast-10pct);
+		}
+	`;
+
+    render() {
+        return html`
+			<vaadin-horizontal-layout style="width: 100%" class="timer-card" theme="spacing">
+				<span style="flex-grow: 1">Valid until</span>
+				<span>${this.atTime}</span>
+				<span>${this.atDate}</span>
+			</vaadin-horizontal-layout>
+		`;
+    }
+}
+
+customElements.define("my-component", MyComponent);
+```

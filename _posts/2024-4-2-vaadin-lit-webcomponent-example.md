@@ -44,13 +44,20 @@ class MyComponent extends LitElement {
 
 Java:
 ```java
+import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.littemplate.LitTemplate;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
+
 @Tag("my-component")
 @JsModule("./src/my-component.ts")
 public class MyComponent extends LitTemplate implements HasSize {
 
-	@NonNull
 	private static final PropertyDescriptor<String, String> AT_TIME = PropertyDescriptors.propertyWithDefault("atTime", "0 : 00");
-	@NonNull
 	private static final PropertyDescriptor<String, String> AT_DATE = PropertyDescriptors.propertyWithDefault("atDate", "");
 
 	public MyComponent() {

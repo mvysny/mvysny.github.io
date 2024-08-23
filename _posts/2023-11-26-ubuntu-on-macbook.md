@@ -21,7 +21,7 @@ completely, making it completely unusable.
 
 This however could be improved in the future - the video speed should be improved by
 running on M2/M3 MacBooks, the MESA libraries should be fixed in upcoming Ubuntu 24.04,
-and IDEA should hopefully work well when Java switches rendering to Wayland native.
+and IDEA should hopefully work well when Java switches rendering to Wayland native. (EDIT: IDEA now works in Wayland mode with UTM, yay!)
 
 Interestingly, IDEA works perfectly when running in video-accelerated VM on an Ubuntu host.
 

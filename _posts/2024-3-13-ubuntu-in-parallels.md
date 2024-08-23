@@ -253,6 +253,14 @@ set -e -o pipefail
 sudo shutdown -h now
 ```
 
+`~/reboot`:
+
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo reboot
+```
+
 `~/update`:
 ```bash
 #!/bin/bash
@@ -265,5 +273,5 @@ sudo snap refresh
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
 ```sudoers
-parallels ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge
+parallels ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot
 ```

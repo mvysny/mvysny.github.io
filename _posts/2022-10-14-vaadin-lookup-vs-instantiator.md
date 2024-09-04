@@ -3,12 +3,12 @@ layout: post
 title: Vaadin Lookup VS Vaadin Instantiator
 ---
 
-Quoting Javadoc,
-Lookup Provides a way to discover services used by Flow (SPI). Dependency injection
+Keywords: Vaadin Initialization. Quoting Javadoc,
+"Lookup Provides a way to discover services used by Flow (SPI). Dependency injection
 frameworks can provide an implementation that manages instances according to
 the conventions of that framework. This is similar to the Instantiator class but a Lookup
 instance is available even before a VaadinService instance is created
-(and as a consequence there is no yet an Instantiator instance).
+(and as a consequence there is no yet an Instantiator instance)."
 
 In short, Vaadin Lookup is pretty low-level stuff used to instantiate Vaadin internals (including the Instantiator itself);
 while Instantiator is used to create instances of Routes, [i18n](../vaadin-localization/)

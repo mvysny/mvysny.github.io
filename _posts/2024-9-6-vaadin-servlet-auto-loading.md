@@ -96,4 +96,13 @@ What's interesting is that the default servlet is mapped to `/vaadinServlet/*` a
 yet the app apparently works and requests are handled at `/*`. There is a Spring magic which
 configures Spring Dispatcher Servlet to dispatch requests accordingly.
 
+### Registration with DispatcherServlet
+
+`VaadinServletConfiguration.vaadinUiForwardingHandlerMapping()`
+creates a `HandlerMapping` which forwards all requests to `vaadinUiForwardingController()`
+which is a `ServletForwardingController` forwarding requests to the `vaadinServlet()` bean.
+
+The mapping places almost highest in the list of mappings, which means that
+it's almost a guarantee `DispatcherServlet` will forward requests to this mapping.
+
 See the documentation above for other Spring-related stuff.

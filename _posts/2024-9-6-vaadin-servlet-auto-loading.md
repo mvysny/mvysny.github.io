@@ -34,3 +34,28 @@ yet the app apparently works and requests are handled at `/*`. There is a Spring
 configures Spring Dispatcher Servlet to dispatch requests accordingly.
 
 TODO document where exactly the Spring Dispatcher Servlet is configured.
+
+TODO document how to turn off this automatic registration.
+
+# Vaadin 8
+
+The abovementioned applied to Vaadin 23+. Let's take a look how Vaadin 8 works under the hood.
+
+## Servlet project
+
+There's no `ServletDeployer` and no automatic registration of `VaadinServlet`. You
+have to have a servlet registered in your app, in order for Vaadin 8 to work.
+That's what you usually do anyway, since Vaadin 8 auto-configures itself via the
+`@VaadinServletConfiguration` annotation expected to be present on the servlet.
+Usually you have something like this in your code:
+```java
+@VaadinServletConfiguration(ui = MyVaadin8UI.class, productionMode = false)
+@WebServlet(urlPatterns = {"/*"})
+public class MyServlet extends VaadinServlet {}
+```
+
+## Spring-Boot project
+
+TODO
+
+TODO document how to turn off this automatic registration.

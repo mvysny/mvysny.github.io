@@ -56,6 +56,18 @@ public class MyServlet extends VaadinServlet {}
 
 ## Spring-Boot project
 
-TODO
+When running Vaadin 8 via Spring Boot, the important code is at `VaadinServletConfiguration.vaadinServlet()`
+(which creaetes the `SpringVaadinServlet` itself)
+and `VaadinServletConfiguration.createServletRegistrationBean()`
+(which creates the `ServletRegistrationBean`).
+Note the `@ConditionalOnMissingBean` annotation
+which only creates the binding if the project doesn't have a custom `@WebServlet` extending
+from `SpringServlet`.
+
+What's interesting is that the default servlet is mapped to `/vaadinServlet/*` and not `/*`,
+yet the app apparently works and requests are handled at `/*`. There is a Spring magic which
+configures Spring Dispatcher Servlet to dispatch requests accordingly.
+
+TODO document where exactly the Spring Dispatcher Servlet is configured.
 
 TODO document how to turn off this automatic registration.

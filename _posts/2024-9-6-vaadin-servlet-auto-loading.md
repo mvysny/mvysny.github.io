@@ -92,9 +92,13 @@ Note the `@ConditionalOnMissingBean` annotation
 which only creates the binding if the project doesn't have a custom `@WebServlet` extending
 from `SpringServlet`.
 
-The `@VaadinServletConfiguration` can not be supplied to the auto-loaded servlet but that's fine:
+It's not possible to add `@VaadinServletConfiguration` annotation to
+the auto-loaded servlet but that's fine:
 the UI is discovered via the `@SpringUI` annotation, and other settings are taken from Spring
-setting machinery.
+setting machinery. Actually, according to
+[Vaadin 8 docs: Vaadin Spring add-on](https://vaadin.com/docs/v8/framework/advanced/advanced-spring),
+the custom servlet must not have `@VaadinServletConfiguration`.
+
 
 What's interesting is that the default servlet is mapped to `/vaadinServlet/*` and not `/*`,
 yet the app apparently works and requests are handled at `/*`. There is a Spring magic which

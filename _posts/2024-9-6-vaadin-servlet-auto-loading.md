@@ -85,12 +85,16 @@ public class MyServlet extends VaadinServlet {}
 ## Spring-Boot project
 
 When running Vaadin 8 via Spring Boot, the important code is at `VaadinServletConfiguration.vaadinServlet()`
-(which creaetes the `SpringVaadinServlet` itself)
+(which creates the `SpringVaadinServlet` itself)
 and `VaadinServletConfiguration.createServletRegistrationBean()`
 (which creates the `ServletRegistrationBean`).
 Note the `@ConditionalOnMissingBean` annotation
 which only creates the binding if the project doesn't have a custom `@WebServlet` extending
 from `SpringServlet`.
+
+The `@VaadinServletConfiguration` can not be supplied to the auto-loaded servlet but that's fine:
+the UI is discovered via the `@SpringUI` annotation, and other settings are taken from Spring
+setting machinery.
 
 What's interesting is that the default servlet is mapped to `/vaadinServlet/*` and not `/*`,
 yet the app apparently works and requests are handled at `/*`. There is a Spring magic which

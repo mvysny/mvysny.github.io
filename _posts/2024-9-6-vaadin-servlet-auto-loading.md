@@ -33,9 +33,37 @@ What's interesting is that the default servlet is mapped to `/vaadinServlet/*` a
 yet the app apparently works and requests are handled at `/*`. There is a Spring magic which
 configures Spring Dispatcher Servlet to dispatch requests accordingly.
 
-TODO document where exactly the Spring Dispatcher Servlet is configured.
+### Spring Dispatcher Servlet
 
-TODO document how to turn off this automatic registration.
+Spring uses something called the Front Controller pattern where
+a single servlet forwards requests to other controllers. There's
+[An Intro to the Spring DispatcherServlet](https://www.baeldung.com/spring-dispatcherservlet)
+about the concept.
+
+To debug this monster, just open the `DispatcherServlet` class coming from
+Spring, and place a breakpoint to `DispatcherServlet.doDispatch()`.
+The `handlerMappings` is a list of all handlers where the dispatcher servlet
+will try to dispatch the HTTP request.
+
+One of those is `VaadinServletConfiguration$RootExcludeHandler` which
+dispatches requests to `/*` to the `vaadinForwardingController` bean,
+which is a `ServletForwardingController`, forwarding requests to `SpringServlet`.
+See both beans in the `VaadinServletConfiguration` class.
+
+The handler sets its order to almost the lowest value, so almost any other handler
+will come before this one. That's why it's easy to snatch request processing
+away from Vaadin `SpringServlet`.
+
+### Open questions
+
+I don't know the answers for these yet.
+
+1. Is there a configuration in `application.properties` which increases the order of `VaadinServletConfiguration$RootExcludeHandler`?
+2. If I introduce my own servlet extending `SpringServlet`, `servletRegistrationBean()` still auto-loads `SpringServlet`
+   loads anyway because of [#19888](https://github.com/vaadin/flow/issues/19888). Can this auto-loading be
+   turned off somehow?
+3. If I introduce my own custom servlet extending `SpringServlet`, will the `DispatcherServlet` be turned off,
+   or will it merely prioritize my custom servlet above other handlers?
 
 # Vaadin 8
 
@@ -68,6 +96,4 @@ What's interesting is that the default servlet is mapped to `/vaadinServlet/*` a
 yet the app apparently works and requests are handled at `/*`. There is a Spring magic which
 configures Spring Dispatcher Servlet to dispatch requests accordingly.
 
-TODO document where exactly the Spring Dispatcher Servlet is configured.
-
-TODO document how to turn off this automatic registration.
+See the documentation above for other Spring-related stuff.

@@ -46,3 +46,41 @@ properly set in the `VaadinServletContext`
 You could in theory introduce your own `AbstractLookupInitializer` which provides a custom `InstantiatorFactory`
 which loads your `Instantiator`, but that's a really complicated way. For simpler ways, see
 [Vaadin custom instantiator](../vaadin-custom-instantiator/).
+
+# Spring
+
+Vaadin 23+ Spring plugin initializes Lookup differently. The old Lookup Provider SPI is disabled.
+Instead, `SpringLookupInitializer` is called from `VaadinServletContextInitializer`.
+The `VaadinServletContextInitializer` is created as a bean in `SpringBootAutoConfiguration.contextInitializer()`;
+since it's `ServletContextInitializer` it's probably loaded by Spring automatically
+as long as `SpringBootAutoConfiguration` Spring configuration is activated.
+
+## Non-Boot project
+
+Some projects may use Spring but not Spring Boot, they would package themselves to WAR and
+would be deployed to a servlet container such as Tomcat. Is it possible to use Vaadin-Spring
+plugin in such Boot-less environment?
+
+Since `ServletContextInitializer` interface (implemented by `VaadinServletContextInitializer`) comes from `spring-boot.jar`,
+it would suggest
+that either the plugin would fail with a `NoClassDefFoundError` (if Spring Boot is missing from classpath), or the `VaadinServletContextInitializer`
+(and by extension, `SpringLookupInitializer`) is not initialized (if Spring Boot is pulled in to classpath transitively, but not activated).
+
+Either way, the `SpringLookupInitializer` is not called, leading to this error:
+
+```
+Sep 09, 2024 4:58:09 PM org.apache.catalina.core.StandardContext listenerStart
+SEVERE: Exception sending context initialized event to listener instance of class [com.vaadin.flow.server.startup.ServletContextListeners]
+java.lang.IllegalStateException: The application Lookup instance is not found in VaadinContext. The instance is suppoed to be created by a ServletContainerInitializer. Issues known to cause this problem are:
+- A Spring Boot application deployed as a war-file but the main application class does not extend SpringBootServletInitializer
+- An embedded server that is not set up to execute ServletContainerInitializers
+- Unit tests which do not properly set up the context for the test
+
+	at com.vaadin.flow.server.startup.ApplicationConfiguration.lambda$get$0(ApplicationConfiguration.java:47)
+	at com.vaadin.flow.server.VaadinServletContext.getAttribute(VaadinServletContext.java:66)
+	at com.vaadin.flow.server.startup.ApplicationConfiguration.get(ApplicationConfiguration.java:41)
+	at com.vaadin.flow.server.DeploymentConfigurationFactory.createPropertyDeploymentConfiguration(DeploymentConfigurationFactory.java:74)
+	at com.vaadin.flow.server.startup.ServletDeployer$StubServletConfig.createDeploymentConfiguration(ServletDeployer.java:178)
+```
+
+TODO is there a solution for this?

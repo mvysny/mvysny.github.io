@@ -86,3 +86,5 @@ java.lang.IllegalStateException: The application Lookup instance is not found in
 Seems like the fix is to use `@EnableWebMvc` instead of `@SpringBootApplication`,
 but you might still need to have Spring Boot on the classpath. See
 [Using Vaadin With Spring MVC](https://vaadin.com/docs/v23/integrations/spring/spring-mvc) for more details.
+
+Also make sure the Spring MVC `DispatcherServlet` is running: [Vaadin Servlet Auto-loading](../vaadin-servlet-auto-loading/).

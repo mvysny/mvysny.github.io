@@ -53,32 +53,23 @@ The app should start and should listen on [localhost:8080](http://localhost:8080
 
 Stop the app - we'll run it from minikube next.
 
-## Import the `test/vaadin-boot-example-maven` image to microk8s
+## Import the `test/vaadin-boot-example-maven` image to minikube
 
-TODO
-
-Since microk8s/Kubernetes is supposed to run on multiple machines, it wouldn't
-make sense to access local docker repository since it may differ machine by machine.
-Therefore, microk8s uses its own image repository, and that's where we need to
-import the image produced in the step above.
-
-In order to register the `test/vaadin-kotlin-pwa` image to microk8s, we need
-to export it first, then import into the microk8s internal docker registry:
+Build the image again, but this time using minikube local docker
+([as described here](https://stackoverflow.com/a/48999680/377320)):
 
 ```bash
-$ docker save test/vaadin-kotlin-pwa > vok-pwa.tar
-$ microk8s ctr image import vok-pwa.tar
+eval $(minikube docker-env)
+docker build --no-cache -t test/vaadin-boot-example-maven:latest .
+minikube image ls|grep vaadin-boot
 ```
 
-Now you can confirm that the image has indeed been imported to your microk8s docker
-registry:
-
-```bash
-$ microk8s ctr images ls|grep test/vaadin-kotlin-pwa
-docker.io/test/vaadin-kotlin-pwa:latest   application/vnd.docker.distribution.manifest.v2+json  sha256:b4f81c1e1ced941931b2cc1d3ffed26c2581cff11782475a4b9c9cbcdaaa794d 335.8 MiB linux/amd64  io.cri-containerd.image=managed
-```
+The last command will print `docker.io/test/vaadin-boot-example-maven:latest`
+if the image was built correctly.
 
 ## Define Kubernetes deployments and services
+
+TODO
 
 We need to define a pod and a service, both for the vok-pwa webapp and for the PostgreSQL
 database.
@@ -86,54 +77,6 @@ database.
 Create a file named `vok-pwa.yml` with the following contents:
 
 ```yaml
-# First, the database service
-# This will expose the database pod as a service under given name.
-# That will cause microk8s to create a DNS record for it,
-# which in turn will allow the vok-pwa pod to access the database via
-# the 'pgsql-service' host name.
-apiVersion: v1
-kind: Service
-metadata:
-  name: pgsql-service
-  labels:
-    app: pgsql
-spec:
-  type: NodePort
-  ports:
-  - port: 5432
-    protocol: TCP
-  selector:
-    app: pgsql
----
-# The database pod configuration
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: pgsql
-spec:
-  selector:
-    matchLabels:
-      app: pgsql
-  template:
-    metadata:
-      labels:
-        app: pgsql
-    spec:
-      containers:
-      - name: pgsql
-        image: postgres:10.3
-        env:
-        - name: POSTGRES_PASSWORD
-          value: mysecretpassword
-        ports:
-        - containerPort: 5432
-        livenessProbe:
-          tcpSocket:
-            port: 5432
----
-# This configuration exposes the vok-pwa pod as a service.
-# To obtain the IP address, you need to run
-# `microk8s kubectl get all`; then browse http://IP:8080
 apiVersion: v1
 kind: Service
 metadata:
@@ -166,15 +109,6 @@ spec:
       - name: webapp
         image: test/vaadin-kotlin-pwa:latest
         imagePullPolicy: Never
-        env:
-        - name: VOK_PWA_JDBC_DRIVER
-          value: org.postgresql.Driver
-        - name: VOK_PWA_JDBC_URL
-          value: jdbc:postgresql://pgsql-service:5432/postgres
-        - name: VOK_PWA_JDBC_USERNAME
-          value: postgres
-        - name: VOK_PWA_JDBC_PASSWORD
-          value: mysecretpassword
         ports:
         - containerPort: 8080
         livenessProbe:

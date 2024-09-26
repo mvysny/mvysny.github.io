@@ -74,46 +74,67 @@ TODO
 We need to define a pod and a service, both for the vok-pwa webapp and for the PostgreSQL
 database.
 
-Create a file named `vok-pwa.yml` with the following contents:
+Create a file named `my-vaadin-boot-example-maven.yml` with the following contents:
 
 ```yaml
 apiVersion: v1
-kind: Service
+kind: Namespace
 metadata:
-  name: vok-pwa-service
-  labels:
-    app: vok-pwa
-spec:
-  type: NodePort
-  ports:
-  - port: 8080
-    protocol: TCP
-  selector:
-    app: vok-pwa
+  name: my-vaadin-boot-example-maven
 ---
-# The vok-pwa webapp pod
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vok-pwa
+  name: deployment
+  namespace: my-vaadin-boot-example-maven
 spec:
   selector:
     matchLabels:
-      app: vok-pwa
+      app: pod
   template:
     metadata:
       labels:
-        app: vok-pwa
+        app: pod
     spec:
       containers:
-      - name: webapp
-        image: test/vaadin-kotlin-pwa:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 8080
-        livenessProbe:
-          tcpSocket:
-            port: 8080
+        - name: main
+          image: test/vaadin-boot-example-maven:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "256Mi"  # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+              cpu: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service
+  namespace: my-vaadin-boot-example-maven
+spec:
+  selector:
+    app: pod
+  ports:
+    - port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-custom-dns
+  namespace: my-vaadin-boot-example-maven
+spec:
+  rules:
+    - host: "myapp.fake"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service
+                port:
+                  number: 8080
 ```
 
 > Note: if the configuration file above doesn't make any sense, please make sure
@@ -122,8 +143,10 @@ spec:
 
 Run this command in order to create and activate the services and pods above:
 ```bash
-$ microk8s kubectl apply -f vok-pwa.yml
+$ kubectl apply -f my-vaadin-boot-example-maven
 ```
+
+TODO
 
 You can verify that the pods and services have been created, via:
 ```bash

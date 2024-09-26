@@ -17,13 +17,17 @@ steps:
 ## Install minikube and docker
 
 First, follow the steps outlined on the [MiniKube docs page](https://minikube.sigs.k8s.io/docs/start),
-to have MiniKube up-and-running quickly. Start the dashboard, to see that minikube is running.
+to have MiniKube up-and-running quickly. I'm running Ubuntu 24.04 arm64, so I downloaded the
+appropriate deb package and installed it as suggested in the minikube start page.
 
-We'll need to install the following addons:
+Start the MiniKube dashboard, to see that minikube is running: `minikube dashboard`.
+
+We'll need to install the following addons to minikube:
 
 * `ingress`, to correctly reroute http traffic to the app pods
 * `registry` to be able to have locally built docker images accessible from within the minikube.
 
+That can be done easily:
 ```bash
 $ minikube addons enable ingress registry
 ```

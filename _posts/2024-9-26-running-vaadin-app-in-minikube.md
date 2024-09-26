@@ -75,7 +75,7 @@ domain. The easiest way to create the domain is to edit your `/etc/hosts` and ad
 ```
 192.168.49.2 myapp.fake
 ```
-Note the `192.168.49.2` IP address: run `minikube docker-env` and minikube will
+Note the `192.168.49.2` IP address: run `minikube ip` and minikube will
 tell you on which IP address it listens. Use that IP address.
 
 Create a file named `my-vaadin-boot-example-maven.yml` with the following contents:

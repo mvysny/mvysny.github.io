@@ -13,5 +13,9 @@ more than going all abstraction-crazy with SOLID. In my experience,
 projects written using the latter principles are much easier to maintain than
 projects built using the SOLID principle.
 
+- Start as concrete as possible; use abstraction only when you realize need for it.
+- Inheritance is very hard to do right; avoid if possible. Composition over inheritance.
+- Locality of behavor is more important than blindly following SOLID principles.
+
 In other words, maybe it's good to start with SOLID, but then move beyond SOLID and
 Clean Code as you grow as a developer.

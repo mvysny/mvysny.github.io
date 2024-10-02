@@ -79,7 +79,7 @@ and Java was first. Basically you can google whether your language has a memory 
 
 ## UI Frameworks
 
-All UI frameworks are single-threaded, no exceptions. What's the reason for that?
+All popular UI frameworks are single-threaded, no exceptions. What's the reason for that?
 The answer is in this StackOverflow question
 [Why are most UI frameworks single-threaded?](https://stackoverflow.com/questions/5544447/why-are-most-ui-frameworks-single-threaded)
 and, mainly, in this excellent blog post [Multithreaded toolkits: A failed dream?](https://web.archive.org/web/20160402195655/https://community.oracle.com/blogs/kgh/2004/10/19/multithreaded-toolkits-failed-dream).

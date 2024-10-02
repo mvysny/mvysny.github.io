@@ -1,6 +1,6 @@
 ---
 layout: post
-title: On thread safety
+title: On thread safety (in JVM)
 ---
 
 Many people think they understand thread programming, but unfortunately

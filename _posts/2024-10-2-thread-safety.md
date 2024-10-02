@@ -16,7 +16,7 @@ in the same way that you wouldn't accept that
 Rule of thumb: arguing about thread safety with a programmer that doesn't know all the
 intricacies of *happens-before* relationship is a waste of time. It's like arguing
 about a mathematical proof with a person that has no math background -
-unless the other party accepts his incompetence in the area, the argument is a waste of time.
+unless the other party accepts his incompetence in the area, the argument will make you feel miserable.
 
 Quoting [Golang memory model documentation](https://go.dev/ref/mem):
 

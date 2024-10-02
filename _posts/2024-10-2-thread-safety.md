@@ -100,9 +100,8 @@ make all decision in an event queue. The reason is not just that sane programmer
 are scared of threads (and rightfully so!), but also developing a parallel algoritm
 is FUCKING HARD and only a handful of people can do it correctly.
 
-Again: **If you think you can write thread-safe program,
-you most probably can't. If you still think you can, you're a fool.
-If you're not scared, you're a fool.**
+Again: **If you think you can write a thread-safe program,
+you most probably can't. If you're not scared, you should not attempt to write thread-safe programs.**
 
 ### Web Frameworks
 

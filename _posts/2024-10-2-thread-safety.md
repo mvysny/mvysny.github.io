@@ -101,7 +101,8 @@ are scared of threads (and rightfully so!), but also developing a parallel algor
 is FUCKING HARD and only a handful of people can do it correctly.
 
 Again: **If you think you can write thread-safe program,
-you most probably can't. If you still think you can, you're a fool.**
+you most probably can't. If you still think you can, you're a fool.
+If you're not scared, you're a fool.**
 
 ### Web Frameworks
 

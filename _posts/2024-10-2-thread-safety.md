@@ -94,6 +94,10 @@ there is one thread that runs the *event queue* and all component mutation happe
 in code run in the queue. By the way the event queue technique does not apply
 to UI frameworks only; for example node.js runs all JavaScript code in an event queue.
 
+This approach actually performs very well when coupled with async/await (or the `Executor` pattern)
+and native threads, and is very easy to use correctly: perform all background tasks in
+background threads and communicate with the event queue only by returning immutable objects back.
+
 The reason for that is that event queue is simple to reason about and easy to understand.
 Even in a cluster of machines, it's very common to elect a leader and have the leader
 make all decision in an event queue. The reason is not just that sane programmers
@@ -101,7 +105,9 @@ are scared of threads (and rightfully so!), but also developing a parallel algor
 is FUCKING HARD and only a handful of people can do it correctly.
 
 Again: **If you think you can write a thread-safe program,
-you most probably can't. If you're not scared, you should not attempt to write thread-safe programs.**
+you most probably can't. If you're not scared, that means that you have
+little experience with multithreading and you should not attempt to
+write multithreaded programs except for the most basic approaches.**
 
 ### Web Frameworks
 

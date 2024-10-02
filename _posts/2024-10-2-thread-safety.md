@@ -18,6 +18,12 @@ intricacies of *happens-before* relationship is a waste of time. It's like argui
 about a mathematical proof with a person that has no math background -
 unless the other party accepts his incompetence in the area, the argument is a waste of time.
 
+Quoting [Golang memory model documentation](https://go.dev/ref/mem):
+
+> If you must read the rest of this document to understand the behavior of your program, you are being too clever. Don't be clever.
+
+DON'T FUCKING BE CLEVER.
+
 ## Pitfalls
 
 A thread-unsafe program may seem to be running correctly but will fail randomly, usually
@@ -57,6 +63,20 @@ The best example for this is the [Java Double-Locking Idiom](https://stackoverfl
 The discussion says it can't work in Java 1.4 but doesn't explain why.
 To learn this, please read the "Java Concurrency in Practice" book linked below.
 
+Java 5 and later introduces a sound memory model in the shape of `happens-before`
+relation. This feature is highly underestimated. Consider this:
+Java offers a model that works on x86, ARM and RISC processors at the same time,
+with the same abstraction, regardless of how eagerly the underlying architecture
+flushes thread caches and what memory barrier/compare-and-swap primitives
+the underlying architecture offers. **Only a handful of other VMs have this**,
+and Java was first. Basically you can google whether your language has a memory model:
+
+* [C# has a sound memory model](https://learn.microsoft.com/en-us/archive/msdn-magazine/2012/december/csharp-the-csharp-memory-model-in-theory-and-practice)
+* C++ does NOT have a memory model, but [C++11 does](https://stackoverflow.com/questions/6319146/c11-introduced-a-standardized-memory-model-what-does-it-mean-and-how-is-it-g)
+* [Python has no real multi-threading since it uses GIL](https://stackoverflow.com/questions/3549833/python-threading-memory-model-and-visibility)
+* [golang has a memory model](https://go.dev/ref/mem) and I just love the "Don't be clever" part.
+* etc
+
 ## UI Frameworks
 
 All UI frameworks are single-threaded, no exceptions. What's the reason for that?
@@ -80,7 +100,8 @@ make all decision in an event queue. The reason is not just that sane programmer
 are scared of threads (and rightfully so!), but also developing a parallel algoritm
 is FUCKING HARD and only a handful of people can do it correctly.
 
-Again: **If you think you can write thread-safe program, you most probably can't.**
+Again: **If you think you can write thread-safe program,
+you most probably can't. If you still think you can, you're a fool.**
 
 ### Web Frameworks
 

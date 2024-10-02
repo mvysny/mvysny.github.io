@@ -6,7 +6,17 @@ title: On thread safety
 Many people think they understand thread programming, but unfortunately
 only a handful of people really do. Unfortunately, many programmers are prone
 to big ego and little skills combo: they think they can write thread-safe programs
-while they produce thread-incorrect programs.
+while they produce thread-incorrect programs. If you think you can write thread-safe
+program, you really can't.
+
+Rule of thumb: arguing about thread safety with a programmer that doesn't know all the
+intricacies of *happens-before* relationship is a waste of time. It's like arguing
+about a mathematical proof with a person that has no math background.
+
+There is no such thing as "this program is mostly thread-safe". The program either
+is thread safe, or it isn't, in the same way as the program is either correct or not,
+but nothing in between. You must not accept "mostly correct programs" as correct,
+in the same way that you wouldn't accept that "salary sometimes doesn't arrive to my bank account".
 
 ## Pitfalls
 

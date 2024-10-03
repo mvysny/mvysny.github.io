@@ -16,20 +16,26 @@ steps:
 
 ## Install minikube and docker
 
-First, follow the steps outlined on the [MiniKube docs page](https://minikube.sigs.k8s.io/docs/start),
-to have MiniKube up-and-running quickly. I'm running Ubuntu 24.04 arm64, so I downloaded the
-appropriate deb package and installed it as suggested in the minikube start page.
+First, make sure you have docker installed, and that your user is in the 'docker' group:
 
-Start the MiniKube dashboard, to see that minikube is running: `minikube dashboard`.
+1. `$ sudo apt install docker.io`
+2. `$ groups`
+
+To install minikube, follow the steps outlined on the [MiniKube docs page](https://minikube.sigs.k8s.io/docs/start),
+to have MiniKube up-and-running quickly. I'm running Ubuntu 24.04 arm64, so I downloaded the
+appropriate deb package and installed it as suggested in the minikube start page:
+
+* Download and install MiniKube as deb
+* Start it: `minikube start`
+* Start the MiniKube dashboard, to see that minikube is running: `minikube dashboard`.
 
 We'll need to install the following addons to minikube:
 
 * `ingress`, to correctly reroute http traffic to the app pods
-* `registry` to be able to have locally built docker images accessible from within the minikube.
 
 That can be done easily:
 ```bash
-$ minikube addons enable ingress registry
+$ minikube addons enable ingress
 ```
 
 ## Create a docker image of vaadin-boot-example-maven
@@ -147,7 +153,7 @@ spec:
 
 Run this command in order to create and activate the services and pods above:
 ```bash
-$ kubectl apply -f my-vaadin-boot-example-maven.yml
+$ minikube kubectl -- apply -f my-vaadin-boot-example-maven.yml
 ```
 
 You can go to MiniKube dashboard, to see a Pod is started, a Service is created,
@@ -155,3 +161,5 @@ and an Ingress rule is created. You need to select the `my-vaadin-boot-example-m
 namespace first though.
 
 To see the logs, go to Pods, then "View Logs" upper-right icon button.
+
+Congratulations! Your Vaadin app is now running at [http://myapp.fake](http://myapp.fake).

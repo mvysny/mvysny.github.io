@@ -170,3 +170,9 @@ $ minikube start --memory 4096 --cpus 6 --listen-address=0.0.0.0 --ports 443:443
 
 > Warn: MiniKube is not intended to run in production; see [MiniKube FAQ](https://minikube.sigs.k8s.io/docs/faq/#how-can-i-access-a-minikube-cluster-from-a-remote-network).
 > MiniKube will expose internal ports as well; it's best to use a firewall such as ufw to only expose 80 and 443
+
+Edit your `/etc/hosts` and edit the IP address of `myapp.fake`:
+```
+192.168.49.2 myapp.fake
+```
+Your Vaadin app is now running at [http://myapp.fake](http://myapp.fake).

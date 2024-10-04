@@ -156,3 +156,17 @@ namespace first though.
 To see the logs, go to Pods, then "View Logs" upper-right icon button.
 
 Congratulations! Your Vaadin app is now running at [http://myapp.fake](http://myapp.fake).
+
+## Going public
+
+By default, MiniKube listens on an internal IP address that's only available on your machine.
+To go public, you need to delete everything and start from scratch:
+
+```bash
+$ minikube stop
+$ minikube delete --all
+$ minikube start --memory 4096 --cpus 6 --listen-address=0.0.0.0 --ports 443:443,80:80,8000:8000
+```
+
+> Warn: MiniKube is not intended to run in production; see [MiniKube FAQ](https://minikube.sigs.k8s.io/docs/faq/#how-can-i-access-a-minikube-cluster-from-a-remote-network).
+> MiniKube will expose internal ports as well; it's best to use a firewall such as ufw to only expose 80 and 443

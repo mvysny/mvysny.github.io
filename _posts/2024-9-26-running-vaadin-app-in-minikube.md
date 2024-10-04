@@ -45,7 +45,7 @@ This one is easy, just git clone the project and create the docker image locally
 ```bash
 git clone https://github.com/mvysny/vaadin-boot-example-maven
 cd vaadin-boot-example-maven
-docker build --no-cache -t test/vaadin-boot-example-maven:latest .
+docker build --no-cache -t test/vaadin-boot-example-maven:1.0 .
 ```
 
 See the project `Dockerfile` for more details.
@@ -53,7 +53,7 @@ See the project `Dockerfile` for more details.
 Verify that the app is running correctly in Docker:
 
 ```bash
-docker run --rm -ti -p8080:8080 test/vaadin-boot-example-maven
+docker run --rm -ti -p8080:8080 test/vaadin-boot-example-maven:1.0
 ```
 The app should start and should listen on [localhost:8080](http://localhost:8080).
 
@@ -61,17 +61,11 @@ Stop the app - we'll run it from minikube next.
 
 ## Import the `test/vaadin-boot-example-maven` image to minikube
 
-Build the image again, but this time using minikube local docker
-([as described here](https://stackoverflow.com/a/48999680/377320)):
+Run this command to publish the image to the internal minikube docker image repository:
 
 ```bash
-eval $(minikube docker-env)
-docker build --no-cache -t test/vaadin-boot-example-maven:latest .
-minikube image ls|grep vaadin-boot
+$ minikube image load test/vaadin-boot-example-maven:1.0
 ```
-
-The last command will print `docker.io/test/vaadin-boot-example-maven:latest`
-if the image was built correctly.
 
 ## Define Kubernetes deployments and services
 
@@ -108,8 +102,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: test/vaadin-boot-example-maven:latest
-          imagePullPolicy: Never
+          image: test/vaadin-boot-example-maven:1.0
           ports:
             - containerPort: 8080
           resources:

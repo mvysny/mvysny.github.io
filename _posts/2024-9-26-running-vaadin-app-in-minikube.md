@@ -168,11 +168,18 @@ $ minikube delete --all
 $ minikube start --memory 4096 --cpus 6 --listen-address=0.0.0.0 --ports 443:443,80:80,8000:8000
 ```
 
+Since this wipes everything off, you'll need to re-publish the image and re-create the services:
+
+```bash
+$ minikube image load test/vaadin-boot-example-maven:1.0
+$ minikube kubectl -- apply -f my-vaadin-boot-example-maven.yml
+```
+
 > Warn: MiniKube is not intended to run in production; see [MiniKube FAQ](https://minikube.sigs.k8s.io/docs/faq/#how-can-i-access-a-minikube-cluster-from-a-remote-network).
 > MiniKube will expose internal ports as well; it's best to use a firewall such as ufw to only expose 80 and 443
 
 Edit your `/etc/hosts` and edit the IP address of `myapp.fake`:
 ```
-192.168.49.2 myapp.fake
+127.0.0.1 myapp.fake
 ```
 Your Vaadin app is now running at [http://myapp.fake](http://myapp.fake).

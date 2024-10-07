@@ -275,3 +275,36 @@ To run these scripts without needing to type in root password, run `sudo visudo`
 ```sudoers
 parallels ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot
 ```
+
+`~/killintellij`:
+```bash
+#!/bin/bash
+set -e -o pipefail
+
+echo "Soft-killing IDEA"
+killall idea || echo "IDEA not running"
+sleep 3
+echo "Hard-killing IDEA"
+killall -9 idea || echo "IDEA not running"
+sleep 3
+echo "Deleting cache"
+rm -rf .cache/JetBrains
+```
+
+`~/Desktop/IDEA.desktop`:
+```
+[Desktop Entry]
+Encoding=UTF-8
+Exec=/home/parallels/local/idea/bin/idea
+Icon=/home/parallels/local/idea/bin/idea.svg
+Name=IDEA
+Terminal=false
+Type=Application
+Version=1.0
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-RunOnDiscreteGpu=false
+X-KDE-SubstituteUID=false
+X-KDE-Username=
+```
+Then right-click the icon on the desktop and select "Allow Launching".

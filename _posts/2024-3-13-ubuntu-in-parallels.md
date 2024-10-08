@@ -316,4 +316,5 @@ To see the kernel log on boot:
 * Disable Plymouth: `sudo apt autoremove --purge "plymouth*"`
 * Edit `/etc/default/grub` and set `GRUB_CMDLINE_LINUX_DEFAULT=""` and `GRUB_CMDLINE_LINUX="console=tty12"` and run `sudo update-grub`
 
-Reboot - the kernel log is still incomplete in UTM (I guess UTM can't emulate framebuffer).
+Reboot - the kernel log is still incomplete in UTM. Maybe UTM can't emulate framebuffer, but adding `nofb` or `vga=normal` to `GRUB_CMDLINE_LINUX` doesn't
+seem to help.

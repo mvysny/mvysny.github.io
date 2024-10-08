@@ -45,4 +45,12 @@ When logging in to Linux, UTM would randomly pretend that Ctrl is pressed (or Al
 type with keyboard and mouse clicks randomly don't work or show crazy menus. The only way is to logout and log back in.
 Very annoying and frustrating.
 
-UTM doesn't show the kernel boot log, no matter what Grub/Plymouth settings I use.
+UTM doesn't show the kernel boot log, no matter what Grub/Plymouth settings I use. This gets fucking
+annoying when Ubuntu doesn't boot for 2-3 minutes and just appears frozen. The reason is that
+`systemd-networkd-wait-online.service` can wait for up to 90 seconds for the network to come online.
+Kill that shit with fire:
+```bash
+$ systemctl disable systemd-networkd-wait-online.service
+$ systemctl mask systemd-networkd-wait-online.service
+```
+

@@ -308,3 +308,12 @@ X-KDE-SubstituteUID=false
 X-KDE-Username=
 ```
 Then right-click the icon on the desktop and select "Allow Launching".
+
+## Boot Settings
+
+To see the kernel log on boot:
+
+* Disable Plymouth: `sudo apt autoremove --purge "plymouth*"`
+* Edit `/etc/default/grub` and set `GRUB_CMDLINE_LINUX_DEFAULT=""` and `GRUB_CMDLINE_LINUX="console=tty12"` and run `sudo update-grub`
+
+Reboot - the kernel log is still incomplete in UTM (I guess UTM can't emulate framebuffer).

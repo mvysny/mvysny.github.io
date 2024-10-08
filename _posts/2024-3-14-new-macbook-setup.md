@@ -182,7 +182,7 @@ Links:
 
 ## Activity Monitor
 
-* View / Dock Icon / Show CPU Usage (need to re-check this after reboot)
+* View / Dock Icon / Show CPU History
 * Press ⌘3 to show CPU history window, ⌘4 to show GPU history
 * Switch to "Memory" tab, to see the memory pressure chart.
 

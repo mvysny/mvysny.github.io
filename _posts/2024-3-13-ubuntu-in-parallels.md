@@ -6,6 +6,8 @@ title: New Machine - Ubuntu in Parallels Apple Silicon
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.
 So, here it goes. I won't setup any encryption since I expect MacBook disk itself to be already encrypted.
 
+## Parallels
+
 The only way that worked for me is to let Parallels download and install Ubuntu 22.04. Manual installations failed for me:
 
 * None of the [Ubuntu 23.10 ISO arm64 images](https://cdimage.ubuntu.com/releases/23.10/release/) worked for me - they simply wouldn't boot.
@@ -14,6 +16,18 @@ The only way that worked for me is to let Parallels download and install Ubuntu 
   However, this is the right way to use Ubuntu under UTM with GPU acceleration.
 * Alternatively you can try to install Ubuntu 23.10 server, then install `ubuntu-desktop` and [go through troubleshooting](../virtual-machines-macbook/)
   to make desktop work, but I wonder what's the point since Ubuntu 22.04 works just as good.
+
+## UTM
+
+The [UTM Ubuntu](https://docs.getutm.app/guides/ubuntu/) guide is straightforward - you download the Ubuntu Server ARM64 ISO
+straight from Canonical and install it. Use Ubuntu 24.04 since it contains newest drivers which will work with UTM 3d-accelerated hardware.
+Couple of tips:
+
+* When the installation finishes and you're asked to reboot the machine, the machine freezes. Just power it down and up again.
+* Before powering the machine up, remove the CD device, so that the VM boots off the hard drive.
+* After installing `ubuntu-desktop` and rebooting, it can take up to 5 minutes for Ubuntu to boot up,
+  during which the VM will appear frozen. The reason is that `systemd-networkd-wait-online.service` can wait 90 seconds for network to come up.
+* To speed up the boot, follow the "netplan/NetworkManager" documentation below and nuke that fucking wait service.
 
 ## OS and Filesystem
 

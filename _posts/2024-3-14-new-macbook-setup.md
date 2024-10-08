@@ -74,6 +74,16 @@ Install from the App Store:
 
 Install Firefox from the Firefox download page.
 
+### Mouse
+
+To disable the idiotic accelerated mouse wheel scrolling (which doesn't work at all in UTM and sucks in Parallels too),
+download and run the [LinearMouse](https://linearmouse.app/) app; then go to "Scrolling" and set:
+
+* "Scrolling mode" to "By Lines"
+* "Distance" to 3
+
+Find more at [UTM #3417](https://github.com/utmapp/UTM/issues/3417).
+
 ## Commander One
 
 Go into its settings > Hotkeys:

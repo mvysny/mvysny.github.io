@@ -318,3 +318,5 @@ To see the kernel log on boot:
 
 Reboot - the kernel log is still incomplete in UTM. Maybe UTM can't emulate framebuffer, but adding `nofb` or `vga=normal` to `GRUB_CMDLINE_LINUX` doesn't
 seem to help.
+
+Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.

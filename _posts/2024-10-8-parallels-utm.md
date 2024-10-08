@@ -53,7 +53,7 @@ Parallels App Store Edition is severely crippled compared to UTM:
 
 Input capturing: parallels auto-captures the input so that Alt+tab and Command+Space are captured by linux rather than host MacOS,
 and does that seamlessly. Compared to that, UTM requires you to manually capture the input. UTM supports auto-capture but
-the mouse cursor moves to a different place in screen, the mouse acceleration changes according to Linux profile;
+the mouse cursor jumps to a different place in screen, the mouse movements acceleration changes slightly and is slightly laggy;
 the overall feel is that Parallels offers much more polished experience. UTM is however usable.
 
 Both shared folders and clipboard sharing works well; UTM allows only one shared folder though.

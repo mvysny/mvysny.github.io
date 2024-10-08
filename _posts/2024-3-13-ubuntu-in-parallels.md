@@ -31,8 +31,8 @@ Couple of tips:
 
 ## OS and Filesystem
 
-When auto-installing, Parallels will create two partitions using the GPT partitioning table: 1GB efi and 64GB ext4. I'd argue ext4 is better
-for VM disks since btrfs uses COW and would balloon the VM disk size much more than ext4.
+When auto-installing, Parallels will create two partitions using the GPT partitioning table: 1GB efi and 64GB ext4. Go with ext4:
+btrfs uses COW and would most probably balloon the VM disk size much more than ext4.
 Therefore, let's use ext4. It will also create a 2G swapfile, you can resize it later.
 
 Name the machine after its expected usage, e.g. `mavi-macbook-vm-experiments`.
@@ -330,7 +330,7 @@ X-KDE-Username=
 ```
 Then right-click the icon on the desktop and select "Allow Launching".
 
-## Boot Settings
+## Boot Settings (UTM only)
 
 To see the kernel log on boot:
 

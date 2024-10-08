@@ -243,6 +243,12 @@ network:
   renderer: NetworkManager
 ```
 
+To prevent 90 second waiting for network to become up, [disable systemd-networkd-wait-online.service](https://askubuntu.com/a/979493/22996):
+```bash
+$ systemctl disable systemd-networkd-wait-online.service
+$ systemctl mask systemd-networkd-wait-online.service
+```
+
 ## Scripts
 
 `~/shutdown`:

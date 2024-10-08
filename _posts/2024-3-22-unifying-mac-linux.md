@@ -91,8 +91,8 @@ For IDEA: Add ^Backspace mapped to Ctrl+Insert.
 
 ### Fix Ctrl/Super/Alt buttons
 
-I tend to remap the keyboard so that ⌥Option acts as Meta/Super in Linux, and ⌘Command acts like Alt in Linux,
-so that `Alt+Tab` and Alt+BackTick in Linux is activated by pressing ⌘Tab and/or ⌘` respectively, and acts
+I tend to remap the keyboard so that `⌥Option` acts as `Meta`/`Super` in Linux, and `⌘Command` acts like Alt in Linux,
+so that `Alt+Tab` and `Alt`+`BackTick` in Linux is activated by pressing `⌘Tab` and/or ⌘` respectively, and acts
 exactly the same.
 
 Install Input-Remapper:

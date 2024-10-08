@@ -40,3 +40,9 @@ the overall feel is that Parallels offers much more polished experience. UTM is 
 Both shared folders and clipboard sharing works well; UTM allows only one shared folder though.
 Shared folders are mounted automatically by Parallels; in UTM you need to follow the [UTM Linux Sharing Guide](https://docs.getutm.app/guest-support/linux/);
 the VirtFS option worked for me well.
+
+When logging in to Linux, UTM would randomly pretend that Ctrl is pressed (or Alt) all the time. That means that you can't
+type with keyboard and mouse clicks randomly don't work or show crazy menus. The only way is to logout and log back in.
+Very annoying and frustrating.
+
+UTM doesn't show the kernel boot log, no matter what Grub/Plymouth settings I use.

@@ -134,7 +134,7 @@ Create the `~/.gitconfig` file:
   conflictstyle = diff3
 ```
 
-Create ssh key & press enter to keep the default settings:
+ONLY WHEN NOT IN THE BASE IMAGE (since I want all VMs to have their own ssh keys): Create ssh key & press enter to keep the default settings:
 ```bash
 ssh-keygen
 ```
@@ -212,7 +212,7 @@ Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this
 ## Docker
 
 ```bash
-sudo apt install docker.io docker-compose
+sudo apt install docker.io docker-compose docker-buildx
 ```
 
 Add your user to the docker group:

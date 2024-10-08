@@ -185,7 +185,8 @@ Login to my user account. To restore settings, follow [Sync settings between IDE
 Make sure to:
 
 1. overwrite local settings from jetbrains account
-2. enable "sync plugins silently"
+2. disable "sync plugins" - it doesn't work reliably and would install/uninstall random plugins as I
+   start/stop VMs.
 
 ## GNOME Settings
 

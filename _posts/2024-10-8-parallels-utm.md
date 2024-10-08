@@ -3,6 +3,8 @@ layout: post
 title: Parallels vs UTM
 ---
 
+I'll compare Parallels 1.9.4 AppStore Edition vs UTM 4.5.4 (100). Time of writing of this blog post: 8. Oct. 2024.
+
 Parallels is much more expensive. Requires a license which need to be purchased on a yearly
 basis and costs 120 eur. Compared to that, UTM App Store edition costs 10 eur one-time only.
 Parallels AppStore Edition is massively outdated when compared to Parallels downloaded from

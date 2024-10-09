@@ -333,6 +333,9 @@ Then right-click the icon on the desktop and select "Allow Launching".
 
 ## Boot Settings (UTM only)
 
-To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732)
+To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732).
+In short, edit `/etc/default/grub` and set `GRUB_CMDLINE_LINUX_DEFAULT="noquiet console=tty1 systemd.log_target=kmsg` -
+that will make UTM show the tty1 on boot. If not, press `⌥←` or `⌥→` to toggle between tty1, tty2, ..., tty12 until you arrive to tty1 and see the boot messages.
+Don't forget to run `sudo update-grub` to write changes done to the `GRUB_CMDLINE_LINUX_DEFAULT` variable.
 
 Tips: Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.

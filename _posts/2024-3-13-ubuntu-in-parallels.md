@@ -333,12 +333,6 @@ Then right-click the icon on the desktop and select "Allow Launching".
 
 ## Boot Settings (UTM only)
 
-To see the kernel log on boot:
+To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732)
 
-* Disable Plymouth: `sudo apt autoremove --purge "plymouth*"`
-* Edit `/etc/default/grub` and set `GRUB_CMDLINE_LINUX_DEFAULT=""` and `GRUB_CMDLINE_LINUX="console=tty12"` and run `sudo update-grub`
-
-Reboot - the kernel log is still incomplete in UTM. Maybe UTM can't emulate framebuffer, but adding `nofb` or `vga=normal` to `GRUB_CMDLINE_LINUX` doesn't
-seem to help.
-
-Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.
+Tips: Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.

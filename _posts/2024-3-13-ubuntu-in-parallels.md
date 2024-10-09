@@ -28,6 +28,7 @@ Couple of tips:
 * After installing `ubuntu-desktop` and rebooting, it can take up to 5 minutes for Ubuntu to boot up,
   during which the VM will appear frozen. The reason is that `systemd-networkd-wait-online.service` can wait 90 seconds for network to come up.
 * To speed up the boot, follow the "netplan/NetworkManager" documentation below and nuke that fucking wait service.
+* Before any change done to the VM that might cause the VM not no boot, clone the VM.
 
 ## OS and Filesystem
 
@@ -35,7 +36,7 @@ When auto-installing, Parallels will create two partitions using the GPT partiti
 btrfs uses COW and would most probably balloon the VM disk size much more than ext4.
 Therefore, let's use ext4. It will also create a 2G swapfile, you can resize it later.
 
-Name the machine after its expected usage, e.g. `mavi-macbook-vm-experiments`.
+Name the machine after its expected usage, e.g. `mavi-par-experiments` or `mavi-utm-base`.
 
 ## Post-installation
 

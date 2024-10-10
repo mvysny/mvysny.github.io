@@ -13,16 +13,6 @@ the Parallels web site.
 Parallels starts Ubuntu VM much quicker. On my MacBook Pro M3, Ubuntu fully starts in 10 seconds,
 while it takes 23 seconds to start the Ubuntu VM in UTM.
 
-Parallels correctly shows the kernel boot log messages, while UTM shows the UTM logo until
-Ubuntu fully boots. No matter what Grub/Plymouth settings I use, UTM just shows nothing. This gets fucking
-annoying when Ubuntu doesn't boot for 2-3 minutes and just appears frozen. The reason is that
-`systemd-networkd-wait-online.service` can wait for up to 90 seconds for the network to come online.
-Kill that shit with fire:
-```bash
-$ systemctl disable systemd-networkd-wait-online.service
-$ systemctl mask systemd-networkd-wait-online.service
-```
-
 UTM is able to boot and install off ubuntu server ISO coming straight from Canonical; Parallels
 just breaks if you try that, and you have to stick with whatever Parallels downloads for you - potential
 privacy/security concerns as the origin of the ISO is unknown.

@@ -12,14 +12,15 @@ This text summarizes my experiences and findings when developing the [solar-cont
 
 ## Working with files
 
-Surprisingly, Kotlin-Native lacks any support for working with filesystem - `File` and `Path` are JVM-only after all.
-This is such a glaring omission of such a basic feature it's simply beyond surprising.
+EDIT: there's [kotlinx-io](https://github.com/Kotlin/kotlinx-io) now which offers some basic working
+with files. I haven't tried it out, but it's used by ktor so it should be quite good.
 
-In order to work with files, you only have two options:
+Anyways, in order to work with files, you only have three options:
 
 * Use OKIO, however when you want to run on ARM then you're out of luck: [okio doesn't provide libraries for arm64](https://github.com/square/okio/issues/1171).
 * Write your own set of functions, based on posix `open()` function. This is ultimately what I did; see [IO.kt](https://github.com/mvysny/solar-controller-client/blob/master/src/nativeMain/kotlin/utils/IO.kt)
   for more details.
+* kotlinx-io: I wonder whether they offer ARM64 version?
 
 The above fully exposes the basic problem with any Kotlin-Native library: in order to be sure that the
 library works on different CPUs, every library has to run the tests on all of those CPUs. Which is obviously
@@ -37,6 +38,8 @@ for more details.
 
 To be honest, JVM doesn't offer direct support for serial ports either; you have to use a 3rd party library which
 then goes native and brings the massive JNA dependency.
+
+EDIT: would be interesting to see what kind of support does kotlinx-io offer.
 
 ## REST client
 

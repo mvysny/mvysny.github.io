@@ -27,7 +27,7 @@ the breakpoint isn't triggered then Vaadin is not initialized properly. It's the
 of the servlet container (such as Jetty) to discover and call `LookupServletContainerInitializer`, however
 in certain cases Jetty won't do it:
 
-1. Either because jetty annotation.jar missing on the classpath
+1. Either because [jetty-annotations.jar missing on the classpath](https://github.com/vaadin/flow/issues/15991#issuecomment-2373416535)
 2. Or `ContainerIncludeJarPattern` wasn't set, leaving Jetty to not to perform classpath scanning.
 
 Simply use [Vaadin-Boot](https://github.com/mvysny/vaadin-boot) which takes care of proper Vaadin initialization.

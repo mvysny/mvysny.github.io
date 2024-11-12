@@ -60,3 +60,7 @@ old image. You need to stop the container and remove it, then start it again:
 $ docker-compose down
 $ docker-compose up -d
 ```
+
+## Getting logs
+
+Run `docker-compose logs` to print the logs of the running containers.

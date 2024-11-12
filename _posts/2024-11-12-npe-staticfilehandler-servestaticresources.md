@@ -8,7 +8,7 @@ Keywords: embedded Jetty, getting `NullPointerException`:
 
 What if you are tinkering with the servlet environment (perhaps
 trying to run Vaadin in embedded jetty or such),
-and suddenly you're getting `NullPointerException`s such as `Cannot invoke "com.vaadin.flow.server.StaticFileServer.serveStaticResource(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)" because "this.staticFileHandler" is null`?
+and suddenly you're getting NPEs such as the one mentioned above?
 How can that happen?
 
 The reason is the check in `VaadinServlet:124` which checks whether `vaadinServletContext

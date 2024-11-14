@@ -31,3 +31,8 @@ in certain cases Jetty won't do it:
 2. Or `ContainerIncludeJarPattern` wasn't set, leaving Jetty to not to perform classpath scanning.
 
 Simply use [Vaadin-Boot](https://github.com/mvysny/vaadin-boot) which takes care of proper Vaadin initialization.
+
+## Flow Bug Tracker
+
+The issue is reported as [Flow #20472](https://github.com/vaadin/flow/issues/20472),
+please upvote.

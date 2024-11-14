@@ -65,6 +65,8 @@ Now when browsing to `http://app1.myserver.fake`, the browser will report the ho
 exactly as if the DNS name was provided by an actual DNS server. We can take advantage of this,
 to test as if on a real environment.
 
+> Alternatively setup a [wildcard DNS rules](../ubuntu-local-wildcard-dns/).
+
 ## Setting up Vaadin apps
 
 We'll run two Vaadin apps from docker: [vaadin-boot-example-gradle](https://github.com/mvysny/vaadin-boot-example-gradle)

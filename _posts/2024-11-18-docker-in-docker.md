@@ -26,7 +26,7 @@ $ docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/d
 # docker ps
 CONTAINER ID   IMAGE       COMMAND              CREATED          STATUS          PORTS                                   NAMES
 2c2e38401d58   ubuntu      "/bin/bash"          45 seconds ago   Up 44 seconds                                           cranky_maxwell
-# docker run -d --name my-apache-app -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4
+# docker run -d --name my-apache-app -p 8080:80 httpd:2.4
 # docker ps
 CONTAINER ID   IMAGE       COMMAND              CREATED          STATUS          PORTS                                   NAMES
 562cfc3bb562   httpd:2.4   "httpd-foreground"   3 seconds ago    Up 3 seconds    0.0.0.0:8080->80/tcp, :::8080->80/tcp   my-apache-app

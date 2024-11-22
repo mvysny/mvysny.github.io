@@ -47,3 +47,4 @@ public class MainRoute extends VerticalLayout {
     }
 }
 ```
+Thanks Samuli Penttilä for this awesome tip!

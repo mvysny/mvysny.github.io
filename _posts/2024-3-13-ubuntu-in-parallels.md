@@ -193,8 +193,11 @@ Follow [New MacBook Setup](../new-macbook-setup/).
 
 ### Intellij
 
-There's [no IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),
-therefore you have to download & unpack it manually, then run it from the command-line. IDEA will update itself correctly.
+There's [an IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),
+so you can simply:
+```bash
+$ sudo snap install intellij-idea-ultimate --classic
+```
 
 Login to my user account. To restore settings, follow [Sync settings between IDE instances](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#IDE_settings_sync).
 Make sure to:
@@ -312,24 +315,6 @@ sleep 3
 echo "Deleting cache"
 rm -rf .cache/JetBrains
 ```
-
-`~/Desktop/IDEA.desktop`:
-```
-[Desktop Entry]
-Encoding=UTF-8
-Exec=/home/parallels/local/idea/bin/idea
-Icon=/home/parallels/local/idea/bin/idea.svg
-Name=IDEA
-Terminal=false
-Type=Application
-Version=1.0
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-RunOnDiscreteGpu=false
-X-KDE-SubstituteUID=false
-X-KDE-Username=
-```
-Then right-click the icon on the desktop and select "Allow Launching".
 
 ## Boot Settings (UTM only)
 

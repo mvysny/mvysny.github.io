@@ -15,7 +15,17 @@ can attach to any Vaadin component - Tooltip only works with components that imp
 the `HasTooltip` interface. See below for a bunch of tips. But, if you're on Vaadin 23,
 read on.
 
-## Tooltip
+## Browser Built-in Tooltip
+
+You can set a tooltip to any Vaadin component, simply by calling:
+```java
+component.getElement().setAttribute("title", description);
+```
+The upside is that this works with any component; the downside is that you can't
+use HTML, and you can't control the tooltip in any way: you can't change the delay,
+the positioning (above/below), the color, show-on-hover VS show-on-click.
+
+## Hacking Vaadin Tooltip
 
 This code works in Vaadin 23+:
 

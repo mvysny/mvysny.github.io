@@ -39,6 +39,7 @@ Also, this one is hilarious: YouTube iOS app causes iOS to draw notifications co
 
 The programming environment on MacBook sucks balls. In order to install stuff, you need to
 install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.
+[Linux-in-VM saves the day](../ubuntu-in-parallels/).
 
 Will I abandon Apple? No. They do many things right, most importantly the privacy. Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.
 The touchpad is amazing too. Now that I got things working the way I want it, the setup is pretty solid. Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.

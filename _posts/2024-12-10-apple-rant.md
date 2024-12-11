@@ -19,7 +19,7 @@ I want The Mighty Window Manager to tile the bloody window to the left, end of s
 of the app itself capturing the shortcut, then maybe moving its window to the left (or not). What the fuck? The Window Manager needs to handle that, not the app itself!
 
 Also, when I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS! Da fuq?
-I thought, as a profession, we moved away from DOS times where an app could overwrite entire memory and pretty much kill your PC. But no, macOS has one event
+I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC. But noooo, macOS has one event
 loop and if an app doesn't play nicely, everything just bloody freezes. 
 The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
 

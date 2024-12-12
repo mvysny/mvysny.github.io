@@ -33,9 +33,7 @@ I mean, many things are done in the right way, but there are some huge gaping bl
 Jobs must be rotating in his grave like a turbine.
 
 The way iOS does app settings is a complete UX disaster too: in order to configure the app,
-I have to close the app, go to Settings, find the app and set it up. WHY? I was in the fucking app already!
-
-Also, this one is hilarious: YouTube iOS app causes iOS to draw notifications completely outside the notification area, no text clipping whatsoever. I mean Android is piece of shit and different vendors screw it up in a different way, but this kind of fuckup is like a third-grader learning to code. Screenshot incoming.
+I have to close the app, go to Settings, find the app and set it up. WHY? I was in the fucking app in the first place but okay I guess!
 
 The programming environment on MacBook sucks balls. In order to install stuff, you need to
 install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.

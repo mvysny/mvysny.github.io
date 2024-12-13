@@ -35,6 +35,12 @@ Jobs must be rotating in his grave like a turbine.
 The way iOS does app settings is a complete UX disaster too: in order to configure the app,
 I have to close the app, go to Settings, find the app and set it up. WHY? I was in the fucking app in the first place but okay I guess!
 
+The iPhone keyboard is so broken it's not even funny. The autocorrection sucks, the
+UX for correcting autocorrection is horrible and I find myself fighting the UX to correct
+the autocorrection suggestions; most importantly, the support for auto-switching between
+three languages is non-existent. Apple, please take a hard long look at Google's keyboard,
+and then copy it.
+
 The programming environment on MacBook sucks balls. In order to install stuff, you need to
 install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.
 [Linux-in-VM saves the day](../ubuntu-in-parallels/).

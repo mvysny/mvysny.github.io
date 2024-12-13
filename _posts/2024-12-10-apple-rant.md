@@ -23,11 +23,15 @@ I thought, as a profession, we moved away from the MS-DOS times, where an app co
 loop and if an app doesn't play nicely, everything just bloody freezes. 
 The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
 
-Also, the `~` key. It was on this particular fucking spot since the Jesus Fucking Christ
-invented keyboard 2000 years ago: top-left spot just below ESC. In all but the US layouts, Apple moves it downwards next to Shift,
-and there's no bloody software keyboard layout that moves tilde back up! I actually had to download
+Also, the tilde key. With Linux, it doesn't matter what symbol is on the keyboard key;
+you can activate the US layout which puts the tilde character under ESC.
+Not with Apple. If you don't get the Mac with the US physical layout, the tilde key is moved downwards next to the left shift,
+and no matter which keyboard layout I select in the settings, I can not remap the key elsewhere. I actually had to download
 some [crazy software](https://software.sil.org/ukelele/) written by some third-party dude, to create my own keyboard layout,
-only to move the Tilde key to where it belongs. WTF?
+only to move the Tilde key to where I'm used to. WTF? Sure, get a Mac with the US keyboard you might say,
+but in the US layout, the ENTER key occupies only one row of keys and that annoys me to no end.
+AARGH I'll have to get used to the small ENTER key since the tilde position is pretty much hardwired
+in my brain already.
 
 I mean, many things are done in the right way, but there are some huge gaping bloody obvious usability issues,
 Jobs must be rotating in his grave like a turbine.

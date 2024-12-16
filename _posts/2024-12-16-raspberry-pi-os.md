@@ -7,6 +7,9 @@ Even though RPI Zero 2W is quite limited, 32bit OS works really well and is surp
 snappy. When running from SDCard, the performance is great but make sure to choose
 a fast SDCard which is class C10, U3, V30 and A2. The best way is to get the [official RPI SDCard](https://www.raspberrypi.com/documentation/accessories/sd-cards.html#about).
 
+The [Raspberry Pi OS Documentation](https://www.raspberrypi.com/documentation/computers/os.html) is excellent
+and please refer to it whenever something is not clear.
+
 ## Post-installation
 
 dmesg is user-accessible, no need to edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.

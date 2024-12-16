@@ -10,7 +10,7 @@ so there's nothing you can do. [Flash a SD Card with arm64 Ubuntu](https://ubunt
 > is more demanding on RAM and you can find your RPI Zero running
 > out of memory quickly; you can try to enable swap but swapping to SD Card is very slow
 > and will completely trash the performance of the OS. Consider using the 32-bit
-> Raspberry PI OS instead, which has an actively maintained 32-bit version.
+> [Raspberry PI OS instead](../raspberry-pi-os/), which has an actively maintained 32-bit version.
 
 ## Post-installation
 
@@ -67,7 +67,7 @@ Note that the decryption will slow down the RPI, so it's advisable on RPI 5+ onl
 * Set new hostname, e.g. `rpizero`: `sudo hostnamectl set-hostname rpizero`
 * Setup [WiFi via netplan](../ubuntu-netplan-no-networkmanager/).
 * Make sure `rpizero.local` host works on your LAN: [Ubuntu LAN Local](../ubuntu-lan-local/)
-* Make sure you can ssh to the machine via public key, then disable ssh password access.
+* Make sure you can ssh to the machine via public key, then disable ssh password access: edit `/etc/ssh/sshd_config` and set `PasswordAuthentication` to `no`, then reload the ssh daemon config via `systemctl reload sshd`.
 * Reboot & test that remote ssh via wifi works.
 
 You can now unplug the RPI from your monitor and keyboard and continue the setup via ssh/byobu.

@@ -6,6 +6,12 @@ title: Ubuntu on Raspberry PI
 Even though RPI Zero 2W is quite limited and 32bit OS would work much better, Ubuntu 24.04+ only ships as arm64
 so there's nothing you can do. [Flash a SD Card with arm64 Ubuntu](https://ubuntu.com/download/raspberry-pi) and choose the "Server" option.
 
+> WARNING: Both Ubuntu 24.04+ Server and Core editions only come in 64 bit. 64bit OS
+> is more demanding on RAM and you can find your RPI Zero running
+> out of memory quickly; you can try to enable swap but swapping to SD Card is very slow
+> and will completely trash the performance of the OS. Consider using the 32-bit
+> Raspberry PI OS instead, which has an actively maintained 32-bit version.
+
 ## Post-installation
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.

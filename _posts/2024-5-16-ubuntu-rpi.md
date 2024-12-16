@@ -16,6 +16,9 @@ Enable trim. You need to enable discard for all of your ext4 partitions: simply 
 `/etc/fstab`. Note that swap on a swap partition will perform discard automatically. Make sure the kernel supports trim on RPI flash card:
 `lsblk --discard` should print non-zero value in DISC-GRAN.
 
+Also enable `noatime`. Maybe [disable journal](https://raspberrypi.stackexchange.com/questions/169/how-can-i-extend-the-life-of-my-sd-card),
+but I wouldn't go that far.
+
 ### swap
 
 512mb of RAM isn't enough for running software and apt update at the same time - it will crash
@@ -32,6 +35,21 @@ Add this to `/etc/fstab`:
 ```
 /swap	none	swap	sw	0	0
 ```
+
+### Disk encryption
+
+The RPI SD Card image comes with two partitions:
+
+1. `/dev/mmcblk0p1` of type `vfat` mounted to `/boot/firmware` - this contains RPI firmware bits which allow RPI to boot up.
+2. `/dev/mmcblk0p2` of type `ext4` mounted to `/` which contains the root FS.
+
+While it's possible to [LUKS reencrypt](https://unix.stackexchange.com/a/584275/256417) a partition, you shouldn't,
+since RPI firmware doesn't know how to deal with LUKS and won't boot. You can encrypt the home folder though. You have two options:
+
+1. Encrypt home via [ecryptfs](https://ubuntuhandbook.org/index.php/2024/05/encrypt-home-ubuntu-24-04/)
+2. Encrypt home via LUKS (TODO link)
+
+Note that the decryption will slow down the RPI, so it's advisable on RPI 5+ only.
 
 ### Setup wifi & remote access (ssh)
 

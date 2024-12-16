@@ -48,18 +48,17 @@ Run `sudo raspi-config`:
 * Make sure `rpizero.local` host works on your LAN: [Ubuntu LAN Local](../ubuntu-lan-local/)
 * Enable SSH: Go to `Interface Options` / `SSH` and enable it.
 * Make sure you can ssh to the machine via public key, then disable ssh password access: edit `/etc/ssh/sshd_config` and set `PasswordAuthentication` to `no`, then reload the ssh daemon config via `systemctl reload sshd`.
+* Set the correct time zone: `Localisation Options` / `Timezone`
 * Reboot & test that remote ssh via wifi works.
 
 You can now unplug the RPI from your monitor and keyboard and continue the setup via ssh/byobu.
 
 ## Install basic software
 
-TODO
-
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo apt install git vim htop fish net-tools curl whois byobu
+sudo apt install git vim fish net-tools curl whois byobu
 sudo update-alternatives --config editor     # select vim.basic
 ```
 

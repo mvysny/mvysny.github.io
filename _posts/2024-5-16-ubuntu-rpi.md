@@ -16,6 +16,8 @@ Enable trim. You need to enable discard for all of your ext4 partitions: simply 
 `/etc/fstab`. Note that swap on a swap partition will perform discard automatically. Make sure the kernel supports trim on RPI flash card:
 `lsblk --discard` should print non-zero value in DISC-GRAN.
 
+Alternatively, disable trim and make sure the [fstrim.service is running](https://askubuntu.com/a/1242804/22996).
+
 Also enable `noatime`. Maybe [disable journal](https://raspberrypi.stackexchange.com/questions/169/how-can-i-extend-the-life-of-my-sd-card),
 but I wouldn't go that far.
 

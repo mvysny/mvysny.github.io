@@ -38,7 +38,7 @@ Add this to `/etc/fstab`:
 
 ### Disk encryption
 
-The RPI SD Card image comes with two partitions:
+The Ubuntu Raspberry PI SDCard image comes with two partitions:
 
 1. `/dev/mmcblk0p1` of type `vfat` mounted to `/boot/firmware` - this contains RPI firmware bits which allow RPI to boot up.
 2. `/dev/mmcblk0p2` of type `ext4` mounted to `/` which contains the root FS.

@@ -92,3 +92,35 @@ To add environment variables, add them at the end of the `~/.config/fish/config.
 ```
 export PATH="$PATH:$HOME/local"
 ```
+
+## Scripts
+
+`~/shutdown`:
+
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo shutdown -h now
+```
+
+`~/reboot`:
+
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo reboot
+```
+
+`~/update`:
+```bash
+#!/bin/bash
+set -e -o pipefail
+sudo apt update
+sudo apt -V dist-upgrade
+sudo apt autoremove --purge
+```
+
+To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
+```sudoers
+ubuntu ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot
+```

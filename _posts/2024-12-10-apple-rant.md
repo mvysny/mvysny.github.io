@@ -18,7 +18,12 @@ shouldn't be allowed to do that in the first place! Also, when I press the key c
 I want The Mighty Window Manager to tile the bloody window to the left, end of story. It shouldn't be the responsibility
 of the app itself capturing the shortcut, then maybe moving its window to the left (or not). What the fuck? The Window Manager needs to handle that, not the app itself!
 
-Also, when I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS! Da fuq?
+On top of that, there are two maximize functions now: `Zoom` and `Fill`. `Zoom` has no keyboard shortcut assigned and
+for some apps it maximizes the app only vertically, but no horizontally (?!?!?); `Fill` is `Fn+Control+F`
+which is a PITA to press on the "Magic Keyboard with Numeric Keypad". And it doesn't work anyway on some apps,
+so I'm continuing to use the Magnet app.
+
+When I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS! Da fuq?
 I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC. But noooo, macOS has one event
 loop and if an app doesn't play nicely, everything just bloody freezes. 
 The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
@@ -48,6 +53,13 @@ and then copy it.
 The programming environment on MacBook sucks balls. In order to install stuff, you need to
 install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.
 [Linux-in-VM saves the day](../ubuntu-in-parallels/).
+
+MTP (transfer files to Android devices) support is [virtually non-existent](../copying-files-apple-android/) - another huge WTF.
+
+Apple Music is confusing as hell - I don't really care for Home, New or Radio: I just want to mark a bunch of stuff favourite and listen
+to those. Opening a favourite artist only shows favourite albums, leading me to believe that other albums are
+not on Apple Music. I need to click on the artist name *again* (it shows as plain text, giving no impression that it's a clickable element!!), to see all albums.
+Apple, please fucking fire all Apple Music UX designers and design that shit from scratch.
 
 Will I abandon Apple? No. They do many things right, most importantly the privacy. Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.
 The touchpad is amazing too. Now that I got things working the way I want it, the setup is pretty solid. Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.

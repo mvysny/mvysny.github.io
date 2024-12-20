@@ -35,6 +35,9 @@ The emulator will start in C64 mode by default.
 The games are usually available as `.d64` Floppy Disk images which you can mount
 to the diskette drive "8" via Vice's UI. Then, type in `LOAD "*",8,1` and enjoy the game!
 
+> Note: when running from Ubuntu Linux running on UTM, you may need to disable the 3d acceleration
+> otherwise the emulator will only show a blank screen.
+
 ## Amiga 500
 
 You can get the emulator by installing
@@ -56,6 +59,9 @@ $ fs-uae --floppy-drive-0=Lemmings.adf
 ```
 The game is started right away. If not, press `F12` and select the image in the floppy drive.
 See the [FS-UAE getting started](https://fs-uae.net/docs/getting-started) on how to add multiple floppies.
+
+> Note: when running from Ubuntu Linux running on UTM, you may need to disable the 3d acceleration
+> otherwise the emulator will only show a blank screen.
 
 ## DOSBOX
 

@@ -4,8 +4,9 @@ title: Good Old Games
 ---
 
 I love the Good Old Games - they weren't designed to hook you to the screen,
-induce addiction and make you spend money on virtual axes. You got the game
-once and that was it. The graphics wasn't that advanced (that's good - no perception overload) but they're highly
+induce addiction and make you spend money on virtual axes. You bought the game
+once, and you enjoyed it, no subscriptions needed; it was also easy to play.
+The graphics wasn't that advanced (that's good - no perception overload) but they're highly
 entertaining still. The emulators for C64, Amiga 500 and DOS may not be easy
 to set up on Linux, so I added this manual. All the emulators below support ARM64 as well.
 

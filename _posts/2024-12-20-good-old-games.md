@@ -10,7 +10,7 @@ The graphics wasn't that advanced (that's good - no perception overload) but the
 entertaining still. The emulators for C64, Amiga 500 and DOS may not be easy
 to set up on Linux, so I added this manual. All the emulators below support ARM64 as well.
 
-You can get the old games for example from the [abandonware.com](https://www.abandonware.com).
+You can get the old games for example from the [myabandonware.com](https://www.myabandonware.com).
 
 ## C64
 

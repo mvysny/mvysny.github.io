@@ -21,7 +21,7 @@ $ sudo apt install vice
 ```
 Then you need the machine ROM which you can purchase or download from the internet
 if you search for e.g. "Commodore 64 romset". Then, create a folder
-in your home named `~/.local/share/vice/C64/` and make sure it has contents like the following:
+in your home folder named `~/.local/share/vice/C64/` and make sure it has contents like the following:
 ```
 basic-901226-01.bin    chargen-906143-02.bin  kernal-390852-01.bin  kernal-901227-02.bin  kernal-901246-01.bin
 chargen-901225-01.bin  kernal-251104-04.bin   kernal-901227-01.bin  kernal-901227-03.bin  kernal-906145-02.bin

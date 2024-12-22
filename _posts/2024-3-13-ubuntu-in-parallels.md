@@ -158,6 +158,9 @@ Upload the public key to [github ssh keys](https://github.com/settings/keys)
 
 ### Double Commander
 
+Install `qgnomeplatform-qt5` to enable proper window borders around doublecmd. Then, edit
+`/etc/environment` and add `QT_QPA_PLATFORMTHEME='gnome'`. The borders will be applied after reboot.
+
 Go to Configuration:
 
 * Colors / File Panels / Text Color: black

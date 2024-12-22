@@ -79,3 +79,12 @@ c:
 cd lemmings
 lemmings
 ```
+Read the [DOSBox manual](https://www.dosbox.com/DOSBoxManual.html) for more info.
+
+You can edit the `~/.dosbox/dosbox-*.conf` config file and change:
+```
+fullscreen=true
+scaler=2xsai
+[autoexec]
+mount c ~/games/dosbox
+```

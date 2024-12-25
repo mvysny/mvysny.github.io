@@ -34,7 +34,9 @@ Then, make sure both the OS and the apps are up-to-date; turn on everything in S
 
 System Settings:
 
-* Mouse: turn off Natural scrolling
+* Mouse:
+  * turn off Natural scrolling
+  * Tracking speed: 2nd fastest
 * Trackpad:
   * Scroll & Zoom / Natural scrolling: turn off
   * Tap to click
@@ -75,13 +77,17 @@ Install from the App Store:
 * Slack
 * Magnet?
 * BBEdit
+* Infuse
 
-Install Firefox from the Firefox download page.
+Install other software:
+* Install Firefox from the [Firefox download page](https://www.mozilla.org/en-US/firefox/new/).
+* Install [LinearMouse](https://linearmouse.app/) (also copy in my iCloud `Documents/sw/`)
 
 ### Mouse
 
-To disable the idiotic accelerated mouse wheel scrolling (which doesn't work at all in UTM and sucks in Parallels too),
-download and run the [LinearMouse](https://linearmouse.app/) app; then go to "Scrolling" and set:
+To disable the idiotic accelerated mouse wheel scrolling
+(which doesn't work at all in UTM and sucks in Parallels too),
+download and run the LinearMouse app; then go to "Scrolling" and set:
 
 * "Scrolling mode" to "By Lines"
 * "Distance" to 3
@@ -90,9 +96,9 @@ Find more at [UTM #3417](https://github.com/utmapp/UTM/issues/3417).
 
 ## Commander One
 
-Go into its settings > Hotkeys:
+Go into its Settings > Hotkeys:
 
-* "Go to enclosing folder" : `Backspace`
+* "Go to enclosing folder" : `⌫`
 * "Compress file with options": `⌘P`
 * "Extract file": `⌘U`
 * "Equalize Panels": `⌘=`
@@ -101,7 +107,9 @@ Go into its settings > Hotkeys:
 * "Change drive in right panel": `⌘F2`
 * "Search": `⇧⌘F`
 
-Then, enable "Show all files".
+Settings / General / Edit Files With: select `BBEdit.app`
+
+Then, enable "Show Hidden files".
 
 ## Parallels/UTM
 
@@ -118,7 +126,7 @@ We'll fix that using [Ukelele](https://software.sil.org/ukelele/):
 * Double-click on the +- key below ESC, and type in the backtick character.
 * Press shift, then double-click on the +- key below ESC, and type in the tilde character.
 * Save the bundle.
-* Using Finder, copy the bundle to `/Library/Keyboard Layouts`
+* Using Finder, copy the bundle to `/Library/Keyboard Layouts` (for all users), or `~/Library/Keyboard Layouts` (for current user only).
 
 Reboot, and add the "ABC Copy" keyboard.
 
@@ -176,6 +184,13 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
   * Enable "Show full website address"
   * Default encoding: UTF-8
   * Enable "Show features for web developers"
+
+## BBEdit
+
+* "View / Window Appearance / Hide Sidebar"
+* Settings
+  * Menus & Shortcuts
+    * Uncheck: #!, Subversion, Git, Scripts, Clippings
 
 ## More
 

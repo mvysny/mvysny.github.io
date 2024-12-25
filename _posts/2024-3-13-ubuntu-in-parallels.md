@@ -1,6 +1,6 @@
 ---
 layout: post
-title: New Machine - Ubuntu in Parallels Apple Silicon
+title: New Machine - Ubuntu in Parallels/UTM Apple Silicon
 ---
 
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.

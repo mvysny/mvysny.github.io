@@ -8,10 +8,17 @@ So, here it goes.
 
 ## Hardware
 
-Make sure to buy MacBook with the [ISO International English](https://support.apple.com/en-us/102743#ISO) (kansainvälinen englanti):
+Ideal:
 
-* It has big "Enter" key when compared to ANSI
-* Don't go for British English: it has GBP character in place of #
+* [ANSI Keyboard](https://support.apple.com/en-us/102743#ANSI), since the tilde/backtick
+  character is below ESC; the small Enter key is acceptable.
+* 48 GB of RAM and 2 TB of disk space for VMs
+
+Minimum:
+
+* Make sure to buy MacBook with the [ISO International English](https://support.apple.com/en-us/102743#ISO) (kansainvälinen englanti):
+  * It has big "Enter" key when compared to ANSI
+  * Don't go for British English: it has GBP character in place of #
 * At least 36 GB of RAM and 1 TB of disk space, because of VM
 
 ## During installation
@@ -49,7 +56,6 @@ System Settings:
   * Hot Corners...: disable all hot corners
 * Battery / Options
   * "Prevent automatic sleeping on power adapter": on
-  * "Wake for network access": "Never"
   * "Optimize video streaming": off
 * General
   * Storage: "Empty Trash Automatically": enable
@@ -63,14 +69,12 @@ Finder / Settings:
 
 Install from the App Store:
 
-* Parallels (+activate)
-  * Note that when installing Parallels from App Store (so-called Parallels Desktop App Store version),
-    it's not possible to install guest MacOS. But I don't really mind.
-  * Alternative download of [Parallels Desktop 18 for Mac](https://www.parallels.com/products/desktop/download/).
 * Commander One
 * UTM
 * Libre Office
 * Slack
+* Magnet?
+* BBEdit
 
 Install Firefox from the Firefox download page.
 
@@ -99,48 +103,9 @@ Go into its settings > Hotkeys:
 
 Then, enable "Show all files".
 
-## Parallels
+## Parallels/UTM
 
-In Parallels Desktop Settings:
-
-* Shortcuts
-  * macOS System Shortcuts / Send macOS system shortcuts: Always.
-    * This not only enables Alt+Tab to work properly in your VM, but also enables Ctrl+Left/Right arrow to
-      properly skip words in IDEA.
-  * To stop Parallels interfering with IDEA shortcuts, go to Application Shortcuts and disable shortcuts for:
-    * Preferences
-    * Toggle Coherence
-    * Toggle Full Screen
-    * Toggle Modality
-* Devices: set to 'Connect it to my Mac' to stop interfering with common work
-
-Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
-
-* Home = `Fn+ArrowLeft`
-* End = `Fn+ArrowRight`
-* PgUp = `Fn+ArrowUp`
-* PgDown = `Fn+ArrowDown`
-* Delete = `Fn+Backspace`
-* Insert - couldn't find any Fn combination for this. Press `I` to insert in vim.
-
-Even better: get the [Magic keyboard with Numeric Keypad](https://www.apple.com/shop/product/MMMR3B/A/magic-keyboard-with-touch-id-and-numeric-keypad-for-mac-models-with-apple-silicon-british-english-black-keys);
-don't forget the "International English ISO" layout.
-
-To make sure that Alt+Insert works with IDEA: go to Parallels Desktop Preferences / Shortcuts / Virtual machines, select any linux box
-to edit the "Linux profile" and add the following mapping:
-
-* Cmd+Backspace -> Win+Insert (remember that we swapped Win with Alt in Gnome).
-
-### Linux VM settings
-
-* Options
-  * Sharing: disable everything except "Share custom Mac folders". Then Manage Folders
-    and select one specific folder to share.
-* Hardware
-  * CPU & Memory: Advanced and check "Adaptive Hypervisor"
-  * Mouse & Keyboard: Don't optimize for games
-  * Shared printers: turn off
-  * Sound & Camera: disable everything
+See [Virtual Machines on MacBook](../virtual-machines-macbook/) for steps to setup Parallels/UTM.
 
 ## Fixing Keyboard Backtick/Tilde
 
@@ -183,7 +148,7 @@ Links:
 ## Activity Monitor
 
 * View / Dock Icon / Show CPU History
-* Press ⌘3 to show CPU history window, ⌘4 to show GPU history
+* Press `⌘3` to show CPU history window, `⌘4` to show GPU history
 * Switch to "Memory" tab, to see the memory pressure chart.
 
 ## Global Keyboard Shortcuts
@@ -191,10 +156,10 @@ Links:
 Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
 * "App Shortcuts" and add:
-  * "Show Help menu" set to `⌥⌘/` (can't use `⇧⌘/` since some apps launch help with `⌘?`)
   * "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
 * Modifier Keys
   * `Caps Lock` as `^ Control`
+    * This allows Magnet to have 
 
 ## Safari
 

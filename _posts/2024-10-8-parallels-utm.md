@@ -25,8 +25,7 @@ is definitely most effective and that's what I'm using.
 
 Intellij IDEA works:
 
-* UTM accelerated only runs Intellij in Wayland mode. IDEA works very well in this mode, but the update
-  screen doesn't show anything. If IDEA update fails, turn off UTM acceleration.
+* UTM accelerated only runs Intellij in Wayland mode. IDEA works very well in this mode.
 * Parallels runs Intellij in both Wayland and Xorg mode correctly.
 
 Parallels App Store Edition is severely crippled compared to UTM:
@@ -52,10 +51,13 @@ the VirtFS option worked for me well.
 
 When logging in to Linux, UTM would randomly pretend that Ctrl is pressed (or Alt) all the time. That means that you can't
 type with keyboard and mouse clicks randomly don't work or show crazy menus. The only way is to logout and log back in.
-Very annoying and frustrating.
+Very annoying and frustrating. The solution is to avoid pressing any modifier keys until Linux-in-UTM fully
+boots and you log in.
 
 ## Conclusion
 
 UTM supports newer Ubuntu and sticks to standards (the SPICE protocol) and is much better privacy-wise but has
-its quirks. Parallels (the AppStore Edition) offers a much more polished experience UI-wise, but
+its quirks. Parallels (the AppStore Edition) offers a bit more polished experience UI-wise, but
 the drivers are closed, they taint kernel and throw strange segfaults on Ubuntu 24.04+.
+The support from Parallels is horrible, and the strange UI blinking in Linux and segfaults
+persuaded me to switch to UTM.

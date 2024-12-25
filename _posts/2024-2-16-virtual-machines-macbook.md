@@ -3,8 +3,7 @@ layout: post
 title: Virtual Machines on MacBook
 ---
 
-I've tested two VMs: [UTM](https://getutm.app/) and Parallels. Testing hardware is
-an old MacBook Air 2015 x86-64.
+I've tested two VMs: [UTM](https://getutm.app/) and Parallels.
 
 ## UTM
 
@@ -71,3 +70,44 @@ and stick to that - networkd on ubuntu-server, NetworkManager on ubuntu-desktop.
 
 Parallels offers to install Ubuntu 22.04 and that's what you should do: then Parallels automatically
 installs the guest tools and the GUI speed is just brilliant.
+
+In Parallels Desktop Settings:
+
+* Shortcuts
+  * macOS System Shortcuts / Send macOS system shortcuts: Always.
+    * This not only enables Alt+Tab to work properly in your VM, but also enables Ctrl+Left/Right arrow to
+      properly skip words in IDEA.
+  * To stop Parallels interfering with IDEA shortcuts, go to Application Shortcuts and disable shortcuts for:
+    * Preferences
+    * Toggle Coherence
+    * Toggle Full Screen
+    * Toggle Modality
+* Devices: set to 'Connect it to my Mac' to stop interfering with common work
+
+Additional keyboard shortcuts I [found for Parallels but work for UTM too](https://forum.parallels.com/threads/keyboard-shortcut-for-home-end.208263/):
+
+* Home = `Fn+ArrowLeft`
+* End = `Fn+ArrowRight`
+* PgUp = `Fn+ArrowUp`
+* PgDown = `Fn+ArrowDown`
+* Delete = `Fn+Backspace`
+* Insert - couldn't find any Fn combination for this. Press `I` to insert in vim.
+
+Even better: get the [Magic keyboard with Numeric Keypad](https://www.apple.com/shop/product/MMMR3B/A/magic-keyboard-with-touch-id-and-numeric-keypad-for-mac-models-with-apple-silicon-british-english-black-keys);
+don't forget the "International English ISO" layout.
+
+To make sure that Alt+Insert works with IDEA: go to Parallels Desktop Preferences / Shortcuts / Virtual machines, select any linux box
+to edit the "Linux profile" and add the following mapping:
+
+* Cmd+Backspace -> Win+Insert (remember that we swapped Win with Alt in Gnome).
+
+### Linux VM settings
+
+* Options
+  * Sharing: disable everything except "Share custom Mac folders". Then Manage Folders
+    and select one specific folder to share.
+* Hardware
+  * CPU & Memory: Advanced and check "Adaptive Hypervisor"
+  * Mouse & Keyboard: Don't optimize for games
+  * Shared printers: turn off
+  * Sound & Camera: disable everything

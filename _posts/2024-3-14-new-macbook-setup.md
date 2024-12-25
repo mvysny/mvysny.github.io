@@ -56,6 +56,7 @@ System Settings:
   * "Dock" / "Position on screen": "Left"
   * "Desktop & Stage Manager" / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
   * Hot Corners...: disable all hot corners
+  * "Tiled windows have margins": turn off
 * Battery / Options
   * "Prevent automatic sleeping on power adapter": on
   * "Optimize video streaming": off

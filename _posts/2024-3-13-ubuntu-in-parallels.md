@@ -327,3 +327,18 @@ that will make UTM show the tty1 on boot. If not, press `⌥←` or `⌥→` to 
 Don't forget to run `sudo update-grub` to write changes done to the `GRUB_CMDLINE_LINUX_DEFAULT` variable.
 
 Tips: Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.
+
+## Shared Folders (UTM only)
+
+Add this to `/etc/fstab`:
+```
+# https://docs.getutm.app/guest-support/linux/
+share	/home/mavi/shared	9p	trans=virtio,version=9p2000.L,rw,_netdev,nofail	0	0
+```
+This uses the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).
+
+If the shared folder is dedicated to this VM, the easiest option to fix the permission errors
+is the alternative option of:
+```bash
+$ sudo chown -R $USER /home/mavi/shared
+```

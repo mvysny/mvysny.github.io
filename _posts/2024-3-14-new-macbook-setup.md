@@ -79,6 +79,7 @@ Install from the App Store:
 * Magnet?
 * BBEdit
 * Infuse
+* Magnet (to be able to move windows between monitors)
 
 Install other software:
 * Install Firefox from the [Firefox download page](https://www.mozilla.org/en-US/firefox/new/).
@@ -192,6 +193,10 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
 * Settings
   * Menus & Shortcuts
     * Uncheck: #!, Subversion, Git, Scripts, Clippings
+
+## Magnet
+
+Enable "Synchronize settings via iCloud".
 
 ## More
 

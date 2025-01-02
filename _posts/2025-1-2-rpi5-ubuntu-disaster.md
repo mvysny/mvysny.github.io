@@ -19,3 +19,9 @@ The OS is incredibly snappy, but afterwards huge problems start to appear:
   they can't support the weight of the hdmi cable and a micro-hdmi-to-hdmi adapter. I'm
   expecting those ports to eventually snap off from RPI.
 
+Raspberry PI OS seems to be working much better - both Firefox and Chromium
+work, the [webgl aquarium](http://webglsamples.org/aquarium/aquarium.html)
+shows 60 FPS for 1000 fish. However, YouTube on Firefox is really slow; the `about:support`
+shows a lot of 'blacklisted' and no media support, suggesting that the 3d drivers
+need some work. However, Chromium plays YouTube videos without any issues and doesn't max out
+CPU, suggesting that there's some kind of GPU decoding.

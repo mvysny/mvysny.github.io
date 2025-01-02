@@ -88,3 +88,10 @@ scaler=super2xsai
 [autoexec]
 mount c ~/games/dosbox
 ```
+
+If the [arrow keys do not seem to be working](https://www.reddit.com/r/linux_gaming/comments/hgor7g/arrow_keys_not_working_in_dosbox_opensuse/?rdt=56474),
+edit the `~/.dosbox/dosbox-*.conf` config file and change:
+```
+[sdl]
+usescancodes=false
+```

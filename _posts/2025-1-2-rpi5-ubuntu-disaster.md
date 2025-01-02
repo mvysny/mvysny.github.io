@@ -25,3 +25,9 @@ shows 60 FPS for 1000 fish. However, YouTube on Firefox is really slow; the `abo
 shows a lot of 'blacklisted' and no media support, suggesting that the 3d drivers
 need some work. However, Chromium plays YouTube videos without any issues and doesn't max out
 CPU, suggesting that there's some kind of GPU decoding.
+
+Is RPI5 good for some kind of NAS+MediaStation? I don't think so - Ubuntu has too many issues
+to be usable; RPI OS generally work but video issues in Firefox suggest that the
+GPU drivers need more work.
+
+As of 2025, a small x86 machine is probably a better bet for NAS+MediaStation.

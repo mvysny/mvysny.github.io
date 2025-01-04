@@ -31,3 +31,18 @@ to be usable; RPI OS generally work but video issues in Firefox suggest that the
 GPU drivers need more work.
 
 As of 2025, a small x86 machine is probably a better bet for NAS+MediaStation.
+
+## Performance
+
+RPI5 uses the [BCM2712](https://www.raspberrypi.com/documentation/computers/processors.html#bcm2712)
+chipset and the `Quad-core Arm Cortex-A76 @ 2.4GHz` CPU.
+
+According to the [cpubenchmark.net](https://www.cpubenchmark.net),
+[ARM Cortex-A76 4 core 2400 MHz](https://www.cpubenchmark.net/cpu_lookup.php?cpu=ARM+Cortex-A76+4+Core+2400+MHz&id=5743)
+has the score of 2151. For comparison, [Intel Celeron J3455 @ 1,5 GHz](https://www.cpubenchmark.net/cpu_lookup.php?cpu=Intel+Celeron+J3455+%40+1.50GHz&id=2875)
+(present in Intel NUC) has the score of 2253 and should be therefore faster.
+
+According to my highly unscientific Java compilation test, running `./gradlew` on [karibu-testing](https://www.github.com/mvysny/karibu-testing)
+on openjdk-17 took 219 seconds on RPI5 (with active cooling fan), while it took 310 seconds on the J3455 (passively cooled, no fan),
+which makes RPI5 30% faster (!).
+

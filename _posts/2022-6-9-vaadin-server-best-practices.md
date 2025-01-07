@@ -83,8 +83,8 @@ Read more on [Karibu-Testing](https://github.com/mvysny/karibu-testing) page.
 
 Don't. Unless your app is highly asynchronous in nature. Otherwise it will be hard
 for you to reason about code flow (since it's hard/impossible to tell which observers will react to given event).
-EventBus will interrupt the code (and it will interrupt you when you are reading the code and trying to figure out what it does):
-you need to stop reading and figure out who's handling the events.
+EventBus will interrupt the code, and it will interrupt you when you are reading/debugging the code and trying to figure out what it does:
+you need to basically stop reading and figure out who's handling the events and what they do exactly.
 
 I consider EventBus an anti-pattern in most common use-cases.
 

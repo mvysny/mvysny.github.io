@@ -95,3 +95,7 @@ edit the `~/.dosbox/dosbox-*.conf` config file and change:
 [sdl]
 usescancodes=false
 ```
+To automatically run a game by dosbox, use the `-c` switch:
+```bash
+$ dosbox -c "C:" -c "cd dyna" -c "dyna"
+```

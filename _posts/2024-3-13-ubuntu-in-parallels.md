@@ -209,6 +209,13 @@ Make sure to:
 2. disable "sync plugins" - it doesn't work reliably and would install/uninstall random plugins as I
    start/stop VMs.
 
+To enable IDEA to profile/gather stats/something, create `/etc/sysctl.d/99-async-profiler.conf`:
+```
+kernel.perf_event_paranoid=1
+kernel.kptr_restrict=0
+```
+Reboot to take effect.
+
 ## GNOME Settings
 
 Go to Settings. Then:

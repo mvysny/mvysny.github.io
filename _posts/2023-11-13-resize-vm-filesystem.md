@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Resize Root Filesystem in a VM
+title: Resize Root Filesystem/Disk in a VM
 ---
 
 It's possible to increase the root filesystem size of the Linux VM machine, quite easily.

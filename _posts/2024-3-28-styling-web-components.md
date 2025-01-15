@@ -29,7 +29,7 @@ calendar.getElement().executeJs("var s = document.createElement(\"style\"); s.te
 ```
 Alternatively, extend the class in javascript and add the styles manually, as described at https://vaadin.com/directory/component/full-calendar-flow/samples , the "using a custom class" example.
 
-Loading remote stylesheets is possible as well, by adding `<link href="yourcss2.css" rel="stylesheet" type="text/css">` into
+[Loading remote stylesheets is possible](https://stackoverflow.com/a/48202255/377320) as well, by adding `<link href="yourcss2.css" rel="stylesheet" type="text/css">` into
 the ShadowDOM instead:
 ```java
 getElement().executeJs("var s = document.createElement(\"link\"); s.setAttribute(\"rel\", \"stylesheet\"); s.setAttribute(\"type\", \"text/css\"); s.setAttribute(\"href\", $0); this.shadowRoot.appendChild(s);", "https://foo.bar");

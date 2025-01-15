@@ -29,6 +29,19 @@ calendar.getElement().executeJs("var s = document.createElement(\"style\"); s.te
 ```
 Alternatively, extend the class in javascript and add the styles manually, as described at https://vaadin.com/directory/component/full-calendar-flow/samples , the "using a custom class" example.
 
+Loading remote stylesheets is possible as well, by adding `<link href="yourcss2.css" rel="stylesheet" type="text/css">` into
+the ShadowDOM instead:
+```java
+getElement().executeJs("var s = document.createElement(\"link\"); s.setAttribute(\"rel\", \"stylesheet\"); s.setAttribute(\"type\", \"text/css\"); s.setAttribute(\"href\", $0); this.shadowRoot.appendChild(s);", "https://foo.bar");
+```
+This way, you can even generate CSS from Vaadin:
+```java
+// in Vaadin Session init listener
+styleSheet = VaadinSession.getCurrent().getResourceRegistry().registerResource(new StreamResource("dynamic-styles.css", () -> new ByteArrayInputStream(styleSheetContent.getBytes())));
+styleSheetUrl = styleSheet.getResourceUri().toString();
+// pass in styleSheetUrl to the <link> code snippet above.
+```
+
 ## Vaadin 24
 
 Vaadin 24 changed the way ShadowDOM is pierced. It now uses direct support of CSS for styling parts via

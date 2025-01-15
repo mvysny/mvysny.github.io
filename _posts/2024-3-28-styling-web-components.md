@@ -34,7 +34,7 @@ the ShadowDOM instead:
 ```java
 getElement().executeJs("var s = document.createElement(\"link\"); s.setAttribute(\"rel\", \"stylesheet\"); s.setAttribute(\"type\", \"text/css\"); s.setAttribute(\"href\", $0); this.shadowRoot.appendChild(s);", "https://foo.bar");
 ```
-This way, you can even generate CSS from Vaadin:
+You can even generate CSS in your Vaadin app, then dynamically inject it into component's ShadowDOM:
 ```java
 // in Vaadin Session init listener
 styleSheet = VaadinSession.getCurrent().getResourceRegistry().registerResource(new StreamResource("dynamic-styles.css", () -> new ByteArrayInputStream(styleSheetContent.getBytes())));

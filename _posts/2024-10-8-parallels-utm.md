@@ -59,7 +59,7 @@ boots and you log in.
 ## UTM Blockers
 
 Some Linux apps **DO NOT WORK** in UTM with 3d acceleration/gpu: the apps will only display a blank rectangle,
-and the only workaround I found is to boot with the `virtio-gl-pci` driver. I suspect that all xorg apps do that. Examples:
+and the only workaround I found is to boot with the `virtio-gl-pci` driver. I suspect that all xorg/xwayland apps do that. Examples:
 
 * Citrix Workspace ARM64 remote desktop - no known workaround, disable 3d acceleration.
 * `qemu-system` (VM-in-a-VM); workaround: use `-vnc :0` and connect a VNC viewer to `localhost:0`.

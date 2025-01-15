@@ -11,7 +11,9 @@ Parallels AppStore Edition is massively outdated when compared to Parallels down
 the Parallels web site.
 
 Parallels starts Ubuntu VM much quicker. On my MacBook Pro M3, Ubuntu fully starts in 10 seconds,
-while it takes 23 seconds to start the Ubuntu VM in UTM.
+while it takes 23 seconds to start the Ubuntu VM in UTM. However, this looks to be a problem with UTM
+drivers: `virtio-gpu-gl-pci` causes Ubuntu to start slowly, while `virtio-gl-pci` starts Ubuntu blazingly
+fast.
 
 UTM is able to boot and install off ubuntu server ISO coming straight from Canonical; Parallels
 just breaks if you try that, and you have to stick with whatever Parallels downloads for you - potential
@@ -54,6 +56,18 @@ type with keyboard and mouse clicks randomly don't work or show crazy menus. The
 Very annoying and frustrating. The solution is to avoid pressing any modifier keys until Linux-in-UTM fully
 boots and you log in.
 
+## UTM Blockers
+
+Some Linux apps **DO NOT WORK** in UTM with 3d acceleration/gpu: the apps will only display a blank rectangle,
+and the only workaround I found is to boot with the `virtio-gl-pci` driver. I suspect that all xorg apps do that. Examples:
+
+* Citrix Workspace ARM64 remote desktop - no known workaround, disable 3d acceleration.
+* `qemu-system` (VM-in-a-VM); workaround: use `-vnc :0` and connect a VNC viewer to `localhost:0`.
+* Intellij in xorg mode: enable Wayland mode
+* vice and uae c64/amiga emulators: no known workaround, disable 3d acceleration
+
+Reported as [UTM #6968](https://github.com/utmapp/UTM/issues/6968).
+
 ## Conclusion
 
 UTM supports newer Ubuntu and sticks to standards (the SPICE protocol) and is much better privacy-wise but has
@@ -61,3 +75,5 @@ its quirks. Parallels (the AppStore Edition) offers a bit more polished experien
 the drivers are closed, they taint kernel and throw strange segfaults on Ubuntu 24.04+.
 The support from Parallels is horrible, and the strange UI blinking in Linux and segfaults
 persuaded me to switch to UTM.
+
+However, if you need to run X apps then UTM won't work for you. This is quite a blocker.

@@ -65,5 +65,8 @@ Useful commands:
 * use `docker buildx rm xyz` to delete a builder and all of its caches
 * use `docker buildx du --builder xyz` to get info on disk space occupied by caches for a particular builder
 * use `docker buildx build --builder xyz` to build a Docker image using given builder
+* use `docker buildx rm xyz` to stop and remove given builder completely, including its build caches, image caches and any images the builder has built.
 
-TODO more
+## Separate caches
+
+TODO

@@ -24,6 +24,17 @@ RUN --mount=type=cache,target=/root/.gradle --mount=type=cache,target=/root/.vaa
 The cache mount is persisted across builds, so even if you end up rebuilding the layer, you only download new or changed packages.
 Any changes to the cache are persisted across builds, and the cache is shared between multiple builds.
 
+## Keeping the cache in check
+
+You can learn the size of the cache by running
+```bash
+$ docker system df
+```
+Clearing the cache:
+```bash
+$ docker system prune
+```
+
 ## The cache is shared
 
 By default, all docker builds use the same builder environment, and the cache is shared and keyed by the mount point (see the `id` option which defaults to `target`):
@@ -52,7 +63,10 @@ There are multiple solutions:
   * Uses **way** more disk space: not only will the build cache be separated, but also the image cache: every builder will download its own `openjdk:17`,
     causing massive disk space usage.
   * Also, the builder builds the image into its own repository, and you need to pull the image into the main registry.
-* Use `--cache-to` and `--cache-from` to have the docker builder use separate caches for separate projects.
+* Use the [external cache](https://docs.docker.com/build/cache/optimize/#use-an-external-cache): `--cache-to` and `--cache-from` to have the docker builder use separate caches for separate projects.
+  * `local` cache is only supported by Docker 24+ when using containerd image store (see below)
+* Use [--cache-id](https://dockerpros.com/wiki/dockerfile-cache-id/) to have separate caches per project
+  * TODO does this actually work for cache mounts? If yes that's great - certainly simpler than having to manage external local cache.
 
 For security reasons, when using CI/CD for many projects (and especially if you don't completely trust those projects),
 it's better to use separate cache folders, one per every project.
@@ -67,6 +81,55 @@ Useful commands:
 * Use `docker buildx build --builder xyz` to build a Docker image using given builder
 * Use `docker buildx rm xyz` to stop and remove given builder completely, including its build caches, image caches and any images the builder has built.
 
-## Separate caches
+## Separate local caches
 
-TODO
+The easiest way is to use `--cache-to` and `--cache-from` with the [Local cache](https://docs.docker.com/build/cache/backends/local/#cache-versioning).
+You create a cache dir for every project you build, then you run, say, `/var/cache/mydockercaches/project1`; then:
+```bash
+$ docker build --cache-from type=local,src=/var/cache/mydockercaches/project1 --cache-to type=local,dest=/var/cache/mydockercaches/project1 -t test/vaadin-boot-example-maven:latest .
+```
+
+Notes:
+
+* When you run `docker system prune -a`, the cache files will stay but next build will seem not to use them;
+  * probably it's a good idea to nuke all local caches as well.
+* You can delete the cache files simply via `rm -rf`; the cache will be re-populated on next run.
+* Re-running the build seems to always add a couple of mb to the cache - probably the created app image is cached there as well.
+* These caches are not gc-ed automatically by Docker, nor are they included in `docker system df`. You need to clear them yourself.
+* The size of the cache is somewhere around 400mb when building a simple Maven project.
+
+Maybe it's better to go next-level and use the [Depot](https://depot.dev) cache manager: to be seen.
+
+## Troubleshooting
+
+If `type=local` cache fails with
+```
+ERROR: Cache export is not supported for the docker driver.
+Switch to a different driver, or turn on the containerd image store, and try again.
+Learn more at https://docs.docker.com/go/build-cache-backends/
+```
+you need to [enable containerd image store](https://dille.name/blog/2023/05/10/testing-docker-with-containerd-image-store-without-docker-desktop/):
+edit `/etc/docker/daemon.json` and make sure `containerd-snapshotter` is enabled:
+```json
+{
+  "features": {
+    "containerd-snapshotter": true
+  }
+}
+```
+Restart docker daemon:
+```bash
+$ systemctl restart docker.service
+```
+Verify that the setting took effect:
+```bash
+$ docker info|grep driver-type
+  driver-type: io.containerd.snapshotter.v1
+```
+Note: this only works with Docker 24+.
+
+## Further read
+
+* [Cache strategies](https://dockerpros.com/wiki/dockerfile-cache-strategy/)
+* [docker buildx build](https://docs.docker.com/reference/cli/docker/buildx/build/)
+* [Depot](https://depot.dev)

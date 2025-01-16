@@ -48,10 +48,14 @@ There are multiple solutions:
     cache by publishing infected jar dependencies. Also, the builds may need to wait to obtain exclusive access,
     causing the builds to run slower.
 * Use multiple builder instances: [docker buildx create](https://docs.docker.com/reference/cli/docker/buildx/create/).
-  * Solves the disadvantages of `sharing=locked` but uses way more disk space.
+  * Solves the disadvantages of `sharing=locked`
+  * Uses **way** more disk space: not only will the build cache be separated, but also the image cache: every builder will download its own `openjdk:17`,
+    causing massive disk space usage.
+  * Also, the builder builds the image into its own repository, and you need to pull the image into the main registry.
 * Use `--cache-to` and `--cache-from` to have the docker builder use separate caches for separate projects.
 
-For security reasons, when using CI/CD, it's better to use separate cache folders, one per every project.
+For security reasons, when using CI/CD for many projects (and especially if you don't completely trust those projects),
+it's better to use separate cache folders, one per every project.
 
 ## Multiple builders
 

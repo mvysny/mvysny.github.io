@@ -54,10 +54,11 @@ There are multiple solutions:
   concurrent builds if necessary.
   * Advantages: cache is shared, so the disk space occupied is low. Builds are faster since jar deps downloaded by one project
     are reused by other projects as well.
-  * Disadvantages: fragile: if the project's `Dockerfile` doesn't mention `sharing=locked` then
-    the cache is shared and may become corrupted. Also, it's possible for a rogue project to pollute `~/.m2/repository`
-    cache by publishing infected jar dependencies. Also, the builds may need to wait to obtain exclusive access,
-    causing the builds to run slower.
+  * Disadvantages:
+    * fragile: if the project's `Dockerfile` doesn't mention `sharing=locked` then the cache is shared and may become corrupted.
+    * It's possible for a rogue project to pollute `~/.m2/repository` cache by publishing infected jar dependencies.
+    * The builds may need to wait to obtain exclusive access, causing the builds to run slower.
+    * This can only be set in `Dockerfile`: it can not be set as a parameter to `docker build`.
 * Use multiple builder instances: [docker buildx create](https://docs.docker.com/reference/cli/docker/buildx/create/).
   * Solves the disadvantages of `sharing=locked`
   * Uses **way** more disk space: not only will the build cache be separated, but also the image cache: every builder will download its own `openjdk:17`,
@@ -65,8 +66,8 @@ There are multiple solutions:
   * Also, the builder builds the image into its own repository, and you need to pull the image into the main registry.
 * Use the [external cache](https://docs.docker.com/build/cache/optimize/#use-an-external-cache): `--cache-to` and `--cache-from` to have the docker builder use separate caches for separate projects.
   * `local` cache is only supported by Docker 24+ when using containerd image store (see below)
-* Use [--cache-id](https://dockerpros.com/wiki/dockerfile-cache-id/) to have separate caches per project
-  * TODO does this actually work for cache mounts? If yes that's great - certainly simpler than having to manage external local cache.
+* Use [--cache-id](https://dockerpros.com/wiki/dockerfile-cache-id/) to have separate caches per project; unfortunately that doesn't work with docker buildx,
+  so it won't affect the build caches.
 
 For security reasons, when using CI/CD for many projects (and especially if you don't completely trust those projects),
 it's better to use separate cache folders, one per every project.
@@ -108,8 +109,8 @@ ERROR: Cache export is not supported for the docker driver.
 Switch to a different driver, or turn on the containerd image store, and try again.
 Learn more at https://docs.docker.com/go/build-cache-backends/
 ```
-you need to [enable containerd image store](https://dille.name/blog/2023/05/10/testing-docker-with-containerd-image-store-without-docker-desktop/):
-edit `/etc/docker/daemon.json` and make sure `containerd-snapshotter` is enabled:
+you need to [enable containerd image store](https://dille.name/blog/2023/05/10/testing-docker-with-containerd-image-store-without-docker-desktop/).
+On Ubuntu, edit `/etc/docker/daemon.json` and make sure `containerd-snapshotter` is enabled:
 ```json
 {
   "features": {

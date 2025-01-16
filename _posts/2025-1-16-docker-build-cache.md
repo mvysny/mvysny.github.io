@@ -61,11 +61,11 @@ it's better to use separate cache folders, one per every project.
 
 Useful commands:
 * Use `docker buildx create --name xyz` to create a new builder,
-* use `docker buildx ls` to list the builders,
-* use `docker buildx rm xyz` to delete a builder and all of its caches
-* use `docker buildx du --builder xyz` to get info on disk space occupied by caches for a particular builder
-* use `docker buildx build --builder xyz` to build a Docker image using given builder
-* use `docker buildx rm xyz` to stop and remove given builder completely, including its build caches, image caches and any images the builder has built.
+* Use `docker buildx ls` to list the builders,
+* Use `docker buildx rm xyz` to delete a builder and all of its caches
+* Use `docker buildx du --builder xyz` to get info on disk space occupied by caches for a particular builder
+* Use `docker buildx build --builder xyz` to build a Docker image using given builder
+* Use `docker buildx rm xyz` to stop and remove given builder completely, including its build caches, image caches and any images the builder has built.
 
 ## Separate caches
 

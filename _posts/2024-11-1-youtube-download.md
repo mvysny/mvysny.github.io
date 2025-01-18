@@ -19,6 +19,11 @@ To list all available formats:
 ```bash
 $ yt-dlp --list-formats "URL"
 ```
+Then, to download specific combo of video and audio:
+```bash
+$ yt-dlp --format "401+140" "URL"
+```
+yt-dlp will download both formats then combine them with `ffmpeg` (ffmpeg must be installed).
 
 More documentation:
 

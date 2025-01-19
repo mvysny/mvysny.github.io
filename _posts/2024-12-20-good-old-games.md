@@ -85,6 +85,8 @@ You can edit the `~/.dosbox/dosbox-*.conf` config file and change:
 ```
 fullscreen=true
 scaler=super2xsai
+[cpu]
+cycles=10000
 [autoexec]
 mount c ~/games/dosbox
 ```

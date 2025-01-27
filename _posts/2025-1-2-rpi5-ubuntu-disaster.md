@@ -3,6 +3,15 @@ layout: post
 title: Raspberry 5 + Ubuntu 24.10 - a disaster
 ---
 
+Raspberry 5 is a very nice machine; the Raspberry PI OS works nicely
+but the Ubuntu 24.10 experience is just horrible.
+
+The SD Card sold by the Rasbperry PI foundation is incredibly fast and snappy -
+no need to get the [M.2 HAT+](https://www.raspberrypi.com/news/using-m-2-hat-with-raspberry-pi-5/)
+to boot off NVMe SSD drive.
+
+## Ubuntu 24.10 is a disaster
+
 Ubuntu 24.10 arm64 is easy to flash and install using the RPI Imager app.
 The OS is incredibly snappy, but afterwards huge problems start to appear:
 
@@ -19,18 +28,33 @@ The OS is incredibly snappy, but afterwards huge problems start to appear:
   they can't support the weight of the hdmi cable and a micro-hdmi-to-hdmi adapter. I'm
   expecting those ports to eventually snap off from RPI.
 
-Raspberry PI OS seems to be working much better - both Firefox and Chromium
+## Raspberry PI OS
+
+[Raspberry PI OS](https://www.raspberrypi.com/documentation/computers/os.html)
+seems to be working much better - both Firefox and Chromium
 work, the [webgl aquarium](http://webglsamples.org/aquarium/aquarium.html)
 shows 60 FPS for 1000 fish. However, YouTube on Firefox is really slow; the `about:support`
 shows a lot of 'blacklisted' and no media support, suggesting that the 3d drivers
 need some work. However, Chromium plays YouTube videos without any issues and doesn't max out
 CPU, suggesting that there's some kind of GPU decoding.
 
-Is RPI5 good for some kind of NAS+MediaStation? I don't think so - Ubuntu has too many issues
-to be usable; RPI OS generally work but video issues in Firefox suggest that the
-GPU drivers need more work.
+The default desktop environment is a complete disaster though, so let's install Gnome.
 
-As of 2025, a small x86 machine is probably a better bet for NAS+MediaStation.
+### Gnome
+
+Installing Gnome is easy:
+
+```bash
+$ sudo apt install gnome
+```
+
+When the installer asks you to pick between lightdm and gdm3, select
+gdm3: lightdm won't allow you to start Gnome.
+
+After all's installed, reboot and select "Gnome" - that will boot Gnome on Wayland.
+Gnome on Wayland is quite snappy and fast; Chromium also works correctly, is accelerated
+and is able to play YouTube really well. This kind of machine can definitely
+serve as a NAS+MediaStation.
 
 ## Performance
 

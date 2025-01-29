@@ -85,10 +85,10 @@ then passes only that integer to the client-side. `KeyMapper` uses `HashMap` int
 The conversation between Grid and KeyMapper goes like this:
 
 1. Grid: KeyMapper, do you have an ID for `Person("jim")` please?
-2. KeyMapper: Not yet; but I've remembered it, generated an ID of `1` for it, here it is.
-3. Grid: Thanks! I'll run the `ValueProvider`s, 'll remember the rendered string "jim" for this row under the ID of 1. What about `Person("martin")`?
+2. KeyMapper: Not yet; but I've stored the `Person` instance to my `HashMap` with an ID I just generated for it (an integer with the value of `1`); here's the ID.
+3. Grid: Thanks! I'll run the `ValueProvider`s, I'll render "jim" for my column and I'll send "jim" along with the ID of 1 to the client-side. What about `Person("martin")`?
 4. KeyMapper: Yes, my `HashMap` already contains `Person("martin")` and the ID is `1`, here it is.
-5. Grid: Ah great, alright, I'll just remember the rendered string "martin" for this row under the ID of 1. Hmm, strange, there's already something there... whatever I'll just overwrite. What about `Person("albert")`?
+5. Grid: Ah great, alright, I'll pass "martin" with the ID of 1 to the client-side. Hmm, strange, there's already something under the ID of 1 in my list of instructions heading client-side... whatever I'll just overwrite. What about `Person("albert")`?
 6. KeyMapper: Yes, my `HashMap` already contains `Person("albert")` and the ID is `1`, here it is.
 7. Grid: alrighty, writing down "albert" under ID 1.
 

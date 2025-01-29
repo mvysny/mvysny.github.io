@@ -337,15 +337,21 @@ Tips: Never use the `nomodeset` option - the VM no longer initializes the displa
 
 ## Shared Folders (UTM only)
 
+We'll use the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).
+
+Run these commands to prepare stuff:
+```bash
+$ sudo mkdir /mnt/utm
+$ sudo apt install bindfs
+```
 Add this to `/etc/fstab`:
 ```
 # https://docs.getutm.app/guest-support/linux/
-share	/home/mavi/shared	9p	trans=virtio,version=9p2000.L,rw,_netdev,nofail	0	0
+share	/mnt/utm	9p	trans=virtio,version=9p2000.L,rw,_netdev,nofail	0	0
+# bindfs mount to remap UID/GID
+/mnt/utm /home/mavi/shared fuse.bindfs map=501/1000:@20/@1000,x-systemd.requires=/mnt/utm,_netdev,nofail,auto 0 0
 ```
-This uses the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).
 
-If the shared folder is dedicated to this VM, the easiest option to fix the permission errors
-is the alternative option of:
-```bash
-$ sudo chown -R $USER /home/mavi/shared
-```
+I'm assuming the user id (UID) of 501 and GID of 20. To figure out these values,
+run terminal on your Mac and run `ls -na`: it should list all files in your home
+folder and the UID and GID of the owner (you).

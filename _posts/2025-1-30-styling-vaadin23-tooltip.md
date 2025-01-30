@@ -26,7 +26,7 @@ Now, all tooltips will have blue text, except for the ones with the red theme.
 The `vaadin-tooltip-overlay` element isn't accessible from Java directly. Luckily,
 `vaadin-tooltip` will automatically apply any theme attribute to `vaadin-tooltip-overlay`
 as well, so all we need is to use a bit of reflection to retrieve `vaadin-tooltip`
-element and set a tooltip to it:
+element and set a theme to it:
 
 ```java
 @Route

@@ -27,6 +27,10 @@ the positioning (above/below), the color, show-on-hover VS show-on-click.
 
 ## Hacking Vaadin Tooltip
 
+Vaadin 23 offers the [Tooltip](https://vaadin.com/docs/v23/components/tooltip)
+component, unfortunately by default it doesn't provide support for HTML
+tooltip contents. Fear not!
+
 This code works in Vaadin 23+:
 
 ```java
@@ -67,6 +71,10 @@ public class MainRoute extends VerticalLayout {
 }
 ```
 Thanks Samuli Penttilä for this awesome tip!
+
+### Styling Vaadin 23 Tooltip
+
+Read [Styling Vaadin 23 Tooltip](../styling-vaadin23-tooltip/).
 
 ## Tooltip with any Vaadin Component
 

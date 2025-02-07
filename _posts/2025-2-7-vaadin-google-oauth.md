@@ -42,8 +42,8 @@ public class GoogleSignInButton extends Div {
     getElement().setProperty("clientId", Objects.requireNonNull(clientId));
   }
   @ClientCallable
-  private void onSignIn(JsonValue response) {
-    System.out.println(response.toJson());
+  private void onSignIn(String credential) {
+    System.out.println(credential);
   }
 }
 ```
@@ -61,7 +61,7 @@ class GoogleSigninButton extends HTMLElement {
     google.accounts.id.prompt();
   }
   handleCredentialResponse(response) {
-    this.$server.onSignIn(response);
+    this.$server.onSignIn(response.credential);
   }
 }
 window.customElements.define('google-signin-button', GoogleSigninButton);
@@ -73,6 +73,50 @@ function, then print it to the console. Once that happens, we're good to go to s
 ## Verifying Credential
 
 We need to parse the credential string, verify that it's correct, check the client id,
-parse the e-mail out of it, and then log in the user with that e-mail.
+parse the e-mail out of it, and then log in the user with that e-mail. That's documented
+in [Verify the Google ID token on your server side](https://developers.google.com/identity/gsi/web/guides/verify-google-id-token).
 
-TODO
+The simplest way is to use the [Google API Client Library](https://developers.google.com/api-client-library/java),
+even though it pulls in shitload of dependencies. There's a bit of documentation here: [API Requests](https://developers.google.com/api-client-library/java/google-api-java-client/requests);
+the [Maven Coordinates are here](https://developers.google.com/api-client-library/java/google-api-java-client/setup).
+
+In short, add this to your project's dependencies:
+```gradle
+dependencies {
+  implementation("com.google.api-client:google-api-client:2.7.2")
+}
+```
+> Note: check the newest version at [Maven Central: google-api-client](https://repo1.maven.org/maven2/com/google/api-client/google-api-client/)
+
+Then, modify the `GoogleSignInButton` Java class:
+```java
+@ClientCallable
+private void onSignIn(String credential) {
+    try {
+        HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+        JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                .setAudience(Collections.singletonList(clientId))
+                .build();
+        final GoogleIdToken idToken = verifier.verify(credential);
+        if (idToken == null) {
+            throw new RuntimeException("Failed to verify credential");
+        }
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        // Print user identifier
+        String userId = payload.getSubject();
+        System.out.println("User ID: " + userId);
+        // Get profile information from payload
+        System.out.println(payload.getEmail());
+        boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+        System.out.println(emailVerified);
+        System.out.println((String) payload.get("name"));
+        System.out.println((String) payload.get("picture"));
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}
+```
+
+Now, since you have the user's e-mail, you can store the user's e-mail into Vaadin
+Session, thus logging in the user.

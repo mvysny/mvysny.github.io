@@ -36,6 +36,8 @@ necessary javascript functions, to log in the user and obtain the Google ID toke
 @JsModule("./src/google-signin-button.js")
 @JavaScript(value = "https://accounts.google.com/gsi/client")
 public class GoogleSignInButton extends Div {
+    // the "Client ID" from Google OAuth 2.0 credential, looks like
+    // 2398471023-asoifywerhewjkdlaj023842asdkl.apps.googleusercontent.com
     private final String clientId;
 
     public GoogleSignInButton(String clientId) {

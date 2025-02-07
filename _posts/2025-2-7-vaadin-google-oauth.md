@@ -36,26 +36,15 @@ necessary javascript functions, to log in the user and obtain the Google ID toke
 @JsModule("./src/google-signin-button.js")
 @JavaScript(value = "https://accounts.google.com/gsi/client")
 public class GoogleSignInButton extends Div {
-    // the "Client ID" from Google OAuth 2.0 credential, looks like
-    // 2398471023-asoifywerhewjkdlaj023842asdkl.apps.googleusercontent.com
-    private final String clientId;
-
-    public GoogleSignInButton(String clientId) {
-        this.clientId = clientId;
-    }
-
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        super.onAttach(attachEvent);
-        getElement().executeJs("google.accounts.id.initialize({client_id: $0, callback: this.handleCredentialResponse.bind(this)});" +
-                "google.accounts.id.renderButton(this, {theme:'outline', size:'large'});" +
-                "google.accounts.id.prompt();", clientId);
-    }
-
-    @ClientCallable
-    private void onSignIn(JsonValue response) {
-        System.out.println(response.toJson());
-    }
+  // the "Client ID" from Google OAuth 2.0 credential, looks like
+  // 2398471023-asoifywerhewjkdlaj023842asdkl.apps.googleusercontent.com
+  public GoogleSignInButton(String clientId) {
+    getElement().setProperty("clientId", Objects.requireNonNull(clientId));
+  }
+  @ClientCallable
+  private void onSignIn(JsonValue response) {
+    System.out.println(response.toJson());
+  }
 }
 ```
 Note the `initialize()` javascript call, the `callback` parameter: this javascript function gets
@@ -66,9 +55,14 @@ Let's implement the `handleCredentialResponse()` function in a custom element: l
 create a javascript file in `src/main/frontend/src/google-signin-button.js`:
 ```javascript
 class GoogleSigninButton extends HTMLElement {
-    handleCredentialResponse(response) {
-        this.$server.onSignIn(response);
-    }
+  connectedCallback() {
+    google.accounts.id.initialize({client_id: this.clientId, callback: this.handleCredentialResponse.bind(this)});
+    google.accounts.id.renderButton(this, {theme:'outline', size:'large'});
+    google.accounts.id.prompt();
+  }
+  handleCredentialResponse(response) {
+    this.$server.onSignIn(response);
+  }
 }
 window.customElements.define('google-signin-button', GoogleSigninButton);
 ```

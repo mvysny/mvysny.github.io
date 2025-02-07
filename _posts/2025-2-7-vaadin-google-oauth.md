@@ -58,7 +58,12 @@ public class GoogleSignInButton extends Div {
     }
 }
 ```
-Also create a javascript file in your `src/main/frontend/src/google-signin-button.js`:
+Note the `initialize()` javascript call, the `callback` parameter: this javascript function gets
+called when the Google user logs in; it receives a credential string which contains
+all the important information.
+
+Let's implement the `handleCredentialResponse()` function in a custom element: let's
+create a javascript file in `src/main/frontend/src/google-signin-button.js`:
 ```javascript
 class GoogleSigninButton extends HTMLElement {
     handleCredentialResponse(response) {
@@ -67,7 +72,7 @@ class GoogleSigninButton extends HTMLElement {
 }
 window.customElements.define('google-signin-button', GoogleSigninButton);
 ```
-Place the button to your app and click it. It should run the Google login procedure,
+All done. You can now place the button into your app and click it. It should run the Google login procedure,
 then it should receive a credential string, send it to the server by calling `onSignIn()` Java
 function, then print it to the console. Once that happens, we're good to go to step 2.
 

@@ -113,7 +113,8 @@ private void onSignIn(String credential) {
         System.out.println((String) payload.get("name"));
         System.out.println((String) payload.get("picture"));
     } catch (Exception ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
+      Notification.show("Failure while logging in via Google");
     }
 }
 ```

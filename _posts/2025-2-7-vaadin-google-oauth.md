@@ -10,7 +10,7 @@ Google SSO when your Vaadin app isn't using Spring.
 
 We'll create a Vaadin component which calls Google APIs to allow your user to log in.
 We'll also create a Google OAuth screen and configure it so that everything works locally,
-with a server running at `http://localhost:8080`.
+with a server running at `http://localhost:8080`. It's actually surprisingly easy.
 
 ## Preparation
 

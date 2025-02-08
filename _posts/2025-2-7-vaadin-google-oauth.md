@@ -30,7 +30,28 @@ a `OAuth 2.0 Client ID` at console.cloud.google.com:
 ## The Button
 
 We'll create a Vaadin GoogleSignInButton class which imports Google Identity client and calls
-necessary javascript functions, to log in the user and obtain the Google ID token. Create a Java class named `GoogleSignInButton`:
+necessary javascript functions, to log in the user and obtain the Google ID token.
+
+Let's create a javascript file in `src/main/frontend/src/google-signin-button.js`:
+```javascript
+class GoogleSigninButton extends HTMLElement {
+  connectedCallback() {
+    google.accounts.id.initialize({client_id: this.clientId, callback: this.handleCredentialResponse.bind(this)});
+    google.accounts.id.renderButton(this, {theme:'outline', size:'large'});
+    google.accounts.id.prompt();
+  }
+  handleCredentialResponse(response) {
+    this.$server.onSignIn(response.credential);
+  }
+}
+window.customElements.define('google-signin-button', GoogleSigninButton);
+```
+Note the `initialize()` javascript call, the `callback` parameter: this javascript function gets
+called when the Google user logs in; it receives a credential string which contains
+all the important information. It then uses Vaadin RPC to call an `onSignIn()` function
+defined server-side.
+
+To implement the server-side part of the component, create a Java class named `GoogleSignInButton`:
 ```java
 @Tag("google-signin-button")
 @JsModule("./src/google-signin-button.js")
@@ -46,25 +67,6 @@ public class GoogleSignInButton extends Div {
     System.out.println(credential);
   }
 }
-```
-Note the `initialize()` javascript call, the `callback` parameter: this javascript function gets
-called when the Google user logs in; it receives a credential string which contains
-all the important information.
-
-Let's implement the `handleCredentialResponse()` function in a custom element: let's
-create a javascript file in `src/main/frontend/src/google-signin-button.js`:
-```javascript
-class GoogleSigninButton extends HTMLElement {
-  connectedCallback() {
-    google.accounts.id.initialize({client_id: this.clientId, callback: this.handleCredentialResponse.bind(this)});
-    google.accounts.id.renderButton(this, {theme:'outline', size:'large'});
-    google.accounts.id.prompt();
-  }
-  handleCredentialResponse(response) {
-    this.$server.onSignIn(response.credential);
-  }
-}
-window.customElements.define('google-signin-button', GoogleSigninButton);
 ```
 All done. You can now place the button into your app and click it. It should run the Google login procedure,
 then it should receive a credential string, send it to the server by calling `onSignIn()` Java
@@ -119,5 +121,17 @@ private void onSignIn(String credential) {
 }
 ```
 
-Now, since you have the user's e-mail, you can store the user's e-mail into Vaadin
-Session, thus logging in the user.
+Now we have all the necessary data available in the `onSignIn()` function, most importantly the user
+e-mail. Since `onSignIn()` function is called by a Vaadin servlet, the Vaadin session
+is available and locked properly, so you can go ahead and manipulate Vaadin components,
+perhaps store the user into Vaadin Session (thus logging in the user) and then redirect
+to the main screen of the app.
+
+## Vaadin Simple Security
+
+You now have the authentication part of the security implemented. To implement the
+authorization part, you can use the [Vaadin Simple Security](https://github.com/mvysny/vaadin-simple-security)
+which provides thin and simple integration into Vaadin built-in authorization capabilities.
+
+TODO link to Vaadin Simple Security Google SSO documentation
+

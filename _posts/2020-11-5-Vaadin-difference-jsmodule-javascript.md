@@ -25,7 +25,7 @@ for more details.
 ## Module Scripts versus Classic Scripts
 
 When you read the javadoc on `@JsModule` and `@JavaScript` and/or read the
-[Storing and Loading Resources](https://vaadin.com/docs/v14/flow/importing-dependencies/tutorial-ways-of-importing.html)
+[Loading Resources](https://vaadin.com/docs/latest/flow/advanced/loading-resources) (Vaadin 14 here: [Storing and Loading Resources](https://vaadin.com/docs/v14/flow/importing-dependencies/tutorial-ways-of-importing.html))
 documentation, it's not clear what the difference between the two are, apart maybe from
 the loading order.
 

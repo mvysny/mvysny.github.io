@@ -21,6 +21,10 @@ language has a proper GC and exceptions, using error-codes is just dumb.
 Missing collection API
 is a huge slap-in-the-face - having to deal with global functions to use arrays is unacceptable.
 
+Interfaces and their implementation is just horrible: either the interface uses pointers all over the code,
+or the interface is a struct, and there's no way to change this later on. This is just so dumb;
+Swift does this in a much better way.
+
 Would I prefer golang over C and C++? Definitely.
 
 Over Kotlin-native? That's a toughie. Kotlin is IMHO far better language than golang,

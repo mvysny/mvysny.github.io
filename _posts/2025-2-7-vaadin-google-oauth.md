@@ -133,5 +133,4 @@ You now have the authentication part of the security implemented. To implement t
 authorization part, you can use the [Vaadin Simple Security](https://github.com/mvysny/vaadin-simple-security)
 which provides thin and simple integration into Vaadin built-in authorization capabilities.
 
-TODO link to Vaadin Simple Security Google SSO documentation
-
+See the [Google Addon for Vaadin Simple Security](https://github.com/mvysny/vaadin-simple-security/tree/master/externalauth/google) for more documentation.

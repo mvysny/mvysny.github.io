@@ -11,6 +11,32 @@ Use [Playwright](https://playwright.dev/). It just works, even on Linux, both x8
 but instead accesses the browser over a standardized [Firefox CDP](https://firefox-source-docs.mozilla.org/remote/cdp/)/[Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/). But if you can't
 do that, read on.
 
+## Ubuntu 24.10
+
+`chromium` snap now comes with `chromedriver` which actually works! To test:
+
+1. `sudo snap install chromium`
+2. git clone skeleton-starter-flow-spring
+3. Edit `AbstractViewTest` and make it extend `TestBenchTestCase`, to disable parallel runs
+4. Modify `AbstractViewTest.setup()` as follows:
+
+```java
+class AbstractViewTest {
+   @Before
+   public void setup() throws Exception {
+      ChromeOptions chromeOptions = new ChromeOptions();
+      chromeOptions.addArguments("--headless", "--no-sandbox");
+      final ChromeDriverService service = new ChromeDriverService.Builder()
+              .usingDriverExecutable(new File("/snap/chromium/current/usr/lib/chromium-browser/chromedriver"))
+              .build();
+      setDriver(TestBench.createDriver(new ChromeDriver(service, chromeOptions)));
+      getDriver().get(getURL(route));
+   }
+}
+```
+
+Works on arm64 Ubuntu.
+
 ## Ubuntu 23.10
 
 ChromeDriver can't control Chromium - Chromium is launched but it just sits there with no

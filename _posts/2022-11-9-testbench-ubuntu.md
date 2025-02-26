@@ -24,11 +24,13 @@ do that, read on.
 class AbstractViewTest {
    @Before
    public void setup() throws Exception {
-      ChromeOptions chromeOptions = new ChromeOptions();
-      chromeOptions.addArguments("--headless", "--no-sandbox");
       System.setProperty("webdriver.chrome.driver", "/snap/chromium/current/usr/lib/chromium-browser/chromedriver");
-      setDriver(TestBench.createDriver(new ChromeDriver(chromeOptions)));
-      // Or specify the driver via ChromeDriverService:
+      setDriver(TestBench.createDriver(new ChromeDriver()));
+      // Alternatives:
+      // - specify the driver via ChromeDriverService
+      // - start Chromium in headless mode
+//      ChromeOptions chromeOptions = new ChromeOptions();
+//      chromeOptions.addArguments("--headless", "--no-sandbox");
 //      final ChromeDriverService service = new ChromeDriverService.Builder()
 //              .usingDriverExecutable(new File("/snap/chromium/current/usr/lib/chromium-browser/chromedriver"))
 //              .build();

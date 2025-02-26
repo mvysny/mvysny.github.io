@@ -26,10 +26,13 @@ class AbstractViewTest {
    public void setup() throws Exception {
       ChromeOptions chromeOptions = new ChromeOptions();
       chromeOptions.addArguments("--headless", "--no-sandbox");
-      final ChromeDriverService service = new ChromeDriverService.Builder()
-              .usingDriverExecutable(new File("/snap/chromium/current/usr/lib/chromium-browser/chromedriver"))
-              .build();
-      setDriver(TestBench.createDriver(new ChromeDriver(service, chromeOptions)));
+      System.setProperty("webdriver.chrome.driver", "/snap/chromium/current/usr/lib/chromium-browser/chromedriver");
+      setDriver(TestBench.createDriver(new ChromeDriver(chromeOptions)));
+      // Or specify the driver via ChromeDriverService:
+//      final ChromeDriverService service = new ChromeDriverService.Builder()
+//              .usingDriverExecutable(new File("/snap/chromium/current/usr/lib/chromium-browser/chromedriver"))
+//              .build();
+//      setDriver(TestBench.createDriver(new ChromeDriver(service, chromeOptions)));
       getDriver().get(getURL(route));
    }
 }

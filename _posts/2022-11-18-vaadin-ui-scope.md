@@ -83,5 +83,5 @@ it requires fetching window name via `ExtendedClientDetails` which are fetched a
 The [Issue #13468](https://github.com/vaadin/flow/issues/13468) contains a request to have window name available eagerly,
 so that tab scope is available in the UI init listener.
 
-For a non-Spring project there currently is no out-of-the-box solution,
-see & vote for [Issue #13468](https://github.com/vaadin/flow/issues/13468).
+For a non-Spring project there is a prototype app [vaadin-tab-scope-example](https://github.com/mvysny/vaadin-tab-scope-example)
+but the implementation is a bit fragile: see & vote for [Issue #13468](https://github.com/vaadin/flow/issues/13468).

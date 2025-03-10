@@ -153,4 +153,16 @@ In order to auto-activate swap and the encrypted btrfs filesystem, we need to ad
 
 ```fstab
 /dev/vg0/vg0-lv0-swap none swap sw 0 0
+/dev/vg0/vg0-lv1-btrfs /mnt/mydisk btrfs defaults 0 1
+```
+Done. Now, if you reboot, Linux will ask for the LUKS password on boot, then it will
+auto-activate swap and auto-mount the btrfs filesystem. Reboot, enter the password
+and verify that all works:
+```bash
+$ sudo lsblk -o name,size,fstype
+vdb                          10G 
+  vdb1                       10G crypto_LUKS
+    dmcrypt0                 10G LVM2_member
+      vg0-vg0--lv0--swap      1G swap
+      vg0-vg0--lv1--btrfs     9G btrfs
 ```

@@ -26,6 +26,9 @@ Overview of partitioning schemes:
 - LVM - an upgrade over MPR+GPT, allows resizing/moving partitions without the need of physically copying data around;
   supports all sorts of RAIDs which we won't discuss here. See the [Complete Beginner's Guide to LVM in Linux](https://linuxhandbook.com/lvm-guide/) for more details.
 
+Note that GPT is preferred on physical devices over LVM, simply because [booting from LVM disk is very tricky](https://www.system-rescue.org/lvm-guide-en/Booting-linux-from-LVM-volumes/).
+Therefore, use GPT for disks you boot from, use LVM for everything else.
+
 ## Analysing the current setup
 
 Use the following commands to analyze your current setup:
@@ -98,6 +101,10 @@ $ sudo parted -a opt /dev/vdb mkpart primary 0% 100%
 $ sudo parted -l
 ```
 The partition should now be ready, and a new block device should be available: `/dev/vdb1`.
+
+> Note: Actually you don't have to partition the disk and you can create LUKS directly
+> on `/dev/vdb`. You can skip the steps above if you'd like, then use `/dev/vdb` instead
+> of `/dev/vdb1` in steps below.
 
 Now we'll use LUKS to create an encrypted block device on top of `/dev/vdb1`:
 ```bash

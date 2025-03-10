@@ -102,7 +102,11 @@ The partition should now be ready, and a new block device should be available: `
 Now we'll use LUKS to create an encrypted block device on top of `/dev/vdb1`:
 ```bash
 $ sudo cryptsetup luksFormat /dev/vdb1
+$ sudo cryptsetup open /dev/vdb1 dmcrypt0
+$ sudo cryptsetup status /dev/mapper/dmcrypt0
 ```
+
+TODO crypttab
 
 TODO more
 

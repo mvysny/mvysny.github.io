@@ -105,11 +105,52 @@ $ sudo cryptsetup luksFormat /dev/vdb1
 $ sudo cryptsetup open /dev/vdb1 dmcrypt0
 $ sudo cryptsetup status /dev/mapper/dmcrypt0
 ```
+We have a block device that encrypts its contents automatically. However,
+the device won't be opened automatically upon boot, you need the `/etc/crypttab` file;
+see below.
 
-TODO crypttab
+We can now configure LVM on top of LUKS. In theory we could also use GPT, but
+it's far more common to use LVM:
 
-TODO more
+```bash
+$ sudo pvcreate /dev/mapper/dmcrypt0
+$ sudo pvdisplay
+$ sudo vgcreate vg0 /dev/mapper/dmcrypt0
+$ sudo vgdisplay
+```
+We'll create two logical volumes: one for swap, other for a btrfs filesystem.
+```bash
+$ sudo lvcreate -L 1GB -n vg0-lv0-swap vg0
+$ sudo lvcreate -l 100%FREE -n vg0-lv1-btrfs vg0
+$ sudo lvdisplay
+```
+To create the final filesystems, run:
+```bash
+$ sudo mkswap /dev/vg0/vg0-lv0-swap
+$ sudo swapon /dev/vg0/vg0-lv0-swap
+$ free -h
+$ sudo mkfs.btrfs /dev/vg0/vg0-lv1-btrfs
+$ sudo mkdir -p /mnt/mydisk
+$ sudo mount /dev/vg0/vg0-lv1-btrfs /mnt/mydisk
+$ sudo lsblk -o name,size,fstype
+```
+Done - now we have an encrypted swap and an encrypted disk mounted at `/mnt/mydisk`.
+However, those things won't activate automatically upon reboot - for that we need
+to enable auto-mounting.
 
 ## Auto-mounting
 
-TODO
+In order for the LUKS block device to open automatically during the boot, you need to mention
+it in the `/etc/crypttab` file:
+```
+dmcrypt0 /dev/vdb1 none luks,discard
+```
+Reboot - Ubuntu will now ask for password to unlock the encrypted device upon boot.
+See [crypttab man pages](https://www.man7.org/linux/man-pages/man5/crypttab.5.html) for more details.
+
+In order to auto-activate swap and the encrypted btrfs filesystem, we need to add those to
+`/etc/fstab`:
+
+```fstab
+/dev/vg0/vg0-lv0-swap none swap sw 0 0
+```

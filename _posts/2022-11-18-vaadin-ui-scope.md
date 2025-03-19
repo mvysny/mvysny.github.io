@@ -61,9 +61,9 @@ This feature is available since Vaadin 23.
 
 There are small bugs:
 
-1. if the user re-enters the URL manually and presses Enter, the scope
-   is gone and MainLayout+Route gets re-created with a new scope.
-2. When that happens, Flow will start behaving erratically and will fail with `java.lang.IllegalStateException: Unregistered node was not found based on its id. The tree is most likely corrupted.`.
+* if the user re-enters the URL manually and presses Enter, the scope is gone and MainLayout+Route gets re-created with a new scope: [issue #21139](https://github.com/vaadin/flow/issues/21139)
+  * Same thing when running `document.location = url` javascript command. 
+* When that happens, Flow will start behaving erratically and will fail with `java.lang.IllegalStateException: Unregistered node was not found based on its id. The tree is most likely corrupted.`.
    The solution is to detach the route in MainLayout manually, via `content.getElement().removeFromTree()`:
 
 ```java

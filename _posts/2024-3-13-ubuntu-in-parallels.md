@@ -335,6 +335,13 @@ Don't forget to run `sudo update-grub` to write changes done to the `GRUB_CMDLIN
 
 Tips: Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.
 
+Beware though: if you use GPU-accelerated drivers for UTM (which you should), those drivers
+are very slow showing/scrolling bootup kernel logs, and will cause the VM bootup time
+to increase from 22 seconds to 28 seconds. If you don't need to see those messages
+(you usually don't), revert `GRUB_CMDLINE_LINUX_DEFAULT=""`, `sudo update-grub` and reboot.
+The downside is that you'll see "Display output is not active" for 20 seconds until
+Ubuntu graphical interface boots up.
+
 ## Shared Folders (UTM only)
 
 We'll use the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).

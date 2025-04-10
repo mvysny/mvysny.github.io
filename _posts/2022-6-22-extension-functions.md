@@ -107,3 +107,7 @@ To sum it up, simply by having the extension functions as a language feature:
 * You don't need fluent APIs.
 * You can have DSLs to build tree structures in a sane manner
 * You can add functionality to classes you can't otherwise modify
+
+If you don't have extension functions available in your language, you're forced
+to devise workarounds for the above which is always clunkier. This is why
+Java is clunkier than Kotlin and will remain as such until it gets extension functions.

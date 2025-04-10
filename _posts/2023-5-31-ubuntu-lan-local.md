@@ -5,7 +5,7 @@ title: Make Ubuntu discoverable as hostname.local on your LAN
 
 The `.local` top-level-domain (TLD) is reserved to be used for your LAN. Every machine
 has its own hostname, and if configured properly, it is accessible on your LAN by
-the name of `hostname.local`.
+the name of `hostname.local`. Keywords: avahi, mdns, dns.
 
 There are two competing standards, [mDNS/multicast DNS](https://en.wikipedia.org/wiki/Multicast_DNS)
 and [LLMNR](https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution); both use the same principle

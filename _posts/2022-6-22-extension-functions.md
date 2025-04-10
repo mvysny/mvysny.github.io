@@ -52,7 +52,9 @@ Easy-as-pie in Kotlin, just define extension methods for those classes.
 You can also add a builder pattern on top of every Vaadin component, to enable
 your code to be created in a DSL fashion. See the [DSLs: explained](https://www.vaadinonkotlin.eu//dsl_explained/)
 for more details; see the [Karibu-DSL](https://github.com/mvysny/karibu-dsl) project
-for further examples.
+for further examples. This actually also eliminates the need
+to have the fluent API - the builder approach is vastly superior, and in the
+worst case you can always use `apply{}`.
 
 You can also introduce test extension functions on your test classpath. They will not be
 auto-completed in compile classpath in your production code - they will only be
@@ -96,3 +98,12 @@ faster to build, faster to deploy, faster to start and much faster to understand
 which directly translates to easier to maintain => which directly translates to cheaper
 (money-wise), faster development time, faster bug fixing. Sounds ground-breaking,
 but it's just a side-effect of pursuing [simplicity](../on-simplicity/).
+
+## Summary
+
+To sum it up, simply by having the extension functions as a language feature:
+
+* You don't need DI
+* You don't need fluent APIs.
+* You can have DSLs to build tree structures in a sane manner
+* You can add functionality to classes you can't otherwise modify

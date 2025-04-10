@@ -39,11 +39,22 @@ $ systemctl status avahi-daemon
 In my case, avahi was not running, and it suddenly sprung to life after I run `systemctl status avahi-daemon`...
 wtf systemd?
 
+Make sure to read the [Avahi: Troubleshooting](https://wiki.archlinux.org/title/Avahi#Troubleshooting) article.
+
 In case of host name conflict, avahi adds the `-2` suffix to the host name; you can verify that by ping/ssh
 `machine-2.local`. If that works, browse the logs via
 `journalctl -u avahi-daemon` and search for the "Host name conflict" line.
 You can try a bunch of tips from [this archlinux forum](https://bbs.archlinux.org/viewtopic.php?id=284081), e.g. disable ipv6 for
-avahi, or just restart avahi-daemon via `systemctl restart avahi-daemon`. In my case (using Raspberry PI OS as of 2025):
+avahi, or just restart avahi-daemon via `systemctl restart avahi-daemon`. The "Avahi Troubleshooting:
+Hostname changes with appending incrementing numbers" mentions this:
+
+This is a [known bug](https://github.com/lathiat/avahi/issues/117) that is caused by a hostname race condition.
+One possible workaround is [disabling IPv6](https://github.com/lathiat/avahi/issues/117#issuecomment-302849130)
+to attempt to prevent the race condition. If multiple interfaces are present [use allow-interfaces](https://github.com/lathiat/avahi/issues/117#issuecomment-401225716)
+to limit Avahi to a single interface. Another possible workaround is to [disable the cache](https://github.com/lathiat/avahi/issues/117#issuecomment-442201162)
+to prevent Avahi from checking for host name conflicts altogether, but this prevents Avahi from performing lookups.
+
+In my case (using Raspberry PI OS as of 2025):
 
 - Disabling ipv6: ongoing tests
 - Replacing `mdns4_minimal` with `mdns4` in `/etc/nsswitch.conf`: to be tested

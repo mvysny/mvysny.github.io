@@ -43,4 +43,8 @@ In case of host name conflict, avahi adds the `-2` suffix to the host name; you 
 `machine-2.local`. If that works, browse the logs via
 `journalctl -u avahi-daemon` and search for the "Host name conflict" line.
 You can try a bunch of tips from [this archlinux forum](https://bbs.archlinux.org/viewtopic.php?id=284081), e.g. disable ipv6 for
-avahi, or just restart avahi-daemon via `systemctl restart avahi-daemon`.
+avahi, or just restart avahi-daemon via `systemctl restart avahi-daemon`. In my case (using Raspberry PI OS as of 2025):
+
+- Disabling ipv6: ongoing tests
+- Replacing `mdns4_minimal` with `mdns4` in `/etc/nsswitch.conf`: to be tested
+

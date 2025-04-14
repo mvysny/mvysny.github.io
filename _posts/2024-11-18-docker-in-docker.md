@@ -4,7 +4,7 @@ title: Docker-in-Docker
 ---
 
 Say you're hosting a bunch of apps as Docker containers, possibly [via Traefik](../2-vaadin-apps-1-traefik/)
-and you want to control those containers from some kind of Admin interface, which is too
+and you want to control those containers from some kind of Admin interface, which too is
 running in a Docker environment (so that the Traefik routing to the admin interface is easily implemented).
 
 The way to do this is to expose `/var/run/docker.sock` to the container itself. Of course this

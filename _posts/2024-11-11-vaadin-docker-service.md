@@ -16,7 +16,18 @@ $ git clone https://github.com/mvysny/karibu-helloworld-application
 $ cd karibu-helloworld-application
 $ docker build --no-cache -t test/karibu-helloworld-application:latest .
 ```
-Create a file named `docker-compose.yaml` anywhere on disk:
+
+Run the app with the `restart: always` policy:
+```bash
+$ docker run -d -p8080:8080 --restart always test/vaadin-boot-example-gradle
+```
+
+Test that the app is running, by opening [http://localhost:8080](http://localhost:8080).
+
+## Same thing, but with docker-compose
+
+Optionally you can achieve the same thing, but via docker-compose. First, stop the app, by running
+`docker ps` and `docker kill`. Then, create a file named `docker-compose.yaml` anywhere on disk:
 ```yaml
 services:
   web:

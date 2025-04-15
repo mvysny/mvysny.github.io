@@ -31,7 +31,7 @@ networks:
 services:
   traefik:
     # The official v3 Traefik docker image
-    image: traefik:v3.1
+    image: traefik:v3.3.5
     # Enables the web UI and tells Traefik to listen to docker
     command: --api.insecure=true --providers.docker
     networks:
@@ -94,7 +94,7 @@ networks:
     external: true
 services:
   vaadin-boot-example-gradle:
-    image: test/vaadin-boot-example-gradle
+    image: test/vaadin-boot-example-gradle:latest
     networks:
       - web
     labels:
@@ -110,13 +110,13 @@ networks:
   web:
     external: true
 services:
-  vaadin-boot-example-gradle:
-    image: test/beverage-buddy-vok
+  beverage-buddy-vok:
+    image: test/beverage-buddy-vok:latest
     networks:
       - web
     labels:
-      - "traefik.http.routers.vaadin-boot-example-gradle.entrypoints=http"
-      - "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app2.myserver.fake`)"
+      - "traefik.http.routers.beverage-buddy-vok.entrypoints=http"
+      - "traefik.http.routers.beverage-buddy-vok.rule=Host(`app2.myserver.fake`)"
 ```
 
 Run them:
@@ -126,7 +126,7 @@ $ docker-compose up -d -f beverage-buddy-vok.docker-compose.yml
 ```
 
 Traefik will automatically discover those docker containers and will setup proper routing - you can check out
-Traefik's Dashboard to see that.
+Traefik's Dashboard (the HTTP tab, the HTTP routers sub-tab) to see that.
 
 Verify that you can access those apps: [app1.myserver.fake](http://app1.myserver.fake) and [app2.myserver.fake](http://app2.myserver.fake).
 
@@ -162,3 +162,29 @@ In other words, with Traefik:
 2. You need to let Traefik know which provider you use, and configure proper access.
 
 Here's an example of [GoDaddy integration](https://stackoverflow.com/questions/61234489/cannot-get-wildcard-certificate-with-traefik-v2-and-godaddy).
+
+## Securing Things via Multiple Networks, plus running apps via pure docker
+
+At the moment, all apps run on the same network `web`, which is potentially a security issue.
+The easiest way is to create one network per app, isolating the apps from each other:
+```bash
+$ docker network create web1
+$ docker network create web2
+$ docker network connect web1 CONTAINER_ID_OF_TRAEFIK
+$ docker network connect web2 CONTAINER_ID_OF_TRAEFIK
+```
+Obtain the Traefik container id by running `docker ps`.
+
+Kill & remove the `vaadin-boot-example-gradle` and `beverage-buddy-vok` docker containers
+via `docker kill` and `docker container rm`, so that we can start those two via pure docker:
+```bash
+$ docker run -d --network web1 --name vaadin-boot-example-gradle \
+   --label "traefik.http.routers.vaadin-boot-example-gradle.entrypoints=http" \
+   --label "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app1.myserver.fake`)" \
+   test/vaadin-boot-example-gradle:latest
+$ docker run -d --network web2 --name beverage-buddy-vok \
+   --label "traefik.http.routers.beverage-buddy-vok.entrypoints=http" \
+   --label "traefik.http.routers.beverage-buddy-vok.rule=Host(`app2.myserver.fake`)" \
+   test/beverage-buddy-vok:latest
+```
+Observe that Traefik automatically registered both apps exactly as before.

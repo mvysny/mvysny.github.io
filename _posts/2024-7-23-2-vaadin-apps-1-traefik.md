@@ -188,3 +188,30 @@ $ docker run -d --network web2 --name beverage-buddy-vok \
    test/beverage-buddy-vok:latest
 ```
 Observe that Traefik automatically registered both apps exactly as before.
+
+### Hitting the network limit
+
+By default you can create 29 docker networks and then docker will fail with
+`Error response from daemon: failed to parse pool request for address space "LocalDefault" pool "" subpool "": could not find an available predefined netw
+ork`.
+
+To be able to create more networks, edit `/etc/docker/daemon.json` and add:
+```json
+{
+   "default-address-pools": [
+        {
+            "base":"172.17.0.0/12",
+            "size":16
+        },
+        {
+            "base":"192.168.0.0/16",
+            "size":20
+        },
+        {
+            "base":"10.99.0.0/16",
+            "size":24
+        }
+    ]
+}
+```
+then `sudo service docker restart`. Taken from [Stack Overflow](https://stackoverflow.com/questions/41609998/how-to-increase-maximum-docker-network-on-one-server).

@@ -14,14 +14,14 @@ for containers that you absolutely trust.
 ## Plain Docker
 
 Just run
-```
+```bash
 $ docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock ubuntu /bin/bash
 ```
 Unfortunately, the Ubuntu image won't have docker-cli installed. There are ways to
 [install the docker-cli only](https://stackoverflow.com/questions/38675925/is-it-possible-to-install-only-the-docker-cli-and-not-the-daemon),
 or [via docker java client library](https://www.baeldung.com/docker-java-api). But, when running Ubuntu-on-Ubuntu, the
 easiest way is to mount the docker binary itself into the container:
-```
+```bash
 $ docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker ubuntu /bin/bash
 # docker ps
 CONTAINER ID   IMAGE       COMMAND              CREATED          STATUS          PORTS                                   NAMES
@@ -39,7 +39,7 @@ Even though the httpd container was started from an Ubuntu Docker container, htt
 
 You can verify the httpd is running on the host machine, by exiting the Ubuntu container (which is immediately killed and removed because of `--rm`),
 and listing running docker containers from the host machine:
-```
+```bash
 # exit
 exit
 $ docker ps
@@ -53,4 +53,24 @@ Go to [localhost:8080](http://localhost:8080), to see the httpd still running.
 Unfortunately the trick with mounting the docker-compose binary to your container
 won't work anymore since docker-compose is a python script and requires other files to be present as well.
 
-TODO how to install docker-compose into a container.
+However, that is just a minor inconvenience since docker-compose is just a front for docker, so you
+should be able to achieve the same thing with just the `docker` binary.
+
+## docker-buildx
+
+It's even possible to build images via `docker build` from within docker container, including
+the buildx extension:
+```bash
+$ docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /usr/libexec/docker/cli-plugins/docker-buildx:/usr/libexec/docker/cli-plugins/docker-buildx ubuntu /bin/bash
+```
+You can for example build [vaadin-boot-example-gradle](https://github.com/mvysny/vaadin-boot-example-gradle/):
+```bash
+$ sudo apt update && sudo apt install -y git
+$ git clone https://github.com/mvysny/vaadin-boot-example-gradle/
+$ cd vaadin-boot-example-gradle
+$ docker build --cache-from "type=local,src=/root/build-cache" --cache-to "type=local,dest=/root/build-cache" -t test/vaadin-boot-example-gradle:latest .
+```
+The build will be performed outside of the docker container: docker client will
+zip & send the folder to the docker daemon to perform the build. The `--cache-from`
+and `--cache-to` will however refer path from within the docker container;
+if you wish to have a persistent cache you can simply mount the path as a volume.

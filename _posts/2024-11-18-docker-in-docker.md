@@ -74,3 +74,26 @@ The build will be performed outside of the docker container: docker client will
 zip & send the folder to the docker daemon to perform the build. The `--cache-from`
 and `--cache-to` will however refer path from within the docker container;
 if you wish to have a persistent cache you can simply mount the path as a volume.
+
+## Permission issues
+
+In certain docker images (e.g. Jenkins), the main process is not running as root
+but rather as a regular user. In such case mounting `docker.sock` as volume isn't enough and
+Jenkins will print:
+"ERROR: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Head "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied"
+
+You can verify that by running:
+```bash
+$ docker container exec CONTAINER_ID ps -ef n
+     UID     PID    PPID  C STIME TTY      STAT   TIME CMD
+    1000       1       0  0 12:17 ?        Ss     0:00 /usr/bin/tini -- /usr/local/bin/jenkins.sh
+    1000       7       1  3 12:17 ?        Sl     0:24 java -Duser.home=/var/jenkins_home -Djava.awt.headless=true -Xmx512m -Djenkins.model.Jenkins.slaveAgentPort=50000 -Dhudson.lifecycle=hudson.lifecycle.ExitLifecycle -jar /usr/share/jenkins/jenkins.war
+    1000     375       0  0 12:31 ?        Rs     0:00 ps -ef n
+```
+Notice the UID of 1000, which is not 0, which is the UID of the root user.
+
+One solution is to run Jenkins as root via `docker run -u 0`, but a better way
+is to use `--group-add 125`, where 125 is the group ID of the `docker` group
+on the host system. You can obtain the group id by running `getent group docker`.
+
+Also see [docker-compose: group_add on StackOverflow](https://stackoverflow.com/questions/60056354/docker-compose-group-add-works-with-group-id-but-not-with-group-name).

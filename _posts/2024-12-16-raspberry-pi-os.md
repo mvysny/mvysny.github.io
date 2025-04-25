@@ -107,3 +107,9 @@ To run these scripts without needing to type in root password, run `sudo visudo`
 ```sudoers
 mavi ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot
 ```
+
+## Fixes
+
+Avahi: disable ipv6 by setting `use-ipv6=no` in `/etc/avahi/avahi-daemon.conf` solves a
+race condition which causes avahi to respond to `hostname-2.local` lookups, making the machine unaccessible by `hostname.local`.
+More info at [Make Ubuntu discoverable as hostname.local on your LAN](../ubuntu-lan-local/).

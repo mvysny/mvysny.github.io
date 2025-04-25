@@ -54,8 +54,4 @@ to attempt to prevent the race condition. If multiple interfaces are present [us
 to limit Avahi to a single interface. Another possible workaround is to [disable the cache](https://github.com/lathiat/avahi/issues/117#issuecomment-442201162)
 to prevent Avahi from checking for host name conflicts altogether, but this prevents Avahi from performing lookups.
 
-In my case (using Raspberry PI OS as of 2025):
-
-- Disabling ipv6: ongoing tests
-- Replacing `mdns4_minimal` with `mdns4` in `/etc/nsswitch.conf`: to be tested
-
+In my case (using Raspberry PI OS as of 2025), disabling ipv6 by setting `use-ipv6=no` in `/etc/avahi/avahi-daemon.conf` helped.

@@ -93,4 +93,28 @@ test/vaadin-boot-example-gradle:latest   359b22018b0c       1.59GB          752M
 \- linux/arm64                           ef9345e888b3       1.21GB          375MB
 ```
 
-TODO mavi publish them on Docker Hub and test on another machine.
+### Publishing To Docker Hub
+
+Go to [Docker Hub](https://hub.docker.com), log in and create a new public repository,
+say, `vaadin-boot-example-gradle`. Then, build the app again, but this time using the Docker Hub
+image name, `YOUR_DOCKER_USER/vaadin-boot-example-gradle`:
+```bash
+$ docker build -t YOUR_DOCKER_USER/vaadin-boot-example-gradle:0.0.1 --platform linux/amd64,linux/arm64 .
+```
+To push the image, first log in, then push:
+```bash
+$ docker login -u YOUR_DOCKER_USER
+$ docker push YOUR_DOCKER_USER/vaadin-boot-example-gradle:0.0.1
+```
+Visit your image on DockerHub and verify that it's listed correctly, both with `arm64`
+and `amd64` architectures.
+
+To test, you can nuke all docker images on your local system, then run the app:
+```bash
+$ docker system prune -a
+$ docker run --rm -ti -p8080:8080 YOUR_DOCKER_USER/vaadin-boot-example-gradle:0.0.1
+```
+Visit [localhost:8080](http://localhost:8080) to see the app up and running.
+
+Do this on both machines: both your arm64 and amd64 machine, to test that the multi-platform
+build succeeded.

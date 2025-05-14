@@ -72,6 +72,13 @@ Uninstall gedit:
 sudo apt autoremove --purge gedit
 ```
 
+UTM: to enable proper [memory ballooning](https://en.wikipedia.org/wiki/Memory_ballooning),
+install [qemu-guest-agent](https://pve.proxmox.com/wiki/Qemu-guest-agent):
+```bash
+sudo apt install qemu-guest-agent
+```
+It runs a process named `qemu-ga` via systemd. How to check from guest/host that the ballooning works correctly - unknown yet.
+
 ### gnome keyboard shortcuts
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:

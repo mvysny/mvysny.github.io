@@ -39,6 +39,6 @@ your library to Maven Central purely via Gradle command line.
 To achieve that:
 
 1. See [konsume-xml](https://gitlab.com/mvysny/konsume-xml) `build.gradle.kts` for an example.
-2. After the plugin is fully configured, simply run `/gradlew clean build publish closeAndReleaseStagingRepositories`
+2. After the plugin is fully configured, simply run `./gradlew clean build publish closeAndReleaseStagingRepositories`
    to release to Maven Central.
 3. While the command is running, you can follow the progress at [Maven Central Publisher](https://central.sonatype.com/publishing)

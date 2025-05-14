@@ -7,7 +7,7 @@ The [Legacy OSSRH oss.sonatype.org](https://oss.sonatype.org/)
 is [going to go away 30th June 2025](https://central.sonatype.org/news/20250326_ossrh_sunset/),
 which means it will not be possible to release your libraries using the Legacy OSSRH API.
 Users are [advised to migrate to Maven Central](https://central.sonatype.org/faq/what-is-different-between-central-portal-and-legacy-ossrh/#gradle).
-The documentation suggests JReleaser to release to Maven Central, but that thing is a bloated nightmare.
+The documentation suggests JReleaser to release to Maven Central, but JReleaser is a bloated nightmare.
 Read more on a good alternative.
 
 To summarize the madness, there are three endpoints when releasing to Maven Central:

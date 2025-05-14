@@ -12,17 +12,18 @@ Read more on a good alternative.
 
 To summarize the madness, there are three endpoints when releasing to Maven Central:
 
-1. The [Legacy OSSRH ossh.sonatype.org](https://oss.sonatype.org/) which is going to go away.
+1. The [Legacy OSSRH oss.sonatype.org](https://oss.sonatype.org/) which is going to go away.
 2. The new [Maven Central Publisher](https://central.sonatype.com/publishing) portal
    ([Gradle docs](https://central.sonatype.org/publish/publish-portal-gradle/)).
    It uses a new REST API incompatible with the Legacy OSSRH API. You need
    JReleaser to release via this API.
 3. The [OSSRH Staging API](https://central.sonatype.org/publish/publish-portal-ossrh-staging-api/)
-   which uses the same API as the Legacy OSSRH, but this one
+   which is the same REST API as the Legacy OSSRH, but the artifacts are published to
+   the Maven Central Publisher (not to the Legacy OSSRH oss.sonatype.org). This one
    is NOT scheduled to be deprecated (yet).
 
 I tried to use JReleaser and failed (too complex). Then I realized I can use existing Gradle plugins to
-release using the OSSRH REST API protocol, but to Maven Central (the third option).
+release using the OSSRH REST API protocol, but via the OSSRH Staging API (the third option).
 In order to do that, you need:
 
 1. [Migrate your namespaces to Maven Central](https://central.sonatype.org/faq/what-is-different-between-central-portal-and-legacy-ossrh/#gradle)

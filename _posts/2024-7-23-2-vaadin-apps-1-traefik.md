@@ -121,8 +121,8 @@ services:
 
 Run them:
 ```bash
-$ docker-compose up -d -f vaadin-boot-example-gradle.docker-compose.yml
-$ docker-compose up -d -f beverage-buddy-vok.docker-compose.yml
+$ docker-compose -f vaadin-boot-example-gradle.docker-compose.yml up -d
+$ docker-compose -f beverage-buddy-vok.docker-compose.yml up -d
 ```
 
 Traefik will automatically discover those docker containers and will setup proper routing - you can check out

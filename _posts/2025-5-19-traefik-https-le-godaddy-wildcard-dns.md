@@ -68,14 +68,14 @@ services:
     image: traefik:v3.3.5
     # Enables the web UI and tells Traefik to listen to docker
     command:
-      # - --api.insecure=true
+      - --api.insecure=true
       - --providers.docker
       - --entrypoints.https.address=:443
-      - --certificatesResolvers.wildcard-godaddy.acme.dnsChallenge.provider=godaddy
+      - --certificatesResolvers.yourdomain_com_godaddy.acme.dnsChallenge.provider=godaddy
       # Email address used for registration.
-      - --certificatesresolvers.wildcard-godaddy.acme.email=your@email
+      - --certificatesresolvers.yourdomain_com_godaddy.acme.email=your@email
       # Certificates storage
-      - --certificatesresolvers.wildcard-godaddy.acme.storage=/tls-certificates/acme.json
+      - --certificatesresolvers.yourdomain_com_godaddy.acme.storage=/tls-certificates/acme.json
     env_file:
       - .provider.env
       # .provider.env contains `GODADDY_API_KEY` and `GODADDY_API_SECRET`
@@ -85,13 +85,16 @@ services:
       # The HTTP port
       #- "80:80"
       # The Web UI (enabled by --api.insecure=true)
-      #- "8080:8080"
+      - "8080:8080"
       - "443:443"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./tls-certificates:/tls-certificates
 ```
+
+This configures a new Certificate Resolved named "yourdomain_com_godaddy" which
+will download the certificates from Let's Encrypt.
 
 > NOTE: The "your@email" above should match the contact you listed in your DNS domain at GoDaddy,
 > but I don't think this is a hard requirement - it's probably Let's Encrypt who wants to have
@@ -104,7 +107,39 @@ Don't restart Traefik Docker just yet - we need to configure the apps as well.
 
 ## Configuring Apps
 
-TODO
+Modify the `vaadin-boot-example-gradle.docker-compose.yml` as follows:
+```yaml
+version: '3'
+
+networks:
+  web:
+    external: true
+services:
+  vaadin-boot-example-gradle:
+    image: test/vaadin-boot-example-gradle:latest
+    networks:
+      - web
+    labels:
+      - "traefik.http.routers.vaadin-boot-example-gradle.entrypoints=https"
+      - "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app1.yourdomain.com`)"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls=true"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls.certresolver=yourdomain_com_godaddy"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls.domains[0].main=yourdomain.com"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls.domains[0].sans=*.yourdomain.com"
+```
+
+From this configuration, yourdomain_com_godaddy will know to retrieve the https certificate for
+`yourdomain.com` and `*.yourdomain.com` and use it for this particular route.
+See [Traefik: Domain Definition](https://doc.traefik.io/traefik/https/acme/#domain-definition)
+for more information.
+
+## Restart
+
+Restart both Traefik and app Docker container. Traefik should now start listening on https 443.
+If you browse to your app, you'll probably get a certificate warning in your browser:
+this is okay. Traefik will use a self-signed certificate until it is able to obtain a proper
+certificate from Let's Encrypt. Going through the DNS-01 procedure can take about a minute or two,
+so be patient and observe Traefik logs - it will print an error log if anything goes wrong.
 
 ## Additional links
 

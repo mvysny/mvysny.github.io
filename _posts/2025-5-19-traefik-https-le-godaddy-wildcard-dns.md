@@ -3,8 +3,8 @@ layout: post
 title: Setup wildcard DNS https certificates on Traefik with GoDaddy and Let's Encrypt
 ---
 
-It's possible to set up your DNS record to handle wildcard requests, e.g. having your Traefik handle
-`http://*.yourdomain.com`. For this to work, we will
+It's possible to set up your DNS record to handle wildcard requests, so that you can
+host your apps using Traefik at `http://anything.yourdomain.com`. For this to work, we will
 enable proper wildcard support on your DNS configuration, and we will
 configure Traefik's Let's Encrypt integration for a proper wildcard support
 

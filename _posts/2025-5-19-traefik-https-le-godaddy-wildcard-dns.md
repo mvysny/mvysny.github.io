@@ -8,7 +8,8 @@ host your apps using Traefik at `http://anything.yourdomain.com`. For this to wo
 enable proper wildcard support on your DNS configuration, and we will
 configure Traefik's Let's Encrypt integration for a proper wildcard support
 
-In order to obtain a https certificate for a wildcard DNS, we'll let Traefik use Let's Encrypt [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/)
+In order to obtain a https certificate for a wildcard DNS, we'll let Traefik use
+Let's Encrypt [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge)
 type when verifying wildcard DNS. In short, the ACME client needs to briefly add a specific TXT record to your DNS entry.
 In order to do that, the ACME client needs to talk to GoDaddy via GoDaddy's public API, and temporarily modify the DNS record.
 Traefik will use its [dnsChallenge](https://doc.traefik.io/traefik/https/acme/#dnschallenge) ACME client;

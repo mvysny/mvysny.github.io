@@ -4,20 +4,15 @@ title: Setup wildcard DNS https certificates on Traefik with GoDaddy and Let's E
 ---
 
 It's possible to set up your DNS record to handle wildcard requests, e.g. having your Traefik handle
-`http://*.yourdomain.com`. For this to work, you need two things:
+`http://*.yourdomain.com`. For this to work, we will
+enable proper wildcard support on your DNS configuration, and we will
+configure Traefik's Let's Encrypt integration for a proper wildcard support
 
-1. Enable wildcard support with your DNS provider.  E.g. with GoDaddy, click on the domain, then "Manage Domain",
-   the "DNS" tab, then "Add New Record": Type: A, Name: `*` (an asterisk), Data: the IP address of your server. Hit save -
-   the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
-2. Configure Traefik's Let's Encrypt integration for a proper wildcard support
-
-In order to obtain a https certificate for a wildcard DNS, you need to use Let's Encrypt [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/)
+In order to obtain a https certificate for a wildcard DNS, we'll let Traefik use Let's Encrypt [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/)
 type when verifying wildcard DNS. In short, the ACME client needs to briefly add a specific TXT record to your DNS entry.
-In order to do that, the ACME client needs to go to where your DNS is registered, and temporarily modify the DNS record.
-In other words, with Traefik:
-
-1. You need to use [dnsChallenge](https://doc.traefik.io/traefik/https/acme/#dnschallenge)
-2. You need to let Traefik know which provider you use, and configure proper access. Here we'll use GoDaddy.
+In order to do that, the ACME client needs to talk to GoDaddy via GoDaddy's public API, and temporarily modify the DNS record.
+Traefik will use its [dnsChallenge](https://doc.traefik.io/traefik/https/acme/#dnschallenge) ACME client;
+we'll configure Traefik to talk to GoDaddy.
 
 Traefik's documentation is a bit tricky to go through, but once you understand the basic idea,
 things are pretty simple:
@@ -43,12 +38,12 @@ GODADDY_API_SECRET=xyz
 ```
 
 Now enable wildcard support with your DNS provider.  Go to [GoDaddy](https://godaddy.com) & login,
-click on your domain, then "Manage Domain",
- the "DNS" tab, then "Add New Record":
+click on your domain, then "Manage Domain", the "DNS" tab, then "Add New Record":
 
-* Type: A, Name: `*` (an asterisk), Data: the IP address of your server. Hit save -
-   the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
+* Type: A, Name: `*` (an asterisk), Data: the IP address of your server.
 * Also make sure that there's another Type:A record named `@`, with the IP address of your server.
+
+Hit save - the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
 
 ## Traefik
 
@@ -78,7 +73,8 @@ services:
       - --certificatesresolvers.yourdomain_com_godaddy.acme.storage=/tls-certificates/acme.json
     env_file:
       - .provider.env
-      # .provider.env contains `GODADDY_API_KEY` and `GODADDY_API_SECRET`
+      # .provider.env contains `GODADDY_API_KEY` and `GODADDY_API_SECRET`.
+      # These variables are used by Traefik to talk to GoDaddy API
     networks:
       - web
     ports:
@@ -135,8 +131,15 @@ for more information.
 
 ## Restart
 
-Restart both Traefik and app Docker container. Traefik should now start listening on https 443.
-If you browse to your app, you'll probably get a certificate warning in your browser:
+Restart both Traefik and app Docker container. You may need to completely kill and remove
+the containers in order for the new labels to take effect - you can use `docker-compose rm`
+for that.
+
+If you did everything right, traefik should now start listening on https 443.
+You can browse to `http://yourdomain.com:8080` - that's the Traefik monitoring UI which
+should show that there's the https entrypoint on port 443, and there's a route to your app.
+
+If you browse to your app at `https://app1.yourdomain.com`, you'll probably get a certificate warning in your browser:
 this is okay. Traefik will use a self-signed certificate until it is able to obtain a proper
 certificate from Let's Encrypt. Going through the DNS-01 procedure can take about a minute or two,
 so be patient and observe Traefik logs - it will print an error log if anything goes wrong.
@@ -144,4 +147,3 @@ so be patient and observe Traefik logs - it will print an error log if anything 
 ## Additional links
 
 Here's an example of [GoDaddy integration](https://stackoverflow.com/questions/61234489/cannot-get-wildcard-certificate-with-traefik-v2-and-godaddy).
-

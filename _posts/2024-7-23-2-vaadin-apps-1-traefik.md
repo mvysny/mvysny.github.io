@@ -132,36 +132,7 @@ Verify that you can access those apps: [app1.myserver.fake](http://app1.myserver
 
 ## https via Let's Encrypt
 
-To enable https with Let's Encrypt, you obviously have to set up Traefik on an actual
-server running somewhere in the internet; then you have to register a bunch of domains
-and make them point to the IP address where the server is running.
-
-See [Traefik: Let's Encrypt documentation](https://doc.traefik.io/traefik/https/acme/).
-
-Also see [DigitalOcean documentation on Traefik](https://www.digitalocean.com/community/tutorials/how-to-use-traefik-v2-as-a-reverse-proxy-for-docker-containers-on-ubuntu-20-04).
-
-You do not have to have any account at Let's Encrypt: the only requirement is to own the DNS domain and
-to have it pointing to the server's IP.
-
-### DNS Wildcard mode
-
-It's possible to set up your DNS record to handle wildcard requests, e.g. having your Traefik handle
-`http://*.yourdomain.com`. For this to work, you need two things:
-
-1. Enable wildcard support with your DNS provider.  E.g. with GoDaddy, click on the domain, then "Manage Domain",
-   the "DNS" tab, then "Add New Record": Type: A, Name: `*` (an asterisk), Data: the IP address of your server. Hit save -
-   the change will eventually propagate through all DNS servers and you'll be able to `ping foo.yourdomain.com`.
-2. Configure Traefik's Let's Encrypt integration for a proper wildcard support
-
-https with DNS wildcard is tricky: Let's Encrypt only supports the [DNS-01 challenge](https://letsencrypt.org/docs/challenge-types/)
-type when verifying wildcard DNS. In short, the ACME client needs to briefly add a specific TXT record to your DNS entry.
-In order to do that, the ACME client needs to go to where your DNS is registered, and temporarily modify the DNS record.
-In other words, with Traefik:
-
-1. You need to use [dnsChallenge](https://doc.traefik.io/traefik/https/acme/#dnschallenge)
-2. You need to let Traefik know which provider you use, and configure proper access.
-
-Here's an example of [GoDaddy integration](https://stackoverflow.com/questions/61234489/cannot-get-wildcard-certificate-with-traefik-v2-and-godaddy).
+See [Setup wildcard DNS https certificates on Traefik with GoDaddy and Let's Encrypt](../traefik-https-le-godaddy-wildcard-dns/).
 
 ## Securing Things via Multiple Networks, plus running apps via pure docker
 

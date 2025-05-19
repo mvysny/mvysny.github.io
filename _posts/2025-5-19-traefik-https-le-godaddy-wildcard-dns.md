@@ -101,7 +101,8 @@ will download the certificates from Let's Encrypt.
 Create a folder named `tls-certificates` - Traefik will store all private keys & certificates
 obtained from Let's Encrypt to `tls-certificates/acme.json`.
 
-Don't restart Traefik Docker just yet - we need to configure the apps as well.
+Don't restart Traefik Docker just yet - we need to configure the apps as well,
+so that the Resolver obtains certificates for the wildcard domains.
 
 ## Configuring Apps
 

@@ -62,10 +62,11 @@ services:
   traefik:
     # The official v3 Traefik docker image
     image: traefik:v3.3.5
-    # Enables the web UI and tells Traefik to listen to docker
     command:
+      # Enables the web UI and tells Traefik to listen to docker
       - --api.insecure=true
       - --providers.docker
+      # Enables https :443 entrypoint
       - --entrypoints.https.address=:443
       - --certificatesResolvers.yourdomain_com_godaddy.acme.dnsChallenge.provider=godaddy
       # Email address used for registration.

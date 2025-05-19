@@ -91,7 +91,7 @@ services:
       - ./tls-certificates:/tls-certificates
 ```
 
-This configures a new Certificate Resolved named "yourdomain_com_godaddy" which
+This configures a new Certificate Resolver named "yourdomain_com_godaddy" which
 will download the certificates from Let's Encrypt.
 
 > NOTE: The "your@email" above should match the contact you listed in your DNS domain at GoDaddy,

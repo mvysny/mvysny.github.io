@@ -10,17 +10,18 @@ this is where Kotlin Native lacks severely, especially on ARMs.
 
 This text summarizes my experiences and findings when developing the [solar-controller-client](https://github.com/mvysny/solar-controller-client).
 
+The biggest problem is that you can't develop Kotlin/Native on an arm64 linux (e.g. Ubuntu running on MacBook in UTM),
+since [Kotlin/Native doesn't support building on aarch64](https://youtrack.jetbrains.com/issue/KT-36871).
+You can build *to* aarch64, but you have to build on `x86-64` at the moment.
+
 ## Working with files
 
-EDIT: there's [kotlinx-io](https://github.com/Kotlin/kotlinx-io) now which offers some basic working
-with files. I haven't tried it out, but it's used by ktor so it should be quite good.
-
-Anyways, in order to work with files, you only have three options:
+In order to work with files, you only have three options:
 
 * Use OKIO, however when you want to run on ARM then you're out of luck: [okio doesn't provide libraries for arm64](https://github.com/square/okio/issues/1171).
 * Write your own set of functions, based on posix `open()` function. This is ultimately what I did; see [IO.kt](https://github.com/mvysny/solar-controller-client/blob/master/src/nativeMain/kotlin/utils/IO.kt)
   for more details.
-* kotlinx-io: I wonder whether they offer ARM64 version?
+* kotlinx-io
 
 The above fully exposes the basic problem with any Kotlin-Native library: in order to be sure that the
 library works on different CPUs, every library has to run the tests on all of those CPUs. Which is obviously
@@ -39,7 +40,7 @@ for more details.
 To be honest, JVM doesn't offer direct support for serial ports either; you have to use a 3rd party library which
 then goes native and brings the massive JNA dependency (the `com.fazecast:jSerialComm` library; see [renogy-klient](https://github.com/mvysny/renogy-klient)).
 
-## kotlinx-io
+### kotlinx-io
 
 [kotlinx-io](https://github.com/Kotlin/kotlinx-io) only offers basic file support for now; no working with serial ports. It supports aarch64 target.
 
@@ -106,3 +107,5 @@ which rules out Ruby, Python and JavaScript.
 
 Tried Go, [it sucks](../golang-sucks/). Loved [Dart](../on-dart/), but I'll probably
 go with Kotlin+JVM, see [Writing a Command-Line Utility - Lessons Learned](../Writing-cmdline-utility/).
+
+Alternatively, [Swift looks nice!](../swift/).

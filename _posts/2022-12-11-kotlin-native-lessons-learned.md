@@ -37,9 +37,22 @@ to access/configure serial port via `tcsetattr()` is to do it manually; see [IO.
 for more details.
 
 To be honest, JVM doesn't offer direct support for serial ports either; you have to use a 3rd party library which
-then goes native and brings the massive JNA dependency.
+then goes native and brings the massive JNA dependency (the `com.fazecast:jSerialComm` library; see [renogy-klient](https://github.com/mvysny/renogy-klient)).
 
-EDIT: would be interesting to see what kind of support does kotlinx-io offer.
+## kotlinx-io
+
+[kotlinx-io](https://github.com/Kotlin/kotlinx-io) only offers basic file support for now; no working with serial ports. It supports aarch64 target.
+
+To read a file, add a dependency on `"org.jetbrains.kotlinx:kotlinx-io-core:0.7.0"` and then:
+```kotlin
+fun Path.readBytes(): ByteArray = SystemFileSystem.source(this).use { it.buffered().readByteArray() }
+fun Path.readText(): String = readBytes().decodeToString()
+println(Path("foo.txt").readText())
+```
+It offers useful abstractions for working with files in a stream way: (`Source` and `RawSource`).
+It should be possible to implement a custom `RawSource` implementation which reads from the serial port.
+Unfortunately, no `Reader` or any other way of reading a file as a stream of characters at the moment;
+but a UTF8-to-UTF16 streaming decoder should be able to implement (or steal from JVM; the `UnicodeDecoder` class).
 
 ## REST client
 

@@ -223,6 +223,10 @@ kernel.kptr_restrict=0
 ```
 Reboot to take effect.
 
+Further settings:
+
+- For the love of God, [disable fucking "Automatically show first error in editor"](https://youtrack.jetbrains.com/issue/IDEA-367475)
+
 ## GNOME Settings
 
 Go to Settings. Then:

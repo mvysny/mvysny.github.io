@@ -44,3 +44,7 @@ To achieve that:
    to release to Maven Central.
 3. While the command is running, you can follow the progress at [Maven Central Publisher](https://central.sonatype.com/publishing)
 
+When publishing the first time, you can run the `closeStagingRepositories` instead. This way,
+the repository is uploaded and closed, but won't be released just yet. This way, you can inspect
+the contents in the Maven Central Publisher; when you're happy with the outcome,
+just hit the "Publish" button.

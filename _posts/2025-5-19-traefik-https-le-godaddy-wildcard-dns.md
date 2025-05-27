@@ -80,10 +80,9 @@ services:
     networks:
       - web
     ports:
-      # The HTTP port
-      #- "80:80"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
+      # The 'https' entrypoint
       - "443:443"
     volumes:
       # So that Traefik can listen to the Docker events

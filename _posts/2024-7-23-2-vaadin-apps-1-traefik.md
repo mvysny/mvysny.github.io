@@ -130,7 +130,44 @@ Traefik's Dashboard (the HTTP tab, the HTTP routers sub-tab) to see that.
 
 Verify that you can access those apps: [app1.myserver.fake](http://app1.myserver.fake) and [app2.myserver.fake](http://app2.myserver.fake).
 
-## https via Let's Encrypt
+## https
+
+You can enable https in Traefik very easily. Traefik will generate and use self-signed certificates by default.
+To enable https, modify Traefik `docker-compose.yaml` as follows:
+```yaml
+version: '3'
+
+networks:
+  web:
+    external: true
+
+services:
+  traefik:
+    # The official v3 Traefik docker image
+    image: traefik:v3.3.5
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker --entrypoints.https.address=:443
+    networks:
+      - web
+    ports:
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+      # The 'https' entrypoint
+      - "443:443"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+Modify the apps' `docker-compose.yml` as follows:
+```
+...
+    labels:
+      - "traefik.http.routers.vaadin-boot-example-gradle.entrypoints=https"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls=true"
+      - "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app1.myserver.fake`)"
+```
+
+### https via Let's Encrypt
 
 See [Setup wildcard DNS https certificates on Traefik with GoDaddy and Let's Encrypt](../traefik-https-le-godaddy-wildcard-dns/).
 

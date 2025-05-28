@@ -68,7 +68,7 @@ services:
       - --providers.docker
       # Enables https :443 entrypoint
       - --entrypoints.https.address=:443
-      - --certificatesResolvers.yourdomain_com_godaddy.acme.dnsChallenge.provider=godaddy
+      - --certificatesresolvers.yourdomain_com_godaddy.acme.dnsChallenge.provider=godaddy
       # Email address used for registration.
       - --certificatesresolvers.yourdomain_com_godaddy.acme.email=your@email
       # Certificates storage

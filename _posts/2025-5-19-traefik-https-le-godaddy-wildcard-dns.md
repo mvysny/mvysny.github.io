@@ -146,6 +146,17 @@ this is okay. Traefik will use a self-signed certificate until it is able to obt
 certificate from Let's Encrypt. Going through the DNS-01 procedure can take about a minute or two,
 so be patient and observe Traefik logs - it will print an error log if anything goes wrong.
 
+## Troubleshooting
+
+If it takes too long time for Traefik to get the certificate, you can:
+
+* Use `docker logs traefik` to watch Traefik logs for any errors
+* If Traefik fails to obtain the certificate, the backoff period seems to be quite long.
+  You can force the issue by restarting Traefik: `docker restart traefik`
+* Observe the `acme.json` file: if the `Certificates` key is null, Traefik is still using
+  the self-signed certificate. Once Traefik succeeds obtaining certificates from Let's Encrypt,
+  this will be populated with a list of certificates.
+
 ## Additional links
 
 Here's an example of [GoDaddy integration](https://stackoverflow.com/questions/61234489/cannot-get-wildcard-certificate-with-traefik-v2-and-godaddy).

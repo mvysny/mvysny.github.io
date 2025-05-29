@@ -23,9 +23,13 @@ It's good to read the documentation on Google Identity, namely the following tut
 Follow the [Setup Tutorial](https://developers.google.com/identity/gsi/web/guides/get-google-api-clientid) and create
 a `OAuth 2.0 Client ID` at console.cloud.google.com:
 
+* "Application type": "Web application"
+* Name: choose any descriptive name, it's for you to recognize this client ID later on in the Google Cloud console
 * For Authorized JavaScript origins, use `http://localhost:8080`
-* For authorized redirect URIs, use `http://localhost:8080` - I think we won't be using this since
+* For authorized redirect URIs, don't add any URIs - we won't be using this since
   we'll use JavaScript callbacks instead.
+* Hit "Create"
+* There is no need to write down the Client secret since we won't need that.
 
 ## The Button
 

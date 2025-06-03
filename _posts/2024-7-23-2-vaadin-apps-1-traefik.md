@@ -167,6 +167,20 @@ Modify the apps' `docker-compose.yml` as follows:
       - "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app1.myserver.fake`)"
 ```
 
+### Serving both http and https
+
+You need to enable the http interface again, by adding `--entrypoints.http.address=:80` (and open Docker container port: `- "80:80"`).
+Since one router can't serve both http and https (since the `tls` setting can not be both `true` and `false`),
+we need to create additional router:
+```
+    labels:
+      - "traefik.http.routers.vaadin-boot-example-gradle.entrypoints=https"
+      - "traefik.http.routers.vaadin-boot-example-gradle.tls=true"
+      - "traefik.http.routers.vaadin-boot-example-gradle.rule=Host(`app1.myserver.fake`)"
+      - "traefik.http.routers.vaadin-boot-example-gradle_http.entrypoints=http"
+      - "traefik.http.routers.vaadin-boot-example-gradle_http.rule=Host(`app1.myserver.fake`)"
+```
+
 ### https via Let's Encrypt
 
 See [Setup wildcard DNS https certificates on Traefik with GoDaddy and Let's Encrypt](../traefik-https-le-godaddy-wildcard-dns/).

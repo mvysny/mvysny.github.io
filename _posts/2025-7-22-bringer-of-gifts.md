@@ -61,6 +61,7 @@ You, as a developer, have many constraints: on your time, on your energy. You're
 for fun, and for yourself. I worked on Karibu-DSL to learn the Kotlin DSL, and
 it's fun adding support for all the Vaadin components. But you should not be afraid to
 fire some of your users - especially the ones with just demands and no gifts.
+You really think I should work on your issues instead of being with my family? Think fucking again.
 
 Ideas are easy, work is hard. I bring gifts, and you either bring
 gifts in the form of code, or you fuck the hell off.

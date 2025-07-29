@@ -116,3 +116,8 @@ a couple of times if it isn't clear on the first read.
 Please see the [vaadin-loom](https://github.com/mvysny/vaadin-loom) example project for the actual
 implementation of the generator pattern; namely, see the `Iterators.fibonacci()` static function
 for more details.
+
+## More Read
+
+[The Mug library](https://github.com/google/mug) offers a very interesting way of [implementing generators without loom](https://github.com/google/mug/wiki/Iteration-Explained).
+Definitely worth a read.

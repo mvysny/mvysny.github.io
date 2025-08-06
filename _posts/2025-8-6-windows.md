@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Open Source Project - The Bringer of Gifts
+title: Windows Rant
 ---
 
 Personally I think that Windows is a piece of shit joke of an operating system, unsuitable for anything but games.

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Mac Modifier Keys Unicode Symbols
+title: Mac/Apple Modifier Keys Unicode Symbols
 ---
 
-The unicode symbols for Mac function keys (Command/Cmd, Shift, Option/Alt, Control, Fn)
+The unicode symbols for Mac/Apple function/modifier keys (Command/Cmd, Shift, Option/Alt, Control, Fn)
 table (obtained from [stackexchange](https://apple.stackexchange.com/a/55729/519002)):
 
 | HTML Entity         | Glyph | Name                                   |

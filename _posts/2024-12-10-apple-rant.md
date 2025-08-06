@@ -3,7 +3,17 @@ layout: post
 title: Apple Rant
 ---
 
-The way Apple is sold, it's like the second coming of Jesus, yet it's riddled with bugs which would make Linux feel embarrassed.
+The way Apple is sold, it's like the second coming of Jesus, yet it's riddled with
+bugs which would make Linux feel embarrassed.
+
+Disclaimer: I'm still using MacOS despite its shortcomings. This is just for me to
+vent, and maybe you'll agree with some of this stuff. I know Linux has many shortcomings, but
+this vent made me realize that Linux did many things right,
+and Apple should copy those things.
+
+Disclaimer 2: I'm coming from Linux, and I'm NOT a Windows guy by any means.
+Personally I think that [Windows is a piece of shit joke of an operating system](../windows/),
+unsuitable for anything but games.
 
 # UX
 
@@ -21,7 +31,7 @@ I want The Mighty Window Manager to tile the bloody window to the left, end of s
 of the app itself capturing the shortcut, then maybe moving its window to the left (or not). What the fuck? The Window Manager needs to handle that, not the app itself!
 
 On top of that, there are two maximize functions now: `Zoom` and `Fill`. `Zoom` has no keyboard shortcut assigned and
-for some apps it maximizes the app only vertically, but no horizontally (?!?!?); `Fill` is `Fn+Control+F`
+for some apps it maximizes the app only vertically, but no horizontally (?!?!?); `Fill` is `⌃🌐F`
 which is a PITA to press on the "Magic Keyboard with Numeric Keypad". And it doesn't work anyway on some apps,
 so I'm continuing to use the Magnet app.
 
@@ -59,22 +69,25 @@ in my brain already.
 Shortcuts in MacOS make zero sense. There are 4 modifier keys (Cmd/Option/Control/Fn!!!)
 and none of those act as a global "system" modifier for invoking system-wide action
 (like the "Win" key does in Windows or Linux).
-Or, rather, all of them do. `Control` is generally treated as such (as a kind of system key),
-but also the `Fn` key is treated as such, e.g. `Fn-E` shows the emoji keyboard. On top of that,
+Or, rather, all of them do. `⌃` is generally treated as such (as a kind of system key),
+but also the `🌐` (Fn) key is treated as such, e.g. `🌐E` shows the emoji keyboard. On top of that,
 screen capture is a clusterfuck of wild key combinations that make zero sense.
-Take `Shift+Cmd+4` as an example, to capture part of the screen:
+Take `⇧⌘4` as an example, to capture part of the screen:
 
-- Doesn't use `Control` nor `Fn` even though those keys are supposed to be "system-wide"
+- Doesn't use `⌃` nor `Fn` even though those keys are supposed to be "system-wide"
 - The `4` key is completely arbitrary and makes no sense
 - Always captures a rectangular screenshot: say if you want a video capture, tough luck - you need to remember another crazy keyboard combo.
-- No UI option to copy the screenshot to clipboard instead of saving to desktop - you need to press `Ctrl+Shift+Cmd+4` (dafuk???) for that
-- Why is suddenly `Ctrl` involved when Option would make more sense for this - since we're slightly modifying the behavior of screen capture?
-- `Shift+Command+4+SpaceBar` captures current window - Why `SpaceBar`??? Also, Apple, have you realized it's not easy to press 4 keys at the same time when 2 of them are non-modifiers?
+- No UI option to copy the screenshot to clipboard instead of saving to desktop - you need to press `⌃⇧⌘4` (dafuk???) for that
+- Why is suddenly `⌃` involved when `⌥` would make more sense for this - since we're slightly modifying the behavior of screen capture?
+- `⇧⌘4SpaceBar` captures current window - Why `SpaceBar`??? Also, Apple, have you realized it's not easy to press 4 keys at the same time when 2 of them are non-modifiers?
 
 In Linux/Gnome, this is solved in a much better way:
 - Press PrintScreen
 - A dialog appears where you select what you want to do - e.g. capture the entire screen, or just part of the screen, or a video.
-- The screenshot is stored into `~/Pictures/Screenshots` and also into clipboard. Apple - copy!
+- The screenshot is stored into `~/Pictures/Screenshots` and also into clipboard.
+- Okay okay, you can press `⇧⌘5` to get the same window - noted.
+
+I know there are historic reasons since `🌐` was added later on, but still.
 
 Now, the iPhone on-screen keyboard: it is so broken it's not even funny. The autocorrection sucks, the
 UX for correcting autocorrection is horrible and I find myself fighting the UX to correct
@@ -87,8 +100,13 @@ and then copy it.
 I mean, many things are done in the right way, but there are some huge gaping bloody obvious usability issues,
 Jobs must be rotating in his grave like a turbine.
 
-Will I abandon Apple? No. They do many things right, most importantly the privacy. Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.
-The touchpad is amazing too. Now that I got things working the way I want it, the setup is pretty solid. Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.
+Will I abandon Apple? No. They do many things right, most importantly the privacy.
+Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.
+The touchpad is amazing too. Now that I got things working the way I want it, the setup is pretty solid.
+Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.
 I'm pretty happy with my Linux-in-VM setup - Linux provides excellent programming environment,
 Apple provides excellent hardware and a thin OS on top of that, and I even get to play games on a Windows-in-VM.
 I love the M3 Max - finally ARM replaced the x86 garbage.
+
+Also, the Apple Cloud, Photos, Reminders, Notes, Passwords and the way it's synced across iPads, TVs and iPhones,
+it's a tiny miracle - love it.

@@ -26,9 +26,10 @@ The member of an exclusive club. Complex problems for the *real* engineers.
 Wizards in their ivory towers, mumbling arcane incantations. The "Emperor Is Naked"-kind of guys
 are natural enemies of a wizard.
 
-Complexity appeal to companies. If you drank IBM's kool-aid and bought yourself
+Complexity appeals to companies. If you drank IBM's kool-aid and bought yourself
 WebSphere, congratulations - now you need to purchase trainings and consultants from IBM
-in order to survive with WebSphere.
+in order to survive with WebSphere. The more complex something is, the better it sells.
+See [DHH's Mechants of Complexity](https://youtu.be/tWduT9ygUQ4?si=jtTO7QC74eF3MnAX&t=142).
 
 > E.W.Dijkstra: "Simplicity is a great virtue but it requires hard work to
 > achieve it and education to appreciate it. And to make matters worse: complexity sells better."

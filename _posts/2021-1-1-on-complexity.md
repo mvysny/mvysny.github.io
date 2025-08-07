@@ -29,7 +29,8 @@ are natural enemies of a wizard.
 Complexity appeals to companies. If you drank IBM's kool-aid and bought yourself
 WebSphere, congratulations - now you need to purchase trainings and consultants from IBM
 in order to survive with WebSphere. The more complex something is, the better it sells.
-See [DHH's Mechants of Complexity](https://youtu.be/tWduT9ygUQ4?si=jtTO7QC74eF3MnAX&t=142).
+See [DHH's Mechants of Complexity Video](https://youtu.be/tWduT9ygUQ4?si=jtTO7QC74eF3MnAX&t=142)
+and/or [blogpost](https://world.hey.com/dhh/merchants-of-complexity-4851301b).
 
 > E.W.Dijkstra: "Simplicity is a great virtue but it requires hard work to
 > achieve it and education to appreciate it. And to make matters worse: complexity sells better."

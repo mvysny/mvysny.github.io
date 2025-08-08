@@ -54,6 +54,10 @@ to those. Opening a favourite artist only shows favourite albums, leading me to 
 not on Apple Music. I need to click on the artist name *again* (it shows as plain text, giving no impression that it's a clickable element!!), to see all albums.
 Apple, please fucking fire all Apple Music UX designers and design that shit from scratch.
 
+Opening an unresponsive page in Safari freezes not just Safari, but the entire operating system -
+I thought the times of cooperative multitasking were behind us. This is just unacceptable and feels
+like a project from a first-grader.
+
 # Keyboard rant
 
 The tilde key. With Linux, it doesn't matter what symbol is on the keyboard key;

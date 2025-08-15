@@ -8,6 +8,8 @@ idea where I bring gifts in the form of my open-source projects, and you bring
 your gifts to the table in the form of super-polished PRs, but if you only bring
 demands then you'll get the finger.
 
+## Quoting DHH
+
 This idea is further developed in the following videos:
 
 - [DHH with Lex Fridman on Open Source](https://www.youtube.com/watch?v=vagyIcmIGOQ&t=20250s);

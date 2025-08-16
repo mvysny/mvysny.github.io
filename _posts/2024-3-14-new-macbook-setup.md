@@ -10,8 +10,12 @@ So, here it goes.
 
 Ideal:
 
-* [ANSI Keyboard](https://support.apple.com/en-us/102743#ANSI), since the tilde/backtick
-  character is below ESC; the small Enter key is acceptable.
+* Keyboard: [see layouts](https://www.apple.com/shop/product/MXCL3LL/A/magic-keyboard-usb-c-us-english);
+  [identify your Apple keyboard](https://support.apple.com/en-us/102743#ANSI)
+  * ANSI (US English): since the tilde/backtick character is below ESC; the small Enter key is acceptable.
+  * Alternatively the "British English" layout is acceptable too, since the layout (big Enter key, backslash location)
+    is very similar to Swedish/Finnish layouts which are common in Finland. The backtick/tilde location
+    can be fixed, see below.
 * 48 GB of RAM and 2 TB of disk space for VMs
 
 Minimum:
@@ -166,10 +170,16 @@ Links:
 Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
 * "App Shortcuts" and add:
-  * "Zoom" set to `⌘M` (aka Maximize). This kills Minimise but I'm not using that one anyways.
+  * "Show Help menu": `⌥⌘/`
+  * "Back": `⌘[` (I think this helps with Safari's Back)
+  * "Move to (upper monitor)": `⌃⇧←`
+  * "Move to Built-in Retina Display": `⌃⇧→`
 * Modifier Keys
-  * `Caps Lock` as `^ Control`
-    * This allows Magnet to have 
+  * `Caps Lock` as `⌃ Control` - This will be important for Linux-in-UTM later on.
+* Screenshots
+  * Map "Screenshot and recording options" to `F13` - this opens the screenshot dialog where I can select everything I need;
+  * Map "Copy picture of selected area to the clipboard" to `⌥F13`
+  * Map "Save picture of selected area as a file" to `⌘F13`
 
 ## Safari
 

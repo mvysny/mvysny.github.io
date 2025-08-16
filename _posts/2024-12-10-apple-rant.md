@@ -32,8 +32,8 @@ of the app itself capturing the shortcut, then maybe moving its window to the le
 
 On top of that, there are two maximize functions now: `Zoom` and `Fill`. `Zoom` has no keyboard shortcut assigned and
 for some apps it maximizes the app only vertically, but no horizontally (?!?!?); `Fill` is `⌃🌐F`
-which is a PITA to press on the "Magic Keyboard with Numeric Keypad". And it doesn't work anyway on some apps,
-so I'm continuing to use the Magnet app.
+which is a PITA to press on the older "Magic Keyboard with Numeric Keypad" where 🌐 is not in lower-left spot.
+And it doesn't work anyway on some apps, so I'm continuing to use the Magnet app.
 
 When I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS! Da fuq?
 I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC. But noooo, macOS has one event
@@ -90,6 +90,12 @@ In Linux/Gnome, this is solved in a much better way:
 - A dialog appears where you select what you want to do - e.g. capture the entire screen, or just part of the screen, or a video.
 - The screenshot is stored into `~/Pictures/Screenshots` and also into clipboard.
 - Okay okay, you can press `⇧⌘5` to get the same window - noted.
+
+Solution which covers all of my needs:
+- Map "Screenshot and recording options" to `F13` - this opens the screenshot dialog where I can select everything I need;
+- Map "Copy picture of selected area to the clipboard" to `⌥F13`
+- Map "Save picture of selected area as a file" to `⌘F13`
+- (When I'm away from the numpad): `⌘Space` then type "Screenshot"
 
 I know there are historic reasons since `🌐` was added later on, but still.
 

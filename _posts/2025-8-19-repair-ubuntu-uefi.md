@@ -79,9 +79,9 @@ by using command-line.
 
 # Repair UEFI
 
-Run:
+If your UEFI partition was wiped out and you had to re-create it, you can re-populate it with:
+
 ```bash
 $ apt install --reinstall grub-efi-amd64-signed
 $ update-grub
 ```
-TODO verify

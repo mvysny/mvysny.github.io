@@ -48,7 +48,7 @@ $ sudo efibootmgr -b 0000 -B  # delete Boot0000
 
 # Repair EFI partition
 
-If your EFI partition was wiped out and you had to re-create it, you can re-populate it with (you need to [chroot into your Ubuntu installation](../chroot-ubuntu-livecd/):
+If your EFI partition was wiped out and you had to re-create it, you can re-populate it with (you need to [chroot into your Ubuntu installation](../chroot-ubuntu-livecd/)):
 
 ```bash
 $ apt install --reinstall grub-efi-amd64-signed

@@ -6,7 +6,8 @@ title: MacOS Copy ISO to USB Stick
 It's actually very easy to burn Ubuntu Desktop ISO to a USB stick when
 all you have is a MacBook: all the tools are already available, all you need
 is to open the terminal and start cranking. First, plug the USB stick to
-your MacBook. Then, start Terminal and type in
+your MacBook. Then, start Terminal and type in:
+
 ```bash
 % diskutil list external
 /dev/disk4 (external, physical): etc etc

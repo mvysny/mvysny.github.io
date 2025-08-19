@@ -44,7 +44,14 @@ Boot0000* Ubuntu	HD(1,GPT,3a3f69e8-a1c4-4e50-8694-26ae99eb8d3a,0x800,0x219800)/F
 Boot0001* Windows Boot Manager	HD(1,GPT,e0d0d422-a448-4845-8967-9e058115e910,0x800,0x82000)/File(\EFI\Microsoft\Boot\bootmgfw.efi)
 Boot0002* Ubuntu2	HD(1,GPT,e0d0d422-a448-4845-8967-9e058115e910,0x800,0x82000)/File(\EFI\ubuntu\shimx64.efi)
 $ sudo efibootmgr -b 0000 -B  # delete Boot0000
+$ sudo efibootmgr
+BootCurrent: 0002
+Timeout: 0 seconds
+BootOrder: 0002,0001,001B,0017,0018,0019,001A,001C
+Boot0001* Windows Boot Manager	HD(1,GPT,e0d0d422-a448-4845-8967-9e058115e910,0x800,0x82000)/File(\EFI\Microsoft\Boot\bootmgfw.efi)
+Boot0002* Ubuntu2	HD(1,GPT,e0d0d422-a448-4845-8967-9e058115e910,0x800,0x82000)/File(\EFI\ubuntu\shimx64.efi)
 ```
+Reboot - your laptop should now boot Ubuntu again.
 
 # Repair EFI partition
 

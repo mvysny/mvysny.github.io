@@ -52,6 +52,13 @@ Compare that to Linux or Mac:
 1. On Linux, you install and update everything via `apt` and/or `snap`. No risk of downloading virus accidentally.
 2. On MacOS, you update system and all drivers via System Update, you update software via App Store.
 
+# WSL2
+
+WSL2 boots Linux in a very thin VM, however on Windows 11 Home the VM is slow as hell.
+Building Karibu-Testing on AMD Ryzen 7 7435HS takes 73s on WSL2 Linux, while it only takes
+53s on a Linux running natively, which means that WSL2 incurs 30% overhead, which is just
+laughable.
+
 # Conclusion
 
 Personally I think that Windows is a piece of shit joke of an operating system, unsuitable for anything but games.

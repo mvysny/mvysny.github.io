@@ -22,7 +22,7 @@ This will give you the overview of all block devices you have, and you'll be
 able to mount them easily. First, let's focus on mounting the root filesystem;
 we'll mount `/boot` and `EFI` later on, based on your `/etc/fstab`.
 
-Also, see [../luks-lvm-boot/](LUKS, LVM and Linux Boot) for command-line
+Also, see [LUKS, LVM and Linux Boot](../luks-lvm-boot/) for command-line
 tools which print your block devices.
 
 ## LUKS/LVM

@@ -64,4 +64,21 @@ the options, especially `subvol` in case of btrfs.
 
 # chroot
 
-TODO
+Mount some more stuff and chroot:
+```bash
+$ sudo mount -t proc proc /mnt/proc
+$ sudo mount -t sysfs sys /mnt/sys
+$ sudo mount -o bind /dev /mnt/dev
+$ sudo mount -t devpts pts /mnt/dev/pts
+$ sudo chroot /mnt
+```
+You're in your existing system now.
+
+# Repair UEFI
+
+Run:
+```bash
+$ apt install --reinstall grub-efi-amd64-signed
+$ update-grub
+```
+TODO verify

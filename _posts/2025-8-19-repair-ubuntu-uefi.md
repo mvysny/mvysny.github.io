@@ -29,7 +29,7 @@ tools which print your block devices.
 
 If you use LUKS for encryption, open the device via
 ```bash
-$ sudo cryptsetup open /dev/xyz6 dmcrypt0
+$ sudo cryptsetup open /dev/xyz6 xyz6_crypt
 ```
 TODO LVM
 
@@ -37,7 +37,7 @@ TODO LVM
 
 Run
 ```bash
-$ sudo mount /dev/mapper/dmcrypt0 /mnt
+$ sudo mount /dev/mapper/xyz6_crypt /mnt
 ```
 
 Note: If you're using btrfs, chances are you'll see folders
@@ -45,14 +45,16 @@ Note: If you're using btrfs, chances are you'll see folders
 in a different way:
 ```bash
 $ sudo umount /mnt
-$ sudo mount -o subvol=@ /dev/mapper/dmcrypt0 /mnt
-$ sudo mount -o subvol=@home /dev/mapper/dmcrypt0 /mnt/home
+$ sudo mount -o subvol=@ /dev/mapper/xyz6_crypt /mnt
+$ sudo mount -o subvol=@home /dev/mapper/xyz6_crypt /mnt/home
 ```
 
-Check out `/mnt/etc/crypttab`: if it says something else than `dmcrypt0`,
+## LUKS revisited
+
+If you're using LUKS: Check out `/mnt/etc/crypttab`: if it says something else than `xyz6_crypt`,
 you'll need to start over:
 - unmount `/mnt/boot/efi`, `/mnt/boot`, `/mnt/home` and finally `/mnt`
-- close LUKS: `sudo cryptsetup close dmcrypt0`
+- close LUKS: `sudo cryptsetup close xyz6_crypt`
 - open LUKS with the proper name from your `crypttab` via `sudo cryptsetup open /dev/xyz6 my_crypt_thingy_from_crypttab`
 
 ## Mounting Everything Else
@@ -72,7 +74,8 @@ $ sudo mount -o bind /dev /mnt/dev
 $ sudo mount -t devpts pts /mnt/dev/pts
 $ sudo chroot /mnt
 ```
-You're in your existing system now.
+You're now chrooted in your existing system. You can perform any maintenance as required,
+by using command-line.
 
 # Repair UEFI
 

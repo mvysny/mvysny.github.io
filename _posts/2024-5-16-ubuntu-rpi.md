@@ -118,6 +118,8 @@ set -e -o pipefail
 sudo apt update
 sudo apt -V dist-upgrade
 sudo apt autoremove --purge
+# clean residual config
+sudo apt-get purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 ```
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:

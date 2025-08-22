@@ -102,12 +102,12 @@ sudo apt update
 sudo apt -V dist-upgrade
 sudo apt autoremove --purge
 # clean residual config
-sudo apt-get purge $(dpkg -l | grep '^rc' | awk '{print $2}')
+sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 ```
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
 ```sudoers
-mavi ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot
+mavi ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot, /usr/bin/apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 ```
 
 ## Fixes

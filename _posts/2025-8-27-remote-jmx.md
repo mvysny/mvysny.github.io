@@ -108,21 +108,20 @@ public static class RemoteJVM implements RemoteJMX {
 
     public void logStats() {
         try {
-            var o = connector.getMBeanServerConnection().getAttribute(new ObjectName("java.lang:type=Memory"), "HeapMemoryUsage");
-            CompositeData cd = (CompositeData) o;
+            var cd = (CompositeData) connector.getMBeanServerConnection().getAttribute(new ObjectName("java.lang:type=Memory"), "HeapMemoryUsage");
             // committed represents the amount of memory (in bytes) that is guaranteed to be available for use by the JVM. This memory is reserved by the operating system for the JVM process and is always greater than or equal to used. The JVM can request additional memory from the OS if committed is insufficient, and it can also release memory back to the OS, potentially making committed less than init.
-            final long committedMb = ((Long) cd.get("committed")) / 1000 / 1000;
+            final long committedMb = ((long) cd.get("committed")) / 1000 / 1000;
             // init represents the initial amount of memory (in bytes) that the JVM requests from the operating system for memory management during startup. This value is typically close to the -Xms (initial heap size) setting, though it may be undefined.
-            final long initMb = ((Long) cd.get("init")) / 1000 / 1000;
+            final long initMb = ((long) cd.get("init")) / 1000 / 1000;
             // max represents the maximum amount of memory (in bytes) that can be used for memory management. This value is typically close to the -Xmx (maximum heap size) setting, though it may be undefined (e.g., -1) if no limit is set. The used and committed values will always be less than or equal to max if max is defined. A memory allocation can fail if the JVM attempts to increase used beyond committed, even if used is still less than or equal to max, particularly when the system is low on virtual memory.
-            final long maxMb = ((Long) cd.get("max")) / 1000 / 1000;
+            final long maxMb = ((long) cd.get("max")) / 1000 / 1000;
             // used represents the amount of memory (in bytes) that is currently being used by the JVM. This includes memory occupied by objects, including those that are no longer reachable but not yet garbage collected.
-            final long usedMb = ((Long) cd.get("used")) / 1000 / 1000;
-            log.info("ELSA/JMX memory stats: used " + usedMb + "mb committed " + committedMb + "mb of " + maxMb + "mb");
+            final long usedMb = ((long) cd.get("used")) / 1000 / 1000;
+            log.info("JMX memory stats: used " + usedMb + "mb committed " + committedMb + "mb of " + maxMb + "mb");
             final double load = operatingSystemMXBean.getProcessCpuLoad();
-            log.info("ELSA/JMX CPU stats: avg CPU usage since last measurement: " + (int) (load * 100 * cpuCount) + "%; avg GC usage: " + (int)(gcSampler.getLoad() * 100) + "%; 100%=1 CPU core fully used");
+            log.info("JMX CPU stats: avg CPU usage since last measurement: " + (int) (load * 100 * cpuCount) + "%; avg GC usage: " + (int)(gcSampler.getLoad() * 100) + "%; 100%=1 CPU core fully used");
         } catch (Exception ex) {
-            log.error("ELSA/JMX: Failed to obtain memory stats", ex);
+            log.error("JMX: Failed to obtain memory stats", ex);
         }
     }
 

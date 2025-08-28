@@ -31,6 +31,7 @@ set -e -o pipefail
 sudo apt update
 sudo apt -V dist-upgrade
 sudo apt autoremove --purge
+sudo snap refresh
 # clean residual config
 sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 ```

@@ -33,7 +33,8 @@ As I said, at least you can uninstall that shit.
 # Programming
 
 The default `cmd.exe` is a joke; maybe PowerShell is better but I'll never know.
-If I have to use Windows, I'd set up Linux Subsystem and work there.
+If I have to use Windows, I'd set up Linux Subsystem and work there. And I'll take
+a performance penalty, see below. What a joke.
 
 # Updates
 
@@ -58,6 +59,12 @@ WSL2 boots Linux in a very thin VM, however on Windows 11 Home the VM is slow as
 Building Karibu-Testing on AMD Ryzen 7 7435HS takes 73s on WSL2 Linux, while it only takes
 53s on a Linux running natively, which means that WSL2 incurs 30% overhead, which is just
 laughable.
+
+# Family Admin
+
+[A Journey from Windows to Mac](https://www.youtube.com/watch?v=1FmfbajY5bE) has bunch
+of good points: I don't have to become an administrator for PCs in my family. I save
+time, energy and my mind is at peace.
 
 # Conclusion
 

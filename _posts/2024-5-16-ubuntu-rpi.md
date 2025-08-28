@@ -124,5 +124,5 @@ sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
 ```sudoers
-ubuntu ALL=(ALL) NOPASSWD:/usr/bin/apt update, /usr/bin/apt -V dist-upgrade, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/bin/apt autoremove --purge, /usr/sbin/reboot, /usr/bin/apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
+ubuntu ALL=(ALL) NOPASSWD:/usr/bin/apt *, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot
 ```

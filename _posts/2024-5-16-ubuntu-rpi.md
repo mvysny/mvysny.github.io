@@ -95,34 +95,4 @@ export PATH="$PATH:$HOME/local"
 
 ## Scripts
 
-`~/shutdown`:
-
-```bash
-#!/bin/bash
-set -e -o pipefail
-sudo shutdown -h now
-```
-
-`~/reboot`:
-
-```bash
-#!/bin/bash
-set -e -o pipefail
-sudo reboot
-```
-
-`~/update`:
-```bash
-#!/bin/bash
-set -e -o pipefail
-sudo apt update
-sudo apt -V dist-upgrade
-sudo apt autoremove --purge
-# clean residual config
-sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
-```
-
-To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
-```sudoers
-ubuntu ALL=(ALL) NOPASSWD:/usr/bin/apt *, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot
-```
+See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/); use "ubuntu" as user in the `sudoers` file.

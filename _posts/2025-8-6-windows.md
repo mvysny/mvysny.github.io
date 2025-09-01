@@ -30,6 +30,14 @@ At least, on Windows, you can uninstall the bloatware that comes with Windows: t
 the McAffee Antivirus bloat (!!!) and shitload of other crap I don't even remember.
 As I said, at least you can uninstall that shit.
 
+Windows feels like an outlet for marketing spam - it constantly tries
+to make me click on headlines or sell me subscription to One Drive or Office 365.
+I don't even know what Office 365 is, and I don't want to know. But this tactics doesn't
+strike me as trustworthy. I don't feel this protects my privacy first and foremost, far from it:
+Windows feels like something I got for free, and it instantly tries to monetize me.
+
+Also see [M4 Macbook Air vs Surface Laptop Video](https://www.youtube.com/watch?v=4RQ6pek3JoM).
+
 # Programming
 
 The default `cmd.exe` is a joke; maybe PowerShell is better but I'll never know.

@@ -36,7 +36,9 @@ I don't even know what Office 365 is, and I don't want to know. But this tactics
 strike me as trustworthy. I don't feel this protects my privacy first and foremost, far from it:
 Windows feels like something I got for free, and it instantly tries to monetize me.
 
-Also see [M4 Macbook Air vs Surface Laptop Video](https://www.youtube.com/watch?v=4RQ6pek3JoM).
+Also see [M4 Macbook Air vs Surface Laptop Video](https://www.youtube.com/watch?v=4RQ6pek3JoM)
+and [After MacOS I tried Windows again](https://www.youtube.com/watch?v=4wrJE3SBTBU). The 'virus'
+comment is spot on.
 
 # Programming
 

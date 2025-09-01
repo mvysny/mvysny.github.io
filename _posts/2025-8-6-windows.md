@@ -76,5 +76,7 @@ time, energy and my mind is at peace.
 
 # Conclusion
 
-Personally I think that Windows is a piece of shit joke of an operating system, unsuitable for anything but games.
+Windows may be built on a decent kernel, but the bloatware, the cheap selling practices, the ridiculous
+update procedure and lack of support for programming
+make it unsuitable for anything but games for me.
 Hopefully Steam+Proton will enable gaming on Linux boxes so that I can get rid of Windows entirely.

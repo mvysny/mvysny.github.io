@@ -82,6 +82,10 @@ to those. Opening a favourite artist only shows favourite albums, leading me to 
 not on Apple Music. I need to click on the artist name *again* (it shows as plain text, giving no impression that it's a clickable element!!), to see all albums.
 Apple, please fucking fire all Apple Music UX designers and design that shit from scratch.
 
+### Finder
+
+I can't tell whether Finder is good or bad, since I honestly don't care about Finder. I personally think Finder, Windows Explorer and Linux Nautilus are the worst way of working with files. I'm used to Total Commander, Krusader/Double Command on Linux, and Commander One on Macs, and that works for me.
+
 ## Keyboard Rant
 
 The tilde key. With Linux, it doesn't matter what symbol is on the keyboard key;

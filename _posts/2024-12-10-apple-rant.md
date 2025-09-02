@@ -61,7 +61,7 @@ The Mission Control is based on the idea that you can identify a window based on
 The only way to differentiate between them is the icon and the title. But I guess if you arrange the windows by some order (e.g. the order in which I opened them, or maybe if I can rearrange them)
 then it could work. Which brings me to the next point: Mission Control always rearranges the windows randomly, which makes it completely useless.
 
-So, the Dock + Alt+Tab. Works well, as long as you don't have many windows, or if [you're not using more than two monitors](https://www.youtube.com/watch?v=cxNaz3G66_I).
+So, the Dock + Alt+Tab. Works well, [as long as you don't have many windows](https://youtu.be/tZueJx-ndnI?si=vtHqlK3fCGyZqyGU&t=320), or if [you're not using more than two monitors](https://www.youtube.com/watch?v=cxNaz3G66_I).
 Which brings me to the conclusion: Mac Window Managers are either bad, or they only work with handful of windows only. Luckily, this works for me since I'm using UTM most of the time,
 but it just feels retarded that Apple, the king of UX, can't come up with a usable Window Manager.
 

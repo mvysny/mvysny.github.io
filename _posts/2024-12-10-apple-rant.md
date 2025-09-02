@@ -57,12 +57,16 @@ There are three window managers, and all of them are terrible. The Stage Manager
 As a programmer, I want my apps occupying the entire screen, otherwise I just wasted my money on a big monitor and I could have gone with the smaller one.
 Stage Manager just wastes a bit of screen for the folded windows which is just a horrible idea: you can't see the window contents nor icons nor titles, so it's just wasted space.
 
-The Mission Control is based on the idea that you can identify a window based on the contents of the window. Let me tell you a secret: all windows are black text on white background.
-The only way to differentiate between them is the icon and the title. But I guess if you arrange the windows by some order (e.g. the order in which I opened them, or maybe if I can rearrange them)
+The Mission Control is based on the idea that you can identify a window from its thumbnail.
+Let me tell you a secret: all windows are black text on white background, and they all look the same, except for very specific cases, say there is a video playing, or you're editing a photo.
+The only way to differentiate between them is the icon and the title.
+But I guess if you arrange the windows by some order (e.g. the order in which I opened them, or maybe if I can rearrange them)
 then it could work. Which brings me to the next point: Mission Control always rearranges the windows randomly, which makes it completely useless.
 
-So, the Dock + Alt+Tab. Works well, [as long as you don't have many windows](https://youtu.be/tZueJx-ndnI?si=vtHqlK3fCGyZqyGU&t=320), or if [you're not using more than two monitors](https://www.youtube.com/watch?v=cxNaz3G66_I).
-Which brings me to the conclusion: Mac Window Managers are either bad, or they only work with handful of windows only. Luckily, this works for me since I'm using UTM most of the time,
+So, the Dock + Alt+Tab. Works well, [as long as you don't have many windows](https://youtu.be/tZueJx-ndnI?si=vtHqlK3fCGyZqyGU&t=320),
+or if [you're not using more than two monitors](https://www.youtube.com/watch?v=cxNaz3G66_I).
+Which brings me to the conclusion: Mac Window Managers are either bad, or they only work with handful
+of windows only. Luckily, this works for me since I'm using UTM most of the time,
 but it just feels retarded that Apple, the king of UX, can't come up with a usable Window Manager.
 
 ### Random other UX issues
@@ -78,7 +82,7 @@ to those. Opening a favourite artist only shows favourite albums, leading me to 
 not on Apple Music. I need to click on the artist name *again* (it shows as plain text, giving no impression that it's a clickable element!!), to see all albums.
 Apple, please fucking fire all Apple Music UX designers and design that shit from scratch.
 
-## Keyboard rant
+## Keyboard Rant
 
 The tilde key. With Linux, it doesn't matter what symbol is on the keyboard key;
 you can activate the US layout which puts the tilde character under ESC, regardless of what the physical button on the keyboard reads.
@@ -118,6 +122,10 @@ Solution which covers all of my needs:
 - (When I'm away from the numpad): `⌘Space` then type "Screenshot"
 
 I know there are historic reasons since `🌐` was added later on, but still.
+
+### Home/End move the viewport, not the cursor
+
+No. Just no. I edit text and move the cursor first and foremost; I'm not paid me to scroll shit around.
 
 ## Other Stuff
 

@@ -83,3 +83,8 @@ Windows may be built on a decent kernel, but the bloatware, the cheap selling pr
 update procedure and lack of support for programming
 make it unsuitable for anything but games for me.
 Hopefully Steam+Proton will enable gaming on Linux boxes so that I can get rid of Windows entirely.
+
+I don't generally trust that Windows is built on solid foundation,
+and this is the difference between Windows and Linux. For example I don't trust Windows Drivers to be developed properly,
+since they're not coming from Microsoft. Windows is a decent UI built on flaky foundation,
+while Linux is a bad-ish UI built on a solid foundation.

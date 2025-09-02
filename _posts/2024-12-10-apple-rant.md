@@ -158,7 +158,8 @@ The touchpad is amazing too. Now that I got things working the way I want it, th
 Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.
 I'm pretty happy with my Linux-in-VM setup - Linux provides excellent programming environment,
 Apple provides excellent hardware and a thin OS on top of that, and I even get to play games on a Windows-in-VM.
-I love the M3 Max - finally ARM replaced the x86 garbage.
+I love the M3 Max - finally ARM replaced the x86 garbage. The whole MacBook hardware is amazing - the
+quietness, the CPU efficiency, excellent sound quality, possibility to use iPad as second screen - brilliant.
 
 Also, the Apple Cloud, Photos, Reminders, Notes, Passwords and the way it's synced across iPads, TVs and iPhones,
 it's a tiny miracle - love it.

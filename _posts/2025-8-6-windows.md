@@ -41,6 +41,12 @@ Also see [M4 Macbook Air vs Surface Laptop Video](https://www.youtube.com/watch?
 and [After MacOS I tried Windows again](https://www.youtube.com/watch?v=4wrJE3SBTBU). The 'virus'
 comment is spot on.
 
+# Security
+
+Good old university times - you connect a fresh install of Windows and start applying updates, only to find out that it caught a virus simply by being connected to LAN with other Windows computers. In order to solve that you had to install Windows updates, but you can't do that unless the machine is connected to the internet (and back then, LAN is the internet), and that creates an interesting chicken-and-egg problem.
+
+Hopefully things are better now, but I still carry this memory with me and I don't trust Windows security-wise at all.
+
 # Programming
 
 The default `cmd.exe` is a joke; maybe PowerShell is better but I'll never know.

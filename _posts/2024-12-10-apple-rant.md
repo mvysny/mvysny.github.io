@@ -110,6 +110,7 @@ Take `⇧⌘4` as an example, to capture part of the screen:
 - `⇧⌘4SpaceBar` captures current window - Why `SpaceBar`??? Also, Apple, have you realized it's not easy to press 4 keys at the same time when 2 of them are non-modifiers?
 
 In Linux/Gnome, this is solved in a much better way:
+
 - Press PrintScreen
 - A dialog appears where you select what you want to do - e.g. capture the entire screen, or just part of the screen, or a video.
 - The screenshot is stored into `~/Pictures/Screenshots` and also into clipboard.

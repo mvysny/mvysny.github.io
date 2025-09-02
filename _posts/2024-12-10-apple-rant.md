@@ -12,10 +12,60 @@ this vent made me realize that Linux did many things right,
 and Apple should copy those things.
 
 Disclaimer 2: I'm coming from Linux, and I'm NOT a Windows guy by any means.
-Personally I think that [Windows is a piece of shit joke of an operating system](../windows/),
+Personally I think that [Windows is a bloated spyware](../windows/),
 unsuitable for anything but games.
 
-# UX
+# MacOS
+
+## UX
+
+There are so many UX issues with MacOS it's not even funny. Sometimes the bug is so basic, it feels like a kid school project instead of
+a serious OS.
+
+When I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS UI - da fuq?
+This suggests that everything in MacOS goes through one event loop, and if an app freezes, the event loop blocks, and with it, every other app.
+This points to a huge fundamental flaw of the underlying system design. This is Mac only - this doesn't happen on Windows nor on Linux.
+I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC.
+The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
+
+Opening an unresponsive page in Safari freezes not just Safari, but the entire operating system -
+I thought the times of cooperative multitasking were behind us. This is just unacceptable and feels
+like a project from a first-grader.
+
+### Window Resizing Sucks
+
+The "Window > Move & Resize" menu.
+It's great when it works, but it doesn't work on BBEdit, and that's because BBEdit removes the "Move & Resize"
+menu item from the "Window" menu. It's true that BBEdit should not do that, but BBEdit
+shouldn't be allowed to do that in the first place! Also, when I press the key combo to tile windows to left,
+I want The Mighty Window Manager to tile the bloody window to the left, end of story. It shouldn't be the responsibility
+of the app itself to capture the shortcut, then maybe moving its window to the left (or not). What the fuck? The Window Manager needs to handle that, not the app itself!
+
+On top of that, there are two maximize functions now: `Zoom` and `Fill`. `Zoom` has no keyboard shortcut assigned and
+for some apps it maximizes the app only vertically, but not horizontally, which is useless for me: I use apps that take advantage of all screen real estate.
+`Fill` is `⌃🌐F` and doesn't work anyway on some apps:
+
+* On Slack it does nothing and BBEdit it does nothing
+* On Safari it does nothing if a web page is open, with an input field focused.
+* UTM window is made too tall and falls out of the screen - what the fuck
+
+So, again: `Zoom` is useless and `Fill` works half of the time. I have to use the `Magnet` app. Again, feels like kids school project instead of something professional.
+
+### All Apple Window Managers Suck
+
+There are three window managers, and all of them are terrible. The Stage Manager is - I have no fucking idea how I am supposed to use that.
+As a programmer, I want my apps occupying the entire screen, otherwise I just wasted my money on a big monitor and I could have gone with the smaller one.
+Stage Manager just wastes a bit of screen for the folded windows which is just a horrible idea: you can't see the window contents nor icons nor titles, so it's just wasted space.
+
+The Mission Control is based on the idea that you can identify a window based on the contents of the window. Let me tell you a secret: all windows are black text on white background.
+The only way to differentiate between them is the icon and the title. But I guess if you arrange the windows by some order (e.g. the order in which I opened them, or maybe if I can rearrange them)
+then it could work. Which brings me to the next point: Mission Control always rearranges the windows randomly, which makes it completely useless.
+
+So, the Dock + Alt+Tab. Works well, as long as you don't have many windows, or if [you're not using more than two monitors](https://www.youtube.com/watch?v=cxNaz3G66_I).
+Which brings me to the conclusion: Mac Window Managers are either bad, or they only work with handful of windows only. Luckily, this works for me since I'm using UTM most of the time,
+but it just feels retarded that Apple, the king of UX, can't come up with a usable Window Manager.
+
+### Random other UX issues
 
 Macbook's "Now playing" control center icon is broken by design. It tries to be too helpful
 and includes both Apple Music and Safari; when I hit the "Pause" button in hopes to stop Apple Music playback,
@@ -23,42 +73,12 @@ it instead activates the Teams Safari tab and starts playing the "ringing call" 
 What the fuck? Who at Apple thought this to be a good idea?
 [Sure, instead of pausing the music, let's hear a random sound from random Safari tab instead!](https://discussions.apple.com/thread/255881132?sortBy=rank).
 
-And don't get me started on the new way of positioning windows, the "Window > Move & Resize" menu.
-It's great when it works, but it doesn't work on BBEdit, and that's because BBEdit removes the "Move & Resize"
-menu item from the "Window" menu. It's true that BBEdit should not do that, but BBEdit
-shouldn't be allowed to do that in the first place! Also, when I press the key combo to tile windows to left,
-I want The Mighty Window Manager to tile the bloody window to the left, end of story. It shouldn't be the responsibility
-of the app itself capturing the shortcut, then maybe moving its window to the left (or not). What the fuck? The Window Manager needs to handle that, not the app itself!
-
-On top of that, there are two maximize functions now: `Zoom` and `Fill`. `Zoom` has no keyboard shortcut assigned and
-for some apps it maximizes the app only vertically, but no horizontally (?!?!?); `Fill` is `⌃🌐F`
-which is a PITA to press on the older "Magic Keyboard with Numeric Keypad" where 🌐 is not in lower-left spot.
-And it doesn't work anyway on some apps, so I'm continuing to use the Magnet app.
-
-When I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS! Da fuq?
-I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC. But noooo, macOS has one event
-loop and if an app doesn't play nicely, everything just bloody freezes. 
-The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
-
-The way iOS does app settings is a complete UX disaster too: in order to configure the app,
-I have to close the app, go to Settings, find the app and set it up. WHY? I was in the fucking app in the first place but okay I guess!
-
-The programming environment on MacBook sucks balls. In order to install stuff, you need to
-install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.
-[Linux-in-VM saves the day](../ubuntu-in-parallels/).
-
-MTP (transfer files to Android devices) support is [virtually non-existent](../copying-files-apple-android/) - another huge WTF.
-
 Apple Music is confusing as hell - I don't really care for Home, New or Radio: I just want to mark a bunch of stuff favourite and listen
 to those. Opening a favourite artist only shows favourite albums, leading me to believe that other albums are
 not on Apple Music. I need to click on the artist name *again* (it shows as plain text, giving no impression that it's a clickable element!!), to see all albums.
 Apple, please fucking fire all Apple Music UX designers and design that shit from scratch.
 
-Opening an unresponsive page in Safari freezes not just Safari, but the entire operating system -
-I thought the times of cooperative multitasking were behind us. This is just unacceptable and feels
-like a project from a first-grader.
-
-# Keyboard rant
+## Keyboard rant
 
 The tilde key. With Linux, it doesn't matter what symbol is on the keyboard key;
 you can activate the US layout which puts the tilde character under ESC, regardless of what the physical button on the keyboard reads.
@@ -99,10 +119,24 @@ Solution which covers all of my needs:
 
 I know there are historic reasons since `🌐` was added later on, but still.
 
-Now, the iPhone on-screen keyboard: it is so broken it's not even funny. The autocorrection sucks, the
+## Other Stuff
+
+The programming environment on MacBook sucks balls. In order to install stuff, you need to
+install HomeBrew: *you download a bash script from the internet and run it as root*. **NO FUCKING WAY**.
+[Linux-in-VM saves the day](../ubuntu-in-parallels/).
+
+MTP (transfer files to Android devices) support is [virtually non-existent](../copying-files-apple-android/) - another huge WTF.
+
+# iOS
+
+The way iOS does app settings is a complete UX disaster too: in order to configure the app,
+I have to go to Settings, find the app and set it up. WHY? I was in the fucking app in the first place but okay I guess!
+
+The iPhone on-screen keyboard: it is so broken it's not even funny. The autocorrection sucks for anything else than English, the
 UX for correcting autocorrection is horrible and I find myself fighting the UX to correct
 the autocorrection suggestions; most importantly, the support for auto-switching between
-three languages is non-existent. Apple, please take a hard long look at Google's keyboard,
+three languages is non-existent which is a huge deal-breaker for anyone that needs to type in more than one language.
+Apple, please take a hard long look at Google's keyboard,
 and then copy it.
 
 # Conclusion

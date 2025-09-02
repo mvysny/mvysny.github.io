@@ -3,9 +3,10 @@ layout: post
 title: Windows Rant
 ---
 
-Personally I think that Windows is a piece of shit joke of an operating system, unsuitable for anything but games.
+Personally I think that Windows is a bloated spyware, unsuitable for anything but games.
 Even though the DLL hell is largely a thing of the past, there are still myriad ways
-of getting and updating things.
+of getting and updating things. I don't trust Microsoft to come up with any usable feature, and
+I don't trust Microsoft with my privacy at all.
 
 # Microsoft Online Account
 

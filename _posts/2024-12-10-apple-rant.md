@@ -23,8 +23,8 @@ There are so many UX issues with MacOS it's not even funny. Sometimes the bug is
 a serious OS.
 
 When I quit VM in Parallels or close Slack, there's like 5% probability that those apps crash & freeze, and with that, the entire fucking macOS UI - da fuq?
-This suggests that everything in MacOS goes through one event loop, and if an app freezes, the event loop blocks, and with it, every other app.
-This points to a huge fundamental flaw of the underlying system design. This is Mac only - this doesn't happen on Windows nor on Linux.
+This points to a huge fundamental flaw of the underlying system design: everything in MacOS goes through one event loop, and if an app freezes, the event loop blocks, and with it, every other app.
+This is Mac only - this doesn't happen on Windows nor on Linux. For entertainment, [check out this video](https://youtu.be/tZueJx-ndnI?si=9mEZGv1rOjZspC-b&t=961).
 I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC.
 The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
 

@@ -154,6 +154,8 @@ three languages is non-existent which is a huge deal-breaker for anyone that nee
 Apple, please take a hard long look at Google's keyboard,
 and then copy it.
 
+The back button is usually placed at the upper-left corner, which is the very same spot which scrolls the underlying app all the way up. Touching the back button painstakingly often activates the scroll-up instead (say WhatsApp chat history) which is just infuriating.
+
 # Conclusion
 
 I mean, many things are done in the right way, but there are some huge gaping bloody obvious usability issues,

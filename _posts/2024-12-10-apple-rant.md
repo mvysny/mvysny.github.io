@@ -69,7 +69,7 @@ Which brings me to the conclusion: Mac Window Managers are either bad, or they o
 of windows only. Luckily, this works for me since I'm using UTM most of the time,
 but it just feels retarded that Apple, the king of UX, can't come up with a usable Window Manager.
 
-Honestly, out of Gnome (and/or Ubuntu Unity patches), Windows and Mac, I'd say Mac has the worst Window Managers. Gnome shines compared to that.
+Honestly, out of Gnome (and/or Ubuntu Unity patches), Windows and Mac, I'd say Mac has the worst Window Managers. Gnome shines compared to that. I want the OS to get out of my way to allow me to use my apps. MacOS usually gets out of the way unless I want to do something more complex than writing an e-mail; then it just hits me with stuff that doesn't work or makes no sense and I need third-party apps to make things work (shortcuts with Magnet, disable bloody natural scrolling with Linear Mouse, etc).
 
 ### Random other UX issues
 

@@ -60,7 +60,14 @@ System Settings:
   * "Dock" / "Position on screen": "Left"
   * "Desktop & Stage Manager" / Click wallpaper to reveal desktop: set to "Only in Stage Manager"
   * Hot Corners...: disable all hot corners
-  * "Tiled windows have margins": turn off
+  * Windows
+    * Drag windows to screen edges to tile: on
+    * Drag windows to menu bar to fill screen: on
+    * "Tiled windows have margins": turn off
+  * Mission Control
+    * Auto-rearrange spaces: off
+    * Group windows by app: on
+    * Drag windows on top of screen to enter Mission Control: off
 * Battery / Options
   * "Prevent automatic sleeping on power adapter": on
   * "Optimize video streaming": off
@@ -80,13 +87,11 @@ Install from the App Store:
 * UTM
 * Libre Office
 * Slack
-* Magnet?
+* Magnet (until Apple gets their shit together with Fn+Ctrl+F which works half of the time)
 * BBEdit
 * Infuse
-* Magnet (to be able to move windows between monitors)
 
 Install other software:
-* Install Firefox from the [Firefox download page](https://www.mozilla.org/en-US/firefox/new/).
 * Install [LinearMouse](https://linearmouse.app/) (also copy in my iCloud `Documents/sw/`)
 
 ### Mouse
@@ -171,9 +176,6 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
 * "App Shortcuts" and add:
   * "Show Help menu": `⌥⌘/`
-  * "Back": `⌘[` (I think this helps with Safari's Back)
-  * "Move to (upper monitor)": `⌃⇧←`
-  * "Move to Built-in Retina Display": `⌃⇧→`
 * Modifier Keys
   * `Caps Lock` as `⌃ Control` - This will be important for Linux-in-UTM later on.
 * Screenshots

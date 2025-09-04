@@ -15,6 +15,19 @@ Disclaimer 2: I'm coming from Linux, and I'm NOT a Windows guy by any means.
 Personally I think that [Windows is a bloated spyware](../windows/),
 unsuitable for anything but games.
 
+# The Good Things
+
+The hardware is the best in industry, period. No Windows machine comes close - they're either underpowered, clunky, or noisy. M3+ MacBooks, from the hardware perspective, are simply better.
+
+iPad is amazing and puts all Android tablets to complete shame. It just works and receives 6 years of updates  - literally no Android tablet has this kind of support.
+But it gets better: you can hook a keyboard and a mouse to it, and suddenly it starts acting like a desktop OS - alt+tab works, keyboard shortcuts work, hell, you can even hook it to a USB display, extend the desktop and start tiling windows side-by-side - something Android can only dream of.
+
+iPhone is a hardware marvel - the camera is incredible, the sound is amazing, the OS works so well and is not cluttered with shit (looking at you Samsung).
+
+AirPods is the first Bluetooth device that you can use with multiple devices without having to forget the device, re-pair or do the usual Bluetooth crap. AirPlay is amazing and just works, AppleTV-as-secondary-display just works, incredible.
+
+And then you hit a bug that is so glaring and so obvious, in a complete contrast to all the wonders above, and you need an app to fix that. Let's talk about that for a bit, shall we.
+
 # MacOS
 
 ## UX
@@ -50,6 +63,8 @@ for some apps it maximizes the app only vertically, but not horizontally, which 
 * UTM window is made too tall and falls out of the screen - what the fuck
 
 So, again: `Zoom` is useless and `Fill` works half of the time. I have to use the `Magnet` app. Again, feels like kids school project instead of something professional.
+
+The green button should maximize, not go into full-screen. Yes you can Option-click, but come on.
 
 ### All Apple Window Managers Suck
 
@@ -133,6 +148,15 @@ I know there are historic reasons since `🌐` was added later on, but still.
 ### Home/End move the viewport, not the cursor
 
 No. Just no. I edit text and move the cursor first and foremost; I'm not paid me to scroll shit around.
+
+## Security
+
+Apple M+ bootloader is highly secure and tampering-resistant; apps get installed in a sandbox and scanned for viruses; APFS root FS is a read-only mount which further increases security; etc etc.
+
+And then you discover that your home folder access rights is `750`, that means group `staff` can read files and list folders. Since all users belong to `staff`, *every user can read your home* (except for `~/Documents`, `~/Downloads` and
+`~/Desktop` but there's another security machinery which prevents that). What the fuck? Reading Apple security feels like indestructible unhackable machine, and then you find this kind of a backdoor. Can you change it to `700`? Who knows what breaks. Place everything into desktop? Then it gets synced to iCloud, and doesn't solve the problem of having all folders in home readable *by everyone*.
+
+Seriously, WHAT?
 
 ## Other Stuff
 

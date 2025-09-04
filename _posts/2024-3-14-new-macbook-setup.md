@@ -210,6 +210,10 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
 Enable "Synchronize settings via iCloud".
 
+## Secure
+
+[MacOS Security and Privacy Guide](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
+
 ## More
 
 If you want to go all crazy and completely unify Linux+Mac shorcuts, see

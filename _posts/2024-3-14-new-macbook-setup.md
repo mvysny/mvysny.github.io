@@ -185,6 +185,13 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
 
 ## Safari
 
+Menu:
+* View
+  * Show Favorites Bar
+  * Show Status Bar
+
+Settings:
+
 * General
   * Safari opens with: All windows from last session
   * New window open with: Empty page
@@ -193,7 +200,7 @@ Open "Settings", "Keyboard", "Keyboard Shortcuts":
 * Tabs:
   * Always show website titles in tabs
 * Search:
-  * Search engine: DuckDuckGo
+  * Search engine: Brave if possible
 * Advanced
   * Enable "Show full website address"
   * Default encoding: UTF-8

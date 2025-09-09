@@ -60,7 +60,7 @@ Regarding additional fs flags:
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git vim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois
+sudo apt install git neovim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois fzf eza
 sudo apt autoremove --purge rhythmbox thunderbird
 sudo update-alternatives --config editor     # select vim.basic
 ```

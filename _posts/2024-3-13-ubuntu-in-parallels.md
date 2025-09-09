@@ -112,15 +112,7 @@ In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" a
 
 ### fish
 
-```bash
-chsh -s /usr/bin/fish
-```
-
-To add environment variables, add them at the end of the `~/.config/fish/config.fish` file:
-```
-export M2_HOME="$HOME/local/apache-maven"
-export PATH="$PATH:$M2_HOME/bin"
-```
+[Install fish](../fish/).
 
 ### Firefox
 

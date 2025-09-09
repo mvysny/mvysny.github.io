@@ -112,19 +112,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 ### fish
 
-```bash
-chsh -s /usr/bin/fish
-```
-
-To add environment variables, add them at the end of the `~/.config/fish/config.fish` file:
-```
-export M2_HOME="$HOME/local/apache-maven"
-export PATH="$PATH:$M2_HOME/bin"
-
-alias mkctl="microk8s kubectl"
-alias gpr="git pull --rebase --autostash"
-alias gca='git commit -m "a"'
-```
+[Install fish](../fish/).
 
 ### Firefox
 

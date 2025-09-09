@@ -284,14 +284,6 @@ Go to the "Updates" tab and set:
 * When there are other updates: Display Immediately
 * Notify me of new Ubuntu version: For any new version
 
-## OS Recovery
-
-Boot Ubuntu 22.04 Desktop Installer.
-
-1. Decrypt the root device: `sudo cryptsetup luksOpen TODO`
-2. mount the root fs: TODO
-3. mount subvolumes according to fstab
-
 ## Server Setup
 
 More tips on when you're setting up a server:

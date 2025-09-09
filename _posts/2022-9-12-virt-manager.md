@@ -135,3 +135,16 @@ $ sudo dhclient br0
 
 Now, open virt manager and edit the NIC properties of your VM. Set the "Network Source:" to "Bridge devices..."
 and enter `br0` into "Device name:". Start the VM - it is now exposed on your LAN network.
+
+## Windows Guest
+
+If you must:
+
+* Create a VM with QXL graphics
+* [Download Windows 11 ISO](https://www.microsoft.com/en-us/software-download/windows11)
+* [Install Windows without Microsoft Account](https://www.tomshardware.com/how-to/install-windows-11-without-microsoft-account)
+* Install guest tools
+  * Download the [latest virtio-win-*.iso](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/?C=M;O=D)
+  * Mount it to the VM
+  * Install `virtio-win-gt-x64` and `virtio-win-guest-tools`
+* Shutdown the VM and change the driver to `virtio` with 3d acceleration

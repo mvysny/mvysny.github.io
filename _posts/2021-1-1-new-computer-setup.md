@@ -66,8 +66,8 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git vim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois
-sudo update-alternatives --config editor     # select vim.basic
+sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois fzf eza
+sudo update-alternatives --config editor     # select neovim
 ```
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).

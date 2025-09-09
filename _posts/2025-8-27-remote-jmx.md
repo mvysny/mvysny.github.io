@@ -3,7 +3,7 @@ layout: post
 title: Java remote JMX monitoring
 ---
 
-This program monitors remote JMX.
+This program monitors remote Java VM via JMX.
 
 ```java
 public interface RemoteJMX extends AutoCloseable {

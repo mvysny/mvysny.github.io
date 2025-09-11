@@ -38,7 +38,7 @@ sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
 ```sudoers
-mavi ALL=(ALL) NOPASSWD:/usr/bin/apt *, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot
+mavi ALL=(ALL) NOPASSWD:/usr/bin/apt*, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot
 ```
 
 Also make the scripts executable: `chmod a+x shutdown reboot update`

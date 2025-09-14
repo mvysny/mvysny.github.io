@@ -66,7 +66,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois fzf eza
+sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois fzf eza endeavour
 sudo update-alternatives --config editor     # select neovim
 ```
 

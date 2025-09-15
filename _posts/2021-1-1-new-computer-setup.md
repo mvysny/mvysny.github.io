@@ -154,7 +154,8 @@ Create ssh key & press enter to keep the default settings:
 ssh-keygen
 ```
 
-Upload the public key to [github ssh keys](https://github.com/settings/keys)
+Upload the public key to [github ssh keys](https://github.com/settings/keys).
+When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
 
 ### Double Commander
 

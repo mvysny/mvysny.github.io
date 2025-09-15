@@ -158,6 +158,28 @@ And then you discover that your home folder access rights is `750`, that means g
 
 Seriously, WHAT THE FUCK? Are you really telling me to only have one user on my powerful MacBook Pro?
 
+It gets even better: I created a security ticket at Apple, they closed it that it's not a security issue. LOL.
+
+## Apple Doesn't Give Shit About You
+
+The security issue above was closed as invalid. Any other tickets I created (about 🌐⌃F not working, ⌃Down captured by MacOS) - no response at all.
+Compared to that, [Ubuntu Ticket 2122654](https://bugs.launchpad.net/ubuntu/+bug/2122654) received quick attention and someone responded **within a day**.
+And that's an open-source system you get for free.
+
+Apple Doesn't Give Shit About You, so fuck you Apple too.
+
+## Overpriced Hardware Upgrades
+
+Apple RAM/SSD prices are outrageous.
+
+It costs 250€ to add 8GB of RAM in MacBook Pro configurator. 64GB of SODIMM DDR5 RAM is 230€. Apple's RAM is 8x more expensive.
+
+It costs 250€ to go from 512Gb SSD to 1TB SSD in MacBook Pro configurator; 2TB nvme is 130€. Apple's SSD is 8x more expensive.
+
+Let me repeat that. On x86-64, 64GB of RAM costs 230€; on Mac, it costs 1840€. On x86-64, 2TB of SSD costs 130€; on Mac, it costs 1000€.
+
+I am in luck and I have enough money that I can afford that. The point is: do I want to overpay the company that doesn't give a damn about me?
+
 ## Other Stuff
 
 The programming environment on MacBook sucks balls. In order to install stuff, you need to
@@ -185,7 +207,7 @@ The back button is usually placed at the upper-left corner, which is the very sa
 I mean, many things are done in the right way, but there are some huge gaping bloody obvious usability issues,
 Jobs must be rotating in his grave like a turbine.
 
-Will I abandon Apple? No. They do many things right, most importantly the privacy.
+Will I abandon Apple completely? No. They do many things right, most importantly the privacy.
 Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.
 The touchpad is amazing too. Now that I got things working the way I want it, the setup is pretty solid.
 Also, the working suspend and the entire don't-shut-off-computer-for-a-year is highly addictive too.
@@ -196,3 +218,5 @@ quietness, the CPU efficiency, excellent sound quality, possibility to use iPad 
 
 Also, the Apple Cloud, Photos, Reminders, Notes, Passwords and the way it's synced across iPads, TVs and iPhones,
 it's a tiny miracle - love it.
+
+However, MacOS doesn't work for me, and therefore I'm going back to x86-64 and Linux.

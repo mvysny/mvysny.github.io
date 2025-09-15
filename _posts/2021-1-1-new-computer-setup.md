@@ -37,9 +37,9 @@ run `sudo dmsetup ls --tree -o blkdevname`.
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
 
-### ext4 only
-
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
+
+### ext4 only
 
 Regarding additional fs flags:
 * `user_xattr` is enabled by default on ext4; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`

@@ -29,12 +29,22 @@ configure LVM to pass-through the Discard operation. Edit `/etc/lvm/lvm.conf`
 and make sure the `devices{}` section contains `issue_discards = 1`.
 
 Alternatively if you're using dm-crypt, edit `/etc/crypttab` and make sure the `discard` option is there.
+If not, add the `discard` option after `luks`:
+```crypttab
+dm_crypt0 UUID=xyz none luks,discard
+```
+Rebuild initramfs to take the setting into effect:
+```bash
+$ sudo update-initramfs -u
+```
 
 Finally, you need to enable discard for all of your ext4 partitions: simply add the `discard` option to
 `/etc/fstab`. Note that swap on a swap partition will perform discard automatically.
 
 Please see the excellent [SSD Optimization](https://wiki.debian.org/SSDOptimization)
 article for more details.
+
+Reboot, and re-check with `lsblk --discard` whether the settings took effect.
 
 ## Running `trim` manually
 

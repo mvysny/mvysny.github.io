@@ -260,27 +260,6 @@ docker run --rm -ti ubuntu /bin/bash
 
 Set Initial terminal size in the "Profile" setting to 160x50.
 
-## netplan/NetworkManager
-
-[netplan](https://netplan.io/) by default uses [systemd.networkd](https://manpages.ubuntu.com/manpages/bionic/man5/systemd.network.5.html)
-to control network interfaces. Using NetworkManager is much easier though, let's switch to that (otherwise VPN via NetworkManager will refuse to enable).
-Edit `/etc/netplan/00-installer-config.yaml` and add `renderer: NetworkManager`:
-```yaml
-# This is the network config written by 'subiquity'
-network:
-  ethernets:
-    enp0s5:
-      dhcp4: true
-  version: 2
-  renderer: NetworkManager
-```
-
-To prevent 90 second waiting for network to become up, [disable systemd-networkd-wait-online.service](https://askubuntu.com/a/979493/22996):
-```bash
-$ systemctl disable systemd-networkd-wait-online.service
-$ systemctl mask systemd-networkd-wait-online.service
-```
-
 ## Scripts
 
 See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/); use `parallels` as user in the `sudoers` file.
@@ -299,6 +278,10 @@ sleep 3
 echo "Deleting cache"
 rm -rf .cache/JetBrains
 ```
+
+## Fix ubuntu-server
+
+Go through [ubuntu-desktop-from-server](../ubuntu-desktop-from-server/).
 
 ## Boot Settings (UTM only)
 

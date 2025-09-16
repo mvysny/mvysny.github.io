@@ -39,6 +39,10 @@ Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and 
 
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
+Prefer btrfs: even though COW wears down SSD a bit faster, it's also
+far more reliable in case of kernel panics; also btrfs by default checksums data
+as well, reducing disk corruption.
+
 ### ext4 only
 
 Regarding additional fs flags:

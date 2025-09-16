@@ -302,3 +302,8 @@ docker run --rm -ti ubuntu /bin/bash
 ## Terminal
 
 Set Initial terminal size in the "Profile" setting to 160x50.
+
+## Fixing Ubuntu Desktop
+
+If you installed Ubuntu Server first,
+go through [ubuntu-desktop-from-server](../ubuntu-desktop-from-server/).

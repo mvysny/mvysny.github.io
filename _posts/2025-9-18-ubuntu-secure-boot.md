@@ -34,32 +34,40 @@ All distros use LUKS2 and Argon2, and you should too. However, that renders this
 There's another way. We can package kernel and initrd into one efi file, sign it,
 and have GRUB or systemd-boot run that. That's UKI. You have two options:
 
-1. Use `dracut` with GRUB, or
+1. Use `mkinitcpio` to build UKI and continue using GRUB, or
 2. Use `systemd-boot` with `systemd-ukify`.
 
-The best way to test this is to setup Ubuntu Desktop in a VM, say via `virt-manager`. Since Ubuntu 22.04, both TPM2.0 and
-Secure Boot is supported; make sure to have the `ovmf` package installed.
+## virt-manager + Secure Boot
 
-## Using `dracut` with GRUB
+The best way to test this is to setup Ubuntu Desktop in a VM, say via `virt-manager`.
 
-Since Ubuntu 24.10+, systemd `kernel-install` supports UKI generation directly. You start
-by installing dracut, which uninstalls `initramfs-tools` (this is expected):
-```bash
-$ sudo apt install dracut
-```
-
-TODO what happens next
+Since Ubuntu 22.04, both TPM2.0 and Secure Boot is supported by virt-manager; make sure to have the `ovmf` package installed, and your VM
+is using `UEFI` instead of virt-manager's default `BIOS`. Also, make sure to include the TPM in your VM:
+add the TPM hardware to your VM and make sure it's Model CRB Version 2.0. Also, go to "Boot Options"
+and enable "Enable boot menu": this gives you time to press `F2` when the VM boots,
+to go into BIOS and confirm that Secure Boot is indeed enabled.
 
 ## systemd-boot with systemd-ukify
-
-Caveat: `systemd-bootx64.efi` is not signed for Secure Boot.
 
 To setup `systemd-boot`, you need to install it:
 ```bash
 $ sudo apt install systemd-boot
-$ sudo bootctl install
 ```
 
-TODO what happens.
+This installs `systemd-boot-efi` and a bunch of other dependencies. This also
+automatically creates entries in `/boot/efi` and adds EFI systemd boot option to
+the EFI non-volatile RAM called "Linux Boot Manager" which you can now choose
+to boot from, in your BIOS UEFI boot menu.
 
-TODO how to set up `systemd-ukify`
+Unfortunately, this won't boot when Secure Boot is on, since `systemd-bootx64.efi` isn't
+cryptographically signed correctly.
+
+TODO what to do
+
+### systemd-ukify
+
+```bash
+$ sudo apt install systemd-ukify
+```
+However, nothing really happens. TODO why
+

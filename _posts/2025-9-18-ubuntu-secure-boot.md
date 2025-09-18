@@ -40,6 +40,8 @@ and have GRUB or systemd-boot run that. That's UKI. You have two options:
 1. Use `mkinitcpio` to build UKI and continue using GRUB, or
 2. Use `systemd-boot` with `systemd-ukify`.
 
+I have no experience with `mkinitcpio`, and therefore I'll jump straight to the second option.
+
 ## virt-manager + Secure Boot
 
 The best way to test this is to setup Ubuntu Desktop in a VM, say via `virt-manager`.
@@ -52,6 +54,23 @@ to go into BIOS and confirm that Secure Boot is indeed enabled.
 
 ## systemd-boot with systemd-ukify
 
+systemd-boot only works in UEFI mode (as opposed to GRUB which also supports booting from MBR).
+It registers the `systemd-bootx64.efi` to UEFI BIOS, which is then configured via `/boot/efi/loader/loader.conf`
+to boot either a kernal and its initrd, or an UKI .efi file. That means that the UKI .efi file isn't
+booted directly by the UEFI BIOS, even though it's an .efi file: instead, `systemd-bootx64.efi` is loaded first, which then loads the kernel.
+
+> Note: you can use `efibootmgr` to boot the UKI directly (skips bootloader signing), but `systemd-boot` is more robust for multi-kernel setups.
+
+TODO will systemd-boot verify the signature of the UKI .efi file? If not, then the boot isn't secure since EFI partition isn't encrypted,
+and we're back to the unencrypted-`/boot` problem.
+
+The kernel and initrd files are stored to `/boot/efi/7733758bfabe46c587a1d2f8ac01aef0/` (identifier will differ for you) -
+the kernel is stored in the EFI partition as opposed to the traditional kernel+initrd placement straight in `/boot`.
+
+Lots of information about systemd-boot and debian can be found at [copyninja.in](https://copyninja.in/).
+
+### systemd-boot
+
 To setup `systemd-boot`, you need to install it:
 ```bash
 $ sudo apt install systemd-boot
@@ -60,15 +79,30 @@ $ sudo apt install systemd-boot
 This installs `systemd-boot-efi` and a bunch of other dependencies. This also
 automatically creates entries in `/boot/efi` and adds EFI systemd boot option to
 the EFI non-volatile RAM called "Linux Boot Manager" which you can now choose
-to boot from, in your BIOS UEFI boot menu.
+to boot from, in your BIOS UEFI boot menu. The "Linux Boot Manager" is now set as the default UEFI boot option.
 
-Note that the GRUB shim.efi and grub.efi are still around. That means that you can now pick how you want your system to boot,
+You can verify the systemd-boot configuration by running `sudo bootctl list`.
+
+Note that the GRUB `shim.efi` and `grub.efi` are still around. That means that you can now pick how you want your system to boot,
 via your UEFI BIOS boot menu:
+
 * choosing `Ubuntu` boots your Ubuntu via GRUB
 * choosing "Linux Boot Manager" boots your system via systemd-boot.
 
 Unfortunately, systemd-boot won't boot with Secure Boot on, since `systemd-bootx64.efi` isn't
-cryptographically signed correctly. We'll fix that later on.
+cryptographically signed correctly. We'll fix that later on; for now disable Secure Boot.
+
+When systemd-boot is installed, it adds hooks to kernel build system so that systemd-boot configuration
+is updated when a new kernel is installed. That hook will print
+yellow warnings about seed file being world accessible and that being a security hole.
+Fix that by mounting EFI partition with umask 0077, by editing `/etc/fstab` and adding
+`umask=0077` option to the EFI mount:
+```
+/dev/disk/by-uuid/xyz /boot/efi vfat defaults,umask=0077 0 1
+```
+
+You can now reboot and try to boot via systemd-boot. You can run `sudo bootctl status` to
+show lots of detailed information about the current boot status.
 
 ### systemd-ukify
 
@@ -97,10 +131,9 @@ with
 $ sudo bootctl list
 ```
 You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboot - your system should now boot using the UKI .efi kernel.
+You can verify that with `sudo bootctl status` and `sudo bootctl list`.
 
 ### Signing .efi for Secure Boot
-
-Lots of information in this regard at [copyninja.in](https://copyninja.in/) - TODO review.
 
 TODO how to sign ukify-generated efi file via `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`).
 TODO where are the keys/certificates? Probably I need to generate those and register them via MOK utility.
@@ -112,9 +145,11 @@ The generated keys and certificates are then used by ukify to sign the UKI durin
 Also, [ArchWiki kernel-install](https://wiki.archlinux.org/title/Kernel-install#Plugins)
 mentions `kernel-install inspect` but it fails on Ubuntu.
 
-Script `91-sbctl.install` is mentioned which looks interesting, but doesn't exist on Ubuntu. `sbctl` does not exist on Ubuntu either.
+I found somewhere to use the `mokutil` utility, which sounds simpler than using BIOS to enroll keys into firmware as
+described at [Secure Boot with UKI](https://copyninja.in/blog/enable_secureboot_ukify.html). Test this out too.
 
-Also, AI mentions that ukify is not really ready to be used in Ubuntu since the necessary script hooks are missing.
+To test that the .efi are now correctly signed and the keys are correctly registered in UEFI BIOS nvmem, enable
+Secure Boot and reboot.
 
 ### Remove the /boot partition
 

@@ -64,7 +64,7 @@ via your UEFI BIOS boot menu:
 * choosing `Ubuntu` boots your Ubuntu via GRUB
 * choosing "Linux Boot Manager" boots your system via systemd-boot.
 
-Unfortunately, this won't boot when Secure Boot is on, since `systemd-bootx64.efi` isn't
+Unfortunately, systemd-boot won't boot with Secure Boot on, since `systemd-bootx64.efi` isn't
 cryptographically signed correctly. We'll fix that later on.
 
 ### systemd-ukify
@@ -93,7 +93,7 @@ with
 ```bash
 $ sudo bootctl list
 ```
-You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboot - your system should now boot using the UKI .efi bios.
+You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboot - your system should now boot using the UKI .efi kernel.
 
 ### Signing .efi for Secure Boot
 
@@ -125,10 +125,15 @@ $ sudo mv /boot2 /boot
 Uncomment the `/boot` partition from `/etc/fstab` and reboot. Your system now boots without an unencrypted `/boot` partition!
 You can nuke the /boot filesystem via `mkfs.ext4` or remove the original `/boot` partition, to make sure that it isn't used anymore.
 
-### Nuke GRUB
+### Nuke GRUB?
 
 Now that `/boot` partition is gone, GRUB can't boot your system anymore, and therefore you can nuke it.
-Unfortunately that's not easy since trying to remove grub removes `shim-signed` and `mokutil` and `amd64-microcode` and we might need those in the future,
-so a better option is to keep GRUB installed and .efi files registered to UEFI nvram; simply never
-boot "Ubuntu" UEFI boot item and you're fine. Alternatively you can [disable GRUB updates](https://www.rodsbooks.com/refind/bootcoup.html#disabling_grub).
+Unfortunately that's not easy since trying to remove grub removes `shim-signed` and `mokutil` and `amd64-microcode` and we might need those in the future.
+A better option is to keep GRUB installed and .efi files registered to UEFI nvram: simply never
+boot "Ubuntu" UEFI boot item and you're fine.
+Alternatively you can [disable GRUB updates](https://www.rodsbooks.com/refind/bootcoup.html#disabling_grub),
+but that's not a good idea since it may disable updates to `amd64-microcode` and you want that thing to be updated.
+
+Best thing is to leave GRUB as-is. The `amd64-microcode` goes into initrd anyway, which is then built into UKI .efi
+and therefore taken into effect also via systemd-boot.
 

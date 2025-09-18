@@ -59,6 +59,11 @@ automatically creates entries in `/boot/efi` and adds EFI systemd boot option to
 the EFI non-volatile RAM called "Linux Boot Manager" which you can now choose
 to boot from, in your BIOS UEFI boot menu.
 
+Note that the GRUB shim.efi and grub.efi are still around. That means that you can now pick how you want your system to boot,
+via your UEFI BIOS boot menu:
+* choosing `Ubuntu` boots your Ubuntu via GRUB
+* choosing "Linux Boot Manager" boots your system via systemd-boot.
+
 Unfortunately, this won't boot when Secure Boot is on, since `systemd-bootx64.efi` isn't
 cryptographically signed correctly. We'll fix that later on.
 
@@ -90,18 +95,6 @@ $ sudo bootctl list
 ```
 You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboot - your system should now boot using the UKI .efi bios.
 
-### Remove the /boot partition
-
-Copy all files from the `/boot` partition to your root partition, then unmount the `/boot` partition:
-```bash
-$ sudo cp -ax /boot /boot2
-$ sudo umount -l /boot
-$ sudo rm -rf /boot
-$ sudo mv /boot2 /boot
-```
-Uncomment the `/boot` partition from `/etc/fstab` and reboot. Your system now boots without an unencrypted `/boot` partition!
-You can nuke the /boot filesystem via `mkfs.ext4` or remove the original `/boot` partition, to make sure that it isn't used anymore.
-
 ### Signing .efi for Secure Boot
 
 Lots of information in this regard at [copyninja.in](https://copyninja.in/) - TODO review.
@@ -119,4 +112,23 @@ mentions `kernel-install inspect` but it fails on Ubuntu.
 Script `91-sbctl.install` is mentioned which looks interesting, but doesn't exist on Ubuntu. `sbctl` does not exist on Ubuntu either.
 
 Also, AI mentions that ukify is not really ready to be used in Ubuntu since the necessary script hooks are missing.
+
+### Remove the /boot partition
+
+Copy all files from the `/boot` partition to your root partition, then unmount the `/boot` partition:
+```bash
+$ sudo cp -ax /boot /boot2
+$ sudo umount -l /boot
+$ sudo rm -rf /boot
+$ sudo mv /boot2 /boot
+```
+Uncomment the `/boot` partition from `/etc/fstab` and reboot. Your system now boots without an unencrypted `/boot` partition!
+You can nuke the /boot filesystem via `mkfs.ext4` or remove the original `/boot` partition, to make sure that it isn't used anymore.
+
+### Nuke GRUB
+
+Now that `/boot` partition is gone, GRUB can't boot your system anymore, and therefore you can nuke it.
+Unfortunately that's not easy since trying to remove grub removes `shim-signed` and `mokutil` and `amd64-microcode` and we might need those in the future,
+so a better option is to keep GRUB installed and .efi files registered to UEFI nvram; simply never
+boot "Ubuntu" UEFI boot item and you're fine. Alternatively you can [disable GRUB updates](https://www.rodsbooks.com/refind/bootcoup.html#disabling_grub).
 

@@ -142,3 +142,10 @@ but that's not a good idea since it may disable updates to `amd64-microcode` and
 Best thing is to leave GRUB as-is. The `amd64-microcode` goes into initrd anyway, which is then built into UKI .efi
 and therefore taken into effect also via systemd-boot.
 
+### Protect BIOS
+
+Password-protect the BIOS. This prevents the attacker from changing the default boot option from the BIOS boot menu (`F2`).
+
+An attacker can insert rogue Linux on USB stick, press `F12`, boot from USB stick and tamper the UEFI boot menu via `efibootmgr`.
+Disable or password-protect the `F12` boot menu.
+

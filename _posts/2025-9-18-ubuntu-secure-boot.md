@@ -62,12 +62,32 @@ to boot from, in your BIOS UEFI boot menu.
 Unfortunately, this won't boot when Secure Boot is on, since `systemd-bootx64.efi` isn't
 cryptographically signed correctly.
 
-TODO what to do
+TODO how to configure systemd-boot to sign the efi file; 
 
 ### systemd-ukify
+
+There is surprisingly not much information at [systemd documentation page](https://systemd.io/AUTOMATIC_BOOT_ASSESSMENT/);
+some information can be found at [kernel-install man page](https://www.freedesktop.org/software/systemd/man/latest/kernel-install.html).
+To install ukify:
 
 ```bash
 $ sudo apt install systemd-ukify
 ```
-However, nothing really happens. TODO why
+However, nothing really happens yet. You need to activate UKI, by creating `/etc/kernel/install.conf` with these contents:
+```
+layout=uki
+```
+See [ArchLinux: kernel-install](https://wiki.archlinux.org/title/Unified_kernel_image#kernel-install) for more details.
+
+Now you need to reinstall kernel module, to run `kernel-install`:
+```bash
+$ sudo apt install --reinstall linux-image-6.14.0-29-generic
+```
+This creates the .efi file named `EFI/Linux/*-generic.efi`, but won't create an EFI boot entry in non-volatile RAM,
+as can be seen by running `sudo efibootmgr`.
+
+TODO how to sign ukify-generated efi file via `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`).
+TODO where are the keys/certificates? Probably I need to generate those and register them via MOK utility.
+
+TODO how to automatically activate the ukified efi file. There's interesting stuff in `/usr/lib/kernel/install.d` - maybe this needs to be copied to `/etc/kernel/install.d`.
 

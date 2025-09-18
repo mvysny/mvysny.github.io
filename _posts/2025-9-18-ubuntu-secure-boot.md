@@ -29,6 +29,9 @@ and not Argon2.
 
 All distros use LUKS2 and Argon2, and you should too. However, that renders this option not applicable.
 
+You can try install Ubuntu Server and put `/boot` on an encrypted LUKS/LVM volume - the installer
+will allow you to do that, but the installation will crash at some point.
+
 # Unified Kernel Image (UKI)
 
 There's another way. We can package kernel and initrd into one efi file, sign it,

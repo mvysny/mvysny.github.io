@@ -124,7 +124,11 @@ $ sudo mv /boot2 /boot
 ```
 Uncomment the `/boot` partition from `/etc/fstab` and reboot. Your system now boots without an unencrypted `/boot` partition!
 You can nuke the /boot filesystem via `mkfs.ext4` or remove the original `/boot` partition, to make sure that it isn't used anymore.
+
 Even better - you can leave the partition as-is, as a honeypot for the attacker.
+However, the attacker may reconfigure your laptop to boot via GRUB -
+this can be done not just via BIOS (which should be protected via password),
+but also by booting his Linux via USB and running `efibootmgr`.
 
 ### Nuke GRUB?
 

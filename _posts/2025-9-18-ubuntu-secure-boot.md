@@ -60,14 +60,14 @@ the EFI non-volatile RAM called "Linux Boot Manager" which you can now choose
 to boot from, in your BIOS UEFI boot menu.
 
 Unfortunately, this won't boot when Secure Boot is on, since `systemd-bootx64.efi` isn't
-cryptographically signed correctly.
-
-TODO how to configure systemd-boot to sign the efi file; 
+cryptographically signed correctly. We'll fix that later on.
 
 ### systemd-ukify
 
 There is surprisingly not much information at [systemd documentation page](https://systemd.io/AUTOMATIC_BOOT_ASSESSMENT/);
 some information can be found at [kernel-install man page](https://www.freedesktop.org/software/systemd/man/latest/kernel-install.html).
+There's a [great tutorial at copyninja.in](https://copyninja.in/blog/enable_ukify_debian.html).
+
 To install ukify:
 
 ```bash
@@ -77,20 +77,46 @@ However, nothing really happens yet. You need to activate UKI, by creating `/etc
 ```
 layout=uki
 ```
-See [ArchLinux: kernel-install](https://wiki.archlinux.org/title/Unified_kernel_image#kernel-install) for more details.
+More info at [ArchLinux: kernel-install](https://wiki.archlinux.org/title/Unified_kernel_image#kernel-install).
 
 Now you need to reinstall kernel module, to run `kernel-install`:
 ```bash
-$ sudo apt install --reinstall linux-image-6.14.0-29-generic
+$ sudo dpkg-reconfigure linux-image-$(uname -r)
 ```
-This creates the .efi file named `EFI/Linux/*-generic.efi`, but won't create an EFI boot entry in non-volatile RAM,
-as can be seen by running `sudo efibootmgr`.
+This creates the .efi file named `EFI/Linux/*-generic.efi` and also adds an entry to the systemd boot list, as can be verified
+with
+```bash
+$ sudo bootctl list
+```
+You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboot - your system should now boot using the UKI .efi bios.
+
+### Remove the /boot partition
+
+Copy all files from the `/boot` partition to your root partition, then unmount the `/boot` partition:
+```bash
+$ sudo cp -ax /boot /boot2
+$ sudo umount -l /boot
+$ sudo rm -rf /boot
+$ sudo mv /boot2 /boot
+```
+Uncomment the `/boot` partition from `/etc/fstab` and reboot. Your system now boots without an unencrypted `/boot` partition!
+You can nuke the /boot filesystem via `mkfs.ext4` or remove the original `/boot` partition, to make sure that it isn't used anymore.
+
+### Signing .efi for Secure Boot
+
+Lots of information in this regard at [copyninja.in](https://copyninja.in/) - TODO review.
 
 TODO how to sign ukify-generated efi file via `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`).
 TODO where are the keys/certificates? Probably I need to generate those and register them via MOK utility.
 
-TODO how to automatically activate the ukified efi file. There's interesting stuff in `/usr/lib/kernel/install.d` - maybe this needs to be copied to `/etc/kernel/install.d`.
-
 AI-generated stuff which sounds helpful:
-configure ukify to sign the UKI. This involves creating a signing key and certificate, which can be done with ukify genkey using a configuration file. The generated keys and certificates are then used by ukify to sign the UKI during the build process.
+Configure ukify to sign the UKI. This involves creating a signing key and certificate, which can be done with `ukify genkey` using a configuration file.
+The generated keys and certificates are then used by ukify to sign the UKI during the build process.
+
+Also, [ArchWiki kernel-install](https://wiki.archlinux.org/title/Kernel-install#Plugins)
+mentions `kernel-install inspect` but it fails on Ubuntu.
+
+Script `91-sbctl.install` is mentioned which looks interesting, but doesn't exist on Ubuntu. `sbctl` does not exist on Ubuntu either.
+
+Also, AI mentions that ukify is not really ready to be used in Ubuntu since the necessary script hooks are missing.
 

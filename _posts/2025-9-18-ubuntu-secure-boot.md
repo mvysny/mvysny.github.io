@@ -91,3 +91,6 @@ TODO where are the keys/certificates? Probably I need to generate those and regi
 
 TODO how to automatically activate the ukified efi file. There's interesting stuff in `/usr/lib/kernel/install.d` - maybe this needs to be copied to `/etc/kernel/install.d`.
 
+AI-generated stuff which sounds helpful:
+configure ukify to sign the UKI. This involves creating a signing key and certificate, which can be done with ukify genkey using a configuration file. The generated keys and certificates are then used by ukify to sign the UKI during the build process.
+

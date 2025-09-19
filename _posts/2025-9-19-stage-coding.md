@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Kinds of coding
+title: Stage Coding
 ---
 
-So we have vibe coding, coined by Andrej Karpathy (not really a coding tbh ;). Maybe another kinds
-of coding should be coined as well. On top of prototyping and maintenance, I'm proposing presentation coding. What is it?
+So we have vibe coding, coined by Andrej Karpathy (super-smart guy, but my two cents - not really a coding ;). Maybe another kinds
+of coding should be coined as well. On top of prototyping and maintenance, I'm proposing stage coding. What is it?
 
-# Presentation Coding
+# Stage Coding
 
 Picture yourself, being on the stage, presenting to a crowd, live-coding. It doesn't matter whether the code is performant or well-structured,
 or whether the program even works - you're conveying an idea to your audience and you want to be as

@@ -159,7 +159,7 @@ Apple M+ bootloader is highly secure and tampering-resistant; apps get installed
 And then you discover that your home folder access rights is `750`, that means group `staff` can read files and list folders. Since all users belong to `staff`, *every user can read your home* (except for `~/Documents`, `~/Downloads` and
 `~/Desktop` but there's another security machinery which prevents that). What the fuck? Reading Apple security feels like indestructible unhackable machine, and then you find this kind of a backdoor. Can you change it to `700`? Who knows what breaks. Place everything into desktop? Then it gets synced to iCloud, and doesn't solve the problem of having all folders in home readable *by everyone*.
 
-Seriously, WHAT THE FUCK? Are you really telling me to only have one user on my powerful MacBook Pro?
+Seriously, WHAT THE FUCK? Are you really telling me to only have one user on my super-powerful and super-expensive MacBook Pro?
 
 It gets even better: I created a security ticket at Apple, they closed it that it's not a security issue. LOL.
 

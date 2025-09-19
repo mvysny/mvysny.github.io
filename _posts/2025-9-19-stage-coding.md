@@ -54,7 +54,7 @@ once you start debugging it. That breaks the "simplicity" principle.
 
 The conclusion is clear: Spring is a liability when it comes to maintenance.
 
-# Conclusion
+# Don't drink the Kool-Aid
 
 Beware when a nice funny guy with a cool T-shirt tries to sell you on something on a conference stage.
 His objectives do not match yours - he's there to sell himself, then his product, and then possibly some consulting,
@@ -62,6 +62,9 @@ should you use his product and things go south. Beware of the [merchants of comp
 you are on the other side of the barricade. You're here to make the app work and fix bugs quickly;
 the merchant of complexity is here to sell help to you, once you buy into complexity and it explodes in your face
 and you need help quickly.
+
+Of course, if a tool increases your maintenance productivity, it's definitely
+worth paying for. Exercise caution: not everything that shines is gold.
 
 Spring looks so shiny and lovely on a fancy conference stage, but yours is the maintenance
 game: and these stages are very far apart.

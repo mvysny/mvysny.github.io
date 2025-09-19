@@ -147,7 +147,10 @@ I know there are historic reasons since `🌐` was added later on, but still.
 
 ### Home/End move the viewport, not the cursor
 
-No. Just no. I edit text and move the cursor first and foremost; I'm not paid me to scroll shit around.
+No. Just no. I edit text and move the cursor first and foremost; I'm not paid to scroll shit around.
+
+I guess MacOS is great when controlled via touchpad, or when you have a huge fucking TV and you don't need to move the windows around.
+But the second you try to use keyboard+mouse to arrange windows, it's worse than literally anything else.
 
 ## Security
 

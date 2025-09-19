@@ -14,13 +14,13 @@ clear and quick as possible. You're delivering the message at a typing speed; th
 by your typing speed, which is also the cognitive speed of your audience (the moment you start
 generating walls of code, you lose your audience, and you don't want that).
 
-In this setup, almost anything goes - annotations, utility functions, quick-and-dirty code blocks that you would
+In this kind of setup, almost anything goes - annotations, utility functions, quick-and-dirty code blocks that you would
 be ashamed of under regular circumstances - and that's okay. The point is to deliver a message, not to produce
 good code. You're going to write code once, the audience is going it read it once, and that's it - when the presentation is over,
 the code is gone.
 
 Spring is perfect for this case: you can get very far simply by adding an annotation or two (or ten). You don't
-care about the massive annotation processors hidden behind those tiny-tany annotations (and the ways they can blow up) -
+care about the massive annotation processors hidden behind those teeny-weeny annotations (and the ways they can blow up) -
 you're conveying the message and throwing the code away afterwards.
 
 # Prototyping

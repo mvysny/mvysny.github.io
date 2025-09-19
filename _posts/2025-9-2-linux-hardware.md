@@ -4,7 +4,7 @@ title: Linux and Hardware
 ---
 
 Now that I dissed on [Apple](../apple-rant/) and [Windows](../windows/), you probably want
-to tell me to get a Linux machine and shut up about it, and you are probably right. And that's the problem - I can't.
+to tell me to get a Linux machine and shut up about it, and you are probably right. And there lies the problem.
 
 Don't get me wrong. Linux support for hardware is top-notch these days. I'm sure you can
 buy any laptop and Linux would boot on it and most of the things would work, if not all.
@@ -21,10 +21,11 @@ The machine:
 
 My last machine was Lenovo ThinkPad T14s, which was a pretty expensive machine (2000 eur) yet [it constantly failed to deliver](../networking-lenovo-t14s-sucks/).
 And there's no way to tell these things up-front - you have to get the machine, try it out, find these kinds of issues as soon as possible,
-then return it quickly and try out something else. And you know what? I'm fucking tired of that.
+then return it quickly and try out something else. x86 feels like a steam engine - huffin' and puffin' with vents spinnin' noisily -
+compared to MacBook.
 
-So, Linux is not the problem here: the problem is that the x86 machines are all shit - either they lack performance, or they are loud,
-or there's something else wrong with them internally. I love the fact I can get a 2 TB SSD for 150 eur and expand the memory
-as well, but if the laptop isn't going to perform, then why bother? At the end, I'll get a MacBook Pro,
-which is fucking expensive (4000 eur for a machine with 48 GB of RAM and 2 TB of SSD is a joke), but I'll save time
-and my energy and I'll just run Linux in UTM on top of that.
+So, Linux is not the problem here. The problem is that the x86 machines are all shit - either they lack performance, or they are loud,
+or there's something else wrong with them internally. But then again, I love the fact I can get a 2 TB SSD for 150 eur and expand the memory
+as well, and [take the machine apart if I want to](https://frame.work).
+I'll get one of those, put Linux on top and I'll be a happy camper.
+

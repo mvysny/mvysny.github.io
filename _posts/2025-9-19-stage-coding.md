@@ -10,8 +10,9 @@ of coding should be coined as well. On top of prototyping and maintenance, I'm p
 
 Picture yourself, being on the stage, presenting to a crowd, live-coding. It doesn't matter whether the code is performant or well-structured,
 or whether the program even works - you're conveying an idea to your audience and you want to be as
-clear and quick as possible. But the message must be delivered within a typing speed - the moment you start
-generating walls of code, you lose your audience.
+clear and quick as possible. You're delivering the message at a typing speed; that means you're limited
+by your typing speed, which is also the cognitive speed of your audience (the moment you start
+generating walls of code, you lose your audience, and you don't want that).
 
 In this setup, almost anything goes - annotations, utility functions, quick-and-dirty code blocks that you would
 be ashamed of under regular circumstances - and that's okay. The point is to deliver a message, not to produce

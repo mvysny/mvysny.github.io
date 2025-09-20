@@ -21,7 +21,7 @@ Asterisk:
   - Even worse, on Nvidia proprietary driver, Firefox switches to software rendering, making [webgl aquarium demo](https://webglsamples.org/aquarium/aquarium.html) painstakingly slow.
 - Basically avoid Nvidia on Linux Desktop
 
-With Apple, I know that if I pay the Apple Tax, I'm getting a top-notch machine.
+I get it. With Apple, I know that if I pay the Apple Tax, I'm getting a top-notch machine.
 The machine:
 
 - [won't get sticky by just sitting in the closet](https://youtu.be/4wrJE3SBTBU?si=Jdif0FV9gsEYDU5V&t=110),

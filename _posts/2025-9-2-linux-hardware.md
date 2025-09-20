@@ -16,10 +16,10 @@ Asterisk:
 - virt-manager GPU acceleration doesn't work with proprietary nvidia drivers; with nouveau it's choppy and doesn't feel right.
   On AMD Ryzen + Integrated Radeon, it's buttery-smooth
 - Steam generally works, both on Nvidia proprietary drivers and on AMD Ryzen integrated Radeon
-- Screen sometimes doens't wake up on nouveau; also screen dimming doesn't work
+- Screen sometimes doesn't wake up on nouveau; probably because screen dimming doesn't work (GeForce RTX 4060 Max-Q)
+- Firefox still doesn't support accelerated videos in 2025, both on Radeon and on Nvidia
+  - Even worse, on Nvidia proprietary driver, Firefox switches to software rendering, making [webgl aquarium demo](https://webglsamples.org/aquarium/aquarium.html) painstakingly slow.
 - Basically avoid Nvidia on Linux Desktop
-
-The problem is elsewhere.
 
 With Apple, I know that if I pay the Apple Tax, I'm getting a top-notch machine.
 The machine:
@@ -29,6 +29,7 @@ The machine:
 - won't slow down to a crawl when I try to screenshare a VM via Google Hangouts (looking at you, Lenovo ThinkPad T14s)
 - won't suddenly print error messages that USB hub failed to allocate resources then start disconnecting USB devices randomly
   (again Lenovo ThinkPad T14s, same thing on Linux and on Windows, leading me to believe that it's Lenovo saving on USB subsystem)
+- Video playback in browser will be accelerated out-of-the-box
 
 My last machine was Lenovo ThinkPad T14s, which was a pretty expensive machine (2000 eur) yet [it constantly failed to deliver](../networking-lenovo-t14s-sucks/).
 And there's no way to tell these things up-front - you have to get the machine, try it out, find these kinds of issues as soon as possible,

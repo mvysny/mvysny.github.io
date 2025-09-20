@@ -7,7 +7,18 @@ Now that I dissed on [Apple](../apple-rant/) and [Windows](../windows/), you pro
 to tell me to get a Linux machine and shut up about it, and you are probably right. And there lies the problem.
 
 Don't get me wrong. Linux support for hardware is top-notch these days. I'm sure you can
-buy any laptop and Linux would boot on it and most of the things would work, if not all.
+buy any laptop and Linux would boot on it and most of the things would work, if not all *
+
+Asterisk:
+
+- Obviously Linux suspend is a hit-and-miss. On my Ryzen 7 PRO 4750U suspend works out-of-the-box (maybe with potential battery drain);
+  on my other system with a discrete Nvidia suspend doesn't work, both with nouveau and proprietary Nvidia drivers
+- virt-manager GPU acceleration doesn't work with proprietary nvidia drivers; with nouveau it's choppy and doesn't feel right.
+  On AMD Ryzen + Integrated Radeon, it's buttery-smooth
+- Steam generally works, both on Nvidia proprietary drivers and on AMD Ryzen integrated Radeon
+- Screen sometimes doens't wake up on nouveau; also screen dimming doesn't work
+- Basically avoid Nvidia on Linux Desktop
+
 The problem is elsewhere.
 
 With Apple, I know that if I pay the Apple Tax, I'm getting a top-notch machine.

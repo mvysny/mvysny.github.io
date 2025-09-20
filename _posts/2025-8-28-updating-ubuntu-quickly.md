@@ -34,11 +34,13 @@ sudo apt autoremove --purge
 sudo snap refresh
 # clean residual config
 sudo apt purge $(dpkg -l | grep '^rc' | awk '{print $2}')
+# update firmware
+sudo fwupdmgr refresh && sudo fwupdmgr get-updates && sudo fwupdmgr update
 ```
 
 To run these scripts without needing to type in root password, run `sudo visudo` and add this line:
 ```sudoers
-mavi ALL=(ALL) NOPASSWD:/usr/bin/apt*, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot
+mavi ALL=(ALL) NOPASSWD:/usr/bin/apt*, /usr/bin/snap refresh, /usr/sbin/shutdown -h now, /usr/sbin/reboot, /usr/bin/fwupdmgr*
 ```
 
 Also make the scripts executable: `chmod a+x shutdown reboot update`

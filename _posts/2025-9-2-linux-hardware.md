@@ -53,6 +53,6 @@ I just can't use MacBook unfortunately:
 - Linux-in-VM requires me to switch between two completely different keyboard layouts, which I can't do
 - MacOS window management is atrocious and requires tons of third-party apps to make it usable with mouse and keyboard; ando no I'm not a touchpad person.
 
-These are fundamentals which won't go away; Linux quirks can be solved and then I'm done.
+I can fix Linux hardware quirks or learn to live with them; MacOS's quirks are fundamentally incompatible with me.
 I'll get one of Linux-supported laptops, put Linux on top, solve the quirks (or decide not to be bothered by them) and I'll be a happy camper.
 

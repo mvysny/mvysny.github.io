@@ -11,15 +11,21 @@ buy any laptop and Linux would boot on it and most of the things would work, if 
 
 Asterisk:
 
-- Obviously Linux suspend is a hit-and-miss. On my Ryzen 7 PRO 4750U suspend works out-of-the-box (maybe with potential battery drain);
+- Obviously Linux suspend is a hit-and-miss. On my Ryzen 7 PRO 4750U suspend works out-of-the-box;
   on my other system with a discrete Nvidia suspend doesn't work, both with nouveau and proprietary Nvidia drivers
 - virt-manager GPU acceleration doesn't work with proprietary nvidia drivers; with nouveau it's choppy and doesn't feel right.
   On AMD Ryzen + Integrated Radeon, it's buttery-smooth
-- Steam generally works, both on Nvidia proprietary drivers and on AMD Ryzen integrated Radeon
+- Steam generally works, both on Nvidia proprietary drivers and on AMD Ryzen integrated Radeon. Unexpected, and really awesome!
 - Screen sometimes doesn't wake up on nouveau; probably because screen dimming doesn't work (GeForce RTX 4060 Max-Q)
+  - No way to control screen dimming on nouveau in kernel 6.14.
 - Firefox still doesn't support accelerated videos in 2025, both on Radeon and on Nvidia
+  - Partly because [VA-API doesn't work](https://bugs.launchpad.net/ubuntu/+source/mesa/+bug/2125273) - but when you force `media.hardware-video-decoding.force-enabled` to true,
+    FF reports h264 hardware decoding as supported on Radeon! Is it because `ffmpeg -hwaccels` supports multiple methods and for example goes through vulkan?
   - Even worse, on Nvidia proprietary driver, Firefox switches to software rendering, making [webgl aquarium demo](https://webglsamples.org/aquarium/aquarium.html) painstakingly slow.
 - Basically avoid Nvidia on Linux Desktop
+- Okay I get it now, not that many people want to [read The Linux Suspend Bible](https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate) or
+  a [long list of Linux quirks for their laptop](https://wiki.archlinux.org/title/Framework_Laptop_13). You want to close the lid of your laptop
+  and expect it to wake up properly.
 
 I get it. With Apple, I know that if I pay the Apple Tax, I'm getting a top-notch machine.
 The machine:
@@ -36,8 +42,17 @@ And there's no way to tell these things up-front - you have to get the machine, 
 then return it quickly and try out something else. x86 feels like a steam engine - huffin' and puffin' with vents spinnin' noisily -
 compared to MacBook.
 
-So, Linux is not the problem here. The problem is that the x86 machines are all shit - either they lack performance, or they are loud,
-or there's something else wrong with them internally. But then again, I love the fact I can get a 2 TB SSD for 150 eur and expand the memory
+So, Linux is not the problem here. The problem is that the x86 machines are all hit-and-miss - either they lack performance, or they are loud,
+or there's something else wrong with them internally, like suspend working three times tops, if at all.
+But then again, I love the fact I can get a 2 TB SSD for 150 eur and expand the memory
 as well, and [take the machine apart if I want to](https://frame.work).
-I'll get one of those, put Linux on top and I'll be a happy camper.
+
+I just can't use MacBook unfortunately:
+
+- Having to have Homebrew for basic utilities is ridiculous
+- Linux-in-VM requires me to switch between two completely different keyboard layouts, which I can't do
+- MacOS window management is atrocious and requires tons of third-party apps to make it usable with mouse and keyboard; ando no I'm not a touchpad person.
+
+These are fundamentals which won't go away; Linux quirks can be solved and then I'm done.
+I'll get one of Linux-supported laptops, put Linux on top, solve the quirks (or decide not to be bothered by them) and I'll be a happy camper.
 

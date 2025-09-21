@@ -17,16 +17,23 @@ unsuitable for anything but games.
 
 # The Good Things
 
-The hardware is the best in industry, period. No Windows machine comes close - they're either underpowered, clunky, or noisy. M3+ MacBooks, from the hardware perspective, are simply better.
+The hardware is the best in industry, period. No Windows machine comes close -
+they're either underpowered, clunky, or noisy. M3+ MacBooks, from the hardware perspective, are simply better.
 
-iPad is amazing and puts all Android tablets to complete shame. It just works and receives 6 years of updates  - literally no Android tablet has this kind of support.
-But it gets better: you can hook a keyboard and a mouse to it, and suddenly it starts acting like a desktop OS - alt+tab works, keyboard shortcuts work, hell, you can even hook it to a USB display, extend the desktop and start tiling windows side-by-side - something Android can only dream of.
+iPad is amazing and puts all Android tablets to complete shame. It just works and receives 6 years of updates -
+literally no Android tablet has this kind of support.
+But it gets better: you can hook a keyboard and a mouse to it, and suddenly it starts acting like a desktop OS -
+`Cmd+Tab` works, keyboard shortcuts work, hell, you can even hook it to a USB display, extend the desktop and start tiling windows side-by-side -
+something Android can only dream of.
 
-iPhone is a hardware marvel - the camera is incredible, the sound is amazing, the OS works so well and is not cluttered with shit (looking at you Samsung).
+iPhone is a hardware marvel - the camera is incredible, the sound is amazing,
+the OS works so well and is not cluttered with shit (looking at you Samsung).
 
-AirPods is the first Bluetooth device that you can use with multiple devices without having to forget the device, re-pair or do the usual Bluetooth crap. AirPlay is amazing and just works, AppleTV-as-secondary-display just works, incredible.
+AirPods is the first Bluetooth device that you can use with multiple devices without having
+to forget the device, re-pair or do the usual Bluetooth crap. AirPlay is amazing and just works, AppleTV-as-secondary-display just works, incredible.
 
-And then you hit a bug that is so glaring and so obvious, in a complete contrast to all the wonders above, and you need an app to fix that. Let's talk about that for a bit, shall we.
+And then you hit a bug that is so glaring and so obvious, in a complete contrast to all the
+wonders above, and you need an app to fix that. Let's talk about that for a bit, shall we.
 
 # MacOS
 
@@ -39,7 +46,8 @@ When I quit VM in Parallels or close Slack, there's like 5% probability that tho
 This points to a huge fundamental flaw of the underlying system design: everything in MacOS goes through one event loop, and if an app freezes, the event loop blocks, and with it, every other app.
 This is Mac only - this doesn't happen on Windows nor on Linux. For entertainment, [check out this video](https://youtu.be/tZueJx-ndnI?si=9mEZGv1rOjZspC-b&t=961).
 I thought, as a profession, we moved away from the MS-DOS times, where an app could overwrite entire memory and pretty much kill your PC.
-The only thing that works is to right-click the app icon and select "Kill" - the option doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
+The only thing that works is to right-click the app icon and select "Kill" - the option
+doesn't show by default and feels like the kill switch is hacked on top of MacOS Dock bar.
 
 Opening an unresponsive page in Safari freezes not just Safari, but the entire operating system -
 I thought the times of cooperative multitasking were behind us. This is just unacceptable and feels
@@ -70,7 +78,8 @@ The green button should maximize, not go into full-screen. Yes you can Option-cl
 
 There are three window managers, and all of them are terrible. The Stage Manager is - I have no fucking idea how I am supposed to use that.
 As a programmer, I want my apps occupying the entire screen, otherwise I just wasted my money on a big monitor and I could have gone with the smaller one.
-Stage Manager just wastes a bit of screen for the folded windows which is just a horrible idea: you can't see the window contents nor icons nor titles, so it's just wasted space.
+Stage Manager just wastes a bit of screen for the folded windows which is just a horrible idea: you can't see the window contents nor icons nor titles,
+so it's just wasted space.
 
 The Mission Control is based on the idea that you can identify a window from its thumbnail.
 Let me tell you a secret: all windows are black text on white background, and they all look the same, except for very specific cases, say there is a video playing, or you're editing a photo.
@@ -84,7 +93,25 @@ Which brings me to the conclusion: Mac Window Managers are either bad, or they o
 of windows only. Luckily, this works for me since I'm using UTM most of the time,
 but it just feels retarded that Apple, the king of UX, can't come up with a usable Window Manager.
 
-Honestly, out of Gnome (and/or Ubuntu Unity patches), Windows and Mac, I'd say Mac has the worst Window Managers. Gnome shines compared to that. I want the OS to get out of my way to allow me to use my apps. MacOS usually gets out of the way unless I want to do something more complex than writing an e-mail; then it just hits me with stuff that doesn't work or makes no sense and I need third-party apps to make things work (shortcuts with Magnet, disable bloody natural scrolling with Linear Mouse, etc).
+Honestly, out of Gnome (and/or Ubuntu Unity patches), Windows and Mac, I'd say Mac has the worst Window Managers. Gnome shines compared to that.
+I want the OS to get out of my way to allow me to use my apps. MacOS usually gets out of the way unless I want to do
+something more complex than writing an e-mail; then it just hits me with stuff that doesn't work or makes
+no sense and I need third-party apps to make things work (crazy-ass `Ctrl+Opt+Cmd+F` shortcuts with Magnet, disable bloody natural scrolling with Linear Mouse, etc).
+
+### MacOS is not meant for keyboard
+
+For example, I want to move a window to upper monitor via keyboard. You may not need that, but I do, and it's a big deal for me.
+
+1. On Gnome, I press `Win+Shift+Up` and that's it - the window moves there and is maximized. I am done.
+2. On MacOS, there's no shortcut for that. I can add `Ctrl+Opt+Cmd+Up` to `Window/Move Window to monitor xyz` (can't register 🌐-based shortcuts via MacOS Settings, WTF), or install Magnet and have `Ctrl+Opt+Cmd+Up` (3rd party app can't register 🌐-based shortcuts - WTF) to move window one monitor up.
+   - The window won't be maximized. Since MacOS system shortcut `⌃🌐F` only works half of the time (WTF), I must use a third-party app Magnet (WTF).
+   - Magnet can't register 🌐-based shortcuts, so I have to use `Ctrl+Opt+Cmd+F` or something equally ridiculous.
+   - Now I need to press two ridiculous keyboard shortcuts in succession, to achieve what I want.
+   - I can get LogiTech keyboard, use Logi Options+ to remap a key on the keyboard to emit these two shortcuts in succession,
+     finally achieving an one-simple-shortcut solution.
+   - Note that I had to install Magnet and Logi Options+ and buy a Logitech keyboard and waste hours of time to achieve this.
+
+Maybe on a trackpad you can wave your hand in certain gesture to achieve the same thing, but I'm a mouse person, not a trackpad person.
 
 ### Random other UX issues
 
@@ -143,7 +170,8 @@ Solution which covers all of my needs:
 - Map "Save picture of selected area as a file" to `⌘F13`
 - (When I'm away from the numpad): `⌘Space` then type "Screenshot"
 
-I know there are historic reasons since `🌐` was added later on, but still.
+I know there are historic reasons since `🌐` was added later on, but I don't give shit about those -
+I'm using the system Right Now and I don't care about historic baggage.
 
 ### Home/End move the viewport, not the cursor
 
@@ -154,7 +182,9 @@ But the second you try to use keyboard+mouse to arrange windows, it's worse than
 
 ## Security
 
-Apple M+ bootloader is highly secure and tampering-resistant; apps get installed in a sandbox and scanned for viruses; APFS root FS is a read-only mount which further increases security; etc etc.
+Apple M+ bootloader is highly secure and tampering-resistant; apps get installed in a sandbox and scanned for viruses;
+APFS root FS is a read-only mount which further increases security; I honestly love this. Compared to that,
+setting up a [secure boot on Ubuntu that's really secure](../ubuntu-secure-boot/) is a complex process.
 
 And then you discover that your home folder access rights is `750`, that means group `staff` can read files and list folders. Since all users belong to `staff`, *every user can read your home* (except for `~/Documents`, `~/Downloads` and
 `~/Desktop` but there's another security machinery which prevents that). What the fuck? Reading Apple security feels like indestructible unhackable machine, and then you find this kind of a backdoor. Can you change it to `700`? Who knows what breaks. Place everything into desktop? Then it gets synced to iCloud, and doesn't solve the problem of having all folders in home readable *by everyone*.
@@ -181,7 +211,8 @@ It costs 250€ to go from 512Gb SSD to 1TB SSD in MacBook Pro configurator; 2TB
 
 Let me repeat that. On x86-64, 64GB of RAM costs 230€; on Mac, it costs 1840€. On x86-64, 2TB of SSD costs 130€; on Mac, it costs 1000€.
 
-I am in luck and I have enough money that I can afford that. The point is: do I want to overpay the company that doesn't give a damn about me?
+I am in luck and I have enough money that I can afford that. The point is: do I want to overpay the company that doesn't give a shit about me,
+and offers me an OS that only offers shitty window managers by default?
 
 ## Other Stuff
 
@@ -190,11 +221,22 @@ install HomeBrew: *you download a bash script from the internet and run it as ro
 [Linux-in-VM saves the day](../ubuntu-in-parallels/).
 
 MTP (transfer files to Android devices) support is [virtually non-existent](../copying-files-apple-android/) - another huge WTF.
+You need to use 3rd party app for that.
 
 # iOS
 
+I love iOS, especially the iOS 26+. Seriously, the new window management is excellent, especially compared to any
+Android tablet (which are generations behind). I do not expect much from iOS rgd window management and I'm getting it.
+Two monitor support - amazing. If you don't need much, you can truly use this as a desktop replacement, given that you hook a keyboard to it.
+But there are shortcomings too.
+
 The way iOS does app settings is a complete UX disaster too: in order to configure the app,
 I have to go to Settings, find the app and set it up. WHY? I was in the fucking app in the first place but okay I guess!
+Luckily I can just press `Cmd+,` and it takes me to app's settings.
+
+# iPhoneOS
+
+Generally amazing, but there are buts.
 
 The iPhone on-screen keyboard: it is so broken it's not even funny. The autocorrection sucks for anything else than English, the
 UX for correcting autocorrection is horrible and I find myself fighting the UX to correct
@@ -203,7 +245,9 @@ three languages is non-existent which is a huge deal-breaker for anyone that nee
 Apple, please take a hard long look at Google's keyboard,
 and then copy it.
 
-The back button is usually placed at the upper-left corner, which is the very same spot which scrolls the underlying app all the way up. Touching the back button painstakingly often activates the scroll-up instead (say WhatsApp chat history) which is just infuriating.
+The back button is usually placed at the upper-left corner, which is the very same spot which
+scrolls the underlying app all the way up. Touching the back button painstakingly often activates
+the scroll-up instead (say WhatsApp chat history) which is just infuriating.
 
 # Conclusion
 
@@ -223,3 +267,4 @@ Also, the Apple Cloud, Photos, Reminders, Notes, Passwords and the way it's sync
 it's a tiny miracle - love it.
 
 However, MacOS doesn't work for me, and therefore I'm going back to x86-64 and Linux.
+

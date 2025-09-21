@@ -8,12 +8,14 @@ Do you want an expensive computer that just works, and you are not bothered by s
 Are you not bothered by quirks and having to dig in? Linux then. Otherwise, read this again and relax one of your requirements.
 **Mobile OS:** Do you care for your privacy? Yes: iPhone. No: Android.
 
-[Windows](../windows/) comes with a laptop "for free". It will constantly try to sell you on Office 365 and OneDrive, and you'll need to log in
-to your Microsoft Account and send statistics to Microsoft. But you can (almost) always click
+[Windows](../windows/) comes with a laptop "for free". It comes with lots of bloatware (McAffee antivirus and 25+ of other crap that you'll never use) and will constantly try to sell you on Office 365 and OneDrive, and you'll need to log in
+to your Microsoft Account and send statistics to Microsoft. The bloatware can be uninstalled though, which is great. But you can (almost) always click
 no - but you'll have to do it every week. But all games work!
 
 Android sends everything you do to Google, including photos. Google can train AI on your photos and generate those for
-other people - if that's fine then Android's great! It's customizable and the phones are cheap.
+other people - if that's fine then Android's great! It's customizable and the phones are cheap. You'll get vendor-specific bloatware which
+you may not be able to fully uninstall though. Bonus points on Samsung phones you'll get two different app stores that update apps in two different ways -
+complexity is wonderful (TM)!
 
 iPhone is great but if you need a keyboard with 2-3 language support you'll need to use Google's keyboard since [Apple one is utter shit](../apple-rant/).
 

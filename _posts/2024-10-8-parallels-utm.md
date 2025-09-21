@@ -4,11 +4,15 @@ title: Parallels vs UTM
 ---
 
 I'll compare Parallels 1.9.4 AppStore Edition vs UTM 4.5.4 (100). Time of writing of this blog post: 8. Oct. 2024.
+You have two options: UTM and Parallels. Neither is unfortunately perfect.
+Know that your guest OSes will be arm64 for best performance.
 
 Parallels is much more expensive. Requires a license which need to be purchased on a yearly
 basis and costs 120 eur. Compared to that, UTM App Store edition costs 10 eur one-time only.
 Parallels AppStore Edition is massively outdated when compared to Parallels downloaded from
 the Parallels web site.
+
+# Linux (Ubuntu)
 
 Parallels starts Ubuntu VM much quicker. On my MacBook Pro M3, Ubuntu fully starts in 10 seconds,
 while it takes 23 seconds to start the Ubuntu VM in UTM. However, this looks to be a problem with UTM
@@ -18,6 +22,10 @@ fast.
 UTM is able to boot and install off ubuntu server ISO coming straight from Canonical; Parallels
 just breaks if you try that, and you have to stick with whatever Parallels downloads for you - potential
 privacy/security concerns as the origin of the ISO is unknown.
+Also, on Parallels, you're stuck with latest Ubuntu LTS. Parallels is notoriously slow to adopt newer kernels with their
+addons - newer kernels either display some scary core dump on bootup (and work),
+or the addons will fail to install, making the experience really bad, or even making
+Linux unbootable. But, if you're fine with latest
 
 Parallels is closed-source while UTM is open-source.
 
@@ -25,9 +33,10 @@ Both UTM and Parallels support 3d acceleration; even YouTube videos play and see
 I haven't measured the CPU usage and effectivity of the video play; native video playback on host OS
 is definitely most effective and that's what I'm using.
 
-Intellij IDEA works:
+Intellij IDEA works in guest Linux:
 
 * UTM accelerated only runs Intellij in Wayland mode. IDEA works very well in this mode.
+  * IDEA in guest MacOS in UTM is very slow and unusable though.
 * Parallels runs Intellij in both Wayland and Xorg mode correctly.
 
 Parallels App Store Edition is severely crippled compared to UTM:
@@ -65,10 +74,32 @@ and the only workaround I found is to boot with the `virtio-gl-pci` driver. I su
 * `qemu-system` (VM-in-a-VM); workaround: use `-vnc :0` and connect a VNC viewer to `localhost:0`.
 * Intellij in xorg mode: enable Wayland mode
 * vice and uae c64/amiga emulators: no known workaround, disable 3d acceleration
+* Chromium randomly doesn't work: no known workarounds, disable 3d acceleration
 
 Reported as [UTM #6968](https://github.com/utmapp/UTM/issues/6968).
 
-## Conclusion
+# Windows
+
+You're installing ARM64 Windows, but they are capable of running x86-64 apps very quickly, via some JIT
+Rosetta-like mechanism. Parallels runs Windows buttery-smooth, all guest addons work remarkably well.
+UTM also installs guest addons; the UI performance is jittery but usable.
+
+## Gaming
+
+Steam games won't work on UTM, neither in Windows nor Linux. Just no.
+
+On Parallels, Windows works buttery-smooth - the virtualization truly is top-notch
+in this regard. Windows arm64 installs and works out-of-the-box, and many apps do
+work as well. Even x86-64 apps work - Windows has something akin to Rosetta, translating
+apps to arm64 in JIT style, and the apps run remarkably quick.
+
+Games generally do run, which is amazing. The downside is that not all games work.
+For example Starcraft 2 launches and works, but some missions crawl down to 5 FPS
+and stay there (notably Nova missions), making them unplayable.
+
+The best way is to grab a 2-week trial period of Parallels and test all of your games.
+
+# Conclusion
 
 UTM supports newer Ubuntu and sticks to standards (the SPICE protocol) and is much better privacy-wise but has
 its quirks. Parallels (the AppStore Edition) offers a bit more polished experience UI-wise, but
@@ -77,3 +108,7 @@ The support from Parallels is horrible, and the strange UI blinking in Linux and
 persuaded me to switch to UTM.
 
 However, if you need to run X apps then UTM won't work for you. This is quite a blocker.
+
+The best way to run Linux Guest OS by far, is to get a x86-64 machine with AMD Radeon or
+Intel integrated GPU, and run the Guest OS via [virt-manager](../virt-manager/).
+Added bonus: you'll use the same set of keyboard shortcuts for both host OS and guest OS.

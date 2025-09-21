@@ -19,6 +19,6 @@ iPhone is great but if you need a keyboard with 2-3 language support you'll need
 
 MacOS: just works, amazing, except [when it isn't](../apple-rant/).
 
-[Linux](../linux-hardware.md/): some Steam games now work (including AAA like Diablo4) which is surprising. Also, on AMD Radeon things tend to just work;
+[Linux](../linux-hardware/): some Steam games now work (including AAA like Diablo4) which is surprising. Also, on AMD Radeon things tend to just work;
 Nvidia support is traditionally shitty and disables suspend.
 

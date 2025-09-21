@@ -112,3 +112,5 @@ However, if you need to run X apps then UTM won't work for you. This is quite a 
 The best way to run Linux Guest OS by far, is to get a x86-64 machine with AMD Radeon or
 Intel integrated GPU, and run the Guest OS via [virt-manager](../virt-manager/).
 Added bonus: you'll use the same set of keyboard shortcuts for both host OS and guest OS.
+Added bonus: you'll be able to play many (not all) Steam games on Linux; even better,
+you can setup a dual-boot of Windows (for games only) and Linux (for everything else).

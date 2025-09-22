@@ -287,7 +287,7 @@ More tips on when you're setting up a server:
 ## Docker
 
 ```bash
-sudo apt install docker docker-compose
+sudo apt install docker docker-buildx docker-compose docker-compose-v2
 ```
 
 Add your user to the docker group:

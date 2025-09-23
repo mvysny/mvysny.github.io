@@ -67,9 +67,10 @@ sudo update-alternatives --config editor     # select vim.basic
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).
 
-Uninstall gedit:
+Uninstall gedit and CUPS (printing support):
 ```bash
 sudo apt autoremove --purge gedit
+sudo apt autoremove --purge "cups*"
 ```
 
 UTM: to enable proper [memory ballooning](https://en.wikipedia.org/wiki/Memory_ballooning),

@@ -69,7 +69,7 @@ sudo update-alternatives --config editor     # select vim.basic
 
 Uninstall gedit and CUPS (printing support):
 ```bash
-sudo apt autoremove --purge gedit
+sudo apt autoremove --purge gedit ufw
 sudo apt autoremove --purge "cups*"
 ```
 

@@ -245,7 +245,7 @@ Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this
 ## Docker
 
 ```bash
-sudo apt install docker.io docker-compose docker-buildx docker-compose-v2
+sudo apt install docker.io docker-buildx docker-compose-v2
 ```
 
 Add your user to the docker group:

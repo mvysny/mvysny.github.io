@@ -117,7 +117,7 @@ In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" a
 
 ### Firefox
 
-[Firefox HW Acceleration](../firefox-hw-acceleration.md/).
+[Firefox HW Acceleration](../firefox-hw-acceleration/).
 
 Make sure to disable "smooth scrolling" in settings.
 

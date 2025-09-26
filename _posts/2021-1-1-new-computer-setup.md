@@ -120,7 +120,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 ### Firefox
 
-[Firefox HW Acceleration](../firefox-hw-acceleration.md/).
+[Firefox HW Acceleration](../firefox-hw-acceleration/).
 
 Login to firefox account and sync.
 

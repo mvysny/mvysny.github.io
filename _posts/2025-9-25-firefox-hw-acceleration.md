@@ -9,6 +9,13 @@ On AMD Radeon and Intel GPUs, things just work out-of-the-box.
 On Nvidia proprietary driver, nothing works as usual;
 [nouveu stopped working for me](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2125584) so I can't test that.
 
+# Wayland
+
+Go to the `about:support` page: the "Window Protocol"
+setting should read "wayland" instead of "xwayland". If it says "xwayland",
+add `MOZ_ENABLE_WAYLAND=1` to `/etc/environment` to force Firefox to run on `wayland`
+instead of `xwayland`, then reboot.
+
 # Layouting
 
 Go to `about:support` and search for `Compositing`.

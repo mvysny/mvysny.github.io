@@ -117,8 +117,7 @@ In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" a
 
 ### Firefox
 
-Firefox should run in Wayland mode by default; verify in the `about:support` page: the "Window Protocol"
-setting should read "wayland" instead of "xwayland".
+[Firefox HW Acceleration](../firefox-hw-acceleration.md/).
 
 Make sure to disable "smooth scrolling" in settings.
 

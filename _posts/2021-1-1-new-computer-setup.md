@@ -120,9 +120,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 ### Firefox
 
-Add `MOZ_ENABLE_WAYLAND=1` to `/etc/environment` to force Firefox to run on `wayland`
-instead of `xwayland`, then reboot. Verify in the `about:support` page: the "Window Protocol"
-setting should read "wayland" instead of "xwayland".
+[Firefox HW Acceleration](../firefox-hw-acceleration.md/).
 
 Login to firefox account and sync.
 

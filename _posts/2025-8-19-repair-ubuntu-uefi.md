@@ -33,7 +33,13 @@ $ sudo blkid /dev/nvme0n1p1
 You can see that, on my system, EFI has the PARTUUID of `e0d0d422-a448-4845-8967-9e058115e910` however the first EFI Boot Entry named "Ubuntu"
 lists `3a3f69e8-a1c4-4e50-8694-26ae99eb8d3a` which is wrong - that was the PARTUUID of my USB disk :-) . Booting from this boot entry will fail. We need to fix the PARTUUID.
 
-Unfortunately, it's not possible to edit a boot entry, you need to create a new one from scratch and delete the old one:
+The easiest way is to have GRUB re-add itself to UEFI:
+```bash
+$ sudo update-grub
+```
+
+If you'd like to fix it manually: Unfortunately, it's not possible to edit a boot entry, you need to create a new one from scratch and delete the old one:
+
 ```bash
 $ sudo efibootmgr -c -d /dev/nvme0n1 -p 1 -L "Ubuntu2" -l "\EFI\ubuntu\shimx64.efi"
 $ sudo efibootmgr

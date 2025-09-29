@@ -19,14 +19,16 @@ instead of `xwayland`, then reboot.
 # Layouting
 
 Go to `about:support` and search for `Compositing`.
-If 3d acceleration is enabled, it should say "WebRender";
-if it's using slower software-based layouting it will say "WebRender (Software)".
+If 3d acceleration is enabled, it should say "WebRender" and you're all good.
+If it's using slower software-based layouting it will say "WebRender (Software)".
 
 You can check `HW_COMPOSITING` and/or `OPENGL_COMPOSITING`; it will
 probably say "Acceleration blocked by platform" on Nvidia proprietary drivers.
 Good thing is that you can go to `about:config` and force hardware compositing:
 
 * Set `layers.acceleration.force-enabled` to true
+
+But it seem to have no effect on Nvidia.
 
 # webgl
 
@@ -89,9 +91,9 @@ If this shows error, you'll need to install:
 Restart Firefox and re-check. On Radeon this might be enough; on Nvidia Proprietary
 the decoding might be blacklisted. Try going to `about:config` and set
 `media.ffmpeg.vaapi.enabled` to true and restart Firefox. On Nvidia Proprietary this
-still didn't help.
+still didn't help, so I gave up.
 
 # Conclusion
 
-Don't use Nvidia with Linux.
+I failed to enable any sensible acceleration for Firefox+Nvidia: Don't use Nvidia with Linux.
 

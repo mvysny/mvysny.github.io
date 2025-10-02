@@ -93,6 +93,10 @@ the decoding might be blacklisted. Try going to `about:config` and set
 `media.ffmpeg.vaapi.enabled` to true and restart Firefox. On Nvidia Proprietary this
 still didn't help, so I gave up.
 
+If hardware video acceleration is blocked with error code
+`FEATURE_HARDWARE_VIDEO_DECODING_DISABLE` or `FEATURE_FAILURE_VIDEO_DECODING_TEST_FAILED` in `about:support`,
+you can override it with `media.hardware-video-decoding.force-enabled=true` and `media.hardware-video-encoding.force-enabled=true`.
+
 # Conclusion
 
 I failed to enable any sensible acceleration for Firefox+Nvidia: Don't use Nvidia with Linux.

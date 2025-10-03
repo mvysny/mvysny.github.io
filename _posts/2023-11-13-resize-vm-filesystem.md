@@ -8,7 +8,7 @@ It's possible to increase the root filesystem size of the Linux VM machine, quit
 First, shut down the VM and increase the size of the qcow2 file:
 
 ```
-$ qemu-img resize disk.qcow2 60G
+$ qemu-img resize disk.qcow2 64G
 ```
 
 After that's done, you can start up the VM again. Now we need to increase both the

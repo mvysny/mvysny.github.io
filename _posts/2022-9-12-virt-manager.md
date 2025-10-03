@@ -68,6 +68,7 @@ soon stop updating in Firefox. Workaround is to share just the virt-manager wind
 See [Share Folder Between Guest and Host in virt-manager (KVM/Qemu/libvirt)](https://www.debugpoint.com/share-folder-virt-manager/).
 In short:
 
+0. `sudo apt install virtiofsd`
 1. Make sure "Memory / Enabled Shared Memory" is checked
 2. Add Hardware, "Filesystem"
 3. Source path points to guest OS path, target path is a mount point, e.g. "foobar"

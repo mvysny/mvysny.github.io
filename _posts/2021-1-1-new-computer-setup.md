@@ -83,7 +83,14 @@ sudo apt autoremove --purge gedit
 
 ### gnome console
 
-Keep gnome-terminal. Set the color scheme to:
+Keep `gnome-terminal`:
+
+```bash
+$ sudo apt install gnome-terminal
+$ sudo apt autoremove --purge gnome-console ptyxis
+```
+
+Set the color scheme to:
 
 * Secure machine: Colors from the system theme + slightly transparent background
 * Unsecure/VM: Tango Light

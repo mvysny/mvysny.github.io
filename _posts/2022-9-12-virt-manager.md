@@ -76,7 +76,7 @@ In short:
 5. To make the mount permanent, edit `/etc/fstab` and add:
 
 ```fstab
-foobar /home/mavi/shared virtiofs defaults 0 1
+foobar /home/mavi/shared virtiofs defaults 0 2
 ```
 
 # Image pruning

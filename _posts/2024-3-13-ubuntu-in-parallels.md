@@ -78,9 +78,9 @@ Regarding additional fs flags:
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois fzf eza
+sudo apt install git neovim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois fzf eza duf
 sudo apt autoremove --purge rhythmbox thunderbird
-sudo update-alternatives --config editor     # select vim.basic
+sudo update-alternatives --config editor     # select nvim
 ```
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).
@@ -91,7 +91,7 @@ sudo apt autoremove --purge gedit ufw
 sudo apt autoremove --purge "cups*"
 ```
 
-UTM: to enable proper [memory ballooning](https://en.wikipedia.org/wiki/Memory_ballooning),
+UTM/virt-manager: to enable proper [memory ballooning](https://en.wikipedia.org/wiki/Memory_ballooning),
 install [qemu-guest-agent](https://pve.proxmox.com/wiki/Qemu-guest-agent):
 ```bash
 sudo apt install qemu-guest-agent
@@ -102,7 +102,7 @@ It runs a process named `qemu-ga` via systemd. How to check from guest/host that
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
-* "Launchers" / "Launch Terminal" to `^T`
+* "Launchers" / "Launch Terminal" to `^T` or `Win+T`.
 * Navigation:
   * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
     This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
@@ -111,9 +111,6 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Hide window": disabled
   * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
-
-I tend to configure Gnome to swap `Alt`, `Ctrl` and `Meta` keys, so that `^` works as `Meta`, `⌥` works as Alt and `⌘` works as `Ctrl` in guest.
-To configure this, follow [Mac-like cursor control: Win/Alt/Ctrl scenario](../mac-like-cursor-control-in-linux/).
 
 In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
 
@@ -138,6 +135,8 @@ In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" a
 [Firefox HW Acceleration](../firefox-hw-acceleration/).
 
 Make sure to disable "smooth scrolling" in settings.
+
+Set [Brave](https://search.brave.com/) as the default search engine.
 
 ### gnome system monitor extension
 

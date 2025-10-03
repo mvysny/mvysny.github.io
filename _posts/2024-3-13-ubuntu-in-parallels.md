@@ -322,7 +322,13 @@ to increase from 22 seconds to 28 seconds. If you don't need to see those messag
 The downside is that you'll see "Display output is not active" for 20 seconds until
 Ubuntu graphical interface boots up.
 
-## Shared Folders (UTM only)
+# Shared Folders
+
+## virt-manager
+
+Read [virt-manager](../virt-manager/).
+
+## UTM
 
 We'll use the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).
 
@@ -342,3 +348,4 @@ share	/mnt/utm	9p	trans=virtio,version=9p2000.L,rw,_netdev,nofail	0	0
 I'm assuming the user id (UID) of 501 and GID of 20. To figure out these values,
 run terminal on your Mac and run `ls -na`: it should list all files in your home
 folder and the UID and GID of the owner (you).
+

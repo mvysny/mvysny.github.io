@@ -266,14 +266,19 @@ Install additional Gstreamer plugins:
 
 Go to Settings. Then:
 
-* Appearance > Color: select blue
 * Multitasking > Application Switching > Include Apps From Current Workspace only
+* Appearance > Color: select blue
+* Ubuntu Desktop
+  * Enhanced Tiling: On
+  * Tiling Popup: Off
+  * Tile Groups: Off
 * Privacy
   * Location Services > Turn on
   * File History & trash
     * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
   * Screen Lock: Blank Screen Display: Never 
 * Date & Time: Enable Automatic Time Zone
+* Region & Language: Manage Installed Languages, add Finnish/Suomi and make it default.
 * Keyboard: Add "Slovak QWERTY" and "Finnish".
 
 ### Software & Updates

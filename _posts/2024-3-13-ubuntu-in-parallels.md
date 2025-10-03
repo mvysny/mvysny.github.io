@@ -245,8 +245,12 @@ Further settings:
 
 Go to Settings. Then:
 
-* Appearance > Color: select blue
 * Multitasking > Application Switching > Include Apps From Current Workspace only
+* Appearance > Color: select blue
+* Ubuntu Desktop
+  * Enhanced Tiling: On
+  * Tiling Popup: Off
+  * Tile Groups: Off
 * Privacy
   * Location Services > Turn on
   * File History & trash

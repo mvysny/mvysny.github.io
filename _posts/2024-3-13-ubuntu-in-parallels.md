@@ -280,7 +280,8 @@ docker run --rm -ti ubuntu /bin/bash
 
 ## Terminal
 
-Set Initial terminal size in the "Profile" setting to 160x50.
+* Go to Profiles / Unnamed, "Text" and set Initial terminal size to 160x50.
+* Colors: set to "Tango light"
 
 ## Scripts
 

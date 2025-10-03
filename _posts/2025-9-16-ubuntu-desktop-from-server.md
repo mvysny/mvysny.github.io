@@ -33,8 +33,10 @@ The server boots up way slower than a desktop. Go through
 
 ## Fonts
 
-To fix ugly fonts, install Ubuntu Tweaks. Go to Fonts and make sure the
-"Interface Text" is "Ubuntu" and not "Ubuntu Sans".
+To fix ugly fonts, install Ubuntu Tweaks. Go to Fonts and configure:
+* "Interface Text" is "Ubuntu Regular 11"
+* "Document Text" is "Ubuntu Regular 11"
+* "Monospace Text" is "Ubuntu Mono Medium 12"
 
 You may also need to install additional fonts that are not pulled in by `ubuntu-desktop`
 meta-package:
@@ -44,3 +46,11 @@ meta-package:
 * fonts-linuxlibertine
 * fonts-noto-extra, fonts-noto-ui-core
 * fonts-sil-gentium
+
+Open Firefox, Settings, and configure Fonts > Advanced:
+
+* Proportional: Serif
+* Serif: DejaVu Sans
+* Sans-Serif: Ubuntu
+* Monospace: monospace
+

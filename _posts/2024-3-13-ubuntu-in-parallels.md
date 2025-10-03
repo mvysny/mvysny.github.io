@@ -1,12 +1,29 @@
 ---
 layout: post
-title: New Machine - Ubuntu in Parallels/UTM Apple Silicon
+title: New Machine - Ubuntu in Parallels/UTM Apple Silicon/virt-manager
 ---
 
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.
 So, here it goes. I won't setup any encryption since I expect MacBook disk itself to be already encrypted.
 
-## Parallels
+# Getting ISO
+
+## virt-manager
+
+Install virt-manager on host os:
+```bash
+$ sudo apt install virt-manager
+```
+This will add your user to libvirt automatically; log out and back in to be able to access the VMs.
+Then, simply [download the Ubuntu Desktop ISO](https://ubuntu.com/download/desktop) for x86-64, the newest Ubuntu.
+
+Go to virt-manager settings:
+
+* General > Enable system tray icon
+* New VM > x86 Firmware: UEFI
+* Console > Resize guest with window: On
+
+## Parallels/arm64
 
 The only way that worked for me is to let Parallels download and install Ubuntu 22.04. Manual installations failed for me:
 
@@ -17,7 +34,7 @@ The only way that worked for me is to let Parallels download and install Ubuntu 
 * Alternatively you can try to install Ubuntu 23.10 server, then install `ubuntu-desktop` and [go through troubleshooting](../virtual-machines-macbook/)
   to make desktop work, but I wonder what's the point since Ubuntu 22.04 works just as good.
 
-## UTM
+## UTM/arm64
 
 The [UTM Ubuntu](https://docs.getutm.app/guides/ubuntu/) guide is straightforward - you download the Ubuntu Server ARM64 ISO
 straight from Canonical and install it. Use Ubuntu 24.04 since it contains newest drivers which will work with UTM 3d-accelerated hardware.
@@ -27,16 +44,17 @@ Couple of tips:
 * Before powering the machine up, remove the CD device, so that the VM boots off the hard drive.
 * After installing `ubuntu-desktop` and rebooting, it can take up to 5 minutes for Ubuntu to boot up,
   during which the VM will appear frozen. The reason is that `systemd-networkd-wait-online.service` can wait 90 seconds for network to come up.
-* To speed up the boot, follow the "netplan/NetworkManager" documentation below and nuke that fucking wait service.
+* Go through [Speed Up Ubuntu Boot](../speed-up-Ubuntu-boot/)
 * Before any change done to the VM that might cause the VM not no boot, clone the VM.
 
-## OS and Filesystem
+# Installation
 
-When auto-installing, Parallels will create two partitions using the GPT partitioning table: 1GB efi and 64GB ext4. Go with ext4:
-btrfs uses COW and would most probably balloon the VM disk size much more than ext4.
-Therefore, let's use ext4. It will also create a 2G swapfile, you can resize it later.
+The best way is to let Ubuntu wipe the disk and install things automatically. It will create two partitions using the GPT partitioning table: 1GB for EFI, rest for ext4 root.
+Go with ext4: btrfs uses COW and would most probably balloon the VM disk size much more than ext4.
+Therefore, let's use ext4. It will also create a 2G swapfile, you can resize it later. This is also what Parallels auto-installation
+will do.
 
-Name the machine after its expected usage, e.g. `mavi-par-experiments` or `mavi-utm-base`.
+Name the machine after its expected usage, e.g. `mavi-xyz-vmpar-experiments` or `mavi-xyz-vmutm-base`.
 
 ## Post-installation
 

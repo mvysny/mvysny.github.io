@@ -36,11 +36,11 @@ by checking `/etc/fstab` and `ls -la /dev/disk/by-uuid`.
 You can now grow the ext4 filesystem of the root FS while the OS is running:
 ```bash
 $ sudo resize2fs /dev/vda2
-$ du -hs
+$ duf -only local
 ```
 
 btrfs can be resized via
 ```bash
 $ sudo btrfs filesystem resize max /
-$ du -hs
+$ duf -only local
 ```

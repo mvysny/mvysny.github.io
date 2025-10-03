@@ -239,6 +239,7 @@ Reboot to take effect.
 Further settings:
 
 - For the love of God, [disable fucking "Automatically show first error in editor"](https://youtrack.jetbrains.com/issue/IDEA-367475)
+- [Enable Wayland](../idea-wayland/)
 
 ## GNOME Settings
 

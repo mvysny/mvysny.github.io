@@ -18,7 +18,6 @@ Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and 
 ```bash
 sudo apt update
 sudo apt -V dist-upgrade
-sudo snap refresh
 sudo apt install git neovim htop fish net-tools whois fzf eza
 sudo update-alternatives --config editor     # select neovim
 ```
@@ -42,10 +41,14 @@ sudo apt install docker docker-buildx docker-compose-v2
 
 Add your user to the docker group:
 ```bash
-sudo usermod -aG docker parallels
+sudo usermod -aG docker mavi
 ```
 Reboot, and test it out:
 ```bash
 docker run --rm -ti ubuntu /bin/bash
 ```
+
+## Scripts
+
+See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 

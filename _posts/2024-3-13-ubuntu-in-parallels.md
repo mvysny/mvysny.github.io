@@ -294,7 +294,9 @@ Go to Settings / Profiles / Unnamed, select the "Unnamed" profile:
 
 ## Scripts
 
-See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/); use `parallels` as user in the `sudoers` file.
+See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
+
+For historic reasons, when Intellij was unstable on UTM/wayland:
 
 `~/killintellij`:
 ```bash

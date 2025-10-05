@@ -73,6 +73,9 @@ sudo snap refresh
 sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza endeavour
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
+sudo apt autoremove --purge totem
+sudo apt install warp dialect gnome-weather showtime totem-video-thumbnailer
+sudo snap install pinta
 ```
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).
@@ -93,8 +96,8 @@ $ sudo apt autoremove --purge gnome-console ptyxis
 
 Set the color scheme to:
 
-* Secure machine: Colors from the system theme + slightly transparent background
-* Unsecure/VM: Tango Light
+* Secure machine: "Tango Dark" + slightly transparent background
+* Unsecure/VM: "Tango Light"
 
 ### gnome keyboard shortcuts
 

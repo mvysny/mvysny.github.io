@@ -60,7 +60,7 @@ Make sure there are no btrfs errors: `dmesg|grep -i btrfs`.
 
 Optimize systemd journal by disabling copy-on-write (COW): `sudo chattr +C /var/log/journal`
 
-Both user_xattr and extends are enabled automatically for btrfs.
+Both `user_xattr` and `extends` are enabled automatically for btrfs.
 
 Reboot.
 
@@ -70,8 +70,9 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox thunderbird-gnome-support curl whois fzf eza endeavour
+sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza endeavour
 sudo update-alternatives --config editor     # select neovim
+sudo apt install mpv ffmpeg easytag virt-manager
 ```
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).

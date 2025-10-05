@@ -1,6 +1,6 @@
 ---
 layout: post
-title: New Computer/New Machine Setup
+title: New Computer/New Machine Setup with Ubuntu
 ---
 
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.

@@ -6,7 +6,7 @@ title: New Computer/New Machine Setup
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.
 So, here it goes.
 
-## OS and Filesystem
+# OS and Filesystem
 
 Ubuntu 22.04 Desktop installer is now able to create an encrypted block device using
 dm-crypt, so it's no longer necessary to use the Ubuntu Server text installer.
@@ -64,7 +64,7 @@ Both `user_xattr` and `extends` are enabled automatically for btrfs.
 
 Reboot.
 
-## Install basic software
+# Install basic software
 
 ```bash
 sudo apt update
@@ -85,7 +85,7 @@ Uninstall gedit:
 sudo apt autoremove --purge gedit
 ```
 
-### gnome console
+## gnome console
 
 Keep `gnome-terminal`:
 
@@ -94,12 +94,12 @@ $ sudo apt install gnome-terminal
 $ sudo apt autoremove --purge gnome-console ptyxis
 ```
 
-Set the color scheme to:
+Go to Settings / Profiles / Unnamed, select the "Unnamed" profile:
 
-* Secure machine: "Tango Dark" + slightly transparent background
-* Unsecure/VM: "Tango Light"
+* Colors: "Tango Dark" + slightly transparent background
+* Set Initial terminal size to 160x50
 
-### gnome keyboard shortcuts
+## gnome keyboard shortcuts
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
@@ -113,7 +113,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
-### gnome text editor
+## gnome text editor
 
 * Settings Cog wheel > Show Line numbers
 * Settings Cog wheel > Show Right Margin
@@ -125,21 +125,21 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 * Preferences > Right margin: set to 120
 * Preferences > Restore Session: disable
 
-### fish
+## fish
 
 [Install fish](../fish/).
 
-### Firefox
+## Firefox
 
 [Firefox HW Acceleration](../firefox-hw-acceleration/).
 
 Login to firefox account and sync.
 
-### gnome system monitor extension
+## gnome system monitor extension
 
 Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
 
-### git+sshkey
+## git+sshkey
 
 Create the `~/.gitconfig` file:
 ```
@@ -164,13 +164,13 @@ Create the `~/.gitconfig` file:
 
 Create ssh key & press enter to keep the default settings:
 ```bash
-ssh-keygen
+$ ssh-keygen
 ```
 
 Upload the public key to [github ssh keys](https://github.com/settings/keys).
 When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
 
-### Double Commander
+## Double Commander
 
 Install `qgnomeplatform-qt5` to enable proper window borders around doublecmd. Then, edit
 `/etc/environment` and add `QT_QPA_PLATFORMTHEME='gnome'`. The borders will be applied after reboot.
@@ -204,7 +204,7 @@ Go to Configuration:
 
 Sort by extension.
 
-### Resilio Sync
+## Resilio Sync
 
 Download [Resilio Sync](https://www.resilio.com) from [Desktop download page](https://www.resilio.com/platforms/desktop/);
 [direct link to x86-64 binary](https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz) and
@@ -217,25 +217,11 @@ Create the base folder for rslsync: `cd ~ && mkdir -p "Resilio Sync"`. Now click
 computer click "Share" on a folder, then "Key" and "Read & Write". Then select the target folder, e.g.
 `/home/mavi/Resilio Sync/muf`. The sync should now start.
 
-### HOME Setup
+## HOME Setup
 
 Copy home files from resilio sync to `~`.
 
-### Intellij
-
-```fish
-sudo snap install intellij-idea-ultimate --classic
-```
-
-Login to my user account. To restore settings, follow [Sync settings between IDE instances](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#IDE_settings_sync).
-Make sure to:
-
-1. overwrite local settings from jetbrains account
-2. enable "sync plugins silently"
-
-To get rid of fish-related `read-only file system` uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
-
-### Desktop
+## Desktop
 
 Create a file named `Startup2.desktop` in `~/Desktop`, with the following contents:
 ```
@@ -256,7 +242,7 @@ X-KDE-Username=
 
 Make it executable, then right-click it on the Desktop and check "Allow Launching".
 
-### Rhythmbox
+## Rhythmbox
 
 * Preferences > Plugins > Disable "Alternative Toolbar", "DAAP Music Sharing", "Last FM", "Portable Players"
 * `cd Music && ln -s "../Resilio Sync/muf-music/music" ./`
@@ -285,7 +271,7 @@ Go to Settings. Then:
 * Region & Language: Manage Installed Languages, add Finnish/Suomi and make it default.
 * Keyboard: Add "Slovak QWERTY" and "Finnish".
 
-### Software & Updates
+## Software & Updates
 
 Go to the "Updates" tab and set:
 * When there are other updates: Display Immediately
@@ -312,10 +298,6 @@ Reboot, and test it out:
 ```bash
 docker run --rm -ti ubuntu /bin/bash
 ```
-
-## Terminal
-
-Set Initial terminal size in the "Profile" setting to 160x50.
 
 ## Fixing Ubuntu Desktop
 

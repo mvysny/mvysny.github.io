@@ -72,7 +72,7 @@ Regarding additional fs flags:
 * `extents` - ext4: unknown. There's no longer a mount option `extent` or `extents`,
   probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
 
-## Install basic software
+# Install basic software
 
 ```bash
 sudo apt update
@@ -98,7 +98,7 @@ sudo apt install qemu-guest-agent
 ```
 It runs a process named `qemu-ga` via systemd. How to check from guest/host that the ballooning works correctly - unknown yet.
 
-### gnome keyboard shortcuts
+## gnome keyboard shortcuts
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
@@ -114,7 +114,7 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
 
-### gnome text editor
+## gnome text editor
 
 * Settings Cog wheel > Show Line numbers
 * Settings Cog wheel > Show Right Margin
@@ -126,11 +126,11 @@ In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" a
 * Preferences > Right margin: set to 120
 * Preferences > Restore Session: disable
 
-### fish
+## fish
 
 [Install fish](../fish/).
 
-### Firefox
+## Firefox
 
 [Firefox HW Acceleration](../firefox-hw-acceleration/).
 
@@ -141,11 +141,11 @@ Settings:
 
 Set [Brave](https://search.brave.com/) as the default search engine.
 
-### gnome system monitor extension
+## gnome system monitor extension
 
 Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
 
-### git+sshkey
+## git+sshkey
 
 Create the `~/.gitconfig` file:
 ```
@@ -176,7 +176,7 @@ ssh-keygen
 Upload the public key to [github ssh keys](https://github.com/settings/keys).
 When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
 
-### Double Commander
+## Double Commander
 
 Install `qgnomeplatform-qt5` to enable proper window borders around doublecmd. Then, edit
 `/etc/environment` and add `QT_QPA_PLATFORMTHEME='gnome'`. The borders will be applied after reboot.
@@ -210,11 +210,7 @@ Go to Configuration:
 
 Sort by extension.
 
-### MacBook
-
-Follow [New MacBook Setup](../new-macbook-setup/).
-
-### Intellij
+## Intellij
 
 There's [an IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),
 so you can simply:
@@ -240,13 +236,13 @@ Further settings:
 
 - For the love of God, [disable fucking "Automatically show first error in editor"](https://youtrack.jetbrains.com/issue/IDEA-367475)
 - [Enable Wayland](../idea-wayland/)
+- Optional: To get rid of fish-related `read-only file system` issues, uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
 
 ## GNOME Settings
 
 Go to Settings. Then:
 
 * Multitasking > Application Switching > Include Apps From Current Workspace only
-* Appearance > Color: select blue
 * Ubuntu Desktop
   * Enhanced Tiling: On
   * Tiling Popup: Off
@@ -258,7 +254,7 @@ Go to Settings. Then:
   * Screen Lock: Blank Screen Display: Never 
 * Date & Time: Enable Automatic Time Zone
 
-### Software & Updates
+# Software & Updates
 
 Go to the "Updates" tab and set:
 * When there are other updates: Display Immediately
@@ -284,7 +280,16 @@ docker run --rm -ti ubuntu /bin/bash
 
 ## Terminal
 
-* Go to Profiles / Unnamed, "Text" and set Initial terminal size to 160x50.
+Keep `gnome-terminal`:
+
+```bash
+$ sudo apt install gnome-terminal
+$ sudo apt autoremove --purge gnome-console ptyxis
+```
+
+Go to Settings / Profiles / Unnamed, select the "Unnamed" profile:
+
+* Set Initial terminal size to 160x50
 * Colors: set to "Tango light"
 
 ## Scripts

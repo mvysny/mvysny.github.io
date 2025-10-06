@@ -87,7 +87,7 @@ prune the images from time to time. POWER OFF all VMs, then:
 ```bash
 cd /var/lib/libvirt/images
 mv image.qcow2 image.qcow2_backup
-qemu-img convert -O qcow2 image.qcow2_backup image.qcow2
+qemu-img convert -O qcow2 -p image.qcow2_backup image.qcow2
 rm image.qcow2_backup
 ```
 

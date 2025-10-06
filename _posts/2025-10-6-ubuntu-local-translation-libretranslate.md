@@ -14,7 +14,7 @@ The easiest way is to run LibreTranslate via docker:
 ```bash
 $ docker run --rm -ti -p 5000:5000 -v lt-local:/home/libretranslate/.local libretranslate/libretranslate
 ```
-Note: to avoid huge downloads, you can limit the languages with e.g. ` --load-only en,fi`.
+Note: to avoid huge downloads, you can limit the languages with e.g. `--load-only en,fi`.
 Here is the [LibreTranslate documentation on command-line arguments](https://docs.libretranslate.com/guides/installation/#arguments).
 
 Once everything starts, open [localhost:5000](http://localhost:5000) and start translating.

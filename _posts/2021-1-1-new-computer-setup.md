@@ -70,7 +70,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza endeavour
+sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem

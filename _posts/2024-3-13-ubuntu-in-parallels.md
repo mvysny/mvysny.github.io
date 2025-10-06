@@ -78,9 +78,10 @@ Regarding additional fs flags:
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois fzf eza duf
+sudo apt install git neovim htop fish doublecmd-qt gnome-text-editor libreoffice net-tools curl whois fzf eza duf errands
 sudo apt autoremove --purge rhythmbox thunderbird
 sudo update-alternatives --config editor     # select nvim
+sudo snap install pinta
 ```
 
 *Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).

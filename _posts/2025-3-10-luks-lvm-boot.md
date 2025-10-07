@@ -106,15 +106,29 @@ The partition should now be ready, and a new block device should be available: `
 > on `/dev/vdb`. You can skip the steps above if you'd like, then use `/dev/vdb` instead
 > of `/dev/vdb1` in steps below.
 
-Now we'll use LUKS to create an encrypted block device on top of `/dev/vdb1`:
+### LUKS
+
+Now we'll use LUKS to create an encrypted block device on top of `/dev/vdb1`. We can input the password via keyboard,
+but then the password will need to be inputted every time the system boots. If you already have an encrypted partition,
+you can store password into a key file, unlocking the second encrypted block device automatically.
+
+To generate the key file:
 ```bash
-$ sudo cryptsetup luksFormat /dev/vdb1
-$ sudo cryptsetup open /dev/vdb1 dmcrypt0
+$ sudo openssl genrsa -out /root/vdb1_keyfile 4096
+$ sudo chmod -v 0400 /root/vdb1_keyfile 4096
+```
+
+To encrypt the device:
+```bash
+$ sudo cryptsetup luksFormat /dev/vdb1 /root/vdb1_keyfile
+$ sudo cryptsetup open /dev/vdb1 dmcrypt0 --key-file /root/vdb1_keyfile
 $ sudo cryptsetup status /dev/mapper/dmcrypt0
 ```
 We have a block device that encrypts its contents automatically. However,
 the device won't be opened automatically upon boot, you need the `/etc/crypttab` file;
 see below.
+
+### LVM
 
 We can now configure LVM on top of LUKS. In theory we could also use GPT, but
 it's far more common to use LVM:
@@ -150,8 +164,15 @@ to enable auto-mounting.
 In order for the LUKS block device to open automatically during the boot, you need to mention
 it in the `/etc/crypttab` file:
 ```
-dmcrypt0 /dev/vdb1 none luks,discard
+dmcrypt0 /dev/vdb1 /root/vdb1_keyfile luks,discard
 ```
+If not using the key file, replace `/root/vdb1_keyfile` with `none`.
+
+Rebuild initramfs to take new `crypttab` into effect:
+```bash
+$ sudo update-initramfs -u
+```
+
 Reboot - Ubuntu will now ask for password to unlock the encrypted device upon boot.
 See [crypttab man pages](https://www.man7.org/linux/man-pages/man5/crypttab.5.html) for more details.
 
@@ -173,3 +194,4 @@ vdb                          10G
       vg0-vg0--lv0--swap      1G swap
       vg0-vg0--lv1--btrfs     9G btrfs
 ```
+

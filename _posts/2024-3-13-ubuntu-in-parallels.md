@@ -60,6 +60,12 @@ Name the machine after its expected usage, e.g. `mavi-xyz-vmpar-experiments` or 
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
 
+If the file is missing:
+```bash
+$ sudo cp /usr/lib/sysctl.d/55-kernel-hardening.conf /etc/sysctl.d/
+$ sudo vim /etc/sysctl.d/55-kernel-hardening.conf
+```
+
 ### ext4
 
 Enable trim. You need to enable discard for all of your ext4 partitions: simply add the `discard` option to

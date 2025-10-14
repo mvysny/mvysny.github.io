@@ -259,7 +259,9 @@ Go to Settings. Then:
   * File History & trash
     * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
   * Screen Lock: Blank Screen Display: Never 
-* Date & Time: Enable Automatic Time Zone
+* System
+  * Date & Time: Enable Automatic Time Zone
+  * Users: enable 'Automatic Login'
 
 # Software & Updates
 

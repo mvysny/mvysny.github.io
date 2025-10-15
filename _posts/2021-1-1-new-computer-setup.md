@@ -23,7 +23,11 @@ do that in the installer):
 3. Rest of the disk `unallocated` for dm-crypt - the `btrfs` for `/` will go here.
 4. No swap yet - we'll swap to a file.
 
-Name the machine after the computer brand & type, e.g. `mavi-lenovo-t14s`.
+Prefer btrfs: even though COW wears down SSD a bit faster, it's also
+far more reliable in case of kernel panics; also btrfs by default checksums data
+as well, reducing disk corruption.
+
+Name the machine after the computer type, e.g. `mavi-t14s`.
 
 Install & reboot. Select no updates and just a minimum installation - we'll add
 everything later on, after we verify that the system boots :-D
@@ -36,22 +40,15 @@ Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition;
 run `sudo dmsetup ls --tree -o blkdevname`.
 
 Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
+If the file is missing:
+```bash
+$ sudo cp /usr/lib/sysctl.d/55-kernel-hardening.conf /etc/sysctl.d/
+$ sudo vim /etc/sysctl.d/55-kernel-hardening.conf
+```
 
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
-Prefer btrfs: even though COW wears down SSD a bit faster, it's also
-far more reliable in case of kernel panics; also btrfs by default checksums data
-as well, reducing disk corruption.
-
-### ext4 only
-
-Regarding additional fs flags:
-* `user_xattr` is enabled by default on ext4; check with `sudo tune2fs -l /dev/mapper/ubuntu--vg-root`
-  and also [user_xattr ubuntu forums thread](https://ubuntuforums.org/showthread.php?t=2400092)
-* `extents` - ext4: unknown. There's no longer a mount option `extent` or `extents`,
-  probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
-
-### btrfs only
+### btrfs
 
 Trim doesn't need to be enabled since
 [btrfs by default performs async discard since kernel 6.2](https://btrfs.readthedocs.io/en/latest/Trim.html).
@@ -70,7 +67,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands
+sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands lazygit
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem

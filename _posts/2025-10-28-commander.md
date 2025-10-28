@@ -20,7 +20,7 @@ support and icons will be missing. Then, open configuration:
 
 - Panel
   - General > Navigator bar: check "Edit Mode by default"
-  - View > Default icon size: 16
+  - View > View font: Ubuntu, 11
   - Buttons > Check "Equal", uncheck "Up" and "Root" buttons
 - Colors
   - Uncheck "Use the default KDE colors"

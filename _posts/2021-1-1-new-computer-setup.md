@@ -67,15 +67,13 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git neovim htop gparted fish doublecmd-qt gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands lazygit
+sudo apt install git neovim htop gparted fish gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands lazygit
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem
 sudo apt install warp dialect gnome-weather showtime totem-video-thumbnailer
 sudo snap install pinta
 ```
-
-*Note:* install `doublecmd-qt` rather than `doublecmd-gtk` since [GTK version doesn't support wayland](https://github.com/doublecmd/doublecmd/issues/927).
 
 Uninstall gedit:
 ```bash
@@ -167,39 +165,9 @@ $ ssh-keygen
 Upload the public key to [github ssh keys](https://github.com/settings/keys).
 When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
 
-## Double Commander
+## Commander
 
-Install `qgnomeplatform-qt5` to enable proper window borders around doublecmd. Then, edit
-`/etc/environment` and add `QT_QPA_PLATFORMTHEME='gnome'`. The borders will be applied after reboot.
-
-Go to Configuration:
-
-* Colors / File Panels / Text Color: black
-* Colors / File types:
-  * category name: `executable`, mask: `*`, attributes: `-*x*`, color: `Green`
-  * `dir`, `*`, `d*`, `Navy`
-  * `symlink`, `*`, `l*`, `Teal`
-* Files views / Files views extra / Show system and hidden files
-* Folder tabs / "Show tab header also when there is only one tab" - uncheck
-* Fonts:
-  * Main Font: Ubuntu 11 Regular
-  * Viewer font: Ubuntu Mono 13
-* Icons / File panel: 16x16
-* Keys: "Ctrl+Alt+Letters": None
-* Keys / Hot Keys:
-  * cm_RunTerm: `F2`
-  * cm_PackFiles: `Alt+P` (or `⌘P` when in Mac mode)
-  * cm_ExtractFiles: `Alt+U` (or `⌘U` when in Mac mode)
-  * cm_TargetEqualSource: `Alt+=` (or `⌘=` when in Mac mode)
-  * cm_ChangeDirToHome: ` (grave accent)
-  * cm_RenameOnly: `F9`
-  * cm_Search: `Shift+Alt+F`
-* Tools / Editor:
-  * Use External Program;
-  * executable: `gnome-text-editor`
-  * additional parameters: `-n`
-
-Sort by extension.
+See [Commander](../commander/).
 
 ## Resilio Sync
 

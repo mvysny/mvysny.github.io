@@ -53,11 +53,12 @@ mentally switch between two different keyboard systems all the time. I can't do 
 year (or once per life), say when moving from Linux to MacOS. That's doable. But switching like 20
 times per day and continue using IDEs with my keyboard at full speed, that's impossible for me.
 
-Maybe I could use Mac on Mac; install HomeBrew and all dev stuff to guest OS and use that, right?
+Maybe I could use Mac on Mac; install HomeBrew and all the dev stuff to guest OS and use that, right?
 UTM's support for MacOS-on-MacOS is first-class after all; or pay Parallels 100 eur per year and use that.
 
 The problem is that, when running VMs, you need a lot of RAM and lot of disk space.
-And both things are ridiculously expensive. And I don't mean like, maybe 15-20% more expensive than
+And both things are ridiculously expensive in Apple's world.
+And I don't mean like, maybe 15-20% more expensive than
 their x86 counterparts: RAM+SSD from Apple is EIGHT FUCKING TIMES more expensive.
 If you want a MacBook Pro with 2TB SSD and 64GB of RAM, you are looking at a machine that's around 6000 EUR.
 At least.
@@ -67,7 +68,7 @@ You can get a comparable AMD machine for maybe a 2000 EUR and run Linux instead.
 You can argue that x86 is fundamentally worse than ARM and M-Series of CPUs, and you might be right.
 But as of 2025, I don't really care. AMD has stepped up their game seriously: the machines generally run
 8+ hours and are performant enough to be comparable to M3 Pros. x86 isn't as efficient as ARM, true,
-but the CPUs like Ryzen 7 8845HS is efficient enough and powerful enough for my needs.
+but CPUs like Ryzen 7 8845HS is efficient enough and powerful enough for my needs.
 
 You can argue that MacBooks are extremely well-built (true - no x86 comes close), but there are
 things on my list that simply are more important than this. And Tuxedo, Framework, System76 and

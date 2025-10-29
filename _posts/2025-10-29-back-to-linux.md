@@ -39,8 +39,9 @@ There are bugs in MacOS that simply shouldn't exist in a pro software. Bugs like
 not working all the time or in every app. I won't repeat myself here, for details see my
 [Apple rant](../apple-rant/).
 
-The gist is that things like maximizing a window or moving a window to a different monitor should
-be baked in the OS and work reliably. They don't in MacOS, and you need third-party tools like Magnet
+The gist is that things like maximizing a window or moving a window to a different monitor are so basic
+and fundamental, those should
+be baked in the OS and work reliably. And guess what, they don't in MacOS, and you need third-party tools like Magnet
 to fix this most basic stuff.
 
 I am not willing to pay a premium for an operating system that works worse than fucking GNOME, period.
@@ -50,7 +51,7 @@ I am not willing to pay a premium for an operating system that works worse than 
 You can tell me to use a VM like UTM or Parallels, to run Linux. The problem is having to
 mentally switch between two different keyboard systems all the time. I can't do that. I can switch once per
 year (or once per life), say when moving from Linux to MacOS. That's doable. But switching like 20
-times per day and stay productive, that's impossible for me.
+times per day and continue using IDEs with my keyboard at full speed, that's impossible for me.
 
 Maybe I could use Mac on Mac; install HomeBrew and all dev stuff to guest OS and use that, right?
 UTM's support for MacOS-on-MacOS is first-class after all; or pay Parallels 100 eur per year and use that.

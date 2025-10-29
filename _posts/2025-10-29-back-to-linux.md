@@ -7,6 +7,9 @@ I've moved back to Linux from my brief 1-year experiment with MacOS/MacBook.
 It was a very interesting experiment, and I've kept the good parts of the Apple ecosystem -
 the iPhone, Apple TV, iPad. But I won't keep my MacBook Pro, and here's why.
 
+This is my personal opinion. If nothing of the below applies to you, continue using MacOS and I'll be nothing
+but happy for you. I've switched to Linux and I'm happy. Everybody's happy, and that's a good place to be.
+
 # Lock-in
 
 Apple likes to lock things down and tighten the screws. Generally, I don't mind, especially

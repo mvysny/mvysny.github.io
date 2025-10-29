@@ -19,7 +19,9 @@ music editing, but not really for programming (other than XCode): the default te
 the default shell is bare-bones, and most importantly: to get any of the tools you need to
 install HomeBrew or similar. Let's set aside the fact that you install HomeBrew by running a shell
 script off the internet as root (huge red flag), and focus on a bigger problem: HomeBrew is
-a 3rd party app. Apple is never going to introduce anything like HomeBrew. And that tells me
+a 3rd party app. If Apple was serious with their support for developers, they would
+introduce some kind of HomeBrew themselves. But I believe they're never going to do that.
+And that tells me
 that MacBook is not really meant for developer.
 
 What's worse, Apple can at any time decide to tighten the screws and break something that allows

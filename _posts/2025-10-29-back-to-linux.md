@@ -22,7 +22,7 @@ script off the internet as root (huge red flag), and focus on a bigger problem: 
 a 3rd party app. If Apple was serious with their support for developers, they would
 introduce some kind of HomeBrew themselves. But I believe they're never going to do that.
 And that tells me
-that MacBook is not really meant for developer.
+that MacBook is not really meant for me as a developer.
 
 What's worse, Apple can at any time decide to tighten the screws and break something that allows
 HomeBrew to function and exist. You can make a point that Apple won't ever do that since it would

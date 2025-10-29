@@ -47,7 +47,7 @@ or there's something else wrong with them internally, like suspend working three
 But then again, I love the fact I can get a 2 TB SSD for 150 eur and expand the memory
 as well, and [take the machine apart if I want to](https://frame.work).
 
-I just can't use MacBook unfortunately:
+I just [can't use MacBook unfortunately](../back-to-linux/):
 
 - Having to have Homebrew for basic utilities is ridiculous
 - Linux-in-VM requires me to switch between two completely different keyboard layouts, which I can't do

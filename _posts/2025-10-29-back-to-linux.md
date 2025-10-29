@@ -87,3 +87,8 @@ You can argue that Steam will port Proton to MacBook, and you might be right bec
 for grabs. But they might fight with Apple which is trying to do the same thing. And, most importantly,
 as of 2025, Steam games generally don't work on MacBook.
 
+# Linux
+
+So yeah, I'm back to Linux. Guess what, it has bugs too. But nothing deal-breaking; and
+I feel free and unconstrained again. It truly feel great.
+

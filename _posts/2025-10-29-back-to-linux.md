@@ -29,7 +29,9 @@ HomeBrew to function and exist. You can make a point that Apple won't ever do th
 alienate many developers. True, but here's an idea: with Linux, tools like HomeBrew aren't
 even necessary since you have a package manager baked in as a first-class citizen.
 The package manager (e.g. apt in Debian/Ubuntu) can install anything you need. And
-it's a fundamental part of the OS so it will NEVER go away.
+it's a fundamental part of the OS so it will NEVER go away. Compare that to Apple's approach:
+they don't really care about HomeBrew; if Apple changes something and breaks HomeBrew, you must count on the HomeBrew
+team to fix it.
 
 # MacOS is buggy as fuck
 

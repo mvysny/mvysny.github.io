@@ -71,8 +71,8 @@ sudo apt install git neovim htop gparted fish gnome-text-editor libreoffice net-
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem
-sudo apt install warp dialect gnome-weather showtime totem-video-thumbnailer
-sudo snap install pinta
+sudo apt install dialect gnome-weather showtime totem-video-thumbnailer
+sudo snap install pinta localsend
 ```
 
 Uninstall gedit:

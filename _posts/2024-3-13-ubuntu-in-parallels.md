@@ -171,6 +171,8 @@ Create the `~/.gitconfig` file:
   autocrlf = input
 [merge]
   conflictstyle = diff3
+[pull]
+  rebase = true
 ```
 
 ONLY WHEN NOT IN THE BASE IMAGE (since I want all VMs to have their own ssh keys): Create ssh key & press enter to keep the default settings:

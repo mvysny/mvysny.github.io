@@ -155,6 +155,8 @@ Create the `~/.gitconfig` file:
   autocrlf = input
 [merge]
   conflictstyle = diff3
+[pull]
+  rebase = true
 ```
 
 Create ssh key & press enter to keep the default settings:

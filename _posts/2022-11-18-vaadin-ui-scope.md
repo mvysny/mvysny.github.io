@@ -79,6 +79,8 @@ public class MainLayout extends VerticalLayout implements RouterLayout {
 }
 ```
 
+More information at [my blogpost IllegalStateException: can't move node from one state tree to another](../cant-move-node/).
+
 Another problem is that the scope isn't available in the UI init listener -
 it requires fetching window name via `ExtendedClientDetails` which are fetched asynchronously.
 The [Issue #13468](https://github.com/vaadin/flow/issues/13468) contains a request to have window name available eagerly,

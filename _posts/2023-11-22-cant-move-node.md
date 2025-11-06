@@ -29,3 +29,13 @@ You can figure out the offending component [using debugger](https://github.com/v
 you can even [track where the component was created and inserted](https://github.com/vaadin/flow/issues/9376#issuecomment-1807633143).
 
 In the future, Vaadin will print this information in the exception message itself.
+
+## Valid Case
+
+The valid case of moving a component from one UI to another is when you have a tab scoped component and you reload a page.
+Upon reload, a new UI instance is constructed, old UI is thrown away, and all components are moved there, causing this error.
+In this specific case it is allowed to move components from one ui to another.
+
+In this case you'll need to call `getElement().removeFromTree()` on the component, to move it correctly from one UI to another.
+Also see [Vaadin UI Scope](../vaadin-ui-scope/).
+

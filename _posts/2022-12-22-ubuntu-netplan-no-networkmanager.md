@@ -62,3 +62,5 @@ To check whether the DNS work, try running `host -v google.com`. Verify your net
 ```bash
 $ resolvectl status
 ```
+
+More info/fixes at [Linux DNS](../linux-dns/).

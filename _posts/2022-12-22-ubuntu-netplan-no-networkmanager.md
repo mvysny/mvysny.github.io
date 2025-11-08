@@ -45,11 +45,13 @@ network:
   renderer: networkd
   ethernets:
     enp0s3:
-     dhcp4: no
-     addresses: [192.168.1.222/24]
-     gateway4: 192.168.1.1
-     nameservers:
-       addresses: [8.8.8.8,8.8.4.4]
+      dhcp4: no
+      addresses: [192.168.1.222/24]
+      nameservers:
+        addresses: [8.8.8.8,8.8.4.4]
+      routes:
+        - to: default
+          via: 192.168.1.1
 ```
 
 Again, run `sudo netplan --debug apply` and verify that by running `ifconfig -a`.

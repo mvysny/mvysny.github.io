@@ -82,23 +82,16 @@ sudo apt autoremove --purge gedit
 
 ## gnome console
 
-Keep `gnome-terminal`:
+[Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu).
 
-```bash
-$ sudo apt install gnome-terminal
-$ sudo apt autoremove --purge gnome-console ptyxis
-```
-
-Go to Settings / Profiles / Unnamed, select the "Unnamed" profile:
-
-* Colors: "Tango Dark" + slightly transparent background
-* Set Initial terminal size to 160x50
+Edit `~/.config/alacritty/alacritty.toml` and remove the 'theme' line, to set up
+the default theme.
 
 ## gnome keyboard shortcuts
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
-* "Launchers" / "Launch Terminal" to `Super+t`
+* "Launchers" / "Launch Terminal" to `Super+Enter`
 * Navigation:
   * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
     This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij

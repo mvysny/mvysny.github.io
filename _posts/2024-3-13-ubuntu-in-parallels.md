@@ -107,7 +107,7 @@ It runs a process named `qemu-ga` via systemd. How to check from guest/host that
 
 Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
-* "Launchers" / "Launch Terminal" to `^T` or `Win+T`.
+* "Launchers" / "Launch Terminal" to `Super+Enter`.
 * Navigation:
   * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
     This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
@@ -259,17 +259,7 @@ docker run --rm -ti ubuntu /bin/bash
 
 ## Terminal
 
-Keep `gnome-terminal`:
-
-```bash
-$ sudo apt install gnome-terminal
-$ sudo apt autoremove --purge gnome-console ptyxis
-```
-
-Go to Settings / Profiles / Unnamed, select the "Unnamed" profile:
-
-* Set Initial terminal size to 160x50
-* Colors: set to "Tango light"
+[Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu)
 
 ## Scripts
 

@@ -120,7 +120,7 @@ If you must:
 * Install guest tools: download and install [virtio-win-guest-tools.exe](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/?C=M;O=D)
 * Shutdown the VM and change the driver to `virtio` with 3d acceleration
 
-From time to time, Guest Tools will fail to start and will fail to update client resolution. Just set the resolution manually in Windows:
+From time to time, Guest Tools will lower the client resolution. Just set the resolution manually in Windows:
 right-click on desktop, Display settings, Display resolution.
 
 WARNING: `virtio` (even with 3d acceleration) introduces significant mouse cursor delay lag (on AMD Radeon). Switching to QXL fixes that,

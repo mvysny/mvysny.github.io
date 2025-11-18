@@ -75,7 +75,7 @@ yet, but you can record a macro in vim, then run it multiple times.
 
 Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` in LazyVim.
 
-As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
+As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+i`.
 
 IDEA's "Go to declaration" `Ctrl+b` is implemented either by `gd` (Go to Definition) or `gD` (Go to Declaration).
 Some LSPs may not implement both, for example Ruby LSP gives me nothing for `gD`.

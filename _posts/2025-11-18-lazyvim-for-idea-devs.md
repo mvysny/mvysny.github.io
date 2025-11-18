@@ -102,7 +102,11 @@ to confirm that a new window has indeed been opened.
 Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim. You can run e.g. tests or documentation generator from the
 terminal; I don't think LazyVim has support for running tests.
 
-Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`
+Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`. To disable automatic formatting on save:
+press `<Space>fc` to edit LazyVim config files, open `lua/config/options.lua` and add:
+```
+vim.b.autoformat = false
+```
 
 ## Refactoring
 

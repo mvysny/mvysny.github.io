@@ -77,6 +77,13 @@ Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` in LazyVim.
 
 As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
 
+IDEA's "Go to declaration" `Ctrl+B` is implemented either by `gd` (Go to Definition) or `gD` (Go to Declaration).
+Some LSPs may not implement both, for example Ruby LSP gives me nothing for `gD`.
+
+`Ctrl+B` in IDEA doubles as Go to Usages, which is mapped in LazyVim to `gr` - Go to References.
+
+IDEA's "Go to Implementation" `Ctrl+Alt+B` is `gI` in LazyVim. IDEA's type hierarchy doesn't seem to be implemented in LazyVim though.
+
 ## Windows/Tabs
 
 Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which

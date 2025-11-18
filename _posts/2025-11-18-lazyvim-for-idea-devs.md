@@ -43,6 +43,12 @@ Basic keyboard shortcuts:
 
 **Warning**: Most shortcuts only work when you're in Vim Normal mode!
 
+To reopen your recent project, run nvim from anywhere (e.g. from Gnome by pressing `Super` and typing `nvim<Enter>`),
+then press `<Space>qS` in LazyVim. It will show the list of recent sessions (~= projects) and allow you
+to restore one session.
+
+## Navigation
+
 Find/open class: in IDEA you either search everywhere, or press `Ctrl+n` to open class.
 In LazyVim you can only search for all symbols (class, method names, fields) by typing
 `<Space>sS` to "Search / LSP Workspace Symbols". Note that this only works when LazyVim is able
@@ -59,6 +65,15 @@ Find in files: `Ctrl+Shift+f` in IDEA, `<Space>/` in LazyVim.
 Search in current file: `Ctrl+f` in IDEA. In LazyVim you can type in `/foo` to search for "foo" then hit `n`/`N`
 to go to next/prev results. However, a faster way is via `s` (Seek); beware that it only finds stuff
 visible on screen, not in the entire file.
+
+To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
+`[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
+To find all TODOs, type `<space>sT`.
+
+Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
+yet, but you can record a macro in vim, then run it multiple times.
+
+## Windows/Tabs
 
 Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
 can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
@@ -79,18 +94,11 @@ Go back in LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
 
 Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`
 
-To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
-`[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
-To find all TODOs, type `<space>sT`.
-
-Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
-yet, but you can record a macro in vim, then run it multiple times.
-
 ## Refactoring
 
 TODO
 
-## git
+# git
 
 In IDEA, I never used the Git window (`Alt+9`) and I rarely used the Commit window (`Alt+0`), since
 using command-line git was easier and more understandable for me (on Linux with good terminal of course - not on Windows). I eventually picked up [LazyGit](https://github.com/jesseduffield/lazygit) which is
@@ -98,18 +106,18 @@ just brilliant: full-screen mode makes much more sense when working with git, th
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
 
-## Debugging
+# Debugging
 
 Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
 Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
 
 TODO more
 
-## Updating plugins
+# Updating plugins
 
 Type `<Space>l` or `:Lazy` to open the lazy.nvim plugin window, then press `S` (that's `Shift+s`) to update and sync all plugins.
 
-## UI
+# UI
 
 UI-related stuff can be found at `<Space>u`; for example theme can be changed via `<Space>uC` and you can `<Space>ub` to
 toggle between light and dark theme. `tokyonight` is the default theme.

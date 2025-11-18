@@ -68,6 +68,8 @@ Close tab: `<Space>bd`; close other tabs: `<Space>bo`; `[b` and `]b` (or `Shift+
 `<Space>backtick` to switch to the previous recently edited tab.
 
 Split window: `<Space>-` for horizontal split, `<Space>|` for vertical split. Close window via `Space>wd`.
+Note that on the default theme (dark tokyonight) the window separator is barely visible - look carefully
+to confirm that a new window has indeed been opened.
 
 Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim.
 

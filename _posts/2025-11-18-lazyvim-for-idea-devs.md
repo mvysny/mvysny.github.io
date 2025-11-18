@@ -73,6 +73,10 @@ To find all TODOs, type `<space>sT`.
 Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
 yet, but you can record a macro in vim, then run it multiple times.
 
+Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` in LazyVim.
+
+As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
+
 ## Windows/Tabs
 
 Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
@@ -86,11 +90,8 @@ Split window: `<Space>-` for horizontal split, `<Space>|` for vertical split. Cl
 Note that on the default theme (dark tokyonight) the window separator is barely visible - look carefully
 to confirm that a new window has indeed been opened.
 
-Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim.
-
-Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` in LazyVim.
-
-Go back in LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
+Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim. You can run e.g. tests or documentation generator from the
+terminal; I don't think LazyVim has support for running tests.
 
 Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`
 

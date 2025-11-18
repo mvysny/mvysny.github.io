@@ -68,7 +68,8 @@ visible on screen, not in the entire file.
 
 To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
 `[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
-To find all TODOs, type `<space>sT`.
+To find all errors/warnings/diagnostics in your project, type `<space>sd` (current file only: `<space>sD`).
+To find all TODOs in your project, type `<space>sT`.
 
 Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
 yet, but you can record a macro in vim, then run it multiple times.

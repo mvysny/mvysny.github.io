@@ -91,8 +91,7 @@ TODO
 ## git
 
 In IDEA, I never used the Git window (`Alt+9`) and I rarely used the Commit window (`Alt+0`), since
-using command-line git was easier and more understandable for me (at least on Linux - Windows is a fucking nightmare
-and its terminal is a sick joke). I eventually picked up [LazyGit](https://github.com/jesseduffield/lazygit) which is
+using command-line git was easier and more understandable for me (on Linux with good terminal of course - not on Windows). I eventually picked up [LazyGit](https://github.com/jesseduffield/lazygit) which is
 just brilliant: full-screen mode makes much more sense when working with git, than the IDEA side-panels.
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.

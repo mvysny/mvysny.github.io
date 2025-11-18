@@ -35,10 +35,13 @@ Quitting nvim:
 Basic keyboard shortcuts:
 
 - Press `<Space>sk` to search in all keymaps (akin to [Search in Actions](https://www.jetbrains.com/help/idea/searching-everywhere.html) via `Ctrl+Shift+A`)
+  - If you press `<Space>` and wait, a popup with follow-up keyboard shortcuts will open - very nice.
 - Here are all [LazyVim Keymaps](https://www.lazyvim.org/keymaps) but let's skip that for now.
 - Type `<Space>e` to open the file explorer (tree-like explorer accessible via `Alt+1` in IDEA)
 
 # IDE Keymaps
+
+**Warning**: Most shortcuts only work when you're in Vim Normal mode!
 
 Find/open class: in IDEA you either search everywhere, or press `Ctrl+N` to open class.
 In LazyVim you can only search for all symbols (class, method names, fields) by typing
@@ -51,11 +54,27 @@ Find/open symbols: `Shift+Ctrl+Alt+N` in IDEA, see above for LazyVim.
 
 Find/open files: `<Space><Space>` or `<Space>ff` in LazyVim, `Ctrl+Shift+N` in IDEA.
 
+Find in files: `Ctrl+Shift+F` in IDEA, `<Space>/` in LazyVim.
+
 Quick documentation: `K` in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
 can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
 and you can use arrows to scroll; `q` quits and closes the popup.
 
-TODO more
+Close tab: `<Space>bd`; close other tabs: `<Space>bo`; `[b` and `]b` to switch between tabs;
+`<Space>backtick` to switch to the previous recently edited tab.
+
+Split window: `<Space>-` for horizontal split, `<Space>|` for vertical split. Close window via `Space>wd`.
+
+Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim.
+
+Structural selection: `Ctrl+W` in IDEA, `Ctrl+Space` in LazyVim.
+
+Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
+yet, but you can record a macro in vim, then run it multiple times.
+
+## Refactoring
+
+TODO
 
 ## git
 
@@ -65,4 +84,11 @@ and its terminal is a sick joke). I eventually picked up [LazyGit](https://githu
 just brilliant: full-screen mode makes much more sense when working with git, than the IDEA side-panels.
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
+
+## Debugging
+
+Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
+Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
+
+TODO more
 

@@ -86,7 +86,7 @@ IDEA's "Go to Implementation" `Ctrl+Alt+b` is `gI` in LazyVim. IDEA's type hiera
 
 ## Windows/Tabs
 
-Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
+Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+q` in Intellij). It shows a quick documentation (which
 can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
 and you can use arrows to scroll; `q` quits and closes the popup.
 

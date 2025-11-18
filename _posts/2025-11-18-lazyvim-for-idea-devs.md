@@ -56,6 +56,10 @@ Find/open files: `<Space><Space>` or `<Space>ff` in LazyVim, `Ctrl+Shift+N` in I
 
 Find in files: `Ctrl+Shift+F` in IDEA, `<Space>/` in LazyVim.
 
+Search in current file: `Ctrl+F` in IDEA. In LazyVim you can type in `/foo` to search for "foo" then hit `n`/`N`
+to go to next/prev results. However, a faster way is via `s` (Seek); beware that it only finds stuff
+visible on screen, not in the entire file.
+
 Quick documentation: `K` in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
 can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
 and you can use arrows to scroll; `q` quits and closes the popup.

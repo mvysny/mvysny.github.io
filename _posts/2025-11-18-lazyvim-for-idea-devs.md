@@ -45,7 +45,7 @@ Basic keyboard shortcuts:
 
 To reopen your recent project, run nvim from anywhere (e.g. from Gnome by pressing `Super` and typing `nvim<Enter>`),
 then press `<Space>qS` in LazyVim. It will show the list of recent sessions (~= projects) and allow you
-to restore one session.
+to restore a session.
 
 ## Navigation
 

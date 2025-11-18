@@ -50,5 +50,9 @@ Find/open symbols: `Ctrl+Alt+N` in IDEA, see above for LazyVim.
 
 Find/open files: `<Space><Space>` or `<Space>ff`.
 
+Quick documentation: `K` in LazyVim (`Ctrl+Q` in Intellij). It shows a quick documentation (which
+can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
+and you can use arrows to scroll; `q` quits and closes the popup.
+
 TODO more
 

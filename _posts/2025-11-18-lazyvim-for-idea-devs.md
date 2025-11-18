@@ -77,6 +77,10 @@ Go back in LazyVim: `Ctrl+o`; go forward: `Ctrl+I`.
 
 Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`
 
+To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
+`[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
+To find all TODOs, type `<space>sT`.
+
 Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
 yet, but you can record a macro in vim, then run it multiple times.
 

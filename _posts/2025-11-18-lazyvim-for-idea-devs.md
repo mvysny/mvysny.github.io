@@ -69,7 +69,8 @@ visible on screen, not in the entire file.
 To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
 `[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
 To find all errors/warnings/diagnostics in your project, type `<space>sd` (current file only: `<space>sD`).
-To find all TODOs in your project, type `<space>sT`.
+To find all TODOs in your project, type `<space>sT`. You can try `<space>ca` to see possible
+fixes for errors and warnings.
 
 Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
 yet, but you can record a macro in vim, then run it multiple times.
@@ -105,7 +106,10 @@ Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`
 
 ## Refactoring
 
-TODO
+Rename (`Shift+F6` in IDEA) is `<Space>cr` in LazyVim. You can rename variables, functions, even classes:
+the java file gets renamed as well.
+
+To generate getters, setters, `toString()`, override methods, organize imports, press `<Space>ca`.
 
 # git
 

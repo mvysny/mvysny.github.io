@@ -18,8 +18,8 @@ IDE when coming from IDEA so that you feel reasonably at home.
 You most probably want to [enable Java support in LazyVim](https://www.lazyvim.org/extras/lang/java):
 - from LazyVim home screen: Open `Lazy Extras` by pressing `x`, OR
 - from anywhere in LazyVim: type in `:LazyExtras`
-- Press `/` then search for `lang.java`
-- Type in `x` character into the `()` field to install Java support.
+- Type in `/lang.java` to search for the Java plugin
+- Enter the Insert mode by typing `i`, then type in `x` character into the `()` field to install Java support.
 - Restart nvim: press `q` couple of times.
 
 Quitting nvim:

@@ -59,6 +59,10 @@ to load LSP for the currently opened file. [LSP (Language Server Processor)](htt
 is a standard for integrating text editors with programming languages; `lang.java` plugin
 is a LSP plugin for example.
 
+> Note: Java plugin uses the Eclipse JDTLS (Java Language Server) which supports both Maven and
+> Gradle projects. You don't have to have Eclipse installed - the necessary bits will be downloaded
+> automatically by the LazyVim plugin manager (Mason).
+
 Find/open symbols: `Shift+Ctrl+Alt+n` in IDEA, see above for LazyVim.
 
 Find/open files: `<Space><Space>` or `<Space>ff` in LazyVim, `Ctrl+Shift+n` in IDEA.
@@ -130,6 +134,12 @@ using command-line git was easier and more understandable for me (on Linux with 
 just brilliant: full-screen mode makes much more sense when working with git, than the IDEA side-panels.
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
+
+# Running
+
+TODO there is Run/Continue command according to Grok: investigate.
+
+As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run your app via Maven or Gradle.
 
 # Debugging
 

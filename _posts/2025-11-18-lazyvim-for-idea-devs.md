@@ -60,7 +60,7 @@ is a standard for integrating text editors with programming languages; `lang.jav
 is a LSP plugin for example.
 
 > Note: Java plugin uses the Eclipse JDTLS (Java Language Server) which supports both Maven and
-> Gradle projects. You don't have to have Eclipse installed - the necessary bits will be downloaded
+> Gradle projects (via Eclipse Buildship). You don't have to have Eclipse installed - the necessary bits will be downloaded
 > automatically by the LazyVim plugin manager (Mason).
 
 Find/open symbols: `Shift+Ctrl+Alt+n` in IDEA, see above for LazyVim.

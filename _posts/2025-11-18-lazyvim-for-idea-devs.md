@@ -121,6 +121,7 @@ Rename (`Shift+F6` in IDEA) is `<Space>cr` in LazyVim. You can rename variables,
 the java file gets renamed as well.
 
 To generate getters, setters, `toString()`, override methods, organize imports, press `<Space>ca`.
+This is the replacement for IDEA's "Generate" (`Alt+Insert`).
 
 # git
 

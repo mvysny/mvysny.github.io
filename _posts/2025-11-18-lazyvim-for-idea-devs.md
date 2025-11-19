@@ -30,10 +30,10 @@ Quitting nvim:
 - [LazyVim for Ambitious Developers](https://lazyvim-ambitious-devs.phillips.codes/) is an excellent crash-course,
   maybe read this first.
 - Learning Vim Motions is probably a good thing: Vim is different to any other editor you used before.
-  But using mouse + arrows is fine too.
+  But using mouse + arrows is fine too for now.
   - [Baby Steps with Vim](https://www.barbarianmeetscoding.com/boost-your-coding-fu-with-vscode-and-vim/baby-steps-in-vim/) is
-    a very good introduction to Vim.
-  - [Practical Vim](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) is probably for advanced Vim users.
+    a very good introduction to Vim - read this if you're hopelessly lost in Vim.
+  - [Practical Vim](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) is for advanced Vim users, skip this for now.
 
 Basic keyboard shortcuts:
 

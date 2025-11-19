@@ -140,13 +140,23 @@ LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
 Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
 Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
 
-When you install the DAP debug plugin, new options appear in LazyVim, unfortunately none seem to be working
-with Java. For example, typing `<Space>da` (run with args) yields "Config references missing adapter `java`"; so does
-"Run/Continue" `<Space>dc`. Looks like Java debugging is not fully supported by LazyVim now - TODO investigate further.
+When you install the DAP debug plugin, new options appear in LazyVim:
+
+- "Run with Args" `<space>da` - discovers your main classes and allows you to run them. You may need to provide a dummy cmdline parameters for this to work.
+- "Run/Continue" `<space>dc` - same thing, but without the need to provide cmdline parameters.
+
+> Note: you need to install the `java-debug-adapter` plugin first, otherwise you'll get "Config references missing adapter `java`"
+> when trying "Run with Args" `<space>da` or "Run/Continue" `<Space>dc`. You can do that by typing
+> `:MasonInstall java-debug-adapter`.
+
+Try "Run with Args" - the app should be running and you should see its stdout in the lower-right part of LazyVim. You can click the window
+with your mouse and type `i` then type something to interact with your app. `Ctrl+C` or `<Space>dt` will kill the app.
+
+## When nothing works
 
 As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run your app via Maven or Gradle.
 
-# Debugging
+## Debugging
 
 
 TODO more

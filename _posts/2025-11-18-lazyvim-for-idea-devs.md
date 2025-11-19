@@ -135,16 +135,19 @@ just brilliant: full-screen mode makes much more sense when working with git, th
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
 
-# Running
+# Run/Debug
 
-TODO there is Run/Continue command according to Grok: investigate.
+Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
+Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
+
+When you install the DAP debug plugin, new options appear in LazyVim, unfortunately none seem to be working
+with Java. For example, typing `<Space>da` (run with args) yields "Config references missing adapter `java`"; so does
+"Run/Continue" `<Space>dc`. Looks like Java debugging is not fully supported by LazyVim now - TODO investigate further.
 
 As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run your app via Maven or Gradle.
 
 # Debugging
 
-Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
-Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
 
 TODO more
 
@@ -157,3 +160,4 @@ Type `<Space>l` or `:Lazy` to open the lazy.nvim plugin window, then press `S` (
 UI-related stuff can be found at `<Space>u`; for example theme can be changed via `<Space>uC` and you can `<Space>ub` to
 toggle between light and dark theme. `tokyonight` is the default theme.
 
+To reopen notifications, type `<Space>n`.

@@ -82,9 +82,13 @@ As you navigate around, you may want to go one step back in navigation history. 
 IDEA's "Go to declaration" `Ctrl+b` is implemented either by `gd` (Go to Definition) or `gD` (Go to Declaration).
 Some LSPs may not implement both, for example Ruby LSP gives me nothing for `gD`.
 
-`Ctrl+b` in IDEA doubles as Go to Usages, which is mapped in LazyVim to `gr` - Go to References.
+`Ctrl+b` in IDEA doubles as "Go to Usages", which is mapped in LazyVim to `gr` - Go to References.
+Same functionality doubles as IDEA's "Show Usages" `Ctrl+Alt+F7`.
 
 IDEA's "Go to Implementation" `Ctrl+Alt+b` is `gI` in LazyVim. IDEA's type hierarchy doesn't seem to be implemented in LazyVim though.
+
+IDEA's "File Structure" `Ctrl+F12` (I call it "Show Members") is replicated by LazyVim's Show LSP Symbols `<Space>ss` -
+it shows symbols in current file only.
 
 ## Windows/Tabs
 

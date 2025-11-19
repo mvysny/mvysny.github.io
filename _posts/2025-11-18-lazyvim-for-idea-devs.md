@@ -31,6 +31,9 @@ Quitting nvim:
   maybe read this first.
 - Learning Vim Motions is probably a good thing: Vim is different to any other editor you used before.
   But using mouse + arrows is fine too.
+  - [Baby Steps with Vim](https://www.barbarianmeetscoding.com/boost-your-coding-fu-with-vscode-and-vim/baby-steps-in-vim/) is
+    a very good introduction to Vim.
+  - [Practical Vim](https://pragprog.com/titles/dnvim2/practical-vim-second-edition/) is probably for advanced Vim users.
 
 Basic keyboard shortcuts:
 

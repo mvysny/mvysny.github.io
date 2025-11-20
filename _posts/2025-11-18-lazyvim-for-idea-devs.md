@@ -185,6 +185,8 @@ The testing support is a bit more limited: it's not possible to run all tests in
 - `<Space>tw` errors and doesn't seem to work
 - `<Space>tr` runs the test method under the cursor.
 
+Run all tests from the terminal: `Ctrl+/`
+
 # Updating plugins
 
 Type `<Space>l` or `:Lazy` to open the lazy.nvim plugin window, then press `S` (that's `Shift+s`) to update and sync all plugins.

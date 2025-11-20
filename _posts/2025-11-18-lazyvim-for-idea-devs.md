@@ -164,16 +164,26 @@ TODO more
 ## Tests
 
 LazyVim has support for tests. Read [Chapter 18. Testing](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-18/)
-on testing first. You'll need to install the `test.core` extra, then a couple of goodies appear:
+on testing first. You'll need to install the `test.core` extra, then a couple of goodies appear. Unfortunately,
+the keyboard shortcuts differ for Java and Ruby.
+
+### Ruby
 
 - `<Space>tt` runs current file as a test suite
 - `<Space>tT` runs all tests
 - `<Space>tw` - automatically run tests after a file is saved
 - If there are failed tests: a Trouble window is open; use `[q` and `]q` to go to prev/next error.
 
-For Ruby, only the RSpec way is supported (Minitest is not); but you can use RSpec with Minitest-style `assert_equal`.
+Only the RSpec way is supported (Minitest is not); but you can use RSpec with Minitest-style `assert_equal`.
 
-TODO for Java.
+### Java
+
+The testing support is a bit more limited: it's not possible to run all tests in all test classes:
+
+- `<Space>tt` run all tests, but in the current test class only
+- `<Space>tT` allows you to pick which tests to run 
+- `<Space>tw` errors and doesn't seem to work
+- `<Space>tr` runs the test method under the cursor.
 
 # Updating plugins
 

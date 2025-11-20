@@ -182,10 +182,6 @@ The testing support is a bit more limited: it's not possible to run all tests in
 
 Run all tests from the terminal: `Ctrl+/`
 
-# Updating plugins
-
-Type `<Space>l` or `:Lazy` to open the lazy.nvim plugin window, then press `S` (that's `Shift+s`) to update and sync all plugins.
-
 ## Debugging
 
 Debugging is pure madness. The shortcuts are really chatty, for example `<Space>dO` to step over function call
@@ -211,6 +207,10 @@ a breakpoint to the first row via `<Space>db` otherwise the debug session is qui
 Debugging tests is possible: add a breakpoint and run a test via `<Space>tr` (run nearest test - under the cursor).
 However, the debugging experience is horrible: the shortcuts are tedious to type, the "Thread" window doesn't
 respond to clicks and won't navigate to methods. It's easy to get lost in the debugging completely.
+
+# Updating plugins
+
+Type `<Space>l` or `:Lazy` to open the lazy.nvim plugin window, then press `S` (that's `Shift+s`) to update and sync all plugins.
 
 # UI
 

@@ -111,7 +111,7 @@ Note that on the default theme (dark tokyonight) the window separator is barely 
 to confirm that a new window has indeed been opened.
 
 Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim. You can run e.g. tests or documentation generator from the
-terminal; I don't think LazyVim has support for running tests.
+terminal.
 
 Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`. To disable automatic formatting on save:
 press `<Space>fc` to edit LazyVim config files, open `lua/config/options.lua` and add:
@@ -160,6 +160,20 @@ As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run
 
 
 TODO more
+
+## Tests
+
+LazyVim has support for tests. Read [Chapter 18. Testing](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-18/)
+on testing first. You'll need to install the `test.core` extra, then a couple of goodies appear:
+
+- `<Space>tt` runs current file as a test suite
+- `<Space>tT` runs all tests
+- `<Space>tw` - automatically run tests after a file is saved
+- If there are failed tests: a Trouble window is open; use `[q` and `]q` to go to prev/next error.
+
+For Ruby, only the RSpec way is supported (Minitest is not); but you can use RSpec with Minitest-style `assert_equal`.
+
+TODO for Java.
 
 # Updating plugins
 

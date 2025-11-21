@@ -244,3 +244,13 @@ UI-related stuff can be found at `<Space>u`; for example theme can be changed vi
 toggle between light and dark theme. `tokyonight` is the default theme.
 
 To reopen notifications, type `<Space>n`.
+
+# Help I'm Bloody Lost All The Time
+
+Yes, going from a 'normal' text editor to a modal one like vim is challenging.
+You need to give it a week at least, and slowly and painfully learn the new keyboard shortcuts from scratch.
+At the end of the week, you'll know whether Vim is for you or not.
+
+I still am fighting with too-overly-helpful auto-completion. On the other hand, LazyVim works on literally a 15 year
+old machine. Not just that - it works over ssh, so you can run LazyVim *on your server* and edit stuff there if you need to.
+

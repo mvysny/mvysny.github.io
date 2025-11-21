@@ -3,7 +3,7 @@ layout: post
 title: LazyVim for Intellij IDEA developers
 ---
 
-[Intellij IDEA](https://www.jetbrains.com/idea/) is an excellent IDE with a mediocre text editor
+[Intellij IDEA](https://www.jetbrains.com/idea/) is an excellent IDE with an okay text editor
 that takes ages to start. [LazyVim](https://www.lazyvim.org/) is an excellent/completely crazy
 editor (depends on your point of view) with an interesting IDE
 capabilities and starts in milliseconds. I'll teach you the LazyVim

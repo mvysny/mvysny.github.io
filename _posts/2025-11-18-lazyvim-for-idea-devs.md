@@ -167,7 +167,7 @@ When you install the DAP debug plugin, new options appear in LazyVim:
 Try "Run with Args" - the app should be running and you should see its stdout in the lower-right part of LazyVim. You can click the window
 with your mouse and type `i` then type something to interact with your app. `Ctrl+C` or `<Space>dt` will kill the app.
 
-## When nothing works
+## When nothing else works
 
 As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run your app via Maven or Gradle.
 

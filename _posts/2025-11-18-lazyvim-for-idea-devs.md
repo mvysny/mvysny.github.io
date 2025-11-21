@@ -49,21 +49,25 @@ Basic keyboard shortcuts:
 
 **Warning**: Most shortcuts only work when you're in Vim Normal mode!
 
-To reopen your recent project, run nvim from anywhere (e.g. from Gnome by pressing `Super` and typing `nvim<Enter>`),
-then press `<Space>qS` in LazyVim. It will show the list of recent sessions (~= projects) and allow you
-to restore a session.
+To reopen your recent project, run nvim from anywhere (e.g. from Gnome by
+pressing `Super` and typing `nvim<Enter>`), then press `<Space>qS` in LazyVim.
+It will show the list of recent sessions (~= projects) and allow you to restore
+a session.
 
 ## Navigation
 
-Find/open class: in IDEA you either search everywhere, or press `Ctrl+n` to open class.
-In LazyVim you can only search for all symbols (class, method names, fields) by typing
-`<Space>sS` to "Search / LSP Workspace Symbols". Note that this only works when LazyVim is able
-to load LSP for the currently opened file. [LSP (Language Server Processor)](https://microsoft.github.io/language-server-protocol/)
-is a standard for integrating text editors with programming languages; `lang.java` plugin
-is a LSP plugin for example.
+Find/open class: in IDEA you either search everywhere, or press `Ctrl+n` to
+open class. In LazyVim you can only search for all symbols (class, method
+names, fields) by typing `<Space>sS` to "Search / LSP Workspace Symbols". Note
+that this only works when LazyVim is able to load LSP for the currently opened
+file. [LSP (Language Server
+Processor)](https://microsoft.github.io/language-server-protocol/) is a
+standard for integrating text editors with programming languages; `lang.java`
+plugin is a LSP plugin for example.
 
-> Note: Java plugin uses the Eclipse JDTLS (Java Language Server) which supports both Maven and
-> Gradle projects (via Eclipse Buildship). You don't have to have Eclipse installed - the necessary bits will be downloaded
+> Note: Java plugin uses the Eclipse JDTLS (Java Language Server) which
+> supports both Maven and Gradle projects (via Eclipse Buildship). You don't
+> have to have Eclipse installed - the necessary bits will be downloaded
 > automatically by the LazyVim plugin manager (Mason).
 
 Find/open symbols: `Shift+Ctrl+Alt+n` in IDEA, see above for LazyVim.

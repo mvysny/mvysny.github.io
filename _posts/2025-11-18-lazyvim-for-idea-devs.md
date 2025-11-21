@@ -76,60 +76,71 @@ Find/open files: `<Space><Space>` or `<Space>ff` in LazyVim, `Ctrl+Shift+n` in I
 
 Find in files: `Ctrl+Shift+f` in IDEA, `<Space>/` in LazyVim.
 
-Search in current file: `Ctrl+f` in IDEA. In LazyVim you can type in `/foo` to search for "foo" then hit `n`/`N`
-to go to next/prev results. However, a faster way is via `s` (Seek); beware that it only finds stuff
-visible on screen, not in the entire file.
+Search in current file: `Ctrl+f` in IDEA. In LazyVim you can type in `/foo` to
+search for "foo" then hit `n`/`N` to go to next/prev results. However, a faster
+way is via `s` (Seek); beware that it only finds stuff visible on screen, not
+in the entire file.
 
-To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you press `[e`/`]e` for prev/next error (red text),
-`[w`/`]w` for prev/next warning (yellow text), `[d`/`]d` for prev/next diagnostic (blue text).
-To find all errors/warnings/diagnostics in your project, type `<space>sd` (current file only: `<space>sD`).
-To find all TODOs in your project, type `<space>sT`. You can try `<space>ca` to see possible
-fixes for errors and warnings.
+To cycle through errors and warnings you press `F2` in IDEA. In LazyVim you
+press `[e`/`]e` for prev/next error (red text), `[w`/`]w` for prev/next warning
+(yellow text), `[d`/`]d` for prev/next diagnostic (blue text). To find all
+errors/warnings/diagnostics in your project, type `<space>sd` (current file
+only: `<space>sD`). To find all TODOs in your project, type `<space>sT`. You
+can try `<space>ca` to see possible fixes for errors and warnings.
 
-Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
-yet, but you can record a macro in vim, then run it multiple times.
+Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have
+support for multiple cursors yet, but you can record a macro in vim, then run
+it multiple times.
 
 Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` or `Shift+s` in LazyVim.
 
-As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+i`.
+As you navigate around, you may want to go one step back in navigation history.
+In LazyVim: `Ctrl+o`; go forward: `Ctrl+i`.
 
-IDEA's "Go to declaration" `Ctrl+b` is implemented either by `gd` (Go to Definition) or `gD` (Go to Declaration).
-Some LSPs may not implement both, for example Ruby LSP gives me nothing for `gD`.
+IDEA's "Go to declaration" `Ctrl+b` is implemented either by `gd` (Go to
+Definition) or `gD` (Go to Declaration). Some LSPs may not implement both, for
+example Ruby LSP gives me nothing for `gD`.
 
 `Ctrl+b` in IDEA doubles as "Go to Usages", which is mapped in LazyVim to `gr` - Go to References.
 Same functionality doubles as IDEA's "Show Usages" `Ctrl+Alt+F7`.
 
-IDEA's "Go to Implementation" `Ctrl+Alt+b` is `gI` in LazyVim. IDEA's type hierarchy doesn't seem to be implemented in LazyVim though.
+IDEA's "Go to Implementation" `Ctrl+Alt+b` is `gI` in LazyVim. IDEA's type
+hierarchy doesn't seem to be implemented in LazyVim though.
 
-IDEA's "File Structure" `Ctrl+F12` (I call it "Show Members") is replicated by LazyVim's Show LSP Symbols `<Space>ss` -
-it shows symbols in current file only.
+IDEA's "File Structure" `Ctrl+F12` (I call it "Show Members") is replicated by
+LazyVim's Show LSP Symbols `<Space>ss` - it shows symbols in current file only.
 
 ## Windows/Tabs
 
-Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+q` in Intellij). It shows a quick documentation (which
-can't be closed via ESC for some reason). Pressing `K` again focuses inside of the quick doc popup
-and you can use arrows to scroll; `q` quits and closes the popup.
+Quick documentation: `K` (`Shift+k`) in LazyVim (`Ctrl+q` in Intellij). It
+shows a quick documentation (which can't be closed via ESC for some reason).
+Pressing `K` again focuses inside of the quick doc popup and you can use arrows
+to scroll; `q` quits and closes the popup.
 
-Close tab: `<Space>bd`; close other tabs: `<Space>bo`; `[b` and `]b` (or `Shift+h`/`Shift+l`) to switch between tabs;
-`<Space>backtick` to switch to the previous recently edited tab.
+Close tab: `<Space>bd`; close other tabs: `<Space>bo`; `[b` and `]b` (or
+`Shift+h`/`Shift+l`) to switch between tabs; `<Space>backtick` to switch to the
+previous recently edited tab.
 
-Split window: `<Space>-` for horizontal split, `<Space>|` for vertical split. Close window via `Space>wd`.
-Note that on the default theme (dark tokyonight) the window separator is barely visible - look carefully
-to confirm that a new window has indeed been opened.
+Split window: `<Space>-` for horizontal split, `<Space>|` for vertical split.
+Close window via `Space>wd`. Note that on the default theme (dark tokyonight)
+the window separator is barely visible - look carefully to confirm that a new
+window has indeed been opened.
 
-Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim. You can run e.g. tests or documentation generator from the
-terminal.
+Launch terminal: `Alt+F12` in IDEA, `Ctrl+/` in LazyVim. You can run e.g. tests
+or documentation generator from the terminal.
 
-Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`. To disable automatic formatting on save:
-press `<Space>fc` to edit LazyVim config files, open `lua/config/options.lua` and add:
+Save file: `:w` or `Ctrl+s`. Save as: `:w newname.txt`. To disable automatic
+formatting on save: press `<Space>fc` to edit LazyVim config files, open
+`lua/config/options.lua` and add:
+
 ```
 vim.b.autoformat = false
 ```
 
 ## Refactoring
 
-Rename (`Shift+F6` in IDEA) is `<Space>cr` in LazyVim. You can rename variables, functions, even classes:
-the java file gets renamed as well.
+Rename (`Shift+F6` in IDEA) is `<Space>cr` in LazyVim. You can rename
+variables, functions, even classes: the java file gets renamed as well.
 
 To generate getters, setters, `toString()`, override methods, organize imports, press `<Space>ca`.
 This is the replacement for IDEA's "Generate" (`Alt+Insert`).

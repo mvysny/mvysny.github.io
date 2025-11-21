@@ -3,11 +3,11 @@ layout: post
 title: LazyVim for Intellij IDEA developers
 ---
 
-[Intellij IDEA](https://www.jetbrains.com/idea/) is an excellent IDE with an okay text editor
-that takes ages to start. [LazyVim](https://www.lazyvim.org/) is an excellent/completely crazy
-editor (depends on your point of view) with an interesting IDE
-capabilities and starts in milliseconds. I'll teach you the LazyVim
-IDE when coming from IDEA so that you feel reasonably at home.
+[Intellij IDEA](https://www.jetbrains.com/idea/) is an excellent IDE with an
+okay text editor that takes ages to start. [LazyVim](https://www.lazyvim.org/)
+is an excellent/completely crazy editor (depends on your point of view) with an
+interesting IDE capabilities and starts in milliseconds. I'll teach you the
+LazyVim IDE when coming from IDEA so that you feel reasonably at home.
 
 # Installation
 
@@ -16,6 +16,7 @@ IDE when coming from IDEA so that you feel reasonably at home.
 - Or [install manually](https://www.lazyvim.org/installation)
 
 You most probably want to [enable Java support in LazyVim](https://www.lazyvim.org/extras/lang/java):
+
 - from LazyVim home screen: Open `Lazy Extras` by pressing `x`, OR
 - from anywhere in LazyVim: type in `:LazyExtras`
 - Type in `/lang.java` to search for the Java plugin
@@ -23,6 +24,7 @@ You most probably want to [enable Java support in LazyVim](https://www.lazyvim.o
 - Restart nvim: press `q` couple of times.
 
 Quitting nvim:
+
 - Press `<Space>qq` (that's Space followed by the two lower-case `q` letters)
 
 # Getting started
@@ -248,9 +250,13 @@ To reopen notifications, type `<Space>n`.
 # Help I'm Bloody Lost All The Time
 
 Yes, going from a 'normal' text editor to a modal one like vim is challenging.
-You need to give it a week at least, and slowly and painfully learn the new keyboard shortcuts from scratch.
-At the end of the week, you'll know whether Vim is for you or not.
+You need to give it a week at least, and slowly and painfully learn the new
+keyboard shortcuts from scratch. At the end of the week, you'll know whether
+Vim is for you or not.
 
-I still am fighting with too-overly-helpful auto-completion. On the other hand, LazyVim works on literally a 15 year
-old machine. Not just that - it works over ssh, so you can run LazyVim *on your server* and edit stuff there if you need to.
+I still am fighting with too-overly-helpful auto-completion. On the other hand,
+LazyVim works on literally a 15 year old machine. Not just that - it works over
+ssh, so you can run LazyVim *on your server* and edit stuff there if you need
+to. Increasing font size is as easy as pressing `Ctrl+plus`. On the downside,
+no mouse hover tips.
 

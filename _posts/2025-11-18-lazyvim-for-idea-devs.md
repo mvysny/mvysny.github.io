@@ -185,36 +185,44 @@ first, to learn how debugging works in LazyVim.
 
 When you install the DAP debug plugin, new options appear in LazyVim:
 
-- "Run with Args" `<space>da` - discovers your main classes and allows you to run them. You may need to provide a dummy cmdline parameters for this to work.
-- "Run/Continue" `<space>dc` - same thing, but without the need to provide cmdline parameters.
+- "Run with Args" `<space>da` - discovers your main classes and allows you to
+run them. You may need to provide a dummy cmdline parameters for this to work.
+- "Run/Continue" `<space>dc` - same thing, but without the need to provide
+cmdline parameters.
 
-> Note: you need to install the `java-debug-adapter` plugin first, otherwise you'll get "Config references missing adapter `java`"
-> when trying "Run with Args" `<space>da` or "Run/Continue" `<Space>dc`. You can do that by typing
+> Note: you need to install the `java-debug-adapter` plugin first, otherwise
+> you'll get "Config references missing adapter `java`" when trying "Run with
+> Args" `<space>da` or "Run/Continue" `<Space>dc`. You can do that by typing
 > `:MasonInstall java-debug-adapter`.
 
-Try "Run with Args" - the app should be running and you should see its stdout in the lower-right part of LazyVim. You can click the window
-with your mouse and type `i` then type something to interact with your app. `Ctrl+C` or `<Space>dt` will kill the app.
+Try "Run with Args" - the app should be running and you should see its stdout
+in the lower-right part of LazyVim. You can click the window with your mouse
+and type `i` then type something to interact with your app. `Ctrl+C` or
+`<Space>dt` will kill the app.
 
 ## When nothing else works
 
-As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then run your app via Maven or Gradle.
+As a fallback, run the app via the terminal: press `Ctrl+/` in LazyVim, then
+run your app via Maven or Gradle.
 
 ## Tests
 
-LazyVim has support for tests. Read [Chapter 18. Testing](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-18/)
-on testing first. You'll need to install the `test.core` extra, then a couple of goodies appear. Unfortunately,
-the keyboard shortcuts differ for Java and Ruby.
+LazyVim has support for tests. Read [Chapter 18.
+Testing](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-18/) on
+testing first. You'll need to install the `test.core` extra, then a couple of
+goodies appear. Unfortunately, the keyboard shortcuts differ for Java and Ruby.
 
 ### Ruby
 
 - `<Space>tt` runs current file as a test suite
 - `<Space>tT` runs all tests
 - `<Space>tw` - automatically run tests after a file is saved
-- If there are failed tests: a Trouble window is open; use `[q` and `]q` to go to prev/next error.
+- If there are failed tests: a Trouble window is open; use `[q` and `]q` to go
+to prev/next error.
 
-Only the RSpec tests (`spec/*_spec.rb`) are supported - Minitest tests in `test/test_*.rb` 
-are not picked up. Workaround is to write RSpec spec files, but using Minitest-style asserts instead of
-RSpec expects:
+Only the RSpec tests (`spec/*_spec.rb`) are supported - Minitest tests in
+`test/test_*.rb` are not picked up. Workaround is to write RSpec spec files,
+but using Minitest-style asserts instead of RSpec expects:
 
 ```
 RSpec.configure do |config|
@@ -224,11 +232,13 @@ end
 
 ### Java
 
-The testing support is a bit more limited: it's not possible to run all tests in all test classes:
+The testing support is a bit more limited: it's not possible to run all tests
+in all test classes:
 
 - `<Space>tt` run all tests, but in the current test class only
 - `<Space>tT` allows you to pick which tests to run 
-- `<Space>tw` is supposed to rerun tests on any change, but it errors out instead and doesn't seem to work
+- `<Space>tw` is supposed to rerun tests on any change, but it errors out
+instead and doesn't seem to work
 - `<Space>tr` runs the test method under the cursor.
 
 Run all tests from the terminal: `Ctrl+/`

@@ -169,7 +169,15 @@ the keyboard shortcuts differ for Java and Ruby.
 - `<Space>tw` - automatically run tests after a file is saved
 - If there are failed tests: a Trouble window is open; use `[q` and `]q` to go to prev/next error.
 
-Only the RSpec way is supported (Minitest is not); but you can use RSpec with Minitest-style `assert_equal`.
+Only the RSpec tests (`spec/*_spec.rb`) are supported - Minitest tests in `test/test_*.rb` 
+are not picked up. Workaround is to write RSpec spec files, but using Minitest-style asserts instead of
+RSpec expects:
+
+```
+RSpec.configure do |config|
+  config.expect_with :minitest
+end
+```
 
 ### Java
 
@@ -177,7 +185,7 @@ The testing support is a bit more limited: it's not possible to run all tests in
 
 - `<Space>tt` run all tests, but in the current test class only
 - `<Space>tT` allows you to pick which tests to run 
-- `<Space>tw` errors and doesn't seem to work
+- `<Space>tw` is supposed to rerun tests on any change, but it errors out instead and doesn't seem to work
 - `<Space>tr` runs the test method under the cursor.
 
 Run all tests from the terminal: `Ctrl+/`
@@ -201,12 +209,15 @@ as you battle with tedious shortcuts to step over the code.
 
 ### Java
 
-Running main method in a Gradle project works - `<Space>da` offers to run the Main class. However, you must add
-a breakpoint to the first row via `<Space>db` otherwise the debug session is quickly over.
+Running main method in a Gradle project works - `<Space>da` offers to run the Main class. However, the debugger
+won't stop at first line: you may need to add
+a breakpoint to the first row via `<Space>db` otherwise the main method may just complete.
 
 Debugging tests is possible: add a breakpoint and run a test via `<Space>tr` (run nearest test - under the cursor).
 However, the debugging experience is horrible: the shortcuts are tedious to type, the "Thread" window doesn't
-respond to clicks and won't navigate to methods. It's easy to get lost in the debugging completely.
+respond to clicks and won't navigate to Java sources. It's easy to get lost in the debugging completely.
+
+TODO maybe there are keyboard shortcuts to control the "Thread" window?
 
 # Updating plugins
 

@@ -142,35 +142,46 @@ vim.b.autoformat = false
 Rename (`Shift+F6` in IDEA) is `<Space>cr` in LazyVim. You can rename
 variables, functions, even classes: the java file gets renamed as well.
 
-To generate getters, setters, `toString()`, override methods, organize imports, press `<Space>ca`.
-This is the replacement for IDEA's "Generate" (`Alt+Insert`).
+To generate getters, setters, `toString()`, override methods, organize imports,
+press `<Space>ca`. This is the replacement for IDEA's "Generate"
+(`Alt+Insert`).
 
 Extract method and others are hidden behind the `<Space>cx` menu and only work for Java.
 
 ### Tips
 
-`gc` comments out code but requires a motion. `gcc` comments out a line. An excellent way is to pair it up with structural selection:
-type `gcS`, select a label and a method is now commented out. Alternatively, press `Shift+v` to go into line-selecting
-mode; when lines are selected type in `gc` to comment them out.
+`gc` comments out code but requires a motion. `gcc` comments out a line. An
+excellent way is to pair it up with structural selection: type `gcS`, select a
+label and a method is now commented out. Alternatively, press `Shift+v` to go
+into line-selecting mode; when lines are selected type in `gc` to comment them
+out.
 
-Use `[c` and `]c` to go to prev/next class in the file; `[f` and `]f` to go to prev/next function/method in the file.
+Use `[c` and `]c` to go to prev/next class in the file; `[f` and `]f` to go to
+prev/next function/method in the file.
 
-Single `s` starts a search mode where you type in a bunch of characters then press the "tag" character and
-LazyVim will take you there. This searches on-screen (not in-file, so it's not really a file search), but it
-searches in all open windows, allowing you to jump windows quickly. It might be handy when debugging.
+Single `s` starts a search mode where you type in a bunch of characters then
+press the "tag" character and LazyVim will take you there. This searches
+on-screen (not in-file, so it's not really a file search), but it searches in
+all open windows, allowing you to jump windows quickly. It might be handy when
+debugging.
 
 # git
 
-In IDEA, I never used the Git window (`Alt+9`) and I rarely used the Commit window (`Alt+0`), since
-using command-line git was easier and more understandable for me (on Linux with good terminal of course - not on Windows). I eventually picked up [LazyGit](https://github.com/jesseduffield/lazygit) which is
-just brilliant: full-screen mode makes much more sense when working with git, than the IDEA side-panels.
+In IDEA, I never used the Git window (`Alt+9`) and I rarely used the Commit
+window (`Alt+0`), since using command-line git was easier and more
+understandable for me (on Linux with good terminal of course - not on Windows).
+I eventually picked up [LazyGit](https://github.com/jesseduffield/lazygit)
+which is just brilliant: full-screen mode makes much more sense when working
+with git, than the IDEA side-panels.
 
 LazyVim has LazyGit baked in, just press `<Space>gg`. Awesome.
 
 # Run/Debug
 
-Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras` and install `dap.core`.
-Read [Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/) first, to learn how debugging works in LazyVim.
+Handled via a DAP (Debugging Adapter Protocol) plugin: type in `:LazyExtras`
+and install `dap.core`. Read
+[Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/)
+first, to learn how debugging works in LazyVim.
 
 When you install the DAP debug plugin, new options appear in LazyVim:
 

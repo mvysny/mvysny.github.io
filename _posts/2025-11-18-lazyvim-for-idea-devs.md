@@ -245,30 +245,39 @@ Run all tests from the terminal: `Ctrl+/`
 
 ## Debugging
 
-Debugging is pure madness. The shortcuts are really chatty, for example `<Space>dO` to step over function call
-will get annoying pretty soon. To begin, read [Chapter 17. Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/).
+Debugging is pure madness. The shortcuts are really chatty, for example
+`<Space>dO` to step over function call will get annoying pretty soon. To begin,
+read [Chapter 17.
+Debugging](https://lazyvim-ambitious-devs.phillips.codes/course/chapter-17/).
 
 Unless the debugging is bound to F5-F8 like in IDEA, I wouldn't bother.
 
 ### Ruby
 
-Debugging tests is just not possible. Running any rspec-related launch configurations via `<Space>da` results in
-`Couldn't connect to 127.0.0.1: ECONNREFUSED`. Adding `require 'debug/open'` as suggested in [debugging Ruby with Neovim](https://www.reddit.com/r/ruby/comments/1ctwtrd/debugging_ruby_in_neovim/)
+Debugging tests is just not possible. Running any rspec-related launch
+configurations via `<Space>da` results in `Couldn't connect to 127.0.0.1:
+ECONNREFUSED`. Adding `require 'debug/open'` as suggested in [debugging Ruby
+with
+Neovim](https://www.reddit.com/r/ruby/comments/1ctwtrd/debugging_ruby_in_neovim/)
 just throws some Lua error.
 
-Debugging Ruby scripts on the other side is possible, and works well. `<Space>dC` runs to cursor, and other
-menu items from the `<Space>d` menu work as well. Definitely promising. But the experience quickly gets annoying
-as you battle with tedious shortcuts to step over the code.
+Debugging Ruby scripts on the other side is possible, and works well.
+`<Space>dC` runs to cursor, and other menu items from the `<Space>d` menu work
+as well. Definitely promising. But the experience quickly gets annoying as you
+battle with tedious shortcuts to step over the code.
 
 ### Java
 
-Running main method in a Gradle project works - `<Space>da` offers to run the Main class. However, the debugger
-won't stop at first line: you may need to add
-a breakpoint to the first row via `<Space>db` otherwise the main method may just complete.
+Running main method in a Gradle project works - `<Space>da` offers to run the
+Main class. However, the debugger won't stop at first line: you may need to add
+a breakpoint to the first row via `<Space>db` otherwise the main method may
+just complete.
 
-Debugging tests is possible: add a breakpoint and run a test via `<Space>tr` (run nearest test - under the cursor).
-However, the debugging experience is horrible: the shortcuts are tedious to type, the "Thread" window doesn't
-respond to clicks and won't navigate to Java sources. It's easy to get lost in the debugging completely.
+Debugging tests is possible: add a breakpoint and run a test via `<Space>tr`
+(run nearest test - under the cursor). However, the debugging experience is
+horrible: the shortcuts are tedious to type, the "Thread" window doesn't
+respond to clicks and won't navigate to Java sources. It's easy to get lost in
+the debugging completely.
 
 TODO maybe there are keyboard shortcuts to control the "Thread" window?
 

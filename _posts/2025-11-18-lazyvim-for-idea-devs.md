@@ -39,6 +39,7 @@ Basic keyboard shortcuts:
 
 - Press `<Space>sk` to search in all keymaps (akin to [Search in Actions](https://www.jetbrains.com/help/idea/searching-everywhere.html) via `Ctrl+Shift+a`)
   - If you press `<Space>` and wait, a popup with follow-up keyboard shortcuts will open - very nice.
+    You can now continue typing the shortcut slowly, while the popup shows the shortcut name.
 - Here are all [LazyVim Keymaps](https://www.lazyvim.org/keymaps) but let's skip that for now.
 - Type `<Space>e` to open the file explorer (tree-like explorer accessible via `Alt+1` in IDEA)
 
@@ -82,7 +83,7 @@ fixes for errors and warnings.
 Multi-cursor: Double-press `Ctrl` then arrow-down in IDEA. LazyVim doesn't have support for multiple cursors
 yet, but you can record a macro in vim, then run it multiple times.
 
-Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` in LazyVim.
+Structural selection: `Ctrl+w` in IDEA, `Ctrl+Space` or `Shift+s` in LazyVim.
 
 As you navigate around, you may want to go one step back in navigation history. In LazyVim: `Ctrl+o`; go forward: `Ctrl+i`.
 
@@ -126,6 +127,20 @@ the java file gets renamed as well.
 
 To generate getters, setters, `toString()`, override methods, organize imports, press `<Space>ca`.
 This is the replacement for IDEA's "Generate" (`Alt+Insert`).
+
+Extract method and others are hidden behind the `<Space>cx` menu and only work for Java.
+
+### Tips
+
+`gc` comments out code but requires a motion. `gcc` comments out a line. An excellent way is to pair it up with structural selection:
+type `gcS`, select a label and a method is now commented out. Alternatively, press `Shift+v` to go into line-selecting
+mode; when lines are selected type in `gc` to comment them out.
+
+Use `[c` and `]c` to go to prev/next class in the file; `[f` and `]f` to go to prev/next function/method in the file.
+
+Single `s` starts a search mode where you type in a bunch of characters then press the "tag" character and
+LazyVim will take you there. This searches on-screen (not in-file, so it's not really a file search), but it
+searches in all open windows, allowing you to jump windows quickly. It might be handy when debugging.
 
 # git
 

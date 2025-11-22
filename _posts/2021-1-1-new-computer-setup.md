@@ -67,7 +67,7 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git htop fish gnome-text-editor libreoffice net-tools rhythmbox curl whois fzf eza errands lazygit ripgrep
+sudo apt install git htop fish gnome-text-editor net-tools rhythmbox curl whois fzf eza duf errands lazygit ripgrep fastfetch inxi
 sudo update-alternatives --config editor     # select neovim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem

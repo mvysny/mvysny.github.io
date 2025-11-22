@@ -117,6 +117,10 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 [Install fish](../fish/).
 
+## LazyVim
+
+[Install LazyVim](https://github.com/mvysny/lazyvim-ubuntu).
+
 ## Firefox
 
 [Firefox HW Acceleration](../firefox-hw-acceleration/).

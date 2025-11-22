@@ -241,12 +241,7 @@ Go to the "Updates" tab and set:
 * When there are other updates: Display Immediately
 * Notify me of new Ubuntu version: For any new version
 
-## Server Setup
-
-More tips on when you're setting up a server:
-
-* Create a [Byobu Startup](../byobu-startup/) script which runs all necessary stuff in Byobu windows
-* [Setup a network using netplan](../ubuntu-netplan-no-networkmanager/)
+Also [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 
 ## Docker
 

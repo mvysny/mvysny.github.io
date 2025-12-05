@@ -83,6 +83,11 @@ Please check the `flow-build-info.json` contents on the current configuration:
 1. When production mode is active, `"productionMode": true`. Otherwise, the development mode is active.
 2. When the JavaScript bundle is built on-the-fly, `"enableDevServer": true`. Otherwise, the bundle is expected
    to have been built up-front and packaged into the `META-INF/VAADIN/build/` folder.
+3. In production mode, Vaadin logs an INFO message from `DefaultDeploymentConfiguration` class: "Vaadin is running in production mode"
+   or "Vaadin is running in DEVELOPMENT mode".
+   However, if the logger is configured to only log WARNING and up, the log message may not be present.
+4. sout never fails: print the production mode flag from your view constructor:
+`System.out.println("!! PRODUCTION MODE: " + VaadinSession.getCurrent().getConfiguration().isProductionMode());`
 
 ## More Documentation
 

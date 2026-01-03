@@ -88,12 +88,14 @@ proof that Matter devices will now use both Dirigera and HomePod (whichever is c
 as a border router, because it's not possible to confirm that they share one Thread network,
 because **it's not fucking possible to visualize the god-damn thread network mesh!**
 
-Dirigera joining Apple Home thread network is no simple process: you need IKEA app
+Dirigera joining Apple Home thread network is no simple process under the hood: you need IKEA app
 to fetch Apple Thread credentials from iOS Keychain and use something called multi-admin
 sharing which requires Thread 1.4+ which supports mesh merging... I'm sorry
-in which fucking way is this simpler than Zigbee?
+in which fucking way is this simpler than Zigbee? I mean sure, it's a bunch of clicks in IKEA/Apple Home app,
+and then you can't verify that the networks are joined anyway, fucking awesome.
 
-I'm sorry but at this point I completely lost any interest in Matter/Thread.
+I'm sorry but at this point I completely lost any interest in Matter/Thread. Too bad
+this shit is the future now.
 
 ## No Way To Visualize
 

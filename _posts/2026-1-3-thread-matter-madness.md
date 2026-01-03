@@ -100,7 +100,7 @@ this shit is the future now.
 ## No Way To Visualize
 
 Of course Apple Home iPhone app doesn't show shit since it's dumbed down as much as possible; IKEA doesn't show
-shit either and neither does "Eve for Matter & HomeKit". I was hoping
+shit either; and neither does "Eve for Matter & HomeKit". I was hoping
 to hook Home Assistant into this madness to shed some light, but this is where things fall apart completely:
 apparently you need to hook into Thread diagnostic mechanisms to obtain the thread routing tables
 and to see how the mesh looks like, but you can't do that from ethernet (because of security) -

@@ -106,6 +106,8 @@ apparently you need to hook into Thread diagnostic mechanisms to obtain the thre
 and to see how the mesh looks like, but you can't do that from ethernet (because of security) -
 you need to connect to Thread via radio (that's how nRF Thread Topology Monitor does it).
 
+So, in order to visualize mesh, you need a radio device. Brilli-fucking-ant!
+
 On top of that, Home Assistant integration to Apple Home is limited:
 
 - you can expose Home Assistant devices via HomeKit Bridge - but I have no HA devices

@@ -63,16 +63,18 @@ Wrong.
 ## Fucking Complicated
 
 You first need the Border Routers to all belong to the same Thread network (they share the same
-thread credentials, or same Extended PAN ID which is a unique 64-bit hexadecimal value that all devices/border routers on the same mesh share). By default, every
-Border Router forms its own independent Thread network, including Dirigera: I enabled Matter
+thread credentials, or same Extended PAN ID which is a unique 64-bit hexadecimal value that all devices/border routers on the same mesh share).
+What's completely ridiculous is that Apple Home doesn't show the Thread Network identifier in any shape
+or form, so you have no fucking idea what it's supposed to look like and how to check whether
+Dirigera finally joined the fucking thread network with Apple Home or not!
+
+You see, by default, every
+Border Router forms its own independent Thread network, including Dirigera. This
+goes to ridiculous extremes: in my case, I enabled Matter
 on Dirigera, integrated it with Apple Home (allowing me to control IKEA Zigbee devices from Apple Home),
 and Dirigera still had its own Thread network - it shown some IKEA's own Thread network ID).
 Which means that Matter devices hooked to Apple Home won't use Dirigera as the border router
 even though it may be the closest one!
-
-What's more ridiculous is that Apple Home doesn't show the Thread Network identifier in any shape
-or form, so you have no fucking idea what it's supposed to look like and how to check whether
-Dirigera finally joined the fucking thread network with Apple Home or not!
 
 It gets even better: you add IKEA device straight to Apple Home, it doesn't show in IKEA app.
 You add IKEA Matter device to IKEA app, it won't show in Apple Home unless you add it also

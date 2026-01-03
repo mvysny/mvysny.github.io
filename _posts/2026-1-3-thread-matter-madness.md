@@ -85,7 +85,8 @@ This hilariously (probably - no fucking way of checking) finally forces Dirigera
 after I added IKEA Matter device to IKEA app first and then shared it from IKEA app
 to Apple Home, DIRIGERA Thread network now shows MyHome982174339 or similar. I still have no
 proof that Matter devices will now use both Dirigera and HomePod (whichever is closer)
-as a border router, because it's not fucking possible to visualize the god-damn mesh!
+as a border router, because it's not possible to confirm that they share one Thread network,
+because **it's not fucking possible to visualize the god-damn thread network mesh!**
 
 Dirigera joining Apple Home thread network is no simple process: you need IKEA app
 to fetch Apple Thread credentials from iOS Keychain and use something called multi-admin

@@ -31,11 +31,15 @@ as well as with Zigbee.
 ## Easy To Understand
 
 Zigbee is easy to understand: all devices connect to exactly one coordinator and
-form a mesh automatically. If you need better coverage, add more routers.
+form a mesh automatically. If you need better coverage, add more router devices such as
+IKEA bulbs or plugs.
+
 To figure out which device is connected to which hub/coordinator, just examine the device
 (either in Apple Home or in IKEA Home Smart App) and you'll learn the hub quickly.
-Adding a Zigbee IKEA device via IKEA App automatically adds it to Apple Home.
+That way, you can easily check how far the device is from the hub, and whether it would
+benefit from additional router devices or not.
 
+Adding a Zigbee IKEA device via IKEA App automatically adds it to Apple Home.
 The only disadvantage is that you need IKEA Home Smart App to be installed on your phone.
 
 However, adding Zigbee device from one manufacturer to other manufacturer Zigbee hub

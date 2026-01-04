@@ -58,6 +58,12 @@ The communication goes as follows:
 [Your Phone] → [Matter Controller] → [Thread Border Router] → [Thread Mesh] → [Matter-over-Thread Bulb]
 ```
 
+- Matter Controller is an Apple TV device, connected to iCloud, so that your phone can access it from anywhere
+- A HomePod (Mini as well) and the Apple TV itself acts as Thread Border Router. All Border Routers are linked
+  via LAN; every Border Router keeps a mesh of radio-controlled devices.
+- A light bulb (or anything powered from a wall) also acts as router, extending the mesh.
+- A battery-powered switch is an end device, connected either to router, or a border router via radio.
+
 Looks good on paper - you have a bunch of Thread Border Routers such as HomePod or Dirigera,
 a bunch of thread routers such as IKEA light bulb, and a bunch of end devices like switches,
 and Thread will make sure everything stays connected to the nearest border router or router, right?

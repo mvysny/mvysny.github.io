@@ -72,7 +72,7 @@ Wrong.
 ## Fucking Complicated
 
 You first need the Border Routers to all belong to the same Thread network (they must share the same
-thread credentials, or same Extended PAN ID which is a unique 64-bit hexadecimal value that all devices/border routers on the same mesh share).
+thread credentials: the same Extended PAN ID which is a unique 64-bit hexadecimal value that all devices/border routers on the same mesh share).
 What's completely ridiculous is that Apple Home doesn't show the Thread Network identifier in any shape
 or form, so you have no fucking idea what it's supposed to look like and how to check whether
 Dirigera finally joined the thread network with Apple Home or not!

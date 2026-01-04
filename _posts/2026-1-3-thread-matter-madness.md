@@ -153,8 +153,10 @@ If Matter/Thread wants to be usable (on Apple Home):
 - It must provide a clear list of all border routers in effect. I hate to guess and I hate not being able to know.
 - When a device joins one border router, it must join all associated border routers / controllers / apps.
   If I add a device via IKEA app, it must appear automatically in Apple Home (as it does with Zigbee).
-- It must not dumb down the network to a point where you have no idea what's going on.
-- It should print the routing tables, or at least show the current border router for a particular device.
+- It must not dumb down the UI interface to a point where you have no idea what's connected where:
+  if you start having issues, you must be able to diagnose those.
+- It should print the routing tables, or at least show the current border router for a particular device,
+  so that you can verify that Dirigera is being used.
 
 Zigbee checks all the boxes above, Matter/Thread checks none of those. Unless Matter/Thread catches up,
 it's not a viable alternative for Zigbee.

@@ -50,7 +50,9 @@ can yield varying success - it may work or it may not work.
 
 Matter/Thread was designed to solve the device interoperability: any Matter+Thread device should
 work with any Matter+Thread hub. Matter is a protocol allowing for the devices to speak to
-controller; thread is the underlying network designed to connect Matter devices.
+controller; thread is the underlying network designed to connect Matter devices, and to route Matter
+messages between the devices on the mesh.
+
 The communication goes as follows:
 ```
 [Your Phone] → [Matter Controller] → [Thread Border Router] → [Thread Mesh] → [Matter-over-Thread Bulb]

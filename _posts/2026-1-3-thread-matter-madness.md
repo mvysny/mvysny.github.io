@@ -78,11 +78,11 @@ or form, so you have no fucking idea what it's supposed to look like and how to 
 Dirigera finally joined the thread network with Apple Home or not!
 
 You see, by default, every
-Border Router forms its own independent Thread network, including Dirigera. This
+Border Router tries its best to stay independent and to form its own independent Thread network (including Dirigera). This
 goes to ridiculous extremes: in my case, I enabled Matter
 on Dirigera, integrated it with Apple Home (allowing me to control IKEA Zigbee devices from Apple Home),
-and Dirigera still had its own Thread network - it shown some IKEA's own Thread network ID).
-Which means that Matter devices hooked to Apple Home won't use Dirigera as the border router
+and Dirigera **still** created its own Thread network - it shown some IKEA's own Thread network ID in the IKEA App).
+Which means that Matter devices hooked to Apple Home **silently** won't use Dirigera as the border router
 even though it may be the closest one!
 
 It gets even better: you add IKEA device straight to Apple Home, it doesn't show in IKEA app.
@@ -90,9 +90,9 @@ You add IKEA Matter device to IKEA app, it won't show in Apple Home unless you a
 to Apple Home - so you need to add the device two times, both to IKEA and to Apple Home -
 what the fuck? Wasn't Matter/Thread supposed to be an improvement over Zigbee?
 
-This hilariously (probably - no fucking way of checking) finally forces Dirigera to join with Apple Home:
+This hilariously (probably) finally forces Dirigera to join with Apple Home:
 after I added IKEA Matter device to IKEA app first and then shared it from IKEA app
-to Apple Home, DIRIGERA Thread network now shows MyHome982174339 or similar. I still have no
+to Apple Home, DIRIGERA Thread network ID changed from whatever it was before to `MyHome982174339` or similar. I still have no
 proof that Matter devices will now use both Dirigera and HomePod (whichever is closer)
 as a border router, because it's not possible to confirm that they share one Thread network,
 because **it's not fucking possible to visualize the god-damn thread network mesh!**
@@ -109,22 +109,24 @@ this shit is the future now.
 ## No Way To Visualize
 
 Of course Apple Home iPhone app doesn't show shit since it's dumbed down as much as possible; IKEA doesn't show
-shit either; and neither does "Eve for Matter & HomeKit". I was hoping
+shit either; and neither does "Eve for Matter & HomeKit" - it shows all devices as disconnected for some
+reason, which is just ridiculous. I was hoping
 to hook Home Assistant into this madness to shed some light, but this is where things fall apart completely:
 apparently you need to hook into Thread diagnostic mechanisms to obtain the thread routing tables
-and to see how the mesh looks like, but you can't do that from ethernet (because of security) -
+and to see how the mesh looks like, but you can't do that from just a computer on your LAN (because of security) -
 you need to connect to Thread via radio (that's how nRF Thread Topology Monitor does it).
 
-So, in order to visualize the mesh, you need a radio device. Brilli-fucking-ant!
+Yes. In other words, in order to see the devices in your home, LAN connection is not enough, you need a radio device. Brilli-fucking-ant!
 
 On top of that, Home Assistant integration to Apple Home is limited:
 
-- you can expose Home Assistant devices via HomeKit Bridge - but I have no HA devices
+- you can expose Home Assistant devices via HomeKit Bridge - but I have no HA devices so this is useless to me.
 - You can try HomeKit Controller in attempt to control devices hooked to Apple Home, but
   that doesn't work because HomeKit accessories can only be paired to one controller at a time (this is an Apple HomeKit restriction).
 - or, you enable something called "OpenThread Border Router" as HA Add-on, buy a Thread radio device,
   connect it to existing Apple Home Thread network (via HA Companion app which should be able to extract
-  the Thread IDs), but this is just so fucking complicated and the outcome is so uncertain - fuck this shit.
+  the Thread IDs)... but nowhere it is written that this finally gives HA access to the thread network and
+  you'll finally see the visualization of the mesh. So, lots of work for uncertain outcome - fuck this shit.
 
 ## But Hey, At Least OTA Works!
 
@@ -136,13 +138,13 @@ To make sure your devices don't waste battery life by connecting to some remote 
 
 - on Matter, you either buy some radio thingy and fiddle with it, in hopes to see the mesh,
 or you just pray that Dirigera somehow joins Apple Thread network and that hopefully enables
-the devices to connect to the closer Border Router. But hope is not a strategy.
+the devices to connect to the closer Border Router.
   - Alternatively you use Apple HomeKits as Border Routers only, expanding the mesh via Matter-enabled
     IKEA plugs/bulbs.
 - Or you just get one Zigbee hub, a bunch of IKEA bulbs and plugs, and let the mesh form itself. Easy.
 
 It gets even better: Zigbee routers don't talk to Thread routers (duh) so you can't
-upgrade the mesh gradually. Brilliant!
+upgrade your home mesh gradually. Brilliant!
 
 If Matter/Thread wants to be usable (on Apple Home):
 

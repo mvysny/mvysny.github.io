@@ -131,6 +131,8 @@ On top of that, Home Assistant integration to Apple Home is limited:
 ## But Hey, At Least OTA Works!
 
 True - if you add IKEA Matter device straight to Apple Home via Home iOS App, the OTA updates will work.
+But OTA support is optional: a Matter device may not be configured to receive OTA updates, and then it won't receive those,
+ever. Luckily, both Apple devices and IKEA devices receive updates regularly.
 
 # Conclusion
 

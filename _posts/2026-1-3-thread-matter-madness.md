@@ -4,17 +4,18 @@ title: Thread Matter Madness
 ---
 
 The smart home world is moving from Zigbee to Matter/Thread. Is it a good thing,
-when you use Apple Home and/or Home Assistant (or attempting to use both)? I have
+from the point of view of an Apple Home + IKEA user? I have
 a bunch of IKEA Zigbee devices, the Dirigera Hub, and I'm trying to understand
-how the mesh works.
+how to connect everything together correctly.
 
 # Zigbee
 
-All devices are ultimately connected to a hub (also called Coordinator). This forms a
+All devices are ultimately connected to a hub (also called a coordinator). This forms a
 single-point-of-failure: if it goes down,
 all devices go down with it. In practice that rarely happens though.
 Zigbee mesh also supports routing, e.g. IKEA TRETAKT plugs act as routers as well.
-That means that you can use TRETAKT plugs to increase the coverage of your house.
+That means that you can use TRETAKT plugs to increase the coverage area and to "bring the signal closer"
+to your end devices, such as switches and motion detectors.
 
 Device OTA is questionable: IKEA has a great record of OTA but other vendors vary.
 

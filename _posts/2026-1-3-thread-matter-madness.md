@@ -158,6 +158,6 @@ If Matter/Thread wants to be usable (on Apple Home):
 - It should print the routing tables, or at least show the current border router for a particular device,
   so that you can verify that Dirigera is being used.
 
-Zigbee checks all the boxes above, Matter/Thread checks none of those. Unless Matter/Thread catches up,
+Zigbee checks all the boxes above, Matter/Thread (on Apple Home) checks none of those. Unless Matter/Thread catches up,
 it's not a viable alternative for Zigbee.
 

@@ -78,7 +78,7 @@ or form, so you have no fucking idea what it's supposed to look like and how to 
 Dirigera finally joined the thread network with Apple Home or not!
 
 You see, by default, every
-Border Router tries its best to stay independent and to form its own independent Thread network (including Dirigera). This
+Border Router (including Dirigera) tries its best to stay independent and to form its own independent Thread network. This
 goes to ridiculous extremes: in my case, I enabled Matter
 on Dirigera, integrated it with Apple Home (allowing me to control IKEA Zigbee devices from Apple Home),
 and Dirigera **still** created its own Thread network - it shown some IKEA's own Thread network ID in the IKEA App).

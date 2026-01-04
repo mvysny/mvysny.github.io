@@ -106,7 +106,7 @@ apparently you need to hook into Thread diagnostic mechanisms to obtain the thre
 and to see how the mesh looks like, but you can't do that from ethernet (because of security) -
 you need to connect to Thread via radio (that's how nRF Thread Topology Monitor does it).
 
-So, in order to visualize mesh, you need a radio device. Brilli-fucking-ant!
+So, in order to visualize the mesh, you need a radio device. Brilli-fucking-ant!
 
 On top of that, Home Assistant integration to Apple Home is limited:
 
@@ -134,4 +134,15 @@ the devices to connect to the closer Border Router. But hope is not a strategy.
 
 It gets even better: Zigbee routers don't talk to Thread routers (duh) so you can't
 upgrade the mesh gradually. Brilliant!
+
+If Matter/Thread wants to be usable (on Apple Home):
+
+- It must provide a clear list of all border routers in effect. I hate to guess and I hate not being able to know.
+- When a device joins one border router, it must join all associated border routers / controllers / apps.
+  If I add a device via IKEA app, it must appear automatically in Apple Home (as it does with Zigbee).
+- It must not dumb down the network to a point where you have no idea what's going on.
+- It should print the routing tables, or at least show the current border router for a particular device.
+
+Zigbee checks all the boxes above, Matter/Thread checks none of those. Unless Matter/Thread catches up,
+it's not a viable alternative for Zigbee.
 

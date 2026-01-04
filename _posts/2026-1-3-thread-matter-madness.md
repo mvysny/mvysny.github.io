@@ -19,15 +19,15 @@ to your end devices, such as switches and motion detectors.
 
 Device OTA is questionable: IKEA has a great record of OTA but other vendors vary.
 
-Visualizing: no idea. Possibly via Home Assistant, but with gotchas. If HA has a
+Visualizing the mesh: no idea. Possibly via Home Assistant, but with gotchas. If HA has a
 Zigbee radio with devices connected to it, then it's apparently easy (never tried it myself though):
 Go to Settings → Devices & Services → Integrations → ZHA → three dots (...) → Configure → Visualization tab.
 However, if all devices are hooked to Dirigera, does it work? The recommended way to
-connect from HA to Dirigera is by enabling Dirigera Matter Controller (possible
-also with older Zigbee devices such as TRETAKT, they will be exposed by Dirigera) and then
-adding Dirigera Hub to Home Assistant via Matter, via Matter setup code obtained from
+connect from HA to Dirigera is by enabling Dirigera Matter Controller (this should also expose
+older Zigbee devices such as TRETAKT) and then
+adding Dirigera Hub to Home Assistant via Matter, using the Matter setup code obtained from
 the IKEA Home Smart app. However, I have no idea whether the visualization works
-as well as with Zigbee.
+in this setup.
 
 ## Easy To Understand
 
@@ -36,9 +36,9 @@ form a mesh automatically. If you need better coverage, add more router devices 
 IKEA bulbs or plugs.
 
 To figure out which device is connected to which hub/coordinator, just examine the device
-(either in Apple Home or in IKEA Home Smart App) and you'll learn the hub quickly.
+(either in Apple Home or in IKEA Home Smart App) and the app will tell you the hub right away.
 That way, you can easily check how far the device is from the hub, and whether it would
-benefit from additional router devices or not.
+benefit from additional router devices.
 
 Adding a Zigbee IKEA device via IKEA App automatically adds it to Apple Home.
 The only disadvantage is that you need IKEA Home Smart App to be installed on your phone.
@@ -48,7 +48,7 @@ can yield varying success - it may work or it may not work.
 
 # Matter/Thread
 
-Matter/Thread was designed to solve the device interop: any Matter+Thread device should
+Matter/Thread was designed to solve the device interoperability: any Matter+Thread device should
 work with any Matter+Thread hub. Matter is a protocol allowing for the devices to speak to
 controller; thread is the underlying network designed to connect Matter devices.
 The communication goes as follows:

@@ -101,3 +101,5 @@ you can override it with `media.hardware-video-decoding.force-enabled=true` and 
 
 I failed to enable any sensible acceleration for Firefox+Nvidia: Don't use Nvidia with Linux.
 
+Also see [Enable Hardware Video Acceleration (VA-API) For Firefox in Ubuntu 20.04 / 18.04 & Higher](https://ubuntuhandbook.org/index.php/2021/08/enable-hardware-video-acceleration-va-api-for-firefox-in-ubuntu-20-04-18-04-higher/).
+

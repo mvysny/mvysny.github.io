@@ -51,8 +51,12 @@ dm_crypt-0 /dev/XYZ none luks,discard,tpm2-device=auto
 ```
 This option is what tells Plymouth/systemd-cryptsetup to use the TPM2 metadata from the LUKS2 header and to wait for the TPM2 device to show up.
 
+To install tpm2 support to Plymouth, you must install `sudo apt install tpm2-tools`
+otherwise your system won't be able to unlock LUKS and won't boot.
+
 You'll need to rebuild initrd, in order for this change to take effect:
-`sudo update-initramfs -u -k all`.
+`sudo update-initramfs -u -k all`. Maybe reboot, to check that LUKS+Plymouth
+still works.
 
 Next, figure out the device which hosts the LUKS. It won't most probably be a mapper device;
 instead it will be `/dev/XYZ`.

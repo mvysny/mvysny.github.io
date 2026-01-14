@@ -44,9 +44,17 @@ which does the same thing but in a more complicated way.
 
 # Setting up
 
-TODO crypttab
+First, edit your `crypttab` and add the option
+`tpm2-device=auto`:
+```crypttab
+dm_crypt-0 /dev/XYZ none luks,discard,tpm2-device=auto
+```
+This option is what tells Plymouth/systemd-cryptsetup to use the TPM2 metadata from the LUKS2 header and to wait for the TPM2 device to show up.
 
-First, figure out the device which hosts the LUKS. It won't most probably be a mapper device;
+You'll need to rebuild initrd, in order for this change to take effect:
+`sudo update-initramfs -u -k all`.
+
+Next, figure out the device which hosts the LUKS. It won't most probably be a mapper device;
 instead it will be `/dev/XYZ`.
 
 ```bash
@@ -54,7 +62,13 @@ $ systemd-cryptenroll /dev/XYZ --tpm2-device=auto --tpm2-pcrs=7+9+11+12 --tpm2-w
 ```
 
 This will add a new TPM2 unlock key to your LUKS. It will now be used by default by Plymouth.
-Reboot and test out.
+Reboot and test out: you should be asked for a PIN instead.
+
+## Testing tampering
+
+Simply rebuild initrd via `update-initramfs`: this should invalidate the TPM2 LUKS key.
+Now when you reboot, you'll be prompted for a password - a clear sign of
+tampering.
 
 ## PCR
 

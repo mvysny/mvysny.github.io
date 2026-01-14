@@ -74,6 +74,7 @@ You can find the devices here:
 
 To list all active keys (keyslots) you can use `systemd-cryptenroll /dev/sda3`:
 with no commands it will only print active keyslots and the types of the keys there.
+Alternatively, run `sudo cryptsetup luksDump /dev/sda3` but it's more verbose.
 
 ### Analysing LVM
 

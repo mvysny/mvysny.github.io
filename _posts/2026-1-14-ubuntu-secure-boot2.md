@@ -118,5 +118,5 @@ boot entry. This should cause Plymouth to skip waiting for TPM and fall back to 
 # More Info
 
 - [Unlocking LUKS2 volumes with TPM2, FIDO2, PKCS#11 Security Hardware on systemd 248](https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html) -
-  Lenard Poettering's (author of systemd) blog.
+  Lennart Poettering's (author of systemd) blog.
 - [ArchLinux systemd-cryptenroll docs](https://wiki.archlinux.org/title/Systemd-cryptenroll)

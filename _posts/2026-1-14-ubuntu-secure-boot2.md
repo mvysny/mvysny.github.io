@@ -83,6 +83,11 @@ Ideally you want to use PCR 8 as well which guards against changes in
 adding this will always invalidate the TPM2 key, forcing Plymouth to always fall back and
 prompt for password.
 
+To see which PCRs are active:
+```bash
+systemd-analyze pcrs
+```
+
 ## After you update BIOS or kernel or rebuild initrd
 
 Run the following command first, to remove any existing TPM2 LUKS:
@@ -110,3 +115,8 @@ Another way is to boot off an USB stick and run
 Another way is to add the `rd.luks.options=timeout=0` kernel parameter to GRUB
 boot entry. This should cause Plymouth to skip waiting for TPM and fall back to password.
 
+# More Info
+
+- [Unlocking LUKS2 volumes with TPM2, FIDO2, PKCS#11 Security Hardware on systemd 248](https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html) -
+  Lenard Poettering's (author of systemd) blog.
+- [ArchLinux systemd-cryptenroll docs](https://wiki.archlinux.org/title/Systemd-cryptenroll)

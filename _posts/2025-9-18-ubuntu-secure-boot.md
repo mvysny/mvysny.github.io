@@ -6,7 +6,8 @@ title: Ubuntu Secure Boot
 Installing Ubuntu with encryption enabled only encrypts the root folder. That is enough
 if you're only worried about someone stealing your laptop and seeing your files.
 However, there is another attack vector: someone gains access to your laptop, modifies
-the kernel (he can since it's on unencrypted `/boot`) and hands it back, without you knowing.
+the kernel (he can since it's on unencrypted `/boot`) and hands it back, without you knowing -
+so-called "evil maid" attack.
 If you want to defend against that, read on.
 
 The default UEFI installation of Ubuntu works as follows:
@@ -18,6 +19,9 @@ The default UEFI installation of Ubuntu works as follows:
 4. Kernel+initrd locates encrypted root, allows you to input the password and continue with the boot process.
 
 The problem is step 3 - the `/boot` partition is unencrypted and can be tampered by the attacker.
+
+This article has been obsoleted by [Ubuntu Secure Boot: take 2](../ubuntu-secure-boot2/),
+but I'm keeping it here for historical purposes.
 
 # GRUB + Encrypted `/boot`
 

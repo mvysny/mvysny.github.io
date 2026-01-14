@@ -72,6 +72,9 @@ You can find the devices here:
   flags:   discards 
 ```
 
+To list all active keys (keyslots) you can use `systemd-cryptenroll /dev/sda3`:
+with no commands it will only print active keyslots and the types of the keys there.
+
 ### Analysing LVM
 
 We won't be using RAID capabilities of LVM, so in this case, physical volume is "the same thing"

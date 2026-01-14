@@ -59,10 +59,10 @@ You'll need to rebuild initrd, in order for this change to take effect:
 still works.
 
 Next, figure out the device which hosts the LUKS. It won't most probably be a mapper device;
-instead it will be `/dev/XYZ`.
+instead it will be `/dev/XYZ`. Run `lsblk` to find out the device easily.
 
 ```bash
-$ systemd-cryptenroll /dev/XYZ --tpm2-device=auto --tpm2-pcrs=7+9+11+12 --tpm2-with-pin=true
+$ sudo systemd-cryptenroll /dev/XYZ --tpm2-device=auto --tpm2-pcrs=7+9+11+12 --tpm2-with-pin=true
 ```
 
 This will add a new TPM2 unlock key to your LUKS. It will now be used by default by Plymouth.

@@ -67,8 +67,8 @@ Reboot.
 sudo apt update
 sudo apt -V dist-upgrade
 sudo snap refresh
-sudo apt install git htop fish gnome-text-editor net-tools rhythmbox curl whois fzf eza duf errands lazygit ripgrep fastfetch inxi
-sudo update-alternatives --config editor     # select neovim
+sudo apt install git htop fish net-tools rhythmbox curl whois fzf eza duf lazygit ripgrep fastfetch inxi vim
+sudo update-alternatives --config editor     # select vim
 sudo apt install mpv ffmpeg easytag virt-manager
 sudo apt autoremove --purge totem
 sudo apt install dialect gnome-weather showtime totem-video-thumbnailer

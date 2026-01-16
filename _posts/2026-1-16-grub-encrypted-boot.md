@@ -73,5 +73,10 @@ allows to read initrd and boot from it.
 # Possible vulnerabilities
 
 An evil maid can overwrite GRUB with one that asks for password and uploads it somewhere.
-This is mitigated by using signed GRUB and having Secure Boot enabled.
+This is mitigated by using signed GRUB and having Secure Boot enabled -
+BIOS then refuses to boot unsigned GRUBs.
+
+An evil maid can boot from USB, spoof GRUB signed with custom CA/MOK, then
+register the MOK to Secure Boot - you must password-protect your bios and
+disable passwordless boot device selector in BIOS.
 

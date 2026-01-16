@@ -9,6 +9,7 @@ PulseAudio as the default sound server.
 ## PipeWire
 
 * Use `wpctl status` from the command-line to show the status of all devices, sinks etc.
+* Run `pw-top` to show current streams
 * Use `wpctl inspect` to show detailed information about a device or a stream.
 * Read [pipewire.conf](https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/Config-PipeWire#configuration-file-pipewireconf)
   on how to configure the pipewire daemon.

@@ -58,6 +58,8 @@ You'll need to rebuild initrd, in order for this change to take effect:
 `sudo update-initramfs -u -k all`. Maybe reboot, to check that LUKS+Plymouth
 still works.
 
+If `update-initramfs` fails with `cryptsetup: WARNING: nvme0n1p3_crypt: ignoring unknown option 'tpm2-device'`, scroll down for more info.
+
 Next, figure out the device which hosts the LUKS. It won't most probably be a mapper device;
 instead it will be `/dev/XYZ`. Run `lsblk` to find out the device easily.
 
@@ -118,6 +120,14 @@ Another way is to boot off an USB stick and run
 
 Another way is to add the `rd.luks.options=timeout=0` kernel parameter to GRUB
 boot entry. This should cause Plymouth to skip waiting for TPM and fall back to password.
+
+# `update-initramfs` fails with `cryptsetup: WARNING: nvme0n1p3_crypt: ignoring unknown option 'tpm2-device'`
+
+This happens when you're using `initramfs-tools` to generate initramfs (verify: check that `initramfs-tools` package is installed). Fresh installs of Ubuntu 25.10
+moved to dracut but Ubuntu 25.10 upgraded from earlier stayed with `initramfs-tools`.
+More info in the [tpm2-luks-systemd blogpost](https://gierdo.astounding.technology/blog/2025/07/05/tpm2-luks-systemd).
+
+You'll need to migrate to dracut in order to use `tpm2`.
 
 # More Info
 

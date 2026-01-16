@@ -41,6 +41,8 @@ will allow you to do that, but the installation will crash at some point.
 > ArchLinux installer 2026 or later contains this GRUB but it isn't signed 
 > and thus not eligible for Secure Boot; Ubuntu 25.10 packages older GRUB 
 > which is signed but doesn't support Argon2.
+>
+> See [GRUB + Encrypted boot](../grub-encrypted-boot/) for more details.
 
 # Unified Kernel Image (UKI)
 

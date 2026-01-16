@@ -40,5 +40,38 @@ By default a very secure argon2id pbkdf is used.
 
 # Configuring mkinitcpio
 
-TODO
+We need to configure the mkinitcpio tool, to generate
+initrd which can handle encryption and can ask for unlock password.
+
+1. [Edit](https://wiki.archlinux.org/title/Dm-crypt/System_configuration#mkinitcpio) `/etc/mkinitcpio.conf` and add the `sd-encrypt` hook to `HOOKS`, right after the `block` hook.
+2. [Edit](https://wiki.archlinux.org/title/Dm-crypt/System_configuration#Using_systemd-cryptsetup-generator) `/etc/crypttab.initramfs` and add the following contents:
+
+```
+root  UUID=xyz  none  luks,discard
+```
+(You can find the device UUID via `blkid -s` or `lsblk -f`)
+
+Rebuild initrd via `mkinitcpio -P`.
+
+# Configuring GRUB
+
+[Read GRUB Encrypted /boot](https://wiki.archlinux.org/title/GRUB#Encrypted_/boot).
+In short, edit `/etc/default/grub` and uncomment the line
+`GRUB_ENABLE_CRYPTODISK=y`. Then:
+
+```bash
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+This installs GRUB into efi which can unlock encrypted disks.
+GRUB will automatically go through all encrypted disks and will try to unlock them,
+regardless of the contents of `grub.cfg` or `crypttab.initramfs`.
+After it finds disk which holds `grub.cfg`, it reads the file, shows the menu and
+allows to read initrd and boot from it.
+
+# Possible vulnerabilities
+
+An evil maid can overwrite GRUB with one that asks for password and uploads it somewhere.
+This is mitigated by using signed GRUB and having Secure Boot enabled.
 

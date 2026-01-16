@@ -36,6 +36,12 @@ All distros use LUKS2 and Argon2, and you should too. However, that renders this
 You can try install Ubuntu Server and put `/boot` on an encrypted LUKS/LVM volume - the installer
 will allow you to do that, but the installation will crash at some point.
 
+> EDIT: GRUB 2.14rc1 supports the Argon2i and Argon2id PBKDFs. 
+> [See upstream commit](https://cgit.git.savannah.gnu.org/cgit/grub.git/commit/?id=6052fc2cf684dffa507a9d81f9f8b4cbe170e6b6). ([Discussion](https://wiki.archlinux.org/title/Talk:GRUB#grub_2:2.14rc1_added_support_for_LUKS2_+_argon2_encryption.)). 
+> ArchLinux installer 2026 or later contains this GRUB but it isn't signed 
+> and thus not eligible for Secure Boot; Ubuntu 25.10 packages older GRUB 
+> which is signed but doesn't support Argon2.
+
 # Unified Kernel Image (UKI)
 
 There's another way. We can package kernel and initrd into one efi file, sign it,

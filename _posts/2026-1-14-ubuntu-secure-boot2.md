@@ -6,8 +6,10 @@ title: Ubuntu Secure Boot, take 2
 The first [Ubuntu Secure Boot](../ubuntu-secure-boot/) article didn't
 really suggested a viable solution for fully secure boot, but there is a surprisingly
 easy way to do this: by using `systemd-cryptenroll`.
-Basically there is a way to sign kernel and initrd via TPM2 and then
-make a key out of that which unlocks LUKS.
+The idea is to use the TPM feature called TPM Platform Configuration Registers (PCRs). PCRs are TPM registers that accumulate hashes (essentially checksums) of boot components measured during the boot process—such as firmware code (PCR 0), boot loader code (PCR 4), Secure Boot policy and certificates (PCR 7), kernel/initrd (PCR 9 or 11), or shim policy (PCR 14). systemd-cryptenroll does not alter PCR values or EFI variables; it only binds to expected PCR hash states for unlocking.
+
+`systemd-cryptenroll` takes the values of PCRs and uses them to create a LUKS unlock key.
+This method is therefore way less invasive than the UKI method since you don't modify any keys in the TPM chip.
 
 This setup uses two unlock keys in LUKS:
 

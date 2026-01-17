@@ -15,6 +15,9 @@ ArchLinux installer 2026 or later has up-to-date GRUB but it isn't signed
 and thus not eligible for Secure Boot; Ubuntu 25.10 packages older GRUB 
 which is signed but doesn't support Argon2.
 
+Also, if at any point is Argon2 deemed insecure, you'll have to wait years
+for support to appear in GRUB. Therefore, I don't recommend this method.
+
 Nevertheless, here are instructions on how to have encrypted boot on ArchLinux.
 
 # Installation

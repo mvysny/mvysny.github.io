@@ -6,19 +6,19 @@ title: Ubuntu Secure Boot
 Installing Ubuntu with encryption enabled only encrypts the root folder. That is enough
 if you're only worried about someone stealing your laptop and seeing your files.
 However, there is another attack vector: someone gains access to your laptop, modifies
-the kernel (he can since it's on unencrypted `/boot`) and hands it back, without you knowing -
+the initrd image (that's possible since it's on unencrypted `/boot`) and hands it back, without you knowing -
 so-called "evil maid" attack.
 If you want to defend against that, read on.
 
-The default UEFI installation of Ubuntu works as follows:
+The default UEFI installation of Ubuntu is described in [Ubuntu UEFI Secure Boot](https://documentation.ubuntu.com/security/security-features/platform-protections/secure-boot/) and works as follows:
 
 1. It uses GRUB which installs `/boot/efi/*/shimx64.efi`/`shimaa64.efi` file, which is cryptographically signed by Microsoft.
    If you have Secure Boot enabled in your BIOS, it will check the signature and will reject to boot if this file is changed.
 2. Shim boots `grub.efi`, which is the GRUB itself. The signature of this file is checked not by Secure Boot, but by `shim*.efi` instead, which is enough.
-3. GRUB then loads kernel and initrd image from `/boot` and runs it.
+3. GRUB then loads kernel and initrd image from `/boot` and runs it. It checks the kernel signature but not the initrd image signature.
 4. Kernel+initrd locates encrypted root, allows you to input the password and continue with the boot process.
 
-The problem is step 3 - the `/boot` partition is unencrypted and can be tampered by the attacker.
+The problem is step 3 - the `/boot` partition is unencrypted and initrd image can be tampered by the attacker.
 
 This article has been obsoleted by [Ubuntu Secure Boot: take 2](../ubuntu-secure-boot2/),
 but I'm keeping it here for historical purposes.
@@ -30,11 +30,6 @@ and decrypt `/boot`. Unfortunately this won't work since
 [GRUB's support for encrypted /boot is limited](https://wiki.archlinux.org/title/GRUB#Encrypted_/boot).
 In short, GRUB only supports LUKS1 and has limited support for LUKS2: it only supports PBKDF2
 and not Argon2.
-
-All distros use LUKS2 and Argon2, and you should too. However, that renders this option not applicable.
-
-You can try install Ubuntu Server and put `/boot` on an encrypted LUKS/LVM volume - the installer
-will allow you to do that, but the installation will crash at some point.
 
 > EDIT: GRUB 2.14rc1 supports the Argon2i and Argon2id PBKDFs. 
 > [See upstream commit](https://cgit.git.savannah.gnu.org/cgit/grub.git/commit/?id=6052fc2cf684dffa507a9d81f9f8b4cbe170e6b6). ([Discussion](https://wiki.archlinux.org/title/Talk:GRUB#grub_2:2.14rc1_added_support_for_LUKS2_+_argon2_encryption.)). 
@@ -53,6 +48,9 @@ and have GRUB or systemd-boot run that. That's UKI. You have two options:
 2. Use `systemd-boot` with `systemd-ukify`.
 
 I have no experience with `mkinitcpio`, and therefore I'll jump straight to the second option.
+
+> Note: Ubuntu 25.10 uses dracut which in theory can produce UKI files, but they failed to boot for me.
+> So, I guess the easiest way is to use dracut to build initrd and then systemd-ukify to create UKI file.
 
 ## virt-manager + Secure Boot
 
@@ -73,8 +71,7 @@ booted directly by the UEFI BIOS, even though it's an .efi file: instead, `syste
 
 > Note: you can use `efibootmgr` to boot the UKI directly (skips bootloader signing), but `systemd-boot` is more robust for multi-kernel setups.
 
-TODO will systemd-boot verify the signature of the UKI .efi file? If not, then the boot isn't secure since EFI partition isn't encrypted,
-and we're back to the unencrypted-`/boot` problem.
+systemd-boot (or rather Secure Boot) verifies the signature of the UKI .efi file.
 
 The kernel and initrd files are stored to `/boot/efi/7733758bfabe46c587a1d2f8ac01aef0/` (identifier will differ for you) -
 the kernel is stored in the EFI partition as opposed to the traditional kernel+initrd placement straight in `/boot`.
@@ -132,6 +129,8 @@ However, nothing really happens yet. You need to activate UKI, by creating `/etc
 layout=uki
 ```
 More info at [ArchLinux: kernel-install](https://wiki.archlinux.org/title/Unified_kernel_image#kernel-install).
+systemd's `kernel-install` reads the `install.conf` file; if the layout is set to uki then `uki_generator` is used to
+create UKI files. By default this is `ukify` which means `systemd-ukify`.
 
 Now you need to reinstall kernel module, to run `kernel-install`:
 ```bash

@@ -161,3 +161,10 @@ If Matter/Thread wants to be usable (on Apple Home):
 Zigbee checks all the boxes above, Matter/Thread (on Apple Home) checks none of those. Unless Matter/Thread catches up,
 it's not a viable alternative for Zigbee.
 
+PS: I just received the ALPSTUGA air quality monitor. While it works with the IKEA app,
+it doesn't show in Apple Home and any attempts to add it end up with "Pairing Failed"
+with no further explanation. Apple Home is just way too dumbed down:
+by providing no information it prevents you from using the devices.
+I sincerely hope that Thread/Matter will improve in the future, since in
+this state it's unusable.
+

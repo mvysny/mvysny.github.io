@@ -151,11 +151,19 @@ process in detail. You'll need to generate new keys, configure UKI signing and
 regenerate UKI files, then finally put Secure Boot into Setup Mode and enroll keys.
 Once keys are entrolled, Secure Boot is activated automatically.
 
+[Arch ukify genkey](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Assisted_process_with_systemd)
+documents possible easier way of key generation.
+
+Secure Boot is in Setup Mode when the Platform Key is removed. To put firmware in Setup Mode, enter firmware setup utility and find an option to delete or clear certificates.
+
 Beware: when creating `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`), don't forget to
 start the file with `[UKI]` otherwise it won't be valid.
 
-To test that the .efi are now correctly signed and the keys are correctly registered in UEFI BIOS nvmem, enable
-Secure Boot and reboot.
+To verify that UKI is signed: run `sbverify --list /boot/efi/EFI/Linux/*.efi`
+
+[Enrolling keys to BIOS via systemd-boot](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_systemd-boot)
+worked for me in a VM; beware this method nukes Microsoft keys; [ArchLinux sbctl doc](https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Assisted_process_with_sbctl)
+mentions to preserve Microsoft keys.
 
 ### Remove the /boot partition
 

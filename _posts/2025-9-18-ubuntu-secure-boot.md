@@ -146,18 +146,13 @@ You can verify that with `sudo bootctl status` and `sudo bootctl list`.
 
 ### Signing .efi for Secure Boot
 
-TODO how to sign ukify-generated efi file via `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`).
-TODO where are the keys/certificates? Probably I need to generate those and register them via MOK utility.
+The article [Secure Boot with UKI](https://copyninja.in/blog/enable_secureboot_ukify.html) describes the
+process in detail. You'll need to generate new keys, configure UKI signing and
+regenerate UKI files, then finally put Secure Boot into Setup Mode and enroll keys.
+Once keys are entrolled, Secure Boot is activated automatically.
 
-AI-generated stuff which sounds helpful:
-Configure ukify to sign the UKI. This involves creating a signing key and certificate, which can be done with `ukify genkey` using a configuration file.
-The generated keys and certificates are then used by ukify to sign the UKI during the build process.
-
-Also, [ArchWiki kernel-install](https://wiki.archlinux.org/title/Kernel-install#Plugins)
-mentions `kernel-install inspect` but it fails on Ubuntu.
-
-I found somewhere to use the `mokutil` utility, which sounds simpler than using BIOS to enroll keys into firmware as
-described at [Secure Boot with UKI](https://copyninja.in/blog/enable_secureboot_ukify.html). Test this out too.
+Beware: when creating `/etc/kernel/uki.conf` (see example in `/usr/lib/kernel/uki.conf`), don't forget to
+start the file with `[UKI]` otherwise it won't be valid.
 
 To test that the .efi are now correctly signed and the keys are correctly registered in UEFI BIOS nvmem, enable
 Secure Boot and reboot.

@@ -97,7 +97,7 @@ systemd-analyze pcrs
 ```
 On my system, I can see the keys '11' and '12' unpopulated (zeroed out),
 so there's no point in including those. The most important key is 9 - kernel initrd,
-since that's the single unprotected thing in Ubuntu's Secure Boot security chain.
+since that's the single unprotected thing in [Ubuntu's Secure Boot security chain](https://documentation.ubuntu.com/security/security-features/platform-protections/secure-boot/).
 
 ## After you update BIOS or kernel or rebuild initrd
 

@@ -12,7 +12,7 @@ GRUB supports the Argon2i and Argon2id PBKDFs which are considered secure;
 
 Unfortunately, this is not easy to achieve:
 ArchLinux installer 2026 or later has up-to-date GRUB but it isn't signed 
-and thus not eligible for Secure Boot; Ubuntu 25.10 packages older GRUB 
+and thus not eligible for Secure Boot without custom keys; Ubuntu 25.10 packages older GRUB 
 which is signed but doesn't support Argon2.
 
 Also, if at any point is Argon2 deemed insecure, you'll have to wait years

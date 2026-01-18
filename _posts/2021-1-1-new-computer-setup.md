@@ -96,18 +96,6 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
-## gnome text editor
-
-* Settings Cog wheel > Show Line numbers
-* Settings Cog wheel > Show Right Margin
-* Settings Cog wheel > disable "Text Wrapping"
-* Settings Cog wheel > disable "Check Spelling"
-* Preferences > Appearance: select 2nd row 2nd column.
-* Preferences > Highlight current line
-* Preferences > Display overview map
-* Preferences > Right margin: set to 120
-* Preferences > Restore Session: disable
-
 ## fish
 
 [Install fish](../fish/).
@@ -164,23 +152,6 @@ When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authen
 ## Commander
 
 See [Commander](../commander/).
-
-## Resilio Sync
-
-Download [Resilio Sync](https://www.resilio.com) from [Desktop download page](https://www.resilio.com/platforms/desktop/);
-[direct link to x86-64 binary](https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz) and
-unzip to `~` and run it: `./rslsync`.
-
-Head to [localhost:8888](http://localhost:8888). Webui runs on localhost only, thus no strong password
-is needed: use `v` for both username and password. Use computer hostname as name shown when you send and receive folders.
-
-Create the base folder for rslsync: `cd ~ && mkdir -p "Resilio Sync"`. Now click `+ / Enter a key or link`. On other
-computer click "Share" on a folder, then "Key" and "Read & Write". Then select the target folder, e.g.
-`/home/mavi/Resilio Sync/muf`. The sync should now start.
-
-## HOME Setup
-
-Copy home files from resilio sync to `~`.
 
 ## Desktop
 

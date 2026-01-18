@@ -243,7 +243,7 @@ Also [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 ## Docker
 
 ```bash
-sudo apt install docker docker-buildx docker-compose-v2
+sudo apt install docker.io docker-buildx docker-compose-v2
 ```
 
 Add your user to the docker group:

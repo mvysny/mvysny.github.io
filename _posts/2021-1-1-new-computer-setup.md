@@ -118,6 +118,8 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 ## Firefox
 
+Install [LibreWolf](https://librewolf.net/).
+
 [Firefox HW Acceleration](../firefox-hw-acceleration/).
 
 Login to firefox account and sync.

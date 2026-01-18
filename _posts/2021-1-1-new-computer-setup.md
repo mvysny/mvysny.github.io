@@ -39,13 +39,6 @@ Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthed
 Run `lsblk` to make sure the root fs resides on an encrypted dm-crypt partition; also
 run `sudo dmsetup ls --tree -o blkdevname`.
 
-Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
-If the file is missing:
-```bash
-$ sudo cp /usr/lib/sysctl.d/55-kernel-hardening.conf /etc/sysctl.d/
-$ sudo vim /etc/sysctl.d/55-kernel-hardening.conf
-```
-
 Enable trim: [Enable Discard/Trim for your SSD](../ssd-discard/).
 
 ### btrfs

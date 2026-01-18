@@ -59,6 +59,8 @@ Optimize systemd journal by disabling copy-on-write (COW): `sudo chattr +C /var/
 
 Both `user_xattr` and `extends` are enabled automatically for btrfs.
 
+Install `dracut` to replace old tools: `sudo apt install dracut`
+
 Reboot.
 
 # Install basic software

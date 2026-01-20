@@ -92,25 +92,6 @@ Install additional Gstreamer plugins:
 * `gstreamer1.0-libav` to add support for m4a and mpc
 * `gstreamer1.0-plugins-bad` to add support for mod
 
-## GNOME Settings
-
-Go to Settings. Then:
-
-* Multitasking > Application Switching > Include Apps From Current Workspace only
-* Appearance > Color: select blue
-* Ubuntu Desktop
-  * Enhanced Tiling: On
-  * Tiling Popup: Off
-  * Tile Groups: Off
-* Privacy
-  * Location Services > Turn on
-  * File History & trash
-    * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
-  * Screen Lock: Blank Screen Display: Never 
-* Date & Time: Enable Automatic Time Zone
-* Region & Language: Manage Installed Languages, add Finnish/Suomi and make it default.
-* Keyboard: Add "Slovak QWERTY" and "Finnish".
-
 ## Software & Updates
 
 Go to the "Updates" tab and set:

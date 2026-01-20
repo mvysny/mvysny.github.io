@@ -56,45 +56,9 @@ Install `dracut` to replace old tools: `sudo apt install dracut`
 
 Reboot.
 
-# Install basic software
-
-```bash
-sudo apt update
-sudo apt -V dist-upgrade
-sudo snap refresh
-sudo apt install git htop fish net-tools rhythmbox curl whois fzf eza duf lazygit ripgrep fastfetch inxi vim
-sudo update-alternatives --config editor     # select vim
-sudo apt install mpv ffmpeg easytag virt-manager
-sudo apt autoremove --purge totem
-sudo apt install dialect gnome-weather showtime totem-video-thumbnailer
-sudo snap install pinta localsend nvim
-```
-
-Uninstall gedit:
-```bash
-sudo apt autoremove --purge gedit
-```
-
 ## gnome console
 
 [Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu).
-
-Edit `~/.config/alacritty/alacritty.toml` and remove the 'theme' line, to set up
-the default theme.
-
-## gnome keyboard shortcuts
-
-Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
-
-* "Launchers" / "Launch Terminal" to `Super+Enter`
-* Navigation:
-  * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
-    This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
-  * "Move Window one workspace to the right" set to **Shift+Super+Page Down**, setting it to the same setting as before.
-* "Windows":
-  * "Hide window": disabled
-  * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
-  * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
 ## fish
 
@@ -110,44 +74,9 @@ Install [LibreWolf](https://librewolf.net/).
 
 [Firefox HW Acceleration](../firefox-hw-acceleration/).
 
-Login to firefox account and sync.
-
 ## gnome system monitor extension
 
 Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
-
-## git+sshkey
-
-Create the `~/.gitconfig` file:
-```
-[user]
-  name = Martin Vysny
-  email = mavi@vaadin.com
-[alias]
-  ci = commit
-  st = status
-[color]
-  ui = auto
-[push]
-  default = current
-  followTags = true
-  autoSetupRemote = true
-[core]
-  editor = vim
-  autocrlf = input
-[merge]
-  conflictstyle = diff3
-[pull]
-  rebase = true
-```
-
-Create ssh key & press enter to keep the default settings:
-```bash
-$ ssh-keygen
-```
-
-Upload the public key to [github ssh keys](https://github.com/settings/keys).
-When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
 
 ## Commander
 

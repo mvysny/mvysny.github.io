@@ -126,92 +126,9 @@ Settings:
 
 Set [Brave](https://search.brave.com/) as the default search engine.
 
-## gnome system monitor extension
-
-Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
-
-## git+sshkey
-
-Create the `~/.gitconfig` file:
-```
-[user]
-  name = Martin Vysny
-  email = mavi@vaadin.com
-[alias]
-  ci = commit
-  st = status
-[color]
-  ui = auto
-[push]
-  default = current
-  followTags = true
-  autoSetupRemote = true
-[core]
-  editor = vim
-  autocrlf = input
-[merge]
-  conflictstyle = diff3
-[pull]
-  rebase = true
-```
-
-ONLY WHEN NOT IN THE BASE IMAGE (since I want all VMs to have their own ssh keys): Create ssh key & press enter to keep the default settings:
-```bash
-ssh-keygen
-```
-
-Upload the public key to [github ssh keys](https://github.com/settings/keys).
-When cloning github repo, [verify GitHub keys](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
-
 ## Commander
 
 See [Commander](../commander/).
-
-## Intellij
-
-There's [an IDEA snap for arm64 distro](https://youtrack.jetbrains.com/issue/IDEA-253637/snapcraft.io-Add-ARM64-snap-package-for-Idea-based-IDEs),
-so you can simply:
-```bash
-$ sudo snap install intellij-idea-ultimate --classic
-```
-
-Login to my user account. To restore settings, follow [Sync settings between IDE instances](https://www.jetbrains.com/help/idea/sharing-your-ide-settings.html#IDE_settings_sync).
-Make sure to:
-
-1. overwrite local settings from jetbrains account
-2. disable "sync plugins" - it doesn't work reliably and would install/uninstall random plugins as I
-   start/stop VMs.
-
-To enable IDEA to profile/gather stats/something, create `/etc/sysctl.d/99-async-profiler.conf`:
-```
-kernel.perf_event_paranoid=1
-kernel.kptr_restrict=0
-```
-Reboot to take effect.
-
-Further settings:
-
-- For the love of God, [disable fucking "Automatically show first error in editor"](https://youtrack.jetbrains.com/issue/IDEA-367475)
-- [Enable Wayland](../idea-wayland/)
-- Optional: To get rid of fish-related `read-only file system` issues, uncheck `File / Settings / Tools -> Terminal -> un-checking "Shell Integration"`
-
-## GNOME Settings
-
-Go to Settings. Then:
-
-* Multitasking > Application Switching > Include Apps From Current Workspace only
-* Ubuntu Desktop
-  * Enhanced Tiling: On
-  * Tiling Popup: Off
-  * Tile Groups: Off
-* Privacy
-  * Location Services > Turn on
-  * File History & trash
-    * Enable "Automatically Delete Trash Content" and "Automatically Delete Temporary Files"
-  * Screen Lock: Blank Screen Display: Never 
-* System
-  * Date & Time: Enable Automatic Time Zone
-  * Users: enable 'Automatic Login'
 
 # Software & Updates
 

@@ -70,47 +70,6 @@ Regarding additional fs flags:
 * `extents` - ext4: unknown. There's no longer a mount option `extent` or `extents`,
   probably they are on by default, but it doesn't hurt to turn them on via `tune2fs -O extents`.
 
-# Install basic software
-
-```bash
-sudo apt update
-sudo apt -V dist-upgrade
-sudo snap refresh
-sudo apt install git lazygit neovim htop fish gnome-text-editor libreoffice net-tools curl whois fzf eza duf errands
-sudo apt autoremove --purge rhythmbox thunderbird
-sudo update-alternatives --config editor     # select nvim
-sudo snap install pinta
-```
-
-Uninstall gedit and CUPS (printing support):
-```bash
-sudo apt autoremove --purge gedit ufw
-sudo apt autoremove --purge "cups*"
-```
-
-UTM/virt-manager: to enable proper [memory ballooning](https://en.wikipedia.org/wiki/Memory_ballooning),
-install [qemu-guest-agent](https://pve.proxmox.com/wiki/Qemu-guest-agent):
-```bash
-sudo apt install qemu-guest-agent
-```
-It runs a process named `qemu-ga` via systemd. How to check from guest/host that the ballooning works correctly - unknown yet.
-
-## gnome keyboard shortcuts
-
-Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
-
-* "Launchers" / "Launch Terminal" to `Super+Enter`.
-* Navigation:
-  * "Move Window one workspace to the left" set to **Shift+Super+Page Up**, setting it to the same setting as before.
-    This, for some fucking reason, stops capturing **Shift+Ctrl+Alt+Arrow Left** from Intellij
-  * "Move Window one workspace to the right" set to **Shift+Super+Page Down**, setting it to the same setting as before.
-* "Windows":
-  * "Hide window": disabled
-  * "Move window": disabled; you can always move window by Win+left-dragging anywhere within the window
-  * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
-
-In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
-
 # Software & Updates
 
 Go to the "Updates" tab and set:

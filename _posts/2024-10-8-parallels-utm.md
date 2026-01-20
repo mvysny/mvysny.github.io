@@ -65,6 +65,19 @@ type with keyboard and mouse clicks randomly don't work or show crazy menus. The
 Very annoying and frustrating. The solution is to avoid pressing any modifier keys until Linux-in-UTM fully
 boots and you log in.
 
+## Ubuntu Server on UTM
+
+The [UTM Ubuntu](https://docs.getutm.app/guides/ubuntu/) guide is straightforward - you download the Ubuntu Server ARM64 ISO
+straight from Canonical and install it. Use Ubuntu 24.04 since it contains newest drivers which will work with UTM 3d-accelerated hardware.
+Couple of tips:
+
+* When the installation finishes and you're asked to reboot the machine, the machine freezes. Just power it down and up again.
+* Before powering the machine up, remove the CD device, so that the VM boots off the hard drive.
+* After installing `ubuntu-desktop` and rebooting, it can take up to 5 minutes for Ubuntu to boot up,
+  during which the VM will appear frozen. The reason is that `systemd-networkd-wait-online.service` can wait 90 seconds for network to come up.
+* Go through [Speed Up Ubuntu Boot](../speed-up-Ubuntu-boot/)
+* Before any change done to the VM that might cause the VM not no boot, clone the VM.
+
 ## UTM shared folders
 
 We'll use the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).

@@ -65,6 +65,43 @@ type with keyboard and mouse clicks randomly don't work or show crazy menus. The
 Very annoying and frustrating. The solution is to avoid pressing any modifier keys until Linux-in-UTM fully
 boots and you log in.
 
+## UTM shared folders
+
+We'll use the [UTM VirtFS shared folder support](https://docs.getutm.app/guest-support/linux/#virtfs).
+
+Run these commands to prepare stuff:
+```bash
+$ sudo mkdir /mnt/utm
+$ sudo apt install bindfs
+```
+Add this to `/etc/fstab`:
+```
+# https://docs.getutm.app/guest-support/linux/
+share	/mnt/utm	9p	trans=virtio,version=9p2000.L,rw,_netdev,nofail	0	0
+# bindfs mount to remap UID/GID
+/mnt/utm /home/mavi/shared fuse.bindfs map=501/1000:@20/@1000,x-systemd.requires=/mnt/utm,_netdev,nofail,auto 0 0
+```
+
+I'm assuming the user id (UID) of 501 and GID of 20. To figure out these values,
+run terminal on your Mac and run `ls -na`: it should list all files in your home
+folder and the UID and GID of the owner (you).
+
+## Boot Settings (UTM only)
+
+To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732).
+In short, edit `/etc/default/grub` and set `GRUB_CMDLINE_LINUX_DEFAULT="noquiet console=tty1 systemd.log_target=kmsg` -
+that will make UTM show the tty1 on boot. If not, press `⌥←` or `⌥→` to toggle between tty1, tty2, ..., tty12 until you arrive to tty1 and see the boot messages.
+Don't forget to run `sudo update-grub` to write changes done to the `GRUB_CMDLINE_LINUX_DEFAULT` variable.
+
+Tips: Never use the `nomodeset` option - the VM no longer initializes the display in UTM and is no longer usable.
+
+Beware though: if you use GPU-accelerated drivers for UTM (which you should), those drivers
+are very slow showing/scrolling bootup kernel logs, and will cause the VM bootup time
+to increase from 22 seconds to 28 seconds. If you don't need to see those messages
+(you usually don't), revert `GRUB_CMDLINE_LINUX_DEFAULT=""`, `sudo update-grub` and reboot.
+The downside is that you'll see "Display output is not active" for 20 seconds until
+Ubuntu graphical interface boots up.
+
 ## UTM Blockers
 
 Some Linux apps **DO NOT WORK** in UTM with 3d acceleration/gpu: the apps will only display a blank rectangle,

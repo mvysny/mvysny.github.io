@@ -120,25 +120,6 @@ Go to the "Updates" tab and set:
 LTS: the reason is that Parallels only supports Ubuntu 22.04; it shows scary segfaults on Ubuntu 23.10+.
 Before upgrading to Ubuntu 24.04, I need to test that it's rock-solid; also this may require Parallels 20+.
 
-## Docker
-
-```bash
-sudo apt install docker.io docker-buildx docker-compose-v2
-```
-
-Add your user to the docker group:
-```bash
-sudo usermod -aG docker parallels
-```
-Reboot, and test it out:
-```bash
-docker run --rm -ti ubuntu /bin/bash
-```
-
-## Terminal
-
-[Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu)
-
 ## Boot Settings (UTM only)
 
 To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732).

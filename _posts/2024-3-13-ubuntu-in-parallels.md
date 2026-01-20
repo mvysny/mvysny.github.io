@@ -111,14 +111,6 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
 
 In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
 
-## fish
-
-[Install fish](../fish/).
-
-## Commander
-
-See [Commander](../commander/).
-
 # Software & Updates
 
 Go to the "Updates" tab and set:

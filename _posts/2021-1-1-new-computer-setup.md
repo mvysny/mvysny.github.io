@@ -56,32 +56,6 @@ Install `dracut` to replace old tools: `sudo apt install dracut`
 
 Reboot.
 
-## gnome console
-
-[Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu).
-
-## fish
-
-[Install fish](../fish/).
-
-## LazyVim
-
-[Install LazyVim](https://github.com/mvysny/lazyvim-ubuntu).
-
-## Firefox
-
-Install [LibreWolf](https://librewolf.net/).
-
-[Firefox HW Acceleration](../firefox-hw-acceleration/).
-
-## gnome system monitor extension
-
-Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monitor/).
-
-## Commander
-
-See [Commander](../commander/).
-
 ## Rhythmbox
 
 * Preferences > Plugins > Disable "Alternative Toolbar", "DAAP Music Sharing", "Last FM", "Portable Players"

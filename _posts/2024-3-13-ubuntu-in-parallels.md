@@ -6,24 +6,6 @@ title: New Machine - Ubuntu in Parallels/UTM Apple Silicon/virt-manager
 I need to setup new machine from time to time, and I always forget all the things that need to be set up.
 So, here it goes. I won't setup any encryption since I expect MacBook disk itself to be already encrypted.
 
-# Getting ISO
-
-## virt-manager
-
-Install virt-manager on host os:
-```bash
-$ sudo apt install virt-manager
-```
-This will add your user to libvirt automatically; log out and back in to be able to access the VMs.
-Then, simply [download the Ubuntu Desktop ISO](https://ubuntu.com/download/desktop) for x86-64, the newest Ubuntu.
-
-Go to virt-manager settings:
-
-* General > Enable system tray icon
-* New VM > x86 Firmware: UEFI
-* Console > Resize guest with window: On
-
-
 ## Post-installation
 
 ### ext4

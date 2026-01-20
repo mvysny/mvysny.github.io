@@ -97,7 +97,7 @@ Games generally do run, which is amazing. The downside is that not all games wor
 For example Starcraft 2 launches and works, but some missions crawl down to 5 FPS
 and stay there (notably Nova missions), making them unplayable.
 
-The best way is to grab a 2-week trial period of Parallels and test all of your games.
+The best way is to run Steam games on native Linux.
 
 # Conclusion
 

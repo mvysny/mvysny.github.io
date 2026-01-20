@@ -100,21 +100,6 @@ Go to the "Updates" tab and set:
 
 Also [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 
-## Docker
-
-```bash
-sudo apt install docker.io docker-buildx docker-compose-v2
-```
-
-Add your user to the docker group:
-```bash
-sudo usermod -aG docker parallels
-```
-Reboot, and test it out:
-```bash
-docker run --rm -ti ubuntu /bin/bash
-```
-
 ## Fixing Ubuntu Desktop
 
 If you installed Ubuntu Server first,

@@ -139,31 +139,6 @@ docker run --rm -ti ubuntu /bin/bash
 
 [Install Alacritty](https://github.com/mvysny/lazyvim-ubuntu)
 
-## Scripts
-
-See [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
-
-For historic reasons, when Intellij was unstable on UTM/wayland:
-
-`~/killintellij`:
-```bash
-#!/bin/bash
-set -e -o pipefail
-
-echo "Soft-killing IDEA"
-killall idea || echo "IDEA not running"
-sleep 3
-echo "Hard-killing IDEA"
-killall -9 idea || echo "IDEA not running"
-sleep 3
-echo "Deleting cache"
-rm -rf .cache/JetBrains
-```
-
-## Fix ubuntu-server
-
-Go through [ubuntu-desktop-from-server](../ubuntu-desktop-from-server/).
-
 ## Boot Settings (UTM only)
 
 To see the kernel log on boot: see [UTM #6732](https://github.com/utmapp/UTM/discussions/6732).

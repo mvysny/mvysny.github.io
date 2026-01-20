@@ -82,27 +82,6 @@ Follow [Install System Monitor Extension To Ubuntu Gnome](../ubuntu-system-monit
 
 See [Commander](../commander/).
 
-## Desktop
-
-Create a file named `Startup2.desktop` in `~/Desktop`, with the following contents:
-```
-[Desktop Entry]
-Encoding=UTF-8
-Exec=/home/mavi/local/startup.sh
-Icon=/usr/share/pixmaps/debian-logo.png
-Name=Startup
-Terminal=false
-Type=Application
-Version=1.0
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-RunOnDiscreteGpu=false
-X-KDE-SubstituteUID=false
-X-KDE-Username=
-```
-
-Make it executable, then right-click it on the Desktop and check "Allow Launching".
-
 ## Rhythmbox
 
 * Preferences > Plugins > Disable "Alternative Toolbar", "DAAP Music Sharing", "Last FM", "Portable Players"

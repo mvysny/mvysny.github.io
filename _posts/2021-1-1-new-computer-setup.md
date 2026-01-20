@@ -74,19 +74,7 @@ Go to the "Updates" tab and set:
 
 Also [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 
-## Fixing Ubuntu Desktop
-
-If you installed Ubuntu Server first,
-go through [ubuntu-desktop-from-server](../ubuntu-desktop-from-server/).
-
 ## Increase security
 
 [Secure Boot 2](../ubuntu-secure-boot2/)
-
-## Steam
-
-```bash
-sudo snap install steam
-```
-Create a 'gaming' user and set up Steam there.
 

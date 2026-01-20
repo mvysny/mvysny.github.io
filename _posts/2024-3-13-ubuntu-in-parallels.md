@@ -58,14 +58,6 @@ Name the machine after its expected usage, e.g. `mavi-xyz-vmpar-experiments` or 
 
 ## Post-installation
 
-Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
-
-If the file is missing:
-```bash
-$ sudo cp /usr/lib/sysctl.d/55-kernel-hardening.conf /etc/sysctl.d/
-$ sudo vim /etc/sysctl.d/55-kernel-hardening.conf
-```
-
 ### ext4
 
 Enable trim. You need to enable discard for all of your ext4 partitions: simply add the `discard` option to
@@ -118,18 +110,6 @@ Open "Keyboard Settings" GNOME settings, "View and customize shortcuts", set:
   * "Resize window": disabled; you can always resize window by Win+middleclick-dragging near appropriate border of the window
 
 In order to fix mouse scrolling speed, open `gnome-tweaks`, "Keyboard & Mouse" and set "Acceleration profile" to "Flat".
-
-## gnome text editor
-
-* Settings Cog wheel > Show Line numbers
-* Settings Cog wheel > Show Right Margin
-* Settings Cog wheel > disable "Text Wrapping"
-* Settings Cog wheel > disable "Check Spelling"
-* Preferences > Appearance: select 2nd row 2nd column.
-* Preferences > Highlight current line
-* Preferences > Display overview map
-* Preferences > Right margin: set to 120
-* Preferences > Restore Session: disable
 
 ## fish
 

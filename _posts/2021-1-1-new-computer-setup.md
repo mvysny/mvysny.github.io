@@ -14,7 +14,3 @@ Go to the "Updates" tab and set:
 
 Also [Updating Ubuntu Quickly](../updating-ubuntu-quickly/).
 
-## Increase security
-
-[Secure Boot 2](../ubuntu-secure-boot2/)
-

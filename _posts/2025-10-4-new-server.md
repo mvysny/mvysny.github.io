@@ -9,9 +9,7 @@ correctly, so no need to modify the fs options.
 
 # Post-installation
 
-Create the 2G swapfile according to [btrfs swapfile docs](https://btrfs.readthedocs.io/en/latest/Swapfile.html).
-
-Enable user-accessible dmesg: edit `/etc/sysctl.d/10-kernel-hardening.conf` and `kernel.dmesg_restrict = 0`.
+- swap file
 
 # Install basic software
 

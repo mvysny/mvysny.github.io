@@ -67,4 +67,9 @@ This time a FedEx contractor reached out via SMS and offered a wednesday
 delivery. Since I wasn't at home, I changed the delivery for Thursday.
 (Sure, since it's FedEx, I probably have to be present in every house in a 200 meter radius, but still, there's hope this time they'll send someone that can use Google Maps).
 
-
+Long story short: Thursday no delivery, app shows package in local depot, no estimate date.
+Friday no delivery, app shows package in local depot, no estimate date.
+Saturday I'm calling provided phone number, where I am welcomed by a friendly
+AI and I'm told that my package is in a local depot, no estimate date.
+AI told me that a human will be present on a workday (Monday in two days),
+I'll let you know afterwards how the story ends.

@@ -71,7 +71,7 @@ says a friendly Framework sticker which you receive with the laptop.
 *Sigh* that's cool and good, but I don't want to have to fix my stuff on DAY ONE.
 Luckily Framework support is top-notch, replied in a day
 and quickly arranged for a shipment of the replacement cable + display.
-Via FedEx. I'm not fucking amused.
+Via FedEx. Fuck.
 
 This time a FedEx contractor reached out via SMS and offered a Wednesday
 delivery. Since I wasn't at home, I changed the delivery for Thursday.

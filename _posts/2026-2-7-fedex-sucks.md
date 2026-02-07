@@ -40,8 +40,8 @@ a chat window. The lady was super-nice but super-unhelpful:
 she couldn't tell me where the package was, and she couldn't arrange
 delivery to a postal locker - only to a FedEx office at Vantaa Airport.
 That was a bit far, and I doubt that would happen: you see, FedEx
-already gave the parcel to some local Finnish company and apparently
-has no levers to redirect the package anymore.
+already drops the parcel to some local Finnish company (AKA trusted partner)
+and then *forgets about the whole thing*.
 
 So, a complete frustrating clusterfuck. Long story short, the local company sent me a SMS and
 I was able to arrange pickup from a locker.

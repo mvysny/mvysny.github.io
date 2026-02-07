@@ -12,7 +12,7 @@ chat useless.
 I was really looking forward to testing out the Framework
 computer. It was scheduled to be delivered via FedEx, so
 I installed the FedEx app. It looked medieval but hey at least
-it shown my package, its route and the estimated delivery date.
+it shown my package, its routing history and the estimated delivery date.
 So far so good.
 
 Upon the delivery date I worked from home so that I would be ready

@@ -11,7 +11,7 @@ chat useless.
 
 I was really looking forward to testing out the Framework
 computer. It was scheduled to be delivered via FedEx, so
-I installed the FedEx app. It looks medieval but hey at least
+I installed the FedEx app. It looked medieval but hey at least
 it shown my package, its route and the estimated delivery date.
 So far so good.
 
@@ -27,8 +27,8 @@ away and backed off since I wasn't home. Well I was home, in my house
 Lesson #1: don't trust couriers to find your house, use postal lockers.
 
 FedEx told me they will try to make one more delivery before returning
-the parcel to the sender. Brilliant - the courier will try to drop my
-expensive laptop to a random neigbour then the postal machinery will
+the parcel to the sender. Brilliant - the courier will once again try to drop my
+expensive laptop to a random neigbour; then the postal machinery will
 send the laptop back to Germany. So I reached out to FedEx support.
 
 ## FedEx Support is terrible
@@ -42,7 +42,7 @@ That was a bit far, and I doubt that would happen: you see, FedEx
 already gave the parcel to some local Finnish company and apparently
 has no levers to redirect the package anymore.
 
-So, a clusterfuck. Long story short, the local company sent me a SMS and
+So, a complete frustrating clusterfuck. Long story short, the local company sent me a SMS and
 I was able to arrange pickup from a locker.
 
 ## The UX is horrible
@@ -51,8 +51,20 @@ FedEx app shows the package as undelivered days after I got the laptop.
 So, the app is medieval, slow, shows obsolete data, and offers no
 possibility to contact anyone nor to change the delivery method.
 
-Compared to that, Finnish Postti is just awesome: the app is perfect
+Compared to that, Finnish Postti is just awesome: the app looks modern;
+the app will notify me if I have a possibility to change delivery method;
 and the couriers are able to find my house.
 
 # Second package
+
+Framework display stopped working on day 1 after the eDP cable was cut
+by laptop's hinges and then short-circuited with a bright light and
+a bunch of smoke. Luckily Framework support is top-notch, replied in a day
+and quickly arranged for a shipment of the replacement cable + display.
+Via FedEx. Great.
+
+This time a FedEx contractor reached out via SMS and offered a wednesday
+delivery. Since I wasn't at home, I changed the delivery for Thursday.
+(Sure, since it's FedEx, I probably have to be present in every house in a 200 meter radius, but still, there's hope this time they'll send someone that can use Google Maps).
+
 

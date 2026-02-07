@@ -50,7 +50,8 @@ I was able to arrange pickup from a locker.
 
 FedEx app shows the package as undelivered days after I got the laptop.
 So, the app is medieval, slow, shows obsolete data, and offers no
-possibility to contact anyone nor to change the delivery method.
+possibility to contact anyone nor to change the delivery method,
+other than via ad-hoc SMS messages from third parties.
 
 Compared to that, Finnish Postti is just awesome: the app looks modern;
 the app will notify me if I have a possibility to change delivery method;

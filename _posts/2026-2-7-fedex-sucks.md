@@ -64,7 +64,7 @@ Framework display stopped working on day 1 after the eDP cable was cut
 by laptop's hinges and then short-circuited with a bright light and
 a bunch of smoke. *You should be able to fix your stuff*
 says a friendly Framework sticker which you receive with the laptop.
-*Sigh* that's cool and all good, but I don't want to have to fix my stuff on DAY ONE.
+*Sigh* that's cool and good, but I don't want to have to fix my stuff on DAY ONE.
 Luckily Framework support is top-notch, replied in a day
 and quickly arranged for a shipment of the replacement cable + display.
 Via FedEx. I'm not fucking amused.

@@ -44,7 +44,7 @@ a chat window. The lady was super-nice but super-unhelpful:
 she couldn't tell me where the package was, and she couldn't arrange
 delivery to a postal locker - she could only change to a FedEx office at Vantaa Airport.
 That was a bit far, and at this point my trust for FedEx hit the all-year low and I was *really unconvinced* the change will take effect: you see, FedEx
-already drops the parcel to some local Finnish company (AKA trusted partner)
+already dropped the parcel to some local Finnish company (AKA trusted partner)
 and then *forgets about the whole thing*.
 
 So, a complete frustrating clusterfuck. Long story short, the local company sent me a SMS and

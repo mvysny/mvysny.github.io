@@ -27,7 +27,7 @@ I happened to be at home in my own bloody house
 200 meters away!
 
 Lesson #1: don't trust couriers to find your house, use postal lockers.
-As a bonus, you don't have to be at home all day waiting for the courier to show up.
+As a bonus, you don't have to sit at home all day, waiting for the courier to show up.
 
 FedEx told me they will try to make one more delivery before returning
 the parcel to the sender. Brilliant - the courier will once again try to drop my

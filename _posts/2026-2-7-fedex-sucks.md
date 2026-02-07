@@ -21,9 +21,9 @@ I received a message that the delivery failed and the message is
 returned to the local depot. The courier attached the photo
 of a house and claimed I wasn't home - WHAT? The photo wasn't of my
 house - the bloody courier
-just tried to drop my expensive laptop to a random house 200 meters
-away and backed off since I wasn't home. Well I was home, it's just
-I happened to be at home in my own bloody house
+just tried to drop my expensive laptop to a *random house 200 meters
+away* and backed off since I wasn't home. Well I *was* home, it's just
+I happened to be at home in *my own bloody house*
 200 meters away!
 
 Lesson #1: don't trust couriers to find your house, use postal lockers.

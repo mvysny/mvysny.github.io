@@ -38,8 +38,8 @@ FedEx web site allows you to send feedback, apparently to `/dev/null`
 since nobody bothered to reply to this day. Fortunately there's
 a chat window. The lady was super-nice but super-unhelpful:
 she couldn't tell me where the package was, and she couldn't arrange
-delivery to a postal locker - only to a FedEx office at Vantaa Airport.
-That was a bit far, and I doubt that would happen: you see, FedEx
+delivery to a postal locker - she could only change to a FedEx office at Vantaa Airport.
+That was a bit far, and at this point my trust for FedEx hit the all-year low and I was *really unconvinced* the change will take effect: you see, FedEx
 already drops the parcel to some local Finnish company (AKA trusted partner)
 and then *forgets about the whole thing*.
 

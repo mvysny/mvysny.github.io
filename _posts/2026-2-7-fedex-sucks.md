@@ -53,8 +53,9 @@ So, the app is medieval, slow, shows obsolete data, and offers no
 possibility to contact anyone nor to change the delivery method,
 other than via ad-hoc SMS messages from third parties.
 
-Compared to that, Finnish Postti is just awesome: the app looks modern;
-the app will notify me if I have a possibility to change delivery method;
+I hear people complaining about Finnish Postti company. I don't get it.
+Compared to FedEx, Finnish Postti is a night-and-day difference: the app looks modern,
+the app will notify me if I have a possibility to change delivery method,
 and the couriers are able to find my house.
 
 # Second package

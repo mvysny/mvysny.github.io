@@ -69,7 +69,7 @@ Luckily Framework support is top-notch, replied in a day
 and quickly arranged for a shipment of the replacement cable + display.
 Via FedEx. I'm not fucking amused.
 
-This time a FedEx contractor reached out via SMS and offered a wednesday
+This time a FedEx contractor reached out via SMS and offered a Wednesday
 delivery. Since I wasn't at home, I changed the delivery for Thursday.
 (Sure, since it's FedEx, I probably have to be present in every house in a 200 meter radius, but still, there's hope this time they'll send someone that can use Google Maps).
 

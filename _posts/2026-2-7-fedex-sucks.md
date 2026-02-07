@@ -19,7 +19,7 @@ Upon the delivery date I worked from home so that I would be ready
 to receive the package. Nothing happened at all, and at the evening
 I received a message that the delivery failed and the message is
 returned to the local depot. The courier attached the photo
-of a house; turns out the photo is not of my house. The bloody courier
+of a house which isn't mine - the bloody courier
 just tried to drop my expensive laptop to a random house 200 meters
 away and backed off since I wasn't home. Well I was home, in my house
 200 meters away!

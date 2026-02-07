@@ -32,6 +32,10 @@ key. Once that happens:
 - You are a victim of the evil maid attack. Do NOT type in any passwords and do not trust your OS;
   wipe the disks clean.
 
+EDIT: what really happened is that Plymouth/Dracut continued to ask for
+PIN after kernel upgrade, but the PIN was unable to unlock the disk and
+the boot failed.
+
 # Prerequisites
 
 This can be set up on an already installed Linux. You'll need:
@@ -123,8 +127,9 @@ you should now be asked for the password.
 Another way is to boot off an USB stick and run
 `sudo tpm2_dictionarylockout --clear-lockout`.
 
-Another way is to add the `rd.luks.options=timeout=0` kernel parameter to GRUB
-boot entry. This should cause Plymouth to skip waiting for TPM and fall back to password.
+Unfortunately adding the `rd.luks.options=timeout=0` kernel parameter to GRUB
+boot entry doesn't help: looks to be ignored and Dracut still asks for PIN.
+No other `rd.*` from [dracut man 7](https://man7.org/linux/man-pages/man7/dracut.cmdline.7.html) seem to help either. Keep a fallback USB stick around, just in case.
 
 # `update-initramfs` fails with `cryptsetup: WARNING: nvme0n1p3_crypt: ignoring unknown option 'tpm2-device'`
 

@@ -11,15 +11,16 @@ chat useless.
 
 I was really looking forward to testing out the Framework
 computer. It was scheduled to be delivered via FedEx, so
-I installed the FedEx app. It looked medieval but hey at least
-it shown my package, its routing history and the estimated delivery date.
+I installed the FedEx app. The app looks medieval but hey at least
+it shows my package, its routing history and the estimated delivery date.
 So far so good.
 
 Upon the delivery date I worked from home so that I would be ready
-to receive the package. Nothing happened at all, and at the evening
+to receive my shiny new laptop. Sadly nothing happened at all, and at the evening
 I received a message that the delivery failed and the message is
 returned to the local depot. The courier attached the photo
-of a house which isn't mine - the bloody courier
+of a house and claimed I wasn't home - WHAT? The photo wasn't of my
+house - the bloody courier
 just tried to drop my expensive laptop to a random house 200 meters
 away and backed off since I wasn't home. Well I was home, it's just
 I happened to be at home in my own bloody house

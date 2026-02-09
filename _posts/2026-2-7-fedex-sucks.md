@@ -83,3 +83,9 @@ Saturday I'm calling provided phone number, where I am welcomed by a friendly
 AI and I'm told that my package is in a local depot, no estimate date.
 AI told me that a human will be present on a workday (Monday in two days),
 I'll let you know afterwards how the story ends.
+
+# Happy End
+
+The story ends well: the courier was able to find my house on Monday, so
+finally I have a fully functioning laptop again :-D Horray!
+

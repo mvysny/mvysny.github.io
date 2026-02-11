@@ -6,7 +6,7 @@ title: Tmux Startup
 On my servers, I like to have two things:
 
 * `~/README.md` which documents everything that's installed on the server machine; its purpose, paths, commands, etc etc
-* A Tmux startup script which runs all programs, supposed to be running on the server, in byobu
+* A Tmux startup script which runs all programs, supposed to be running on the server, in tmux
 
 First, install tmux via `sudo apt install tmux`. Then,
 let's create a script which will:
@@ -19,7 +19,7 @@ Create a script named `~/startup` with the following contents:
 
 ```bash
 #!/usr/bin/env bash
-SESSION="work"
+SESSION="startup"
 
 # If session already exists → just attach
 tmux has-session -t "$SESSION" 2>/dev/null && {

@@ -11,7 +11,7 @@ On my servers, I like to have two things:
 I'll use the Byobu Tmux integration. Tmux scripting sucks hard (any problem in the script is silently ignored),
 but it kinda works so we'll use that. First, install byobu via `sudo apt install byobu`. Then,
 let's create a Byobu profile named `startup` (it's just a name, you can use `foo` equally well).
-Create a file named `~/.byobu/windows.tmux.startup` with the following contents:
+Create a file named `~/.config/byobu/windows.tmux.startup` with the following contents:
 
 ```byobu
 new-session -n stats ;

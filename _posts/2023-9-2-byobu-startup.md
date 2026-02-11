@@ -55,4 +55,5 @@ BYOBU_WINDOWS=startup byobu
 * To reattach to a running session, just run `byobu`
 * `F2` for new window
 * `F3`/`F4` for next/prev window
+* `c-A` then `[` (enable screen-type scrolling); `hjkl` and `c-D`/`c-U` works with cursor movements
 

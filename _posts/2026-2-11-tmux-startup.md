@@ -47,7 +47,7 @@ I simply run this script manually after the server boots up, from a ssh session.
 
 # Configuration
 
-To change the color scheme and to change the hot key to `c-A`,
+To change the color scheme and to change the hot key to `C-a`,
 create `~/.tmux.conf`:
 ```
 # Set the prefix to Ctrl+a
@@ -66,10 +66,10 @@ set -g window-status-current-style bg=red,fg=white
 
 # Hotkeys
 
-* `c-a ?` shows keyboard help
-* `c-a d` detaches from tmux
+* `C-a ?` shows keyboard help
+* `C-a d` detaches from tmux
 * To reattach to a running session, just run `./startup`
-* `c-a c` for new window
-* `c-a n`/`c-a p` for next/prev window
-* `c-A` then `[` to scroll; `hjkl` and `c-D`/`c-U` works with cursor movements
+* `C-a c` for new window
+* `C-a n`/`C-a p` for next/prev window
+* `C-a` then `[` to scroll; `hjkl` and `C-d`/`C-u` works with cursor movements
 

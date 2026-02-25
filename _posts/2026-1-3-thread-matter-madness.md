@@ -107,11 +107,15 @@ I'm sorry but at this point I completely lost any interest in Matter/Thread. Too
 this shit is the future now.
 
 EDIT: Luckily, IKEA's Home Smart now shows lots of useful information about your
-home matter network: go to Dirigera hub settings, Thread, TODO, and you'll see:
+home matter network: go to Dirigera hub settings, Thread network, More options, the List icon, and you'll see:
 
 - all main devices in your network; most importantly you can check the "xp" (Extended PAN ID)
-  and make sure it's the same both for Apple stuff and for IKEA stuff
-- a list of all thread border routers
+  and make sure it's the same both for iOS preferred Network and for Networks Added By HomeSmart
+- a list of all active thread border routers
+
+While the list doesn't show all thread/matter devices (switches, smart plugs etc),
+at least you can see the list of border routers and check that they are part
+of the same thread network.
 
 ## No Way To Visualize
 

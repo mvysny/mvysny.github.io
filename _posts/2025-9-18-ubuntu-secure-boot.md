@@ -129,7 +129,7 @@ However, nothing really happens yet. You need to activate UKI, by creating `/etc
 layout=uki
 ```
 More info at [ArchLinux: kernel-install](https://wiki.archlinux.org/title/Unified_kernel_image#kernel-install).
-systemd's `kernel-install` reads the `install.conf` file; if the layout is set to uki then `uki_generator` is used to
+On Ubuntu, systemd's built-in `kernel-install` script reads the `install.conf` file and all `/etc/kernel/install.d/**` scripts; if the layout is set to uki then `uki_generator` is used to
 create UKI files. By default this is `ukify` which means `systemd-ukify`.
 
 Now you need to reinstall kernel module, to run `kernel-install`:

@@ -20,8 +20,6 @@ send-keys ./growatt Enter ;
 new-window -n syntak ;
 send-keys cd Space local Enter ;
 send-keys ./syntak Enter ;
-new-window -n rslsync ;
-send-keys ./rslsync Enter ;
 new-window -n apt ;
 ```
 

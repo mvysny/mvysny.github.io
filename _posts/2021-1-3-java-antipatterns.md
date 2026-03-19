@@ -23,6 +23,7 @@ My personal list of anti-patterns in Java ecosystem:
   [Problems with JPA: Comments](https://news.ycombinator.com/item?id=26772550), [JPA: The Mother Of All Leaky Abstractions](https://www.reddit.com/r/java/comments/ln2st/jpa_the_mother_of_all_leaky_abstractions/)
 * [Annotationmania](../post-annotation-programming/). I'd much rather write some code
   than figure out a magic combination of annotations to make something happen.
+  Also [fun things happen when the order of annotation processing silently changes](https://x.com/MartinVysny/status/2034525289460441521)
 * Spring. [Spring is an anti-pattern](../java-will-die/). More than that - Spring is a
   *conglomeration* of all Java anti-patterns and basically embodies everything that's
   wrong with the Java world.

@@ -187,11 +187,12 @@ APFS root FS is a read-only mount which further increases security; I honestly l
 setting up a [secure boot on Ubuntu that's really secure](../ubuntu-secure-boot/) is a complex process.
 
 And then you discover that your home folder access rights is `750`, that means group `staff` can read files and list folders. Since all users belong to `staff`, *every user can read your home* (except for `~/Documents`, `~/Downloads` and
-`~/Desktop` but there's another security machinery which prevents that). What the fuck? Reading Apple security feels like indestructible unhackable machine, and then you find this kind of a backdoor. Can you change it to `700`? Who knows what breaks. Place everything into desktop? Then it gets synced to iCloud, and doesn't solve the problem of having all folders in home readable *by everyone*.
+`~/Desktop` but there's another security machinery which prevents that). What the fuck? Reading Apple security feels like indestructible unhackable machine, and then you find a wide-open rear-gate for everyone to come and take a look.
+Can you change it to `700`? Who knows what breaks. Place everything into desktop? Then it gets synced to iCloud, and doesn't solve the problem of having all folders in home readable *by everyone*.
 
 Seriously, WHAT THE FUCK? Are you really telling me to only have one user on my super-powerful and super-expensive MacBook Pro?
 
-It gets even better: I created a security ticket at Apple, they closed it that it's not a security issue. LOL.
+It gets even better: I created a security ticket at Apple, they closed it that it's not a security issue. LOL, fuck you too Apple.
 
 ## Apple Doesn't Give Shit About You
 
@@ -252,7 +253,7 @@ the scroll-up instead (say WhatsApp chat history) which is just infuriating.
 # Conclusion
 
 I mean, many things are done in the right way, but there are some huge gaping bloody obvious usability issues,
-Jobs must be rotating in his grave like a turbine.
+Jobs must be rotating in his grave like a fucking turbine.
 
 Will I abandon Apple completely? No. They do many things right, most importantly the privacy.
 Also, once the Magic Keyboard is remapped, it's extremely pleasant to type on.

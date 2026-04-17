@@ -95,6 +95,7 @@ Add:
 [Service]
 ExecStart=
 ExecStart=/snap/bin/lemonade-server serve --host 192.168.122.1 --port 8000
+LimitMEMLOCK=infinity
 ```
 
 The empty `ExecStart=` is mandatory — systemd requires clearing the original

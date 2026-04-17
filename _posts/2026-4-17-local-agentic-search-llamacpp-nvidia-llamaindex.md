@@ -3,7 +3,7 @@ layout: post
 title: Local Agentic Search with llama.cpp on Nvidia and LlamaIndex
 ---
 
-I [already wrote up](../local-agentic-search-with-lemonade-and-llamaindex/)
+I [already wrote up](../lemonade-llamaindex-local-agentic-search/)
 how I run agentic search over my own documents on an AMD Ryzen AI box using
 Lemonade. This post is the same setup for an Nvidia laptop. Lemonade doesn't
 work with Nvidia's proprietary drivers, so on this machine I drive three

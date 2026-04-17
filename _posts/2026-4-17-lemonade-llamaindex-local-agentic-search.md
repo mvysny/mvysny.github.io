@@ -218,6 +218,8 @@ Settings.llm = OpenAILike(
     context_window=65_536,
     is_chat_model=True,
     max_tokens=2048,
+    timeout=600.0,
+    max_retries=0,
 )
 
 Settings.embed_model = OpenAILikeEmbedding(
@@ -288,13 +290,20 @@ if __name__ == "__main__":
     main(folder, question)
 ```
 
-Two non-obvious choices in the query engine are worth calling out:
+A few non-obvious choices in the setup are worth calling out:
 
 - `response_mode="compact"` packs as many reranked chunks as will fit into a
   single LLM prompt. The default (`refine`) makes one LLM call per chunk,
   iteratively rewriting the answer — with 10 chunks that's 10 serial calls
   at tens of seconds each on the NPU, for no real quality gain when
   everything already fits in a 64k context.
+- `timeout=600.0, max_retries=0` on the LLM. OpenAI's SDK defaults to a
+  60-second HTTP timeout and 2 automatic retries. On the NPU, a single
+  chat completion over ~10k tokens of reranked context can easily exceed
+  60s — you'll see `openai._base_client Retrying request to
+  /chat/completions in 0.38 seconds` and the server quietly processing the
+  same request twice (or the retry queues behind the in-flight one,
+  doubling latency). Raise the timeout, disable retries, let it finish.
 - Enabling `httpx` INFO logging is the cheapest way to see what's actually
   happening: one log line per HTTP call to Lemonade, so you can watch
   embeddings → rerank → chat flow by. For a deeper trace (event tree,

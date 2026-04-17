@@ -337,11 +337,108 @@ First run embeds everything and persists the index to `./index_store/` —
 expect a few minutes for a few thousand chunks, GPU will be pegged.
 Subsequent runs reload from disk in a fraction of a second and go straight
 to the retrieve → rerank → answer loop. The 4060 Mobile runs Qwen3.5 4B at
-Q4_K_M at a comfortable double-digit tokens/second, fast enough to feel
-interactive. When the source folder changes, `rm -rf ./index_store/` to
+Q4_K_M at around 62 tokens/second, fast enough to feel interactive. When the source folder changes, `rm -rf ./index_store/` to
 force a rebuild — this script doesn't detect edits. Same if you swap the
 embedding model: the old vectors live in a different space and silently
 produce garbage retrievals, so always clear the store on embedder changes.
+
+## A failure mode: `<think>` runaway on opinion queries
+
+Some queries silently return `Empty Response`. Mine started with "What is
+the opinion on Spring?" — consistent empty answer every run, against a
+corpus that clearly has plenty to say about Spring. Rephrasing to "How is
+Spring mentioned?" against the same index returned a fine answer
+immediately. Question-shape-dependent failures like this always mean
+there's something worth seeing on the wire.
+
+First, rule out the infrastructure by hitting the LLM directly with no
+LlamaIndex in the loop:
+
+```python
+from openai import OpenAI
+c = OpenAI(base_url="http://192.168.122.1:8000/v1", api_key="x")
+r = c.chat.completions.create(
+    model="qwen3.5-4b",
+    messages=[{"role": "user", "content": "What is the opinion on Spring?"}],
+    max_tokens=4096,
+)
+print(r.choices[0].finish_reason, repr(r.choices[0].message.content))
+```
+
+`finish_reason=stop`, full paragraph of answer, every run. So the server,
+model, and template are all fine in isolation — whatever is going wrong
+is in the RAG path.
+
+Next, log the actual `/chat/completions` traffic during a failing RAG
+call. `httpx` event hooks on the client we already pass to `OpenAILike`
+are the minimal-invasive way:
+
+```python
+import json
+
+def _log_request(request):
+    if "/chat/completions" not in str(request.url):
+        return
+    with open("rag_trace.jsonl", "a") as f:
+        f.write(json.dumps({"t": "req", "body": request.content.decode()}) + "\n")
+
+def _log_response(response):
+    if "/chat/completions" not in str(response.request.url):
+        return
+    response.read()
+    with open("rag_trace.jsonl", "a") as f:
+        f.write(json.dumps({"t": "resp", "body": response.text}) + "\n")
+
+_http = httpx.Client(
+    timeout=600.0,
+    event_hooks={"request": [_log_request], "response": [_log_response]},
+)
+```
+
+The failing response: `finish_reason=length`, `content=""`,
+`completion_tokens=8192` (the whole cap), and `reasoning_content`
+containing ~34 000 characters of the model in a tight self-doubt loop:
+
+```
+Wait, "anti-pattern" is in the text. I will use "anti-pattern".
+Wait, "evil" is in the text. I will use "evil".
+Wait, "parasite" is in the text. I will use "parasite".
+...
+```
+
+That's the whole bug. Qwen3.5 in thinking mode — which is what `--jinja`
+enables via the chat template's `<think>` tags — takes the system
+prompt's "answer using only the provided context, never directly
+reference it" rule, combines it with strongly opinionated source
+material, and enters a verification loop inside `<think>` that never
+exits. Every completion token goes to reasoning; nothing after `</think>`
+ever gets emitted. LlamaIndex sees `content=""` and prints
+`Empty Response`.
+
+Things that do *not* fix it:
+
+- **Raising `max_tokens` further.** The model isn't converging — it
+  loops. More budget buys a longer loop, not an answer.
+- **Injecting `/no_think` into the query.** Qwen's thinking-suppression
+  directive isn't reliably honored when it's embedded mid-message inside
+  a QA prompt template; the template scans for it at message boundaries.
+
+Things that do, with tradeoffs:
+
+- **Drop `--jinja` on port 8000.** The model still emits `<think>` tags
+  (trained behavior, independent of the input template) and llama-server
+  still parses them into `reasoning_content`, but without the
+  thinking-aware chat template the reasoning terminates in a bounded
+  ~2 000 tokens instead of looping. Bump `max_tokens=4096` to leave room
+  for the answer after that.
+- **Swap to a non-thinking model** (e.g., `Qwen2.5-7B-Instruct`).
+  Biggest change, usually unnecessary.
+
+I kept `--jinja`. On queries that don't trigger the loop — which is
+almost all of them — thinking mode produces noticeably better RAG
+answers. "What is the opinion on X" is the failure shape; "What does the
+author say about X" or "How does the author characterize X" work fine.
+Rephrasing is cheaper than giving up answer quality on the 95 % case.
 
 ## Why this split
 

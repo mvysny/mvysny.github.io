@@ -83,10 +83,10 @@ Find the service name:
 systemctl list-units --type=service | grep lemonade
 ```
 
-For me it was `snap.lemonade-server.lemonade-server.service`. Edit it:
+For me it was `snap.lemonade-server.daemon.service`. Edit it:
 
 ```bash
-sudo systemctl edit snap.lemonade-server.lemonade-server.service
+sudo systemctl edit snap.lemonade-server.daemon.service
 ```
 
 Add:
@@ -102,7 +102,7 @@ before you can set a new one. Reload and restart:
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl restart snap.lemonade-server.lemonade-server.service
+sudo systemctl restart snap.lemonade-server.daemon.service
 ss -tlnp | grep 8000   # verify it's listening on .122.1
 ```
 

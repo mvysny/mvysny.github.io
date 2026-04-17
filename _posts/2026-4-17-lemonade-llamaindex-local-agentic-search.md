@@ -185,9 +185,13 @@ Save the following as `rag.py`. It loads `./notes/`, embeds and indexes it,
 asks a question, and prints the answer:
 
 ```python
+import logging
 import os
 import sys
 import httpx
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
+logging.getLogger("httpx").setLevel(logging.INFO)
 from llama_index.core import (
     Settings,
     SimpleDirectoryReader,
@@ -270,6 +274,7 @@ def main(folder: str, question: str) -> None:
     query_engine = index.as_query_engine(
         similarity_top_k=20,
         node_postprocessors=[LemonadeRerank(top_n=10)],
+        response_mode="compact",
     )
     answer = query_engine.query(question)
     console = Console()
@@ -282,6 +287,18 @@ if __name__ == "__main__":
     question = sys.argv[2] if len(sys.argv) > 2 else "Summarize these notes."
     main(folder, question)
 ```
+
+Two non-obvious choices in the query engine are worth calling out:
+
+- `response_mode="compact"` packs as many reranked chunks as will fit into a
+  single LLM prompt. The default (`refine`) makes one LLM call per chunk,
+  iteratively rewriting the answer — with 10 chunks that's 10 serial calls
+  at tens of seconds each on the NPU, for no real quality gain when
+  everything already fits in a 64k context.
+- Enabling `httpx` INFO logging is the cheapest way to see what's actually
+  happening: one log line per HTTP call to Lemonade, so you can watch
+  embeddings → rerank → chat flow by. For a deeper trace (event tree,
+  per-step timings), add `LlamaDebugHandler` to `Settings.callback_manager`.
 
 Run it:
 

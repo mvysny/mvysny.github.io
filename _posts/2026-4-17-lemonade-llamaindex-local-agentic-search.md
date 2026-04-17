@@ -211,15 +211,37 @@ LEMONADE = "http://192.168.122.1:8000/v1"
 API_KEY = "sk-lemonade"   # Lemonade ignores this but the SDK requires a value
 STORE_DIR = "./index_store"
 
+
+def _raise_on_lemonade_error(response: httpx.Response) -> None:
+    """Lemonade wraps backend errors as HTTP 200 + {"error": {...}} bodies.
+    Convert those into real exceptions so the OpenAI SDK doesn't crash on
+    response.choices[0] when choices is None."""
+    if not response.headers.get("content-type", "").startswith("application/json"):
+        return
+    response.read()
+    try:
+        body = response.json()
+    except Exception:
+        return
+    if isinstance(body, dict) and "error" in body:
+        raise RuntimeError(f"Lemonade backend error (HTTP 200 wrapper): {body['error']}")
+
+
+_http = httpx.Client(
+    event_hooks={"response": [_raise_on_lemonade_error]},
+    timeout=600.0,
+)
+
 Settings.llm = OpenAILike(
     model="qwen3.5-4b-FLM",
     api_base=LEMONADE,
     api_key=API_KEY,
     context_window=65_536,
     is_chat_model=True,
-    max_tokens=2048,
+    max_tokens=1024,
     timeout=600.0,
     max_retries=0,
+    http_client=_http,
 )
 
 Settings.embed_model = OpenAILikeEmbedding(
@@ -241,7 +263,7 @@ class LemonadeRerank(BaseNodePostprocessor):
     def _postprocess_nodes(self, nodes, query_bundle=None):
         if not nodes or query_bundle is None:
             return nodes
-        r = httpx.post(
+        r = _http.post(
             f"{LEMONADE}/reranking",
             json={
                 "model": self.model,
@@ -251,12 +273,7 @@ class LemonadeRerank(BaseNodePostprocessor):
             timeout=120,
         )
         r.raise_for_status()
-        body = r.json()
-        # Lemonade wraps some backend errors as 200 + {"error": ...} bodies,
-        # so raise_for_status() isn't enough — check the shape explicitly.
-        if "results" not in body:
-            raise RuntimeError(f"rerank response missing 'results': {body}")
-        results = body["results"]
+        results = r.json()["results"]
         ranked = sorted(results, key=lambda x: -x["relevance_score"])[: self.top_n]
         return [NodeWithScore(node=nodes[r["index"]].node,
                               score=r["relevance_score"]) for r in ranked]
@@ -308,6 +325,21 @@ A few non-obvious choices in the setup are worth calling out:
   happening: one log line per HTTP call to Lemonade, so you can watch
   embeddings → rerank → chat flow by. For a deeper trace (event tree,
   per-step timings), add `LlamaDebugHandler` to `Settings.callback_manager`.
+- The `_raise_on_lemonade_error` `httpx` response hook and the shared
+  `_http` client. Lemonade has a habit of wrapping backend failures as
+  HTTP 200 responses with `{"error": {...}}` bodies — FastFlowLM's JSON
+  serializer, for example, chokes on tokens that decode to invalid UTF-8
+  (`"invalid UTF-8 byte at index 0: 0x96"` when generation ends
+  mid-character) and surfaces that through the 200 channel. The OpenAI
+  SDK then blindly accesses `response.choices[0].message` and crashes
+  with `TypeError: 'NoneType' object is not subscriptable`. The hook
+  inspects each response body and raises a real `RuntimeError` with the
+  upstream error payload, so you get an actionable traceback instead of
+  a confusing one. The same `_http` client drives the rerank call, so
+  both paths are covered.
+- `max_tokens=1024` (down from 2048) reduces the rate of mid-character
+  cutoffs that trigger the UTF-8 bug. It's a mitigation, not a fix —
+  the real fix is upstream in FastFlowLM.
 
 Run it:
 

@@ -126,12 +126,19 @@ lemonade-server pull nomic-embed-text-v1-GGUF \
 lemonade-server pull bge-reranker-v2-m3-GGUF \
     --backend vulkan \
     --context 2048 \
-    --mode cross-encoder
+    --mode cross-encoder \
+    --llamacpp-args "--ubatch-size 2048 --batch-size 2048"
 ```
 
 The `--ubatch-size 4096 --batch-size 4096` on the embedder matters. The
 default (512) makes the initial index of a decent-sized folder take many
 minutes; 4096 keeps the iGPU saturated and cuts indexing roughly 4-5×.
+
+The matching flags on the reranker matter even more: a single (query, doc)
+pair for BGE-reranker-v2-m3 tokenizes to a few hundred tokens and can
+exceed the 512 default, at which point the backend refuses the request
+with `input (N tokens) is too large to process. increase the physical
+batch size`. Setting ubatch-size to the full context avoids this.
 
 Sanity-check that all three are loaded:
 
@@ -226,7 +233,12 @@ class LemonadeRerank(BaseNodePostprocessor):
             timeout=120,
         )
         r.raise_for_status()
-        results = r.json()["results"]
+        body = r.json()
+        # Lemonade wraps some backend errors as 200 + {"error": ...} bodies,
+        # so raise_for_status() isn't enough — check the shape explicitly.
+        if "results" not in body:
+            raise RuntimeError(f"rerank response missing 'results': {body}")
+        results = body["results"]
         ranked = sorted(results, key=lambda x: -x["relevance_score"])[: self.top_n]
         return [NodeWithScore(node=nodes[r["index"]].node,
                               score=r["relevance_score"]) for r in ranked]

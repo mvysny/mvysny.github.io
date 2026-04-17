@@ -37,7 +37,7 @@ title: Post Title
 ---
 ```
 
-The URL path is derived from `title` via `permalink: /:title/` in `_config.yml`, **not** from the filename slug. When linking between posts, use the title-derived path (e.g., `../fedex-sucks/`), not the filename.
+The URL path comes from the **filename slug** (the portion after the date) via `permalink: /:title/` in `_config.yml`. Jekyll's `:title` permalink variable is the filename-derived slug, *not* the front-matter `title` — changing the front-matter `title` alone does not change the URL. When linking between posts, use the filename slug (e.g., `../fedex-sucks/` from `2026-2-7-fedex-sucks.md`).
 
 ## Architecture
 

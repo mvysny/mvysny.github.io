@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Local Agentic Search with Lemonade and LlamaIndex
+title: Local RAG with Lemonade and LlamaIndex
 ---
 
-I want agentic search over my own documents, without anything leaving the
+I want RAG over my own documents, without anything leaving the
 machine. This is how I wired it up on an AMD Ryzen AI 9 HX 370 laptop (Framework 13,
 Ubuntu 26.04): Lemonade on the metal driving the NPU and the iGPU, and
 LlamaIndex inside a libvirt VM talking to it over the default `virbr0` bridge.

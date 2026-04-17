@@ -158,7 +158,8 @@ pip install 'llama-index-core>=0.12' \
             llama-index-llms-openai-like \
             llama-index-embeddings-openai-like \
             llama-index-readers-file \
-            httpx
+            httpx \
+            rich
 ```
 
 `llama-index-readers-file` is what teaches `SimpleDirectoryReader` to
@@ -199,6 +200,8 @@ from llama_index.core.postprocessor.types import BaseNodePostprocessor
 from llama_index.core.schema import NodeWithScore
 from llama_index.llms.openai_like import OpenAILike
 from llama_index.embeddings.openai_like import OpenAILikeEmbedding
+from rich.console import Console
+from rich.markdown import Markdown
 
 LEMONADE = "http://192.168.122.1:8000/v1"
 API_KEY = "sk-lemonade"   # Lemonade ignores this but the SDK requires a value
@@ -269,8 +272,9 @@ def main(folder: str, question: str) -> None:
         node_postprocessors=[LemonadeRerank(top_n=10)],
     )
     answer = query_engine.query(question)
-    print("\n--- answer ---\n")
-    print(answer)
+    console = Console()
+    console.print("\n--- answer ---\n")
+    console.print(Markdown(str(answer)))
 
 
 if __name__ == "__main__":

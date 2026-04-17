@@ -168,9 +168,16 @@ Save the following as `rag.py`. It loads `./notes/`, embeds and indexes it,
 asks a question, and prints the answer:
 
 ```python
+import os
 import sys
 import httpx
-from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
+from llama_index.core import (
+    Settings,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    load_index_from_storage,
+)
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.postprocessor.types import BaseNodePostprocessor
 from llama_index.core.schema import NodeWithScore
@@ -179,6 +186,7 @@ from llama_index.embeddings.openai_like import OpenAILikeEmbedding
 
 LEMONADE = "http://192.168.122.1:8000/v1"
 API_KEY = "sk-lemonade"   # Lemonade ignores this but the SDK requires a value
+STORE_DIR = "./index_store"
 
 Settings.llm = OpenAILike(
     model="qwen3.5-4b-FLM",
@@ -225,9 +233,15 @@ class LemonadeRerank(BaseNodePostprocessor):
 
 
 def main(folder: str, question: str) -> None:
-    docs = SimpleDirectoryReader(folder, recursive=True).load_data()
-    print(f"loaded {len(docs)} documents, indexing...")
-    index = VectorStoreIndex.from_documents(docs, show_progress=True)
+    if os.path.isdir(STORE_DIR):
+        print(f"loading cached index from {STORE_DIR}")
+        index = load_index_from_storage(StorageContext.from_defaults(persist_dir=STORE_DIR))
+    else:
+        docs = SimpleDirectoryReader(folder, recursive=True).load_data()
+        print(f"loaded {len(docs)} documents, indexing...")
+        index = VectorStoreIndex.from_documents(docs, show_progress=True)
+        index.storage_context.persist(STORE_DIR)
+        print(f"index persisted to {STORE_DIR}")
 
     query_engine = index.as_query_engine(
         similarity_top_k=20,
@@ -250,10 +264,15 @@ Run it:
 python rag.py ./notes "What did I decide about encrypted boot on ArchLinux?"
 ```
 
-First run embeds everything — expect a few minutes for a few thousand chunks,
-iGPU will be pegged. Subsequent questions just do the retrieve → rerank →
-answer loop, which on the NPU runs at tens of tokens/second for the Qwen3.5
-4B model, fast enough to feel interactive.
+First run embeds everything and persists the index to `./index_store/` —
+expect a few minutes for a few thousand chunks, iGPU will be pegged.
+Subsequent runs reload from disk in a fraction of a second and go straight
+to the retrieve → rerank → answer loop, which on the NPU runs at tens of
+tokens/second for the Qwen3.5 4B model, fast enough to feel interactive.
+When the source folder changes, `rm -rf ./index_store/` to force a rebuild
+— this script doesn't detect edits. Same if you swap the embedding model:
+the old vectors live in a different space and silently produce garbage
+retrievals, so always clear the store on embedder changes.
 
 ## Why this split
 

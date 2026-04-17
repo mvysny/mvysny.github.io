@@ -99,7 +99,10 @@ LimitMEMLOCK=infinity
 ```
 
 The empty `ExecStart=` is mandatory — systemd requires clearing the original
-before you can set a new one. Reload and restart:
+before you can set a new one.
+`LimitMEMLOCK=infinity` is important so that the NPU has access to all available RAM.
+
+Reload and restart:
 
 ```bash
 sudo systemctl daemon-reload

@@ -153,6 +153,17 @@ pip install 'llama-index-core>=0.12' \
             httpx
 ```
 
+`python3-venv` is the Debian/Ubuntu package that provides Python's built-in
+`venv` module — it's split out of the base `python3` install on these
+distros. `python3 -m venv ~/venv-rag` then creates an isolated Python
+environment under `~/venv-rag/` with its own `python` binary and `site-packages`
+directory. `source ~/venv-rag/bin/activate` puts that environment's `bin/`
+on `PATH`, so the subsequent `pip install` writes the LlamaIndex packages
+into the venv instead of system-wide. This matters because modern Ubuntu
+refuses system-wide `pip install` (PEP 668), and because you don't want
+LlamaIndex's dependency tree tangled with whatever else the guest has
+installed.
+
 Save the following as `rag.py`. It loads `./notes/`, embeds and indexes it,
 asks a question, and prints the answer:
 

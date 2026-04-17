@@ -184,7 +184,7 @@ Settings.llm = OpenAILike(
     model="qwen3.5-4b-FLM",
     api_base=LEMONADE,
     api_key=API_KEY,
-    context_window=64_000,
+    context_window=65_536,
     is_chat_model=True,
     max_tokens=2048,
 )
@@ -201,7 +201,7 @@ Settings.node_parser = SentenceSplitter(chunk_size=1024, chunk_overlap=102)
 
 
 class LemonadeRerank(BaseNodePostprocessor):
-    """Call Lemonade's /v1/rerank (bge-reranker-v2-m3 in cross-encoder mode)."""
+    """Call Lemonade's /v1/reranking (bge-reranker-v2-m3 in cross-encoder mode)."""
     model: str = "bge-reranker-v2-m3-GGUF"
     top_n: int = 10
 
@@ -209,7 +209,7 @@ class LemonadeRerank(BaseNodePostprocessor):
         if not nodes or query_bundle is None:
             return nodes
         r = httpx.post(
-            f"{LEMONADE}/rerank",
+            f"{LEMONADE}/reranking",
             json={
                 "model": self.model,
                 "query": query_bundle.query_str,

@@ -238,7 +238,7 @@ Settings.llm = OpenAILike(
     api_key=API_KEY,
     context_window=65_536,
     is_chat_model=True,
-    max_tokens=1024,
+    max_tokens=2048,
     timeout=600.0,
     max_retries=0,
     http_client=_http,
@@ -337,9 +337,10 @@ A few non-obvious choices in the setup are worth calling out:
   upstream error payload, so you get an actionable traceback instead of
   a confusing one. The same `_http` client drives the rerank call, so
   both paths are covered.
-- `max_tokens=1024` (down from 2048) reduces the rate of mid-character
-  cutoffs that trigger the UTF-8 bug. It's a mitigation, not a fix —
-  the real fix is upstream in FastFlowLM.
+- I tried lowering `max_tokens` to 1024 to reduce the rate of mid-character
+  cutoffs that trigger the UTF-8 bug. It didn't help — the bug fires at
+  any generation length. Left at 2048; the real fix is upstream in
+  FastFlowLM.
 
 Run it:
 

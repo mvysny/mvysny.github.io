@@ -315,6 +315,22 @@ Run it:
 python rag.py ./notes "What did I decide about encrypted boot on ArchLinux?"
 ```
 
+A thin wrapper so you don't have to remember to activate the venv and pass
+the folder every time — save as `ask.sh` next to `rag.py`, `chmod +x`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$(readlink -f "$0")")"
+source bin/activate
+python rag.py ./notes "$@"
+```
+
+Then `./ask.sh "What did I decide about encrypted boot on ArchLinux?"`.
+`readlink -f` resolves symlinks, so you can drop a symlink to `ask.sh`
+on your `$PATH` and still have relative paths (`bin/activate`, `./notes`)
+resolve against the venv directory.
+
 First run embeds everything and persists the index to `./index_store/` —
 expect a few minutes for a few thousand chunks, iGPU will be pegged.
 Subsequent runs reload from disk in a fraction of a second and go straight

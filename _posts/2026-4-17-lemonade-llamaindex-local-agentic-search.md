@@ -157,8 +157,17 @@ source ~/venv-rag/bin/activate
 pip install 'llama-index-core>=0.12' \
             llama-index-llms-openai-like \
             llama-index-embeddings-openai-like \
+            llama-index-readers-file \
             httpx
 ```
+
+`llama-index-readers-file` is what teaches `SimpleDirectoryReader` to
+extract text from PDFs, DOCX, and other binary formats. Without it, the
+reader silently falls back to reading raw bytes as "text" — you'll embed
+`%PDF-1.7\n%...\nstream\nxYMo...`, index will build fine, and every query
+will come back with the LLM politely explaining that the context contains
+only binary data. It pulls in `pypdf` transitively; swap to `pymupdf` if
+you need higher-quality extraction and the AGPL license is acceptable.
 
 `python3-venv` is the Debian/Ubuntu package that provides Python's built-in
 `venv` module — it's split out of the base `python3` install on these

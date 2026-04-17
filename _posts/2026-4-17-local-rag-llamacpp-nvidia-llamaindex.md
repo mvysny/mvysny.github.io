@@ -440,6 +440,56 @@ answers. "What is the opinion on X" is the failure shape; "What does the
 author say about X" or "How does the author characterize X" work fine.
 Rephrasing is cheaper than giving up answer quality on the 95 % case.
 
+## An alternative: Qwen2.5-3B-Instruct for speed
+
+If the `<think>` runaway is a dealbreaker — or you just want faster
+answers — the whole thinking-model tradeoff goes away with a non-thinking
+instruct model. `Qwen2.5-3B-Instruct` is a drop-in replacement for the
+chat server on port 8000:
+
+```bash
+llama-server -hf Qwen/Qwen2.5-3B-Instruct-GGUF:Q4_K_M \
+  -ngl 99 -c 32768 --jinja \
+  --host 192.168.122.1 --port 8000 &
+```
+
+`--jinja` stays on — Qwen2.5 has a proper chat template embedded in the
+GGUF and the server produces noticeably worse answers without it — but
+this isn't a thinking model, so there's no runaway-loop failure mode
+lurking behind the flag. `rag.py` needs no changes; the `model="qwen3.5-4b"`
+field is just a label and llama-server ignores it.
+
+On the 4060 Mobile this runs at **~91 tokens/second**, up from ~62 on
+Qwen3.5 4B. VRAM is a non-issue at this size: ~1.9 GB weights plus
+~1.2 GB KV at full 32 k context, so the LLM + embedder + reranker
+together come in around 4.3 GB — comfortable headroom on an 8 GB card.
+
+What you give up is answer shape. Qwen3.5 in thinking mode burns a few
+thousand tokens inside `<think>` before emitting prose, and that
+reasoning shows up in the output: answers are longer, more structured,
+with more cross-referencing between chunks. Qwen2.5-3B-Instruct just
+answers — it extracts what the context says and stops. For
+retrieval-shaped queries ("what did I decide about X") that's usually
+exactly what you want. For queries that ask the model to synthesize
+across several chunks it can feel terse.
+
+If the terseness starts to bite, a system prompt on `OpenAILike` is the
+cheapest lever — no template surgery, no retrieval changes, just a nudge
+on output length:
+
+```python
+Settings.llm = OpenAILike(
+    ...,
+    system_prompt=("Answer thoroughly. When the context supports it, "
+                   "give 2–3 paragraphs with specifics from the notes, "
+                   "not a one-line summary."),
+)
+```
+
+Worth trying without it first, though. At 91 tok/s, asking a follow-up is
+cheap, and a terse-but-correct answer is usually more useful than one
+padded to look thorough.
+
 ## Why this split
 
 Three processes instead of one is the correct shape once there's no

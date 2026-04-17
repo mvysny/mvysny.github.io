@@ -94,7 +94,7 @@ Add:
 ```ini
 [Service]
 ExecStart=
-ExecStart=/snap/bin/lemonade-server serve --host 192.168.122.1 --port 8000
+ExecStart=/usr/bin/snap run lemonade-server.daemon --host 192.168.122.1 --port 8000
 LimitMEMLOCK=infinity
 ```
 

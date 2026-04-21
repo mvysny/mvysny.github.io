@@ -118,17 +118,17 @@ Dump the domain XML and stage the disk + NVRAM as user-readable copies:
 ```bash
 sudo virsh dumpxml xyz > ~/xyz.xml
 sudo cp /var/lib/libvirt/images/xyz.qcow2 ~/
-sudo cp /var/lib/libvirt/qemu/nvram/xyz.fd ~/
-sudo chown $USER:$USER ~/xyz.qcow2 ~/xyz.fd
+sudo cp /var/lib/libvirt/qemu/nvram/xyz_VARS.fd ~/
+sudo chown $USER:$USER ~/xyz.qcow2 ~/xyz_VARS.fd
 ```
 
 Transfer to the destination:
 
 ```bash
-rsync -avP ~/xyz.qcow2 ~/xyz.fd ~/xyz.xml user@dest:~/
+rsync -avP ~/xyz.qcow2 ~/xyz_VARS.fd ~/xyz.xml user@dest:~/
 ```
 
-`scp ~/xyz.qcow2 ~/xyz.fd ~/xyz.xml user@dest:~/` works equally well; rsync adds progress
+`scp ~/xyz.qcow2 ~/xyz_VARS.fd ~/xyz.xml user@dest:~/` works equally well; rsync adds progress
 output and resumable transfer.
 
 ## On the destination machine
@@ -137,9 +137,9 @@ Move the files into place, restore `root:root 0600`, register the domain and sta
 
 ```bash
 sudo mv ~/xyz.qcow2 /var/lib/libvirt/images/
-sudo mv ~/xyz.fd /var/lib/libvirt/qemu/nvram/
-sudo chown root:root /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz.fd
-sudo chmod 600 /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz.fd
+sudo mv ~/xyz_VARS.fd /var/lib/libvirt/qemu/nvram/
+sudo chown root:root /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz_VARS.fd
+sudo chmod 600 /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz_VARS.fd
 sudo virsh define ~/xyz.xml
 sudo virsh start xyz
 ```

@@ -93,6 +93,75 @@ rm image.qcow2_backup
 
 More info at [Proxmox: Shrinking Qcow2](https://pve.proxmox.com/wiki/Shrink_Qcow2_Disk_Files).
 
+# Cloning a VM to another machine
+
+Clones a VM (qcow2 disk + UEFI NVRAM + domain XML) to a second identical Ubuntu host,
+leaving the original intact. The relevant files, both root-owned and mode `0600`:
+
+* disk: `/var/lib/libvirt/images/xyz.qcow2`
+* NVRAM: `/var/lib/libvirt/qemu/nvram/xyz.fd`
+
+The steps below assume scp/rsync runs as a regular user (no root login over ssh), so
+the files need to be staged in the user's home dir before transfer. Before exporting,
+consider [pruning the image](#image-pruning) to cut transfer size.
+
+## On the source machine
+
+Shut down the VM (ACPI shutdown — not pause):
+
+```bash
+sudo virsh shutdown xyz
+```
+
+Dump the domain XML and stage the disk + NVRAM as user-readable copies:
+
+```bash
+sudo virsh dumpxml xyz > ~/xyz.xml
+sudo cp /var/lib/libvirt/images/xyz.qcow2 ~/
+sudo cp /var/lib/libvirt/qemu/nvram/xyz.fd ~/
+sudo chown $USER:$USER ~/xyz.qcow2 ~/xyz.fd
+```
+
+Transfer to the destination:
+
+```bash
+rsync -avP ~/xyz.qcow2 ~/xyz.fd ~/xyz.xml user@dest:~/
+```
+
+`scp ~/xyz.qcow2 ~/xyz.fd ~/xyz.xml user@dest:~/` works equally well; rsync adds progress
+output and resumable transfer.
+
+## On the destination machine
+
+Move the files into place, restore `root:root 0600`, register the domain and start it:
+
+```bash
+sudo mv ~/xyz.qcow2 /var/lib/libvirt/images/
+sudo mv ~/xyz.fd /var/lib/libvirt/qemu/nvram/
+sudo chown root:root /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz.fd
+sudo chmod 600 /var/lib/libvirt/images/xyz.qcow2 /var/lib/libvirt/qemu/nvram/xyz.fd
+sudo virsh define ~/xyz.xml
+sudo virsh start xyz
+```
+
+libvirt's security driver re-labels the files to `libvirt-qemu:kvm` when the VM starts;
+the `root:root` at-rest state is correct.
+
+## Caveats
+
+**Identical MAC and UUID on both hosts.** The dumped XML preserves the original MAC
+address and libvirt UUID. That's fine if only one host runs the VM at a time.
+If both hosts might run it simultaneously on the same LAN, edit `~/xyz.xml` before
+`virsh define` on the destination and change:
+
+* `<uuid>...</uuid>` — regenerate with `uuidgen`
+* `<mac address='...'/>` inside `<interface>` — pick a new locally-administered MAC
+
+**UEFI firmware path.** The `<loader>` path in the XML (e.g. `/usr/share/OVMF/OVMF_CODE.fd`)
+must exist on the destination. On identical Ubuntu versions with the same `ovmf` package
+installed this is a non-issue; across distros or different Ubuntu versions the path may
+differ and the VM will fail to start with a clear error — fix with `sudo virsh edit xyz`.
+
 # Bridging
 
 If you want to expose the Virtual Machine fully on your LAN, so that it's accessible from other

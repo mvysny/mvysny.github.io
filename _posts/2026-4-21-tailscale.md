@@ -71,4 +71,63 @@ server from anywhere on the internet, as if they were on the same LAN.
 * **Tailscale SSH**: `sudo tailscale up --ssh` replaces sshd key management
   with tailnet identity. Nice, but optional.
 
+# Stay secure
+
+Tailscale doesn't expose your services to the public internet, but every service
+listening on `0.0.0.0` is now reachable from every other machine in your tailnet.
+If your laptop ever gets compromised, the attacker inherits that access. So:
+audit what's actually listening before you trust the tunnel.
+
+```bash
+sudo netstat -tnlp         # TCP listeners + the process behind each
+sudo netstat -unlp         # same for UDP
+sudo ss -tnlp              # ss is the modern replacement, same flags
+```
+
+For each line, ask: do I need this? Does it have to listen on `0.0.0.0`, or
+would `127.0.0.1` be enough? If you don't recognise the process, uninstall the
+package. Typical offenders on a fresh Ubuntu install are CUPS (printing), Avahi
+(mDNS), and whatever lingering dev server you forgot about. Bind database
+servers (PostgreSQL, Redis, MySQL) to `127.0.0.1` unless you genuinely need
+remote access - they were never meant to face a network without auth hardening.
+
+## SSH: keys only, no passwords
+
+Over Tailscale you'll mostly live inside SSH, so harden it. Password auth is
+the weakest link - brute-forceable, phishable, and replayable. Use a public key
+instead.
+
+On your **laptop**, generate a key if you don't have one:
+
+```bash
+ssh-keygen -t ed25519 -C "laptop"
+```
+
+Copy it to the server:
+
+```bash
+ssh-copy-id user@homeserver
+```
+
+Test that key auth works (`ssh user@homeserver` should not prompt for a
+password), then on the **server** edit `/etc/ssh/sshd_config` (or drop a file
+in `/etc/ssh/sshd_config.d/`):
+
+```
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes
+```
+
+Reload sshd:
+
+```bash
+sudo systemctl reload ssh
+```
+
+Keep a second terminal logged in while you do this - if you lock yourself out,
+you still have a way back in. From now on only someone holding your private
+key can log in, and a stolen or guessed password is worthless.
+
 No port forwarding, no dynamic DNS, no fail2ban tuning. It just works.

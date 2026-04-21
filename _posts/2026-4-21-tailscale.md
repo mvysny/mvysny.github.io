@@ -4,8 +4,8 @@ title: Tailscale - home LAN from anywhere
 ---
 
 [Tailscale](https://tailscale.com) is the easiest way I know of to reach a
-machine on your home LAN from the internet, without port-forwarding,
-without a public IP, and without poking holes in your router.
+machine remotely on your home LAN from the internet, without port-forwarding,
+without a public IP, and without poking holes in your router. WireGuard-based; client is fully open-source; installable via snap.
 
 # How it works
 

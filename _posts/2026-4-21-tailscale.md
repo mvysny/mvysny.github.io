@@ -111,7 +111,8 @@ ssh-copy-id user@homeserver
 
 Test that key auth works (`ssh user@homeserver` should not prompt for a
 password), then on the **server** edit `/etc/ssh/sshd_config` (or drop a file
-in `/etc/ssh/sshd_config.d/`):
+in `/etc/ssh/sshd_config.d/` - it must end in `.conf`, e.g.
+`50-pubkey.conf`):
 
 ```
 PasswordAuthentication no

@@ -99,7 +99,7 @@ Clones a VM (qcow2 disk + UEFI NVRAM + domain XML) to a second identical Ubuntu 
 leaving the original intact. The relevant files, both root-owned and mode `0600`:
 
 * disk: `/var/lib/libvirt/images/xyz.qcow2`
-* NVRAM: `/var/lib/libvirt/qemu/nvram/xyz.fd`
+* NVRAM: `/var/lib/libvirt/qemu/nvram/xyz_VARS.fd`
 
 The steps below assume scp/rsync runs as a regular user (no root login over ssh), so
 the files need to be staged in the user's home dir before transfer. Before exporting,

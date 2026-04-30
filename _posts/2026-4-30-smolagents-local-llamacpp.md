@@ -1,0 +1,360 @@
+---
+layout: post
+title: Local AI agents with smolagents and llama.cpp
+---
+
+I've been using llama.cpp on this box for
+[RAG](../local-rag-llamacpp-nvidia-llamaindex/); this post is the same
+engine pointed at a different problem — running an actual *agent* that
+plans, writes Python, and uses tools, entirely against a local model.
+The whole thing runs in a rootless Docker container talking to
+`llama-server` over `--network host`, which turns out to collapse a
+surprising amount of the safety story that the smolagents docs spend
+real effort on.
+
+## The stack
+
+- **`llama-server`** on the host, serving `unsloth/Qwen3.6-35B-A3B-GGUF`
+  on port 8080 with the OpenAI-compatible `/v1/chat/completions` API.
+  Qwen3.6-35B-A3B is a 35 B mixture-of-experts model with only ~3 B
+  active parameters per token, so it runs at ~21 tok/s on a single
+  consumer GPU at Q4_K_M while behaving like a much bigger model on
+  reasoning-heavy work.
+- **smolagents** — Hugging Face's small agent framework. We use
+  `CodeAgent`, which has the model write Python in fenced code blocks
+  and runs it. This is a step beyond the more common
+  *tool-calling* style: instead of asking the model to emit a
+  `{"name": "...", "args": ...}` JSON for one call at a time, the model
+  writes a short program that may chain several tools, do arithmetic,
+  parse an intermediate result, and decide what to call next — all in a
+  single completion.
+- **A rootless Docker container** for smolagents. The container is the
+  sandbox — see the next section.
+- **DuckDuckGo search** as the one tool the agent gets. No API key, no
+  account.
+
+The classic smolagents demo question:
+
+> *How many seconds would it take for a leopard at full speed to run
+> through Pont des Arts?*
+
+The model has to (a) recall or look up a leopard's top speed,
+(b) recall or look up the length of Pont des Arts, (c) divide one by
+the other with unit conversions. `CodeAgent` lets it do (c) in actual
+Python instead of by guessing arithmetic in tokens.
+
+## Why "Docker is the sandbox" matters
+
+The smolagents docs spend a lot of time on `E2BExecutor` and
+`DockerExecutor` because the default `LocalPythonExecutor` runs the
+model's generated Python *in the agent's own process*. If you run the
+agent on your laptop, that Python has access to your home directory,
+your SSH keys, and your network. Smolagents mitigates this with an
+import allowlist and an AST walker, but the docs are honest: it's
+defense-in-depth, not a sandbox.
+
+In our setup the agent process **already** runs inside a container —
+no host mounts, no Docker socket, no `--privileged`, no ports forwarded
+inward. The worst the agent can do is wreck its own ephemeral
+container, which `docker run --rm` puts back on next invocation.
+`LocalPythonExecutor` is fine here; you don't need
+`E2BExecutor` (which costs money and adds a network round-trip
+per code block) or `DockerExecutor` (which would mean
+docker-in-docker, with its own pile of caveats). The container *is* the
+sandbox.
+
+There are two ways to break that, both of which you should not do:
+
+- Mounting `/var/run/docker.sock` into the container (the agent can now
+  start sibling containers as root on the host).
+- Running with `--privileged` (the agent owns the host kernel).
+
+As long as you don't do either, the threat model is "agent corrupts
+its own container," which is fine.
+
+For belt-and-braces, we also run the Python interpreter inside the
+container as a non-root user. That way even *inside* the container the
+agent can't, say, `apt install` a backdoor and have it persist for a
+sibling process running concurrently.
+
+## Running `llama-server`
+
+I'm assuming llama.cpp is already installed (`apt install llama.cpp` on
+recent Ubuntu, or build from source). The model downloads from
+HuggingFace on first run and caches under `~/.cache/llama.cpp`.
+
+```bash
+llama-server \
+  -hf unsloth/Qwen3.6-35B-A3B-GGUF \
+  --hf-file Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
+  -ngl 99 -c 65536 --jinja
+```
+
+A few of the flags are worth calling out:
+
+- `-ngl 99` offloads up to 99 layers to the GPU — i.e., all of them for
+  this model. Drop it and the server falls back to CPU and you'll wait
+  minutes for what should take seconds.
+- `-c 65536` sets the context window to 64 k. Native context is 256 k,
+  but each agent step accumulates the full conversation including
+  generated code and tool output, and 64 k is a comfortable working
+  size that fits in VRAM.
+- `--jinja` enables the chat template embedded in the GGUF. For
+  `CodeAgent` this matters because Qwen3.6 is a *thinking* model: it
+  emits `<think>...</think>` blocks before the answer. With `--jinja`,
+  the server parses those out into a separate `reasoning_content`
+  field, so the `content` we read in code is just the final answer
+  (and the fenced Python block we want). Without `--jinja` the server
+  uses a generic template, the `<think>` block ends up inline in
+  `content`, and smolagents' code-block parser can get confused.
+
+`--jinja` also enables proper OpenAI-format tool calls (Qwen3.6's
+underlying tool-call format is XML-flavoured, and `--jinja` is what
+translates between that and the JSON shape on the wire). We don't need
+this for `CodeAgent` specifically, but it's the right default if you
+later swap to `ToolCallingAgent`.
+
+Sanity-check it's up:
+
+```bash
+curl -s http://localhost:8080/v1/models | jq '.data[].id'
+```
+
+You should see `unsloth/Qwen3.6-35B-A3B-GGUF`.
+
+## The Dockerfile (rootless)
+
+```dockerfile
+FROM python:3.12-slim
+
+RUN pip install --no-cache-dir "smolagents[toolkit,openai]" ddgs
+
+RUN useradd -m -u 1000 agent
+WORKDIR /home/agent
+COPY --chown=agent:agent agent.py .
+USER agent
+
+CMD ["python", "-u", "agent.py"]
+```
+
+What each piece is doing:
+
+- `smolagents[toolkit,openai]` — `[toolkit]` is the standard set of
+  built-in tools (search, web visit, Python REPL helpers); `[openai]`
+  pulls in the `openai` Python client, which is what `OpenAIServerModel`
+  uses under the hood to talk to llama-server's OpenAI-compatible API.
+- `ddgs` is the current DuckDuckGo search library.
+  It used to be called `duckduckgo-search`; the rename trips up older
+  guides.
+- `useradd -m -u 1000 agent` creates a regular user with home directory
+  and explicit UID. We do this *after* `pip install` so the install
+  goes into the system site-packages as root, then we drop privileges
+  for everything that follows.
+- `COPY --chown=agent:agent` makes sure the script lands owned by the
+  unprivileged user, not root.
+- `USER agent` is the rootless switch. Everything from here — including
+  the `CMD`, including the Python that smolagents will execute on the
+  model's behalf — runs as UID 1000, with no `sudo`, no write access to
+  `/usr` or `/etc`, and no ability to do anything privileged inside the
+  container even if the model decides to.
+- `python -u` keeps stdout unbuffered so the conversation streams as it
+  happens instead of arriving in a wall at the end.
+
+## The agent: `agent.py`
+
+This is the whole script. It does three things: configures
+`OpenAIServerModel` to point at our llama-server, wraps it in a small
+subclass that prints every request and response, and runs the leopard
+question through a `CodeAgent` armed with DuckDuckGo search.
+
+```python
+from smolagents import CodeAgent, OpenAIServerModel, DuckDuckGoSearchTool
+
+
+class LoggingModel(OpenAIServerModel):
+    """Print every request and response so we can see what
+    smolagents and the model actually say to each other."""
+
+    def generate(self, messages, **kwargs):
+        print("\n" + "=" * 78)
+        print("REQUEST  ->  llama-server")
+        print("=" * 78)
+        for m in messages:
+            role = getattr(m, "role", None) or m.get("role", "?")
+            content = getattr(m, "content", None) or m.get("content", "")
+            if isinstance(content, list):
+                content = "\n".join(
+                    c.get("text", "") if isinstance(c, dict) else str(c)
+                    for c in content
+                )
+            print(f"\n[{role}]\n{content}")
+
+        reply = super().generate(messages, **kwargs)
+
+        print("\n" + "-" * 78)
+        print("RESPONSE <-  llama-server")
+        print("-" * 78)
+        if getattr(reply, "raw", None):
+            reasoning = (
+                reply.raw.get("choices", [{}])[0]
+                .get("message", {})
+                .get("reasoning_content")
+            )
+            if reasoning:
+                print(f"\n[<think>]\n{reasoning}\n[</think>]")
+        print(f"\n[assistant]\n{reply.content}")
+        return reply
+
+
+model = LoggingModel(
+    model_id="unsloth/Qwen3.6-35B-A3B-GGUF",
+    api_base="http://localhost:8080/v1",
+    api_key="not-needed",            # llama-server ignores it but the SDK requires a value
+    flatten_messages_as_text=False,
+)
+
+agent = CodeAgent(
+    tools=[DuckDuckGoSearchTool()],
+    model=model,
+    verbosity_level=2,                # smolagents' own step/tool/observation log
+)
+
+agent.run(
+    "How many seconds would it take for a leopard at full speed "
+    "to run through Pont des Arts?"
+)
+```
+
+A few things worth understanding about this script:
+
+- We're combining **two** levels of logging on purpose.
+  `verbosity_level=2` is smolagents' own log: it prints each step
+  number, the code block the model wrote, the result of executing it,
+  and the next observation. It's the *agent's* view of the world.
+  `LoggingModel` prints what's actually going on the wire to llama —
+  the full system prompt, the running message history, the raw
+  completion, and the `<think>` block. Reading both side by side is
+  how you build an intuition for what an agent framework actually
+  *is*: a pile of carefully constructed system prompts plus a loop.
+- `OpenAIServerModel.generate()` is the method smolagents calls per
+  step. In older releases (before ~1.10) the method was `__call__`; if
+  you're on an older pin, override `__call__` instead. `pip show
+  smolagents` will tell you which you have.
+- `flatten_messages_as_text=False` is the default for
+  `OpenAIServerModel` but worth being explicit — it preserves the
+  list-of-`{role, content}` structure that the chat completions API
+  expects, instead of collapsing the whole conversation into one
+  string.
+- `api_key="not-needed"`. llama-server accepts any value (or none) but
+  the OpenAI SDK refuses to send a request without *some* key set, so
+  you have to pass a non-empty string.
+- `reply.raw` is the raw OpenAI response object; we reach into it to
+  pull out `reasoning_content`, which is where llama-server (with
+  `--jinja`) puts everything between `<think>` and `</think>`.
+  `reply.content` is just the post-think answer — that's what
+  `CodeAgent` parses to find the Python code block, so it's also what
+  you want printed as "the assistant's actual response."
+
+## Networking: `--network host` on Linux
+
+```bash
+docker build -t smol-leopard .
+docker run --rm --network host smol-leopard
+```
+
+`--network host` is the no-friction option on Linux: the container
+shares the host network namespace, so `localhost:8080` inside the
+container *is* `localhost:8080` on the host, and `llama-server` is
+reachable with no port forwarding and no DNS gymnastics. It's also the
+safest option for our setup, because the container has no listening
+ports of its own — all traffic is outbound to llama and to
+DuckDuckGo.
+
+This is Linux-only. On Mac and Windows, `docker run --network host` is
+either ignored or differently behaved depending on the Docker Desktop
+version. There you'd swap to:
+
+```bash
+docker run --rm --add-host=host.docker.internal:host-gateway smol-leopard
+```
+
+…and change the `api_base` in `agent.py` to
+`http://host.docker.internal:8080/v1`. Mentioning it for completeness;
+this post assumes Ubuntu.
+
+## What you actually see when you run it
+
+Roughly, in order:
+
+1. **smolagents' system prompt**, printed by `LoggingModel`. It's
+   enormous — several kilobytes — and explains to the model that it is
+   a code agent, what tools it has (each rendered as a Python function
+   signature), how to write its answer as a fenced `python` block ending
+   in `final_answer(...)`, and what observations look like. Reading
+   this once is the single most clarifying thing you can do for
+   understanding why agent frameworks behave the way they do.
+2. **The user message** — your literal prompt.
+3. **The model's `<think>` block** — Qwen3.6 reasoning about leopard
+   speed and bridge length, deciding whether to search or guess, and
+   sketching the calculation. This is *not* the answer; it's the
+   model's scratchpad, separated out by `--jinja`.
+4. **The model's content** — a fenced Python block calling
+   `web_search("leopard top speed")` (or similar) and printing the
+   result.
+5. **smolagents executes that code locally**, captures stdout, and the
+   loop goes around: the next request to llama includes the previous
+   assistant turn *plus* a new user-role observation containing the
+   tool output.
+6. After one or two more rounds — usually search for the bridge length,
+   then a final calculation — the model writes
+   `final_answer(<seconds>)` and `CodeAgent` returns.
+
+Expect 3–5 round trips and 30–90 seconds total on a single GPU at
+~21 tok/s, depending on how many search hops the model decides it
+needs. The answer itself is something like "about 5 seconds" — a
+leopard at ~58 mph crossing a 155 m bridge — the interesting part is
+watching it get there.
+
+## Why bother
+
+Two reasons.
+
+First, **pedagogy**. Reading the system prompt smolagents constructs,
+and watching the model's reasoning, makes "agent" feel a lot less
+magical. It's a chat completion in a loop, with a careful prompt and a
+small Python sandbox. Once you've seen the wire traffic for a real run,
+you can debug your own agent code without superstition — when the
+model does something dumb, you can usually point at the exact line of
+the system prompt that confused it.
+
+Second, **latency, cost, and privacy**. A `CodeAgent` run can easily
+make 5–10 model calls. Hitting a hosted frontier model that many times
+per question gets expensive fast, especially if you're iterating on the
+agent's prompts. Local Qwen3.6-35B-A3B is good enough at this class of
+task that the iteration loop becomes free. And the leopard question is
+a toy; the same framework run against your own documents, your own
+code, or your own logs is something you'd rather not have leaving the
+machine.
+
+## Caveats
+
+- **`CodeAgent` quality scales with the model.** Qwen3.6-35B-A3B is
+  comfortably above the bar for this demo. Smaller models (anything
+  under ~7 B active parameters in my experience) struggle to reliably
+  produce well-formed code blocks ending in `final_answer(...)` and
+  will burn steps on syntax errors.
+- **Rootless inside the container is belt-and-braces, not the primary
+  defence.** The primary defence is that the container has nothing
+  worth attacking — no host mounts, no docker socket, no privileged
+  flag, no inbound ports. `USER agent` is there so a single bad
+  `apt`-installable trick can't compromise the container's own
+  toolchain mid-run.
+- **DuckDuckGo rate-limits.** If you run this in a tight loop you'll
+  start seeing empty search results. For real work, swap to a paid
+  search API (`GoogleSearchTool` with SerpAPI) or run an offline
+  retrieval tool against your own documents.
+- **`--jinja` is doing more work than it looks.** If you ever swap
+  models, double-check that the new GGUF has a chat template that
+  actually emits `<think>` correctly. A model trained for thinking
+  with a broken template will dump its scratchpad into `content`, and
+  `CodeAgent` will try to execute the scratchpad as Python.

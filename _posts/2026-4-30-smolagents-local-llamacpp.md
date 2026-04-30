@@ -200,8 +200,13 @@ class LoggingModel(OpenAIServerModel):
         print("RESPONSE <-  llama-server")
         print("-" * 78)
         if getattr(reply, "raw", None):
+            raw = (
+                reply.raw.model_dump()
+                if hasattr(reply.raw, "model_dump")
+                else reply.raw
+            )
             reasoning = (
-                reply.raw.get("choices", [{}])[0]
+                raw.get("choices", [{}])[0]
                 .get("message", {})
                 .get("reasoning_content")
             )

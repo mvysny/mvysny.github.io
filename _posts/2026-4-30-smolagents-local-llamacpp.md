@@ -365,6 +365,142 @@ The answer itself is **"about 9.6 seconds"** — a leopard at 58 km/h
 crossing a 155 m bridge — but the interesting part, again, is watching
 it get there.
 
+### A trimmed wire transcript
+
+The above in slow motion. Each step has three pieces — the model's
+hidden `<think>`, the model's visible `content` (a `<code>` block),
+and the observation smolagents feeds back after running the code.
+
+**Step 1, `<think>` (`reasoning_content`, hidden from `CodeAgent`'s
+parser thanks to `--jinja`):**
+
+> The user wants to know how long it would take a leopard at full
+> speed to run through the Pont des Arts. To calculate this, I need
+> two pieces of information:
+>
+> 1. The length of the Pont des Arts.
+> 2. The top speed of a leopard.
+>
+> I will start by searching for the length of the Pont des Arts and
+> the speed of a leopard.
+
+**Step 1, `content` (the executable code):**
+
+```
+Thought: I need to find the length of the Pont des Arts and the top speed of a leopard to calculate the time. I will use web search to find these two facts.
+<code>
+pont_des_arts_length = web_search(query="Pont des Arts length meters")
+leopard_speed = web_search(query="leopard top speed km/h")
+print(f"Pont des Arts length: {pont_des_arts_length}")
+print(f"Leopard speed: {leopard_speed}")
+</code>
+```
+
+This is the moment the `CodeAgent`-vs-`ToolCallingAgent` distinction
+gets concrete. A `ToolCallingAgent` would have the model emit
+something like:
+
+```json
+{"tool_calls": [
+  {"function": {"name": "web_search", "arguments": {"query": "Pont des Arts length meters"}}},
+  {"function": {"name": "web_search", "arguments": {"query": "leopard top speed km/h"}}}
+]}
+```
+
+…and the framework dispatches them. `CodeAgent` instead has the model
+emit *Python that calls them as functions*, which is strictly more
+expressive: you can post-process, branch, loop, do arithmetic between
+calls, or build the next query from the result of the previous one —
+all in a single completion.
+
+**Step 1, observation (stdout from running the above; trimmed):**
+
+```
+Pont des Arts length: ## Search Results
+
+[Pont des Arts - Wikipedia](https://en.wikipedia.org/wiki/Pont_des_Arts)
+The Pont des Arts ... is a pedestrian bridge in Paris which crosses the River Seine...
+
+[Pont des Arts, Paris, France - LatLong](https://www.latlong.net/place/pont-des-arts-paris-france-32945.html)
+... It has a length of 155 m (509 ft) and a width of 11 m (36 ft)...
+
+[... 8 more hits ...]
+
+Leopard speed: ## Search Results
+
+[How Fast Can a Leopard Run?](https://africafreak.com/how-fast-can-a-leopard-run)
+African leopards have a top speed of 56 - 60 km/h (35 - 37 mph)...
+
+[How Fast Is A Leopard?](https://untamedanimals.com/how-fast-is-a-leopard/)
+... Their top speed is 36 mph or 58 km/h ...
+
+[... 5 more hits ...]
+```
+
+The unabridged version is roughly 4 kB of markdown — that's the
+chunk that re-enters the prompt at step 2 and triples the input-token
+count.
+
+**Step 2, `<think>` — the model reading noisy multi-source output and
+picking a number:**
+
+> From the search results:
+>
+> 1. **Pont des Arts length**: Multiple sources state the length is **155 meters**.
+> 2. **Leopard top speed**:
+>    * Source 1: "56 - 60 km/h"
+>    * Source 2: "36 mph or 58 km/h"
+>    * Source 3: "almost 37 miles per hour (58 km/h)"
+>    * Source 4: "roughly 58 kilometers per hour"
+>    * Source 5: "36 miles per hour"
+>    * Source 6: "40 MPH"
+>    * Source 7: "56 - 60 km/h"
+>
+> The most consistent value for a leopard's top speed seems to be
+> around **58 km/h** (approx 36 mph). I will use 58 km/h for the
+> calculation.
+
+**Step 2, `content` — pure arithmetic, no tools:**
+
+```
+<code>
+distance_meters = 155
+speed_kmh = 58
+speed_mps = speed_kmh * 1000 / 3600
+time_seconds = distance_meters / speed_mps
+print(f"Distance: {distance_meters} m")
+print(f"Speed: {speed_kmh} km/h")
+print(f"Time: {time_seconds} seconds")
+</code>
+```
+
+**Step 2, observation:**
+
+```
+Distance: 155 m
+Speed: 58 km/h
+Time: 9.620689655172415 seconds
+```
+
+This is the other `CodeAgent` advantage worth seeing in the flesh:
+the unit conversion and division get offloaded to a real Python
+interpreter instead of being guessed in tokens. `155 / (58 * 1000 /
+3600)` is something LLMs get wrong surprisingly often when asked to
+compute it inline; a `ToolCallingAgent` with no code execution would
+need to either expose a `calculate` tool or trust the model's mental
+math.
+
+**Step 3, `content` — done:**
+
+```
+<code>
+final_answer("It would take approximately 9.62 seconds for a leopard at full speed (58 km/h) to run through the 155 meters of the Pont des Arts.")
+</code>
+```
+
+`CodeAgent` recognises `final_answer(...)`, breaks the loop, and
+returns the value to the caller.
+
 ## Why bother
 
 Two reasons.

@@ -30,8 +30,10 @@ real effort on.
   single completion.
 - **A rootless Docker container** for smolagents. The container is the
   sandbox — see the next section.
-- **DuckDuckGo search** as the one tool the agent gets. No API key, no
-  account.
+- **Web search** as the one tool the agent gets — smolagents'
+  `WebSearchTool`, which scrapes DuckDuckGo Lite with nothing but
+  `requests` and the stdlib HTML parser. No API key, no account, no
+  extra dependency.
 
 The classic smolagents demo question:
 
@@ -127,7 +129,7 @@ You should see `unsloth/Qwen3.6-35B-A3B-GGUF`.
 ```dockerfile
 FROM python:3.12-slim
 
-RUN pip install --no-cache-dir "smolagents[toolkit,openai]" ddgs
+RUN pip install --no-cache-dir "smolagents[toolkit,openai]"
 
 RUN useradd -m -u 1000 agent
 WORKDIR /home/agent
@@ -143,9 +145,12 @@ What each piece is doing:
   built-in tools (search, web visit, Python REPL helpers); `[openai]`
   pulls in the `openai` Python client, which is what `OpenAIServerModel`
   uses under the hood to talk to llama-server's OpenAI-compatible API.
-- `ddgs` is the current DuckDuckGo search library.
-  It used to be called `duckduckgo-search`; the rename trips up older
-  guides.
+  Notably no `ddgs` here: `WebSearchTool` (the recommended search tool
+  in current smolagents) only needs `requests`, which `[toolkit]`
+  already pulls in. If you'd rather use `DuckDuckGoSearchTool` — a
+  thinner wrapper that calls the upstream `ddgs` library and gives you
+  built-in rate limiting and a `max_results` knob — add `ddgs` here
+  (older guides call it `duckduckgo-search`; it was renamed).
 - `useradd -m -u 1000 agent` creates a regular user with home directory
   and explicit UID. We do this *after* `pip install` so the install
   goes into the system site-packages as root, then we drop privileges
@@ -165,10 +170,10 @@ What each piece is doing:
 This is the whole script. It does three things: configures
 `OpenAIServerModel` to point at our llama-server, wraps it in a small
 subclass that prints every request and response, and runs the leopard
-question through a `CodeAgent` armed with DuckDuckGo search.
+question through a `CodeAgent` armed with `WebSearchTool`.
 
 ```python
-from smolagents import CodeAgent, OpenAIServerModel, DuckDuckGoSearchTool
+from smolagents import CodeAgent, OpenAIServerModel, WebSearchTool
 
 
 class LoggingModel(OpenAIServerModel):
@@ -214,7 +219,7 @@ model = LoggingModel(
 )
 
 agent = CodeAgent(
-    tools=[DuckDuckGoSearchTool()],
+    tools=[WebSearchTool()],
     model=model,
     verbosity_level=2,                # smolagents' own step/tool/observation log
 )
@@ -227,6 +232,17 @@ agent.run(
 
 A few things worth understanding about this script:
 
+- `WebSearchTool` is the search tool the smolagents README points at
+  in its quickstart. Despite the generic name it defaults to
+  DuckDuckGo: it scrapes the lightweight HTML at
+  `lite.duckduckgo.com/lite/` with a hand-rolled `HTMLParser` and no
+  third-party client, which is why our Dockerfile didn't need `ddgs`.
+  Pass `engine="bing"` to switch to Bing's RSS endpoint instead. The
+  separate `DuckDuckGoSearchTool` is a thinner wrapper around the
+  upstream `ddgs` Python client (formerly `duckduckgo-search`); it
+  exposes `max_results` and a `rate_limit` knob, but adds a
+  dependency. Either is a drop-in replacement for the other in the
+  `tools=[...]` list.
 - We're combining **two** levels of logging on purpose.
   `verbosity_level=2` is smolagents' own log: it prints each step
   number, the code block the model wrote, the result of executing it,

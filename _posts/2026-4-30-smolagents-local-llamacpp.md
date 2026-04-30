@@ -310,16 +310,22 @@ Roughly, in order:
 1. **smolagents' system prompt**, printed by `LoggingModel`. It's
    enormous — several kilobytes — and explains to the model that it is
    a code agent, what tools it has (each rendered as a Python function
-   signature), how to write its answer as a fenced `python` block ending
-   in `final_answer(...)`, and what observations look like. Reading
-   this once is the single most clarifying thing you can do for
-   understanding why agent frameworks behave the way they do.
+   signature), how to write its answer as a `<code>...</code>` block
+   ending in `final_answer(...)`, and what observations look like.
+   Reading this once is the single most clarifying thing you can do for
+   understanding why agent frameworks behave the way they do. One
+   detail worth noting: rule 9 of the prompt is a hard whitelist of
+   stdlib modules the model is allowed to import — `collections,
+   datetime, itertools, math, queue, random, re, stat, statistics,
+   time, unicodedata`. `LocalPythonExecutor` enforces it before
+   running the code, so an `import os` in the model's output fails
+   fast.
 2. **The user message** — your literal prompt.
 3. **The model's `<think>` block** — Qwen3.6 reasoning about leopard
    speed and bridge length, deciding whether to search or guess, and
    sketching the calculation. This is *not* the answer; it's the
    model's scratchpad, separated out by `--jinja`.
-4. **The model's content** — a fenced Python block calling
+4. **The model's content** — a `<code>...</code>` block calling
    `web_search("leopard top speed")` (or similar) and printing the
    result.
 5. **smolagents executes that code locally**, captures stdout, and the
@@ -330,11 +336,34 @@ Roughly, in order:
    then a final calculation — the model writes
    `final_answer(<seconds>)` and `CodeAgent` returns.
 
-Expect 3–5 round trips and 30–90 seconds total on a single GPU at
-~21 tok/s, depending on how many search hops the model decides it
-needs. The answer itself is something like "about 5 seconds" — a
-leopard at ~58 mph crossing a 155 m bridge — the interesting part is
-watching it get there.
+### A concrete run
+
+One actual execution against Qwen3.6-35B-A3B at Q4_K_M:
+
+- **3 steps, 46 seconds wall time.** No retries, no malformed code.
+- **Step 1** — 10.4 s, 2.2 k input / 186 output tokens. The model issues
+  *both* `web_search` calls in a single code block — bridge length and
+  leopard speed in parallel, in one round trip. This is the
+  `CodeAgent` win in miniature: a `ToolCallingAgent` would have
+  serialised the two searches into two separate model turns.
+- **Step 2** — 27.4 s, 6.7 k input / 614 output tokens. Input grew 3×
+  because the previous step's full search observation (raw markdown of
+  every result) is now stuffed back into the conversation. This is the
+  context-bloat tax on agent loops, in microcosm: every additional
+  step multiplies what the model has to re-read.
+- **Step 3** — `final_answer(...)`. Done.
+
+The model picked **58 km/h** as the leopard's top speed by reading the
+seven sources `web_search` returned, noticing 58 km/h showed up in
+four of them, and committing to it explicitly in its `<think>` block
+before doing the arithmetic. That kind of "chew on noisy tool output
+and decide" is exactly what `CodeAgent` is good at — and the kind of
+thing that's painful to do as a chain of `ToolCallingAgent` JSON
+calls.
+
+The answer itself is **"about 9.6 seconds"** — a leopard at 58 km/h
+crossing a 155 m bridge — but the interesting part, again, is watching
+it get there.
 
 ## Why bother
 

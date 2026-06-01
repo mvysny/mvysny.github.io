@@ -108,15 +108,37 @@ dockerd-rootless-setuptool.sh install
 > verification error is harmless - the service is installed and running. The
 > next step fixes the connectivity.
 
-**7. Point the client at your rootless socket:**
+**7. Point the client at your rootless socket.** The `docker` *daemon* already
+knows where its socket is - this step is purely about telling the `docker`
+*client* (the CLI) to talk to the rootless socket instead of the old rootful
+`/var/run/docker.sock`. There are two ways to do it; pick one.
+
+*Option A - the `DOCKER_HOST` environment variable:*
 
 ```bash
 export DOCKER_HOST=unix:///run/user/1000/docker.sock
 ```
 
 `1000` is the UID of the first regular user on Ubuntu - check yours with `id -u`
-if you're unsure. To make this permanent, add the line to your `~/.bashrc` (or
-`~/.zshrc`).
+if you're unsure. But note this only lasts for the current shell - it's **gone
+on the next login or reboot**. To make it permanent, add the line to your
+`~/.bashrc` (or `~/.zshrc`).
+
+*Option B - a Docker CLI context (survives reboots, no env var needed):*
+
+A context stores the socket location in `~/.docker/` and persists across shells
+and reboots on its own. Some installers create a `rootless` context for you, but
+Ubuntu's packaged helper does not, so create it yourself:
+
+```bash
+docker context create rootless --docker host=unix:///run/user/1000/docker.sock
+docker context use rootless
+```
+
+The one catch: **`DOCKER_HOST` always overrides the active context.** So if you
+go with Option B, make sure you have *not* also exported `DOCKER_HOST` (remove it
+from `~/.bashrc` and `unset DOCKER_HOST` in your current shell) - otherwise the
+env var wins and `docker context use` silently has no effect. Don't set both.
 
 **8. Verify it actually works:**
 

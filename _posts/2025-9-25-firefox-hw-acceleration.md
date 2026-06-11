@@ -110,6 +110,14 @@ The H.264/H.265 decode extensions were finalized in late 2022 (Vulkan 1.3.238), 
 Crucially, **Nvidia ships working Vulkan Video** on its proprietary driver (535+, 570+ recommended), so this
 sidesteps the whole `nvidia-vaapi-driver` mess. AMD (RADV, default-on since Mesa 25) and Intel (ANV) support it too.
 
+To test, run:
+```bash
+sudo apt install vulkan-tools
+vulkaninfo | grep -iA3 "VIDEO_DECODE"
+```
+
+You should see "QUEUE_VIDEO_DECODE_BIT_KHR".
+
 Firefox merged a Vulkan Video decode path for **Firefox 153** ([bug 2021722](https://bugzilla.mozilla.org/show_bug.cgi?id=2021722)).
 It's behind a pref and may not be on by default, so flip it in `about:config`:
 

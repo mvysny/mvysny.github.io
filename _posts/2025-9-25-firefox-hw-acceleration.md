@@ -97,9 +97,38 @@ If hardware video acceleration is blocked with error code
 `FEATURE_HARDWARE_VIDEO_DECODING_DISABLE` or `FEATURE_FAILURE_VIDEO_DECODING_TEST_FAILED` in `about:support`,
 you can override it with `media.hardware-video-decoding.force-enabled=true` and `media.hardware-video-encoding.force-enabled=true`.
 
+# Vulkan Video: the way out for Nvidia
+
+The VA-API dead-end above isn't really Firefox's fault: the Nvidia proprietary driver simply
+never exposed VA-API the way Mesa does for AMD/Intel. `nvidia-vaapi-driver` is a shim on top of
+NVDEC, and it's brittle. The good news is there's now a vendor-neutral alternative that doesn't go
+through VA-API at all.
+
+[Vulkan Video](https://www.khronos.org/blog/khronos-finalizes-vulkan-video-extensions-for-accelerated-h.264-and-h.265-decode)
+is a Khronos decode/encode API built into Vulkan itself rather than a separate stack like VA-API or VDPAU.
+The H.264/H.265 decode extensions were finalized in late 2022 (Vulkan 1.3.238), with AV1 and VP9 decode following.
+Crucially, **Nvidia ships working Vulkan Video** on its proprietary driver (535+, 570+ recommended), so this
+sidesteps the whole `nvidia-vaapi-driver` mess. AMD (RADV, default-on since Mesa 25) and Intel (ANV) support it too.
+
+Firefox merged a Vulkan Video decode path for **Firefox 153** ([bug 2021722](https://bugzilla.mozilla.org/show_bug.cgi?id=2021722)).
+It's behind a pref and may not be on by default, so flip it in `about:config`:
+
+* `media.hardware-video-decoding-vulkan.enabled` to true
+* `media.hardware-video-decoding-vulkan.direct-export.enabled` to true (optional, enables a zero-copy path; defaults to false pending broader driver validation)
+
+Supported codecs are H.264, H.265, AV1 and VP9 — anything older still needs VA-API. On Nvidia, AV1 needs
+driver 550.54.14+ and VP9 needs 580+.
+
+A word of caution: Vulkan Video is still stabilizing. For dedicated players like `mpv`, VA-API is still the
+better choice — it tends to draw less power by leaning on the GPU's fixed-function decode block, and it's more
+mature. Vulkan Video's win is *portability*: one API across all three vendors, which is exactly what a browser
+wants. The two will coexist for a while rather than one replacing the other.
+
 # Conclusion
 
-I failed to enable any sensible acceleration for Firefox+Nvidia: Don't use Nvidia with Linux.
+VA-API on Firefox+Nvidia was a dead-end for me: don't use Nvidia with Linux. But Vulkan Video (Firefox 153+)
+finally gives Nvidia users a hardware-decoding path that doesn't depend on the flaky VA-API shim, so this story
+may finally have a happy ending.
 
 Also see [Enable Hardware Video Acceleration (VA-API) For Firefox in Ubuntu 20.04 / 18.04 & Higher](https://ubuntuhandbook.org/index.php/2021/08/enable-hardware-video-acceleration-va-api-for-firefox-in-ubuntu-20-04-18-04-higher/).
 

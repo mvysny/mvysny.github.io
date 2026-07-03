@@ -178,9 +178,10 @@ Two things worth knowing:
 - **11% is the well-behaved case.** The horror stories of "GTT is 35% slower than CPU" are about
   *discrete* GPUs, where GTT means genuine PCIe round-trips. On a UMA APU there's no PCIe hop, so you
   get off lightly.
-- **Try `iommu=pt`.** Adding `iommu=pt` (passthrough) to the kernel cmdline lets the device bypass
-  IOMMU translation for its own memory and may cut the GTT overhead. It's hardware-dependent — A/B
-  benchmark it with `llama-bench`.
+- **`iommu=pt` helps a bit.** Adding `iommu=pt` (passthrough) to the kernel cmdline lets the device
+  bypass IOMMU translation for its own memory and cuts some of the GTT overhead. On the HX 370 with the
+  8 GB VRAM + 70 GB GTT split it nudged the Qwen3.6-35B-A3B MoE from 19.18 t/s up to roughly **20 t/s** —
+  a small but real gain. It's hardware-dependent, so A/B benchmark it with `llama-bench` on your box.
 
   **Drawback of `iommu=pt`:** it weakens DMA protection. `pt` doesn't disable the IOMMU (that's
   `iommu=off`); instead it identity-maps host memory for DMA, so devices can read/write *all* of

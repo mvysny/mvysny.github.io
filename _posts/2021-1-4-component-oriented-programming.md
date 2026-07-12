@@ -108,8 +108,8 @@ what the rest of this post is about.
 
 ## Testing
 
-The `BookingsGrid` is not easy to test. Even if you use Karibu to fake Vaadin,
-you also need the booking service to be up-and-running. You can either mock the booking service
+Even if you use Karibu to fake Vaadin, you still need the booking service up and
+running. You can either mock the booking service
 by implementing a set of mock interfaces then set those mocks to the global service
 registry (see [Services](https://www.vaadinonkotlin.eu/services/)). However, even
 better is to actually use the services as-is and test your app through-and-through: the system testing.

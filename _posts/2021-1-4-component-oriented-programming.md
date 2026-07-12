@@ -28,6 +28,18 @@ hiding all the complexity within its implementation.
 > will have a small and nice API depending on what the box solves. The UNIX
 > philosophy of "Do one thing and do it right" works wonders here.
 
+## Prior art
+
+None of this is new - it's a well-established discipline usually called
+[Component-Based Software Engineering](https://en.wikipedia.org/wiki/Component-based_software_engineering).
+The idea goes all the way back to Douglas McIlroy's 1968 talk *Mass Produced Software
+Components*; McIlroy later baked the same idea into Unix as pipes and filters, which is
+exactly the "UNIX philosophy" invoked above. Brad Cox pushed the analogy further with his
+"Software ICs" (and invented Objective-C to build them), and Clemens Szyperski wrote the
+canonical book on the topic - tellingly subtitled
+[*Component Software: Beyond Object-Oriented Programming*](https://www.amazon.com/Component-Software-Object-Oriented-Programming-Addison-wesley/dp/032175302X),
+which lines up with the point below that components are a natural extension of OOP.
+
 ## Advantages
 
 * Components are much smaller unit of reuse than pages.
@@ -70,6 +82,18 @@ The component needs data to display.
   and renderers, and also may directly call services to populate itself (sets its own `DataProvider`).
   That makes `BookingsGrid` completely self-sufficient.
 
+This self-sufficiency is the single most important property, and it's worth defending even
+at the expense of testability. `BookingsGrid` has exactly one responsibility - to show a list
+of bookings - and it does *everything* needed to fulfil it, including reaching into the database.
+That's not a violation of "do one thing and do it well" but the very definition of it: the UNIX
+`tree` command has the singular responsibility of showing a file tree, yet to succeed it happily
+uses the filesystem to read the data, then a formatter and the terminal to print it out. Many
+collaborators, one responsibility. A self-sufficient component is the same idea.
+
+The price you pay is testability: a component that talks to the backend can no longer be tested
+in complete isolation. That's a shortcoming worth admitting - and it has a good answer, which is
+what the rest of this post is about.
+
 ## Testing
 
 The `BookingsGrid` is not easy to test. Even if you use Karibu to fake Vaadin,
@@ -85,7 +109,7 @@ Your services will use some sort of backend to get the data from:
 * If you use a SQL database, you can either load H2 in-memory and run on that, or
   you can start an empty database in Docker and use that.
 
-Te system testing approach has tremendous advantage: since you're running the server
+The system testing approach has a tremendous advantage: since you're running the server
 and the tests in one JVM, you are in full control of the database:
 
 * You can start a transaction before every test then rolling the transaction back, to revert

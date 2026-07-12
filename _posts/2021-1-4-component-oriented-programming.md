@@ -26,7 +26,8 @@ hiding all the complexity within its implementation.
 > You manage complexity by wrapping it in tiny boxes called components. You then
 > compose tiny boxes in bigger boxes, and those in turn in bigger boxes. Every box
 > will have a small and nice API depending on what the box solves. The UNIX
-> philosophy of "Do one thing and do it right" works wonders here.
+> philosophy of "Do one thing and do it well" works wonders here - understand this
+> as "be responsible for one thing, and do it well".
 
 ## Prior art
 
@@ -75,7 +76,7 @@ If the component needs to tell you something, it will expose a listener for you 
 Examples:
 
 * A `Button` doesn't know how to save an entity, nor should it: its job is to give you a
-  nicely styled button. Therefore, it exposes a click listeners for you to hook in and
+  nicely styled button. Therefore, it exposes a click listener for you to hook in and
   do something.
 * A `Grid` exposes selection listeners, item double-click listeners.
 * Your custom `PersonCard` component exposes an e-mail listener when the user clicks the e-mail
@@ -87,7 +88,7 @@ The listeners do not have to be complex: in fact a `public final List<Serializab
 
 The component needs data to display.
 
-* A common `Grid` which is designed to serve variety of use-cases provides the `DataProvider`
+* A common `Grid` which is designed to serve a variety of use-cases provides the `DataProvider`
   interface for you to implement, through which Grid then fetches data.
 * You can (and should) extend Grid and create a `BookingsGrid` which sets all of its columns
   and renderers, and also may directly call services to populate itself (sets its own `DataProvider`).
@@ -110,7 +111,7 @@ what the rest of this post is about.
 The `BookingsGrid` is not easy to test. Even if you use Karibu to fake Vaadin,
 you also need the booking service to be up-and-running. You can either mock the booking service
 by implementing a set of mock interfaces then set those mocks to the global service
-registry (see [Services](https://www.vaadinonkotlin.eu//services/)). However, even
+registry (see [Services](https://www.vaadinonkotlin.eu/services/)). However, even
 better is to actually use the services as-is and test your app through-and-through: the system testing.
 
 Your services will use some sort of backend to get the data from:
@@ -123,7 +124,7 @@ Your services will use some sort of backend to get the data from:
 The system testing approach has a tremendous advantage: since you're running the server
 and the tests in one JVM, you are in full control of the database:
 
-* You can start a transaction before every test then rolling the transaction back, to revert
+* You can start a transaction before every test, then roll it back, to revert
   the database to a known state. This is fast as hell but prevents you from inspecting
   the database state from Intellij as you're debugging the test.
 * You can delete the data+repopulate the database before every test - slower.

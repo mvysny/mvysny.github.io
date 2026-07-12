@@ -42,21 +42,32 @@ which lines up with the point below that components are a natural extension of O
 
 ## Advantages
 
-* Components are much smaller unit of reuse than pages.
-* They are a natural extension to the object-oriented programming paradigm: Encapsulation
-* The UNIX philosophy: Do one thing and do it well
-* Promotes object composition but also works well with inheritance (if need be)
-* Simple for simple components
-* "with Vaadin the productivity boost comes from the components rather than the MVP framework."
-* Reusable
-* UI Consistency: you create a set of reusable components then use them throughout your app;
-  they will look the same, granting your UI consistency.
-  * To promote this, you create a 'Sampler' in your app - a single page
-    dedicated to demoing common UI patterns in your app: common layouts, layouts with
-    borders, how to create forms, etc etc.
-* Vaadin components are actually insanely easy to test: [Karibu-Testing](https://github.com/mvysny/karibu-testing/)
-  * You can also use TestBench to test the client-side of the components if they have
-    lots of client-side logic.
+* **Reusable** - a component is a much smaller and more natural unit of reuse
+  than a whole page.
+* **UI consistency** - reuse the same components throughout the app and everything
+  looks the same. A 'Sampler' page - a single page demoing your common UI patterns
+  (layouts, layouts with borders, forms, ...) - helps promote this.
+* **A natural extension of OOP** - it's just encapsulation and object composition;
+  works with inheritance too, if need be.
+* **The UNIX philosophy** - each component does one thing and does it well.
+* **Scales with complexity** - simple for simple components, yet composes into
+  arbitrarily complex ones without leaking that complexity through the API.
+* **Easy to test** - Vaadin components are insanely easy to test with
+  [Karibu-Testing](https://github.com/mvysny/karibu-testing/); use TestBench for
+  components with lots of client-side logic.
+
+## Not MVP
+
+Component-Oriented Programming is essentially the opposite of the
+[MVC/MVP/MVVM](../mvc-mvp-mvvm-no-thanks/) family of patterns. MVP splits your code
+along *architectural layers* - view, presenter, model - and pushes UI logic out of the
+component in the name of testability, giving you three files (and the comms between them)
+to maintain per screen. COP splits along *responsibility* instead: everything a component
+needs to do its one job lives inside that component, so it stays self-sufficient.
+
+That's also why, with Vaadin, the productivity boost comes from the components themselves
+rather than from an MVP framework layered on top - and why this architecture grows with your
+app instead of forcing a rewrite from MVC to MVP to MVVM as the app gets bigger.
 
 ## Listeners
 

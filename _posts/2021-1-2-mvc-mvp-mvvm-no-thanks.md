@@ -11,16 +11,15 @@ digestable packages.
 
 However, all of those MVx patterns have the following fundamental flaws:
 
-* You can split your code into exactly three pieces: M, V and C. You can't split the code into more pieces even
-  if you wanted to, unless you
-  go sub-controllers, sub-models and sub-views. That way lies insanity though.
-* It is fucking complicated. You need to read shitload of [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+* You get exactly three buckets: M, V and C. You *can* subdivide into sub-models, sub-views
+  and sub-controllers, but that quickly degenerates into a mess of controllers and views calling
+  each other (more on this below). There's no clean way to grow past three pieces.
+* It is fucking complicated. You need to read shitload of [MVP](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)
   articles and books (which often contradict each other), just to be able to
   maintain a MVP codebase.
-* The page-oriented frameworks are effectively dead for anything more complex than
-  a static blogpost site. They're old and can't hold a candle
-  against React or component frameworks. They force you to produce complex code
-  for even simple pages.
+* Page-oriented frameworks are a poor fit for rich, stateful UIs: React and
+  component-oriented frameworks handle interactivity far more naturally. On top of that,
+  MVx makes you produce complex code even for simple pages.
 * They're never enough. Often you find yourself going against the MVC ideas (or bending
   the rules just to achieve something), then be told that MVP solves that (but it's more complex);
   once MVP is not enough then MVVM solves everything, at the cost of being even more complex.
@@ -29,18 +28,26 @@ This is the common property of anti-patterns: the [complexity](../on-complexity/
 
 ## Never a perfect fit
 
-In [Difference Between MVC, MVP and MVVM](https://www.geeksforgeeks.org/difference-between-mvc-mvp-and-mvvm-architecture-pattern-in-android/),
-notice the "Ideal for small scale projects only." line. I'll reiterate the lines here:
+The [Difference Between MVC, MVP and MVVM](https://www.geeksforgeeks.org/difference-between-mvc-mvp-and-mvvm-architecture-pattern-in-android/)
+article rates the three patterns like this:
 
-* MVC: Ideal for small scale projects only.
-* MVP: Ideal for simple and complex applications.
-* MVVM: Not ideal for small scale projects.
+* MVC: *"Ideal for small scale projects only."*
+* MVP: *"Ideal for simple and complex applications."*
+* MVVM: *"Not ideal for small scale projects."*
 
-That means that the architecture can not grow with your needs. You need MVC at first,
-but then after your app grows bigger you need to go MVP or even MVVM, reworking the
-entire codebase in the process. Different architects will have different opinions:
-time will be wasted with endless ivory tower discussions while the maintenance team
-struggles to fix tickets, digging through endless abstractions.
+Take that with a grain of salt. MVC and MVP are nearly the same pattern — MVP just makes
+the view passive and inserts a presenter to mediate every access to the model — yet the
+table cheerfully rates one "small scale only" and the other "fits everything". When two
+near-identical patterns earn opposite verdicts, the verdicts are guesswork; and MVP's
+"fits everything" is exactly the vague, means-all-things claim that (see below) leaves
+nobody agreeing what MVP even is.
+
+Either way the takeaway is the same: there is no safe default. MVC caps out early, MVVM is
+overkill for anything small, and MVP is a moving target. So the architecture can not grow
+with your needs: you pick one, outgrow it, and rework the entire codebase into the next.
+Different architects will have different opinions: time will be wasted with endless ivory
+tower discussions while the maintenance team struggles to fix tickets, digging through
+endless abstractions.
 
 ## Refuting MVx 'pros'
 
@@ -93,8 +100,8 @@ The role of the presenter and its relation to the view is not fully understood.
 This becomes especially clear when a large view is split up into subviews and subpresenters.
 The end result is often a mess of presenters and views calling each other or asking each other to call each other.
 
-Architects often discourage the use of MVC and MVP for the MVVP, but that's not widely used yet
-(read: nobody fucking knows what MVVP should do. It's an "architectural proposal"
+Architects often discourage the use of MVC and MVP for the MVVM, but that's not widely used yet
+(read: nobody fucking knows what MVVM should do. It's an "architectural proposal"
 which means it's useless in real world, but it makes a good academical paper I guess).
 
 Also see [Is MVP a Best Practice?](https://vaadin.com/blog/is-mvp-a-best-practice-).

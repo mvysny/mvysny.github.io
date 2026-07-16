@@ -89,13 +89,61 @@ The listeners do not have to be complex: in fact a `public final List<Serializab
 
 ## Data Providers
 
-The component needs data to display.
+The component needs data to display — and there are two kinds of component, which want opposite APIs.
 
-* A common `Grid` which is designed to serve a variety of use-cases provides the `DataProvider`
-  interface for you to implement, through which Grid then fetches data.
-* You can (and should) extend Grid and create a `BookingsGrid` which sets all of its columns
-  and renderers, and also may directly call services to populate itself (sets its own `DataProvider`).
-  That makes `BookingsGrid` completely self-sufficient.
+**A component that owns its domain takes data and renders itself.** `BookingsGrid`,
+`PersonForm`, a `PersonCard` — each one knows what a booking or a person *is* and how it
+should look, so its public API is a data API phrased in *domain* terms: you hand it the
+thing to show and it draws itself.
+
+```java
+grid.setItems(bookings);     // domain data in — NOT grid.setText(...), NOT grid.colorCell(...)
+form.setPerson(person);
+```
+
+A quick test for "is my API at the right level": could you swap the entire rendering
+mechanism — a table for a set of cards, HTML for a canvas — without changing a single
+caller? If the API speaks bookings and persons, yes; if it speaks text, cells and colours,
+every caller is welded to the mechanism. This is *tell, don't ask*: tell the component its
+new state and let it compute the pixels, instead of asking for its internals and mutating
+them from the outside.
+
+The data can arrive two ways, both fine: the caller pushes it (`grid.setItems(...)`), or the
+component pulls its own (`BookingsGrid` calls the service in its constructor — the
+self-sufficient case). The invariant isn't *how* the data arrives, it's *who owns the
+rendering* — the component does. And that is what buys back some of the testability that
+self-sufficiency costs you: because the view renders whatever data you hand it, you can drive
+it with canned data in a test — no backend, no live service — and assert on what it shows.
+
+**A generic, domain-agnostic component is the deliberate exception — it cannot own rendering
+it knows nothing about.** A raw `Grid<T>`, a `ComboBox<T>`, a reusable widget built to serve
+many use-cases: none of them can know how to render an arbitrary `T`, so a data-only API is
+impossible for them. Instead they *externalize* the domain knowledge as injected strategies:
+
+* `Renderer` — how to turn a value into a cell,
+* `ValueProvider` — how to extract a value out of a bean,
+* `DataProvider` — how to fetch a page of beans.
+
+And the two kinds compose: **you build a domain component by configuring a generic one.**
+`BookingsGrid extends Grid<Booking>` wires the columns, renderers and data source *once*, in
+its constructor, and then presents the clean `setItems(bookings)` data API to its callers —
+the whole strategy surface vanishes behind it:
+
+```java
+public class BookingsGrid extends Grid<Booking> {
+    public BookingsGrid() {
+        addColumn(Booking::getCustomer).setHeader("Customer");  // ValueProvider, wired once
+        addColumn(Booking::getDate).setHeader("Date");
+        setItems(bookingService.findAll());                     // DataProvider, wired once
+    }
+}
+```
+
+So there are two axes of reuse, which is why one rule cannot cover both: a *generic* component
+is reused across **domains** (Person, Booking, VM) by injecting different strategies; a
+*domain* component is reused across **data sources and test drivers** through its data API.
+Don't force the data API onto a generic component, and don't bake a fixed domain into a
+generic one.
 
 Think of the data side as the *model* and the component as the *view* - a handy way
 to reason, not a mandate to split them into separate classes. How much ceremony the

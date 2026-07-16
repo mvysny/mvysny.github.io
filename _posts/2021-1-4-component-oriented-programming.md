@@ -48,8 +48,11 @@ which lines up with the point below that components are a natural extension of O
 * **UI consistency** - reuse the same components throughout the app and everything
   looks the same. A 'Sampler' page - a single page demoing your common UI patterns
   (layouts, layouts with borders, forms, ...) - helps promote this.
-* **A natural extension of OOP** - it's just encapsulation and object composition;
-  works with inheritance too, if need be.
+* **A natural extension of OOP** - it's just encapsulation and object composition.
+  It also uses inheritance, but in one disciplined way: you extend the framework's
+  widget (or your own abstract component base) to *be* a concrete component - never
+  to share loose utility code. That's the honest carve-out to
+  [Composition Over Inheritance](../composition-over-inheritance/).
 * **The UNIX philosophy** - each component does one thing and does it well.
 * **Scales with complexity** - simple for simple components, yet composes into
   arbitrarily complex ones without leaking that complexity through the API.
@@ -93,6 +96,17 @@ The component needs data to display.
 * You can (and should) extend Grid and create a `BookingsGrid` which sets all of its columns
   and renderers, and also may directly call services to populate itself (sets its own `DataProvider`).
   That makes `BookingsGrid` completely self-sufficient.
+
+Think of the data side as the *model* and the component as the *view* - a handy way
+to reason, not a mandate to split them into separate classes. How much ceremony the
+model needs is just ordinary code sizing:
+
+* **Model logic big enough to warrant a class** - give it one, nested inside the
+  component or standalone (a custom `DataProvider` implementation).
+* **Model logic small** - a lambda or a direct service call right inside the
+  component, exactly as `BookingsGrid` does above.
+* **One source feeding several components** (1:many) - inject it as a constructor
+  argument, since a shared object can't live inside any single component.
 
 This self-sufficiency is the single most important property, and it's worth defending even
 at the expense of testability. `BookingsGrid` has exactly one responsibility - to show a list

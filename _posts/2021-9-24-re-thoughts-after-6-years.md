@@ -23,7 +23,7 @@ YAGNI: 100% agree.
 SOLID: coined by Uncle Bob with whom I disagree on almost everything:
 
 * The 'L' in Liskov substitution principle is useless since you shouldn't use inheritance anyway; see
-  [OOP Inheritance](../code-locality-and-ability-to-navigate/)
+  [Composition Over Inheritance](../composition-over-inheritance/)
 * the 'I' in interface segregation principle is refuted in [Fallacy of future-proof](../fallacy-of-future-proof/);
 * the 'D' - I don't agree since crazy abstraction will affect maintainability.
 

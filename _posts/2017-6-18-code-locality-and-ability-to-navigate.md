@@ -113,6 +113,9 @@ well. This hurts code locality (since superclasses are located completely
 elsewhere), and also code navigability (since it may only be clear at runtime
 what the method will actually do, thanks to polymorphism).
 
+For the full treatment - including the one honest exception (component UI
+frameworks) - see [Composition Over Inheritance](../composition-over-inheritance/).
+
 I once had a colleague who blindly followed the newest hip rule in OOP,
 quoting: *"every class must have an interface"*. There were *lots* of interfaces
 in that project. `Ctrl`+Click would bring you to an interface. Luckily nowadays

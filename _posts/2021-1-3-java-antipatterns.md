@@ -28,7 +28,7 @@ My personal list of anti-patterns in Java ecosystem:
   *conglomeration* of all Java anti-patterns and basically embodies everything that's
   wrong with the Java world.
 * OOP inheritance. OOP on itself is a good thing, but its inheritance part is just
-  evil: [On OOP Inheritance](../code-locality-and-ability-to-navigate/#oop-inheritance)
+  evil: [Composition Over Inheritance](../composition-over-inheritance/)
 * Application servers, a.k.a. JavaEE. Docker killed application servers.
   JavaEE is based on anti-patterns like DI and JPA. It's like Spring but even
   more complicated.
@@ -40,7 +40,7 @@ The right way to develop apps in Java:
 * Learn and use Docker. You can build and run a production image anywhere: both
   on your dev machine and on production.
 * Use SQL directly; use JDBI or other stuff that talks to SQL directly.
-* Use [Component-Oriented programming](../mvc-mvp-mvvm-no-thanks/)
+* Use [Component-Oriented programming](../component-oriented-programming/)
 * Use SOA: wrap your data with services then call them from your UI code.
 
 ## My preferred Vaadin architecture

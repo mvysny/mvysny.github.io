@@ -145,16 +145,34 @@ is reused across **domains** (Person, Booking, VM) by injecting different strate
 Don't force the data API onto a generic component, and don't bake a fixed domain into a
 generic one.
 
-Think of the data side as the *model* and the component as the *view* - a handy way
-to reason, not a mandate to split them into separate classes. How much ceremony the
-model needs is just ordinary code sizing:
+A component doesn't care where its data comes from — that's the one useful bit of the
+old *model/view* intuition (Swing's `JTable` doesn't mind whether its rows are JDBC, a
+file, or computed). But don't inflate it into a mandatory tier. A *service* is simply a
+**non-UI component** — a cohesive box, one responsibility, no rendering surface — and the
+service layer is **optional**: a `BookingsGrid` reaching straight into JPA is correct, not
+a shortcut. Extract a service only when it earns its keep — shared across components,
+reused, genuinely complex, or needing to stand on its own and be tested in isolation.
+Small, one-off fetching stays a lambda or a direct call inside the component.
 
-* **Model logic big enough to warrant a class** - give it one, nested inside the
-  component or standalone (a custom `DataProvider` implementation).
-* **Model logic small** - a lambda or a direct service call right inside the
-  component, exactly as `BookingsGrid` does above.
-* **One source feeding several components** (1:many) - inject it as a constructor
-  argument, since a shared object can't live inside any single component.
+One rule is worth stating sharply, because it decides which way your dependencies point:
+**dependencies point toward data, never toward UI.** A UI component may depend *downward* —
+on JPA, on a service, on raw data; that is exactly why reaching into the database directly
+is fine. A service must never depend *upward* on the UI: the moment it references a view
+class, you've welded a reusable box to one screen. And when data genuinely has to flow
+*up* — a background service that discovers a change on its own and must tell the UI — don't
+let the service call the UI; invert the arrow with a listener, so the UI **subscribes** and
+the service emits blind:
+
+```java
+// the service knows nothing about any view:
+priceFeed.onChange(quote -> { /* a UI-side listener updates its components */ });
+```
+
+The service stays UI-independent — no view references, no framework, usable from a desktop
+app, a web app, or a plain test harness unchanged — and it is the *listener's* job to hop
+onto the UI thread if the toolkit demands it. That is really all "layered architecture"
+amounts to here: everything is a component, data flows downward freely, and the single
+place it would flow upward is inverted with a listener.
 
 This self-sufficiency is the single most important property, and it's worth defending even
 at the expense of testability. `BookingsGrid` has exactly one responsibility - to show a list

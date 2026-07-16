@@ -174,6 +174,18 @@ onto the UI thread if the toolkit demands it. That is really all "layered archit
 amounts to here: everything is a component, data flows downward freely, and the single
 place it would flow upward is inverted with a listener.
 
+This also puts the humble `DataProvider` in its place. A provider and a change-listener are
+the *same* thing — a function you inject into a component — pointed in opposite directions.
+A **provider** is held by the component and called *when it needs data*: the `Grid` pulls a
+page whenever you scroll, sort, or filter, so you never hand it the whole table. That's a
+pull, and it points the natural way (component → data), no inversion needed — and it's not a
+generic-Grid-only trick: a domain `BookingsGrid` can set a `DataProvider` that pages from
+the service just the same. A **listener** is held by a source and called *when something
+changes* — the push, the inverted upward call from above. Reach for a provider when the
+component drives the query or the dataset is too big to hand over whole; a listener when the
+data changes underneath you; and plain `setItems(list)` when you simply have the set in
+hand. Pull and push are different jobs — keep them distinct.
+
 This self-sufficiency is the single most important property, and it's worth defending even
 at the expense of testability. `BookingsGrid` has exactly one responsibility - to show a list
 of bookings - and it does *everything* needed to fulfil it, including reaching into the database.

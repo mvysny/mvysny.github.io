@@ -108,7 +108,12 @@ And it is genuinely useful — it catches the low-effort stuff, and it never
 amputates a leg, so your assistant stays whole. But it is **best-effort, not
 airtight**, and you must design around that. An LLM detector is itself an LLM
 reading attacker-controlled text; adversarial phrasing that fools the main model
-tends to fool the scanner too. It's the 95%-is-a-failing-grade problem wearing a
+tends to fool the scanner too — you can even just tell the detector to ignore
+the injection. This is Willison's other, older warning:
+[you can't solve AI security problems with more AI](https://simonwillison.net/2022/Sep/17/prompt-injection-more-ai/).
+A filter built from the same opaque machinery it's guarding gives you no
+guarantee — unlike SQL parameterization, there's no point where you can prove the
+attack is neutralized. It's the 95%-is-a-failing-grade problem wearing a
 different hat. Worse, a detector's coverage is only as wide as where you run it:
 pikuri's Verifier checks a tool's *registration-time* description but not the
 bytes it *returns at runtime* — and runtime is exactly where the poisoned web

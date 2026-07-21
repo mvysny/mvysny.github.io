@@ -83,6 +83,41 @@ Right. Rant over. Because once you set aside the "this is stupid" reflex, the
 thing is actually a coherent — if, in my opinion, wrongly-chosen — design, and
 the comparison across countries is genuinely interesting.
 
+## In fairness: Finland boxes the trap into slow streets
+
+Before I go further I owe Finland an honest correction, because I checked, and
+the trap is more bounded than my rant implied. The give-way-to-the-right rule
+itself has **no speed threshold** — *Tieliikennelaki* 729/2018 §24 says an
+intersection with no signs and no lights is a *tasa-arvoinen risteys* (equal
+intersection) and you yield to the right, full stop, at any speed. But the
+*sign-placement* rules do the bounding the yield rule doesn't:
+
+- **In a built-up area, an equal intersection on a road posted 50 km/h or higher
+  MUST be flagged with the "intersection ahead" warning sign (A21)** — unless the
+  side roads already carry give-way triangles or stop signs. So a genuinely
+  *unwarned, surprise* equal intersection is only legal on streets posted **40
+  km/h or below** — residential and single-family-home areas, where the unsigned
+  equal intersection is used *deliberately* to hold speeds down.
+- **Outside built-up areas the A21 sign isn't used at all.** Rural junctions are
+  explicitly signed — priority-road diamond on the through road, give-way or stop
+  on the side roads. The whole "priority road" concept is a rural construct.
+
+So the pure unsigned equal intersection — the case where you're inferring
+priority from thin air — is in practice an **urban, low-speed, residential**
+animal. (Which also sharpens my "at 50 km/h" gripe above: at exactly 50 you'd
+get a warning sign; it's the 30–40 km/h back-streets where you're truly on your
+own.) That's real mitigation, and I should say so.
+
+But — and this is why the post survives the correction — the mitigation covers
+the *deadlock* case, not the *reading-from-behind* case. The give-way triangle
+handing me priority can sit on a side road at any speed, and worse, the 2020 Act
+introduced what Finnish motoring press calls *kätketty väistämisvelvollisuus* —
+the "hidden give-way obligation": the new law dropped the old assumption that
+priority carries automatically through successive junctions, so you can end up
+obliged to yield with **nothing on your own approach to tell you so.** That's not
+me being a confused foreigner; it's a documented criticism of the current law.
+The grievance stands. It's just smaller and better-behaved than I made it sound.
+
 ## Two legal philosophies
 
 There are broadly two ways a country can tell you who has priority at a junction,
@@ -189,6 +224,80 @@ more metal in the ground. It is also the correct trade: the information is where
 the decision is. The Nordics optimised for fewer signs and pushed the cost onto
 the driver's memory and eyesight at the worst possible instant. On this one
 narrow thing, Slovakia is ahead — and the Nordics should copy it.
+
+# Addendum: this is about to matter a lot more, because of self-driving cars
+
+Everything above is a complaint on behalf of *human* drivers. But there's a
+second driver arriving on these roads, and it reads signs even more literally
+than I do: the self-driving car.
+
+Here's the mechanical problem. Camera-based traffic-sign recognition — the thing
+in every modern ADAS and in Tesla's FSD — is **forward-facing by construction.**
+It has a camera behind the windscreen looking *ahead*, matching the fronts of
+signs against a library of shapes. It is very good at reading a sign that faces
+it. It has, structurally, *nothing to point at* when the only cue is the grey
+**back** of a triangle on someone else's road, or a yellow priority-diamond I
+passed ten kilometres and four junctions ago. A forward camera cannot
+reconstruct, from the current scene, a fact that was only ever presented
+somewhere behind it.
+
+The industry's answer to this is the **HD map.** Waymo and Mobileye are
+map-primary: the car knows it faces a give-way not because it sees the sign but
+because the junction's right-of-way is baked into a pre-built, curated map. Tesla
+is camera-primary but explicitly map-*assisted*, and the standard mitigation for
+"the camera missed a sign" across the whole industry is, precisely, "fall back on
+the map." So in the narrow sense, the read-from-behind problem is already
+*solved* — for any junction that has been correctly mapped and whose map is
+current.
+
+And that's exactly the catch. This design **converts a perception problem into a
+map-coverage-and-freshness problem**, and then removes the safety net. Compare
+the two philosophies from the driver's seat of a robot:
+
+- At a **Slovak / Central-European** junction, priority is re-declared head-on,
+  every time. If the map is stale, missing, or wrong — new roadworks, a give-way
+  installed last week, a gap in the geofenced area — the car can still recover
+  from the live sign facing it. Vision degrades *gracefully*.
+- At a **Nordic read-from-behind** junction there is, by design, **no head-on cue
+  to fall back to.** The car is maximally dependent on the map being present and
+  fresh, at exactly the junction where its cameras can tell it the least. Vision
+  has no graceful-degradation path because the information was deliberately not
+  put where the car is looking.
+
+This isn't hypothetical hand-waving about the far future. Tesla had to
+specifically train FSD on the European **priority-road diamond** convention —
+the very persistence mechanism this post is about — precisely because a sign
+whose effect carries across *later* junctions breaks a system built to read the
+junction in front of it. The persistent-priority-road sign is a known adaptation
+headache for autonomy in Europe. The Nordic reading-from-behind case is just its
+sharpest form.
+
+Zoom out and there's a policy point here. "Machine-readable infrastructure" is
+becoming a real conversation — the worry that our signs and markings were
+specified for human eyes in daylight and are quietly hostile to a camera at
+dawn, and that autonomy will otherwise stay boxed into a few lovingly-mapped
+corridors. Re-declaring priority head-on at every junction is a cheap, boring,
+already-invented instance of exactly that idea: it's robust for humans *and* for
+machines, because the information is where the decision is — which was my whole
+point about human drivers, now with a second beneficiary.
+
+So here's the pitch, and I mean it seriously. The world is adopting FSD. A
+traffic rule whose safe execution depends on a perfectly fresh HD map is a rule
+that quietly taxes every autonomy vendor that wants to operate in your country,
+and slows the day your citizens get self-driving cars that actually work on your
+streets. The Nordics optimised their signage for *fewer signs*. The bill for
+that optimisation used to be paid by the human driver's memory and eyesight;
+increasingly it'll be paid in map-maintenance burden and geofence gaps for
+robots. If Finland doesn't want to be the country the robotaxis skip, the fix is
+the same one I've been asking for the whole time — more metal in the ground,
+priority declared head-on, every junction — and now it helps the humans and the
+machines at once.
+
+(The honest hedge, so I don't oversell it: I'm *not* claiming FSD "can't" handle
+Nordic junctions. Where the HD map is good, it handles them fine today. I'm
+claiming the design needlessly removes vision's fallback and shifts the whole
+burden onto map freshness — and that there's no good reason to build a rule that
+way when the alternative helps everyone.)
 
 *Standard disclaimer: traffic rules change and I am a driver, not a lawyer.
 Verify against current official sources before relying on any of this behind an

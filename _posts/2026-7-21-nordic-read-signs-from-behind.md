@@ -154,24 +154,40 @@ right-hand-regulated junctions than at yield-regulated ones** — on the order o
 complaint, restated by people with data: **ambiguity at the junction is the
 hazard, and the fix is clearer, more continuous signing.**
 
-Two honest caveats, so I don't oversell it:
+One honest concession first, so I don't oversell the *statistics*: the dominant
+crash cause at these junctions is not the priority driver squinting at a grey
+triangle — it's the *yield-obligated* driver not applying the rule at all, the
+"nobody ever comes from here" mentality. And the system is built so that when you
+genuinely can't read the situation, treating it as equal and being ready to yield
+right is a safe fallback. Fine. The body count is driven more by inattentive
+locals than by confused sign-readers.
 
-- **How often does the purely unsigned case actually bite?** Less often than my
-  rant implied. The yield-to-the-right rule has no speed threshold, but Finland's
-  *sign-placement* rules do: in a built-up area, an equal intersection on a road
-  posted 50 km/h or higher must be flagged with an "intersection ahead" warning,
-  and outside built-up areas junctions are explicitly signed. So the genuinely
-  unsigned equal intersection lives mostly on 30–40 km/h residential streets. The
-  read-from-behind case, though, isn't bounded that way — a give-way triangle on
-  a side road hands you priority anywhere the two roads meet.
-- **The literal act of reading backwards isn't the top killer.** The dominant
-  crash cause at these junctions is the *yield-obligated* driver not applying the
-  rule at all — the "nobody ever comes from here" mentality — and the system is
-  built so that when you genuinely can't read the situation, treating it as equal
-  and being ready to yield right is the safe default; it costs flow, not
-  fenders. So "terribly dangerous" is more precisely "measurably worse, and
-  genuinely stressful." The hazard is the ambiguity; reading from behind is how
-  you *experience* it.
+But I want to kill one piece of false comfort, because I nearly talked myself
+into it. You can look at the scope and conclude the problem is small: the
+yield-to-the-right rule has no speed threshold, but Finland's *sign-placement*
+rules effectively pen the genuinely unsigned equal intersection into 30–40 km/h
+streets — in a built-up area an equal intersection at 50 km/h or higher must be
+flagged with a warning sign, and rural junctions are explicitly signed. "So it
+only happens on slow residential streets, relax." **No. That is the single worst
+place you could possibly put an ambiguous right of way.**
+
+Picture what a 30 km/h residential street actually holds: children, cats, dogs, a
+football rolling out from between parked cars, a cyclist coming from nowhere, a
+pram at the kerb, a tram, a bus pulling out. *That* is the environment where
+Finland has decided it's acceptable for two drivers to slow to a crawl, stare at
+the back of a pole, and pull their attention *away* from all of it to litigate
+who goes first. Low speed does not mean low stakes — it means the maximum density
+of exactly the things that get killed when a driver's eyes are in the wrong
+place. Ambiguity is least affordable precisely where Finland has chosen to
+concentrate it.
+
+And "how often does it bite?" is the wrong question. It doesn't need to be common
+to be bad — it needs to bite *once*. I have no crash statistics and I don't need
+them: I run into these standoffs on ordinary streets essentially daily, and a
+design that manufactures a daily attention-splitting hazard in the middle of
+pedestrians and kids is not a "measurably-worse-but-defensible trade." On this
+one narrow point it is the stupidest thing I have met on a Finnish road, and I've
+stopped being polite about it.
 
 And one separate, newer trap worth flagging, because it points the same way: the
 2020 Road Traffic Act lets a give-way obligation be signalled by *road structure*

@@ -24,7 +24,7 @@ see is the grey back of a triangle.
  > You (no sign) |
  ================+==============
                  |
-                 |  <- car from the right, has a give-way triangle
+                 |  ^  car from the right, has a give-way triangle
 ```
 
 Here's the trap my brain fell into, and I suspect yours will too: "I have no

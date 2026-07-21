@@ -86,6 +86,13 @@ The numeric value of the `heartbeatInterval` property denotes a number in second
 
 ### The purpose of heartbeats
 
+> **Update (2026):** since Vaadin 24.1 the framework closes the UI *eagerly* when the browser tab is
+> closed, via an unload [beacon](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon) —
+> so the "last tab closed, UI stays until session timeout" situation described below is now the
+> *fallback*, not the default. It still applies when the beacon is lost (crash, flaky network) or the
+> view is `@PreserveOnRefresh`. See [How Vaadin Closes The UI When You Close The Browser Tab](../vaadin-ui-close-last-tab/)
+> for the full mechanism.
+
 The purpose of heartbeats is to close unused UIs sooner than when the session is destroyed. Say you have two open tabs
 and you close one of them. With the default heartbeat of 5 minutes, the UI for that tab is closed after 15-20 minutes.
 Closing a UI requires an ongoing request; since there's the second tab/UI which sends heartbeats, these requests will

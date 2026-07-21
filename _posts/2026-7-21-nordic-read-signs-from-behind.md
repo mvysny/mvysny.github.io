@@ -1,7 +1,7 @@
 ---
 layout: post
 title: In Nordics, you're expected to read traffic signs from behind - officially
-date: 2026-07-21 16:00:00
+date: 2026-07-21 11:48:28 +0300
 ---
 
 The overwhelming majority of things are worse in Slovakia than in Finland. The

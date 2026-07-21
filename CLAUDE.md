@@ -34,8 +34,11 @@ Create a file in `_posts/` named `YYYY-M-D-slug-or-Title.md` (the existing corpu
 ---
 layout: post
 title: Post Title
+date: 2026-07-21 11:48:28 +0300
 ---
 ```
+
+Always bake in a `date:` set to **now** — the actual current date *and time* the post is written, with an explicit timezone offset (e.g. `+0300`). Get it with `date '+%Y-%m-%d %H:%M:%S %z'`. This is required: without a `date:` (or with a future one), GitHub Pages treats the post as future-dated and **silently drops it from the build** — it builds in UTC, without `--future`, and no `timezone:` is set in `_config.yml`, so a naive time is read as UTC. A past, offset-qualified timestamp avoids the trap and also disambiguates when two posts share a day.
 
 The URL path comes from the **filename slug** (the portion after the date) via `permalink: /:title/` in `_config.yml`. Jekyll's `:title` permalink variable is the filename-derived slug, *not* the front-matter `title` — changing the front-matter `title` alone does not change the URL. When linking between posts, use the filename slug (e.g., `../fedex-sucks/` from `2026-2-7-fedex-sucks.md`).
 

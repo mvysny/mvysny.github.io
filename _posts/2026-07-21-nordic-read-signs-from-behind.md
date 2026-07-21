@@ -42,13 +42,32 @@ going on" moment, not a foreigner failing to drive.
 
 And here is the part that actually gets me: **knowing the rule doesn't make the
 problem go away.** The official resolution is that there's no deadlock — *I* have
-priority. Two rules I'd merged in my head are actually separate:
+priority. And "official" is the right word, because the rule is short enough to
+quote in full. Here is the *entire* give-way-to-the-right rule — §24(1) of
+Finland's Road Traffic Act (*tieliikennelaki* 729/2018):
 
-- "Give way to the right" applies **only** when *neither* road has a sign — a
-  *tasa-arvoinen risteys*, an "equal intersection."
+> *Ajoneuvolla on väistettävä oikealta lähestyvää ajoneuvoa ellei 2–4 momentissa toisin säädetä.*
+>
+> A vehicle must give way to a vehicle approaching from the right, unless subsections 2–4 provide otherwise.
+
+Read it twice and notice what it does **not** contain: a single word about a sign
+facing *me*. (Its one escape hatch, "subsections 2–4," is about turning and
+yielding to pedestrians — not signs at all.) This lone sentence is the whole of my
+instruction at an unsigned crossroads, yet whether it even applies is decided
+somewhere else entirely. Two rules I'd merged in my head are actually separate:
+
+- That sentence — a *tasa-arvoinen risteys*, an "equal intersection" — governs
+  **only** when *neither* road has a sign.
 - The moment the crossing road carries a give-way triangle (*kärkikolmio*, sign
-  B5), the intersection is no longer equal. That triangle exists *precisely* to
-  hand priority to the other road — mine. So he waits; I go.
+  B5), the intersection is no longer equal. And B5's legal definition, verbatim,
+  is where my right of way actually lives:
+
+> *Merkillä osoitetaan, että ajoneuvolla ja raitiovaunulla on väistettävä risteyksessä muita ajoneuvoja ja raitiovaunuja.*
+>
+> The sign indicates that a vehicle and tram must give way at the intersection to other vehicles and trams.
+
+That is the rule that hands priority to my road — and it is printed on a pole
+facing the *other* driver. So he waits; I go.
 
 Logically airtight. But look at what I had to do to get there: I established my
 right of way **by reading the back of someone else's sign.** The only thing
@@ -167,7 +186,14 @@ into it. You can look at the scope and conclude the problem is small: the
 yield-to-the-right rule has no speed threshold, but Finland's *sign-placement*
 rules effectively pen the genuinely unsigned equal intersection into 30–40 km/h
 streets — in a built-up area an equal intersection at 50 km/h or higher must be
-flagged with a warning sign, and rural junctions are explicitly signed. "So it
+flagged with a warning sign. That's not my inference; it's the text of sign A21
+(*tieliikennelaki* 729/2018), which says exactly that:
+
+> *Taajamassa merkillä varoitetaan tällaisesta risteyksestä aina, kun nopeusrajoitus on 50 km/h tai korkeampi.*
+>
+> In a built-up area, this warning sign is always posted at such an intersection when the speed limit is 50 km/h or higher.
+
+And rural junctions are explicitly signed. "So it
 only happens on slow residential streets, relax." **No. That is the single worst
 place you could possibly put an ambiguous right of way.**
 

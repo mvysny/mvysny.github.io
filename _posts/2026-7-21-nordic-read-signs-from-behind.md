@@ -12,12 +12,12 @@ behind.** In the Nordics you do. Officially.
 
 Let me explain, because it sounds like I'm making it up.
 
-# The idiocy
+# The problem: reading a sign that isn't pointed at you
 
 You're driving down a road in Finland. You approach a crossroads. You have *no
-sign whatsoever* on your side. From the right there's a road coming in, and on
-*that* road there's a give-way triangle — but of course it faces the other
-driver, so all you see is the grey back of a triangle.
+sign whatsoever* on your side. From the right a road comes in, and on *that* road
+there's a give-way triangle — but of course it faces the other driver, so all you
+see is the grey back of a triangle.
 
 ```
                  |
@@ -28,152 +28,123 @@ driver, so all you see is the grey back of a triangle.
 ```
 
 Here's the trap my brain fell into, and I suspect yours will too: "I have no
-sign, so I must yield. But there's a give-way rule, and the guy on my right — I
-should give way to the right. So *he* yields too. We both yield. Deadlock." And
-the only way out of the deadlock is to squint at the *back* of his sign and
-reverse-engineer whose road is the important one. An invisible sign is a
-non-existent sign — so how am I supposed to make a legal decision based on a
-grey triangle I can barely see and definitely can't read?
+sign, so I must yield. But there's a give-way-to-the-right rule, and there's a
+car on my right — so *he* yields too. We both yield. Deadlock." The only way out
+is to squint at the *back* of his sign and reverse-engineer whose road is the
+important one. And that's the whole complaint in one sentence: **an invisible
+sign is a non-existent sign — yet I'm expected to make a legal decision by
+reading one.**
 
-That feels insane, and it feels *wrong*. And I'm not alone: Finnish forums have
-threads literally titled things like "completely insane intersection — how do
-you even drive here," describing this exact scenario. So this is not me being a
-foreigner who can't drive. This is a documented, recurring "what the hell is
-going on here" moment.
+I'm not the only one confused by this. Finnish forums have threads literally
+titled things like "completely insane intersection — how do you even drive here,"
+describing this exact scenario. So it's a documented, recurring "what the hell is
+going on" moment, not a foreigner failing to drive.
 
-The official resolution, it turns out, is that **there is no deadlock — you have
-priority.** Two separate rules got merged in my head:
+And here is the part that actually gets me: **knowing the rule doesn't make the
+problem go away.** The official resolution is that there's no deadlock — *I* have
+priority. Two rules I'd merged in my head are actually separate:
 
 - "Give way to the right" applies **only** when *neither* road has a sign — a
   *tasa-arvoinen risteys*, an "equal intersection."
-- The moment the crossing road has a give-way triangle (*kärkikolmio*, sign B5),
-  the intersection is no longer equal. That triangle exists *precisely* to hand
-  priority to the other road — mine. So *he* waits; *I* go.
+- The moment the crossing road carries a give-way triangle (*kärkikolmio*, sign
+  B5), the intersection is no longer equal. That triangle exists *precisely* to
+  hand priority to the other road — mine. So he waits; I go.
 
-So my "I have no sign, therefore I yield" was a false symmetry. The absence of a
-sign on my side doesn't mean I yield; it means I yield *only if the other road
-is equally unsigned*. His sign breaks the tie in my favour.
+Logically airtight. But look at what I had to do to get there: I established my
+right of way **by reading the back of someone else's sign.** The only thing
+distinguishing "equal intersection, yield right" from "you have priority,
+proceed" is whether that grey triangle over there exists — and to know that, I
+have to spot it and read it, backwards. Understanding the rule perfectly doesn't
+rescue me from the manoeuvre; it *sends* me to the back of the other pole.
 
-Fine. Logically airtight. **And yet the Finnish road traffic rules still require me to establish my
-right of way by reading the back of someone else's sign** — because the only
-thing distinguishing "equal intersection, yield right" from "you have priority,
-proceed" is whether that grey triangle over there exists. That's the part that
-stays idiotic no matter how the lawyers slice it.
+It gets worse, because a triangular back isn't even a guarantee. It might not be
+a give-way sign at all — it could be the "intersection ahead" *warning* sign
+(A21), also a triangle, just point-**up** instead of point-**down**. So the task
+becomes: spot the grey triangle, work out which way it points, and from *that*
+infer whether you own the intersection — on a barely-visible sign, from behind,
+at the exact moment a crossroads is demanding the attention you owe to
+pedestrians and cyclists.
 
-It gets better. A triangular back isn't even a *guarantee*. It might not be a
-give-way sign at all — it could be the "intersection ahead" **warning** sign
-(A21), which is also a triangle, just point-**up** instead of point-**down**. So
-the mental algorithm at 50 km/h is now: spot the grey triangle, determine which
-way it points, and from *that* infer whether you own the intersection. On a
-grey, barely-visible sign. From behind.
+Now contrast Slovakia, where I learned to drive. I never do any of this. Ever. On
+approach, either a sign faces me — main road, give way, or stop — or there's
+nothing and priority-to-the-right applies. I am never asked to read the back of
+anything. *That* difference is what this whole post is about.
 
-And the genuinely dangerous case — the one that actually caused me to write this
-— is the **orphan** from your *left*. Picture it: you're on the give-way side,
-so you yield to everyone. But a car coming from your left is in an *equal*
-intersection relative to you, so *he* must yield *you*. Neither of you can see
-the other's situation clearly, so you both slow to a crawl and sit there
-nose-to-nose, each politely waving the other through, each secretly convinced
-the other one is an idiot. Your attention — the attention that should be on
-pedestrians and cyclists — is spent scouting for a grey triangle on the back of
-a pole.
+# Why it happens: the information isn't where the decision is
 
-# OK, let me calm down a bit
+Once I stopped being angry and looked into it, the cause turned out to be simple
+— and it isn't some ancient quirk, it's a deliberate signing *philosophy*.
 
-Right. Rant over. Because once you set aside the "this is stupid" reflex, the
-thing is actually a coherent — if, in my opinion, wrongly-chosen — design, and
-the comparison across countries is genuinely interesting.
+Finland tells you your right of way with information that is **displaced from the
+junction.** It does this in two ways, and both leave you with nothing facing you
+at the instant you decide:
 
-## In fairness: Finland boxes the trap into slow streets
+- **Displaced in time.** Finland uses the positive priority-road sign — the
+  yellow diamond (*etuajo-oikeutettu tie*, sign B7) — *sparingly*, mostly on
+  major roads. You pass it once and it stays in force through every junction
+  until an end sign cancels it. Efficient on signage. But by the time you reach
+  the junction that matters, the last diamond is kilometres behind you and long
+  out of sight. Whether the law says it "still counts" is almost beside the
+  point: **a sign ten kilometres back is, for decision-making purposes, a sign
+  that isn't there.** You're driving on memory.
+- **Displaced in space.** On the ordinary streets that *don't* carry a diamond,
+  your status is encoded on the *crossing* road's signs — which by definition
+  face the other driver. So the only cue available to you is the back of his
+  triangle.
 
-Before I go further I owe Finland an honest correction, because I checked, and
-the trap is more bounded than my rant implied. The give-way-to-the-right rule
-itself has **no speed threshold** — *Tieliikennelaki* 729/2018 §24 says an
-intersection with no signs and no lights is a *tasa-arvoinen risteys* (equal
-intersection) and you yield to the right, full stop, at any speed. But the
-*sign-placement* rules do the bounding the yield rule doesn't:
+Both are the same disease: the decision-relevant information exists, but not
+*here*, not *now*, not *facing me*. That is precisely, structurally, the thing
+Slovakia refuses to do.
 
-- **In a built-up area, an equal intersection on a road posted 50 km/h or higher
-  MUST be flagged with the "intersection ahead" warning sign (A21)** — unless the
-  side roads already carry give-way triangles or stop signs. So a genuinely
-  *unwarned, surprise* equal intersection is only legal on streets posted **40
-  km/h or below** — residential and single-family-home areas, where the unsigned
-  equal intersection is used *deliberately* to hold speeds down.
-- **Outside built-up areas the A21 sign isn't used at all.** Rural junctions are
-  explicitly signed — priority-road diamond on the through road, give-way or stop
-  on the side roads. The whole "priority road" concept is a rural construct.
+# Two ways to tell a driver who has priority
 
-So the pure unsigned equal intersection — the case where you're inferring
-priority from thin air — is in practice an **urban, low-speed, residential**
-animal. (Which also sharpens my "at 50 km/h" gripe above: at exactly 50 you'd
-get a warning sign; it's the 30–40 km/h back-streets where you're truly on your
-own.) That's real mitigation, and I should say so.
+There are broadly two Vienna-Convention-compliant ways to answer "who goes
+first," and the entire difference lives right here:
 
-But — and this is why the post survives the correction — the mitigation covers
-the *deadlock* case, not the *reading-from-behind* case. The give-way triangle
-handing me priority can sit on a side road at any speed, and worse, the 2020 Act
-introduced what Finnish motoring press calls *kätketty väistämisvelvollisuus* —
-the "hidden give-way obligation": the new law dropped the old assumption that
-priority carries automatically through successive junctions, so you can end up
-obliged to yield with **nothing on your own approach to tell you so.** That's not
-me being a confused foreigner; it's a documented criticism of the current law.
-The grievance stands. It's just smaller and better-behaved than I made it sound.
+- **Finland (and, it turns out, the whole Nordic family):** a *persistent*
+  priority-road diamond that you pass once and which carries through every
+  junction until an explicit "end" sign. Only the minor crossing roads get
+  give-way/stop signs. Fewer signs — at the cost that, on a plain road with no
+  diamond in sight, your status is encoded on other people's signs, or in your
+  own memory.
+- **Slovakia / Central Europe:** priority is **re-declared at every single
+  junction**, facing you. More signs, more metal in the ground — but every
+  approach states your status *head-on*.
 
-## Two legal philosophies
+In Slovakia the priority signs (*Hlavná cesta*, "main road") are valid **only for
+the nearest intersection** — the decree says so directly. Because the sign
+expires at the junction, it's re-posted before the next one, usually with a
+little "shape of the intersection" plate showing how the main road bends through.
+So on every approach it's one of exactly two things: a priority sign facing you,
+or nothing and *prednosť sprava* (priority to the right). In neither case do you
+ever infer your status from the back of someone else's sign. **The Finnish trap
+is structurally impossible.** That's the win I opened with.
 
-There are broadly two ways a country can tell you who has priority at a junction,
-and both are perfectly Vienna-Convention-compliant:
+(One correction to my own prior belief, for the record: I used to think a Slovak
+intersection cancels *all* signs, including speed limits. That was true-ish
+before 2020, but the 2020 sign recodification adopted the common European rule
+that a speed limit or no-overtaking prohibition stays valid until a *terminating*
+sign, not until the next junction. The "junction cancels everything" line still
+floats around driving-school summaries, but legislatively it's now only true for
+the *priority* signs.)
 
-- **Finland / France (and, as it turns out, the whole Nordic family):** a
-  *persistent* priority-road sign — the yellow diamond — that you pass once and
-  which then carries through every junction until an explicit "end" sign cancels
-  it. Only the *minor* roads crossing it get give-way/stop signs. Efficient on
-  signage. But this is exactly what creates the backward-reading ambiguity: on a
-  plain road with no diamond in sight, your status at the next junction is
-  encoded on *other people's* signs.
+# It's the whole Nordic family, not a Finland quirk
 
-- **Slovakia / Czechia / Central Europe:** priority is **re-declared at every
-  single junction**, facing you. More signs, more redundancy, more metal in the
-  ground — but every approach tells you your status *head-on*.
+I was hoping this was a Finland thing. It is not — Norway and Sweden run the same
+philosophy:
 
-## Slovakia: signs that expire at every junction
-
-In Slovakia the priority signs (*Hlavná cesta* — "main road", the counterpart to
-Finland's yellow diamond) are valid **only for the nearest intersection**. The
-decree says so directly. Because the sign expires at the junction, it has to be
-re-posted before the next one, usually with a little "shape of intersection"
-plate showing how the main road bends through. There *is* a *Koniec hlavnej
-cesty* ("end of main road") sign, but it's used once at the very end of a long
-main-road stretch — not as a persistence device.
-
-The upshot is structural: on approach, either there's a priority sign facing you
-(main-road, give-way, or stop — deployed as a matched set), or there's nothing
-and the default *prednosť sprava* (priority to the right) kicks in. In neither
-case do you ever infer your status from the back of someone else's sign. **The
-Finnish trap is structurally impossible.** That's the win I opened with.
-
-(One correction to my own prior belief, for the record: I used to think an
-intersection in Slovakia cancels *all* signs, including speed limits. That was
-true-ish before 2020, but the 2020 road-sign recodification adopted the common
-European rule that a speed limit or no-overtaking prohibition stays valid until a
-*terminating* sign, not until the next junction. The "junction cancels
-everything" line still floats around driving-school summaries, but legislatively
-it's now only true for the *priority* signs.)
-
-## Norway and Sweden: same as Finland
-
-I was hoping this was a Finland quirk. It is not. Norway and Sweden are the same
-Nordic family:
-
-- **Sweden:** default is *högerregeln* (yield to the right), explicitly
-  regardless of road size. The priority road is *huvudled* (yellow diamond),
-  persistent until *huvudled upphör*. Same orphan case.
+- **Sweden:** the default is *högerregeln* (yield to the right), explicitly
+  regardless of road size; the priority road is *huvudled* (yellow diamond),
+  persistent until *huvudled upphör*.
 - **Norway:** *høyreregelen* is the general rule; *forkjørsvei* (sign 206) is the
   persistent priority road until *slutt på forkjørsveg*. Norway actually leans on
-  the right-hand rule *harder* than most of Europe — its road authority notes
-  priority roads are deliberately less common there, out of a long-standing worry
-  that priority roads raise speeds.
+  the right-hand rule *harder* than most of Europe — its road authority keeps
+  priority roads deliberately rare, out of a long-standing worry that they raise
+  speeds.
 
-## The best part: the engineers agree with me
+Same philosophy, same read-from-behind, three countries.
+
+# And the engineers agree
 
 This is where I stop feeling like a whinging foreigner. Norway's national Traffic
 Safety Handbook reports that injury costs are **meaningfully higher at
@@ -181,20 +152,35 @@ right-hand-regulated junctions than at yield-regulated ones** — on the order o
 1.8× for X-junctions — and that regulating priority one junction at a time is
 *less predictable* than turning a whole stretch into a priority road. That is my
 complaint, restated by people with data: **ambiguity at the junction is the
-hazard**, and the fix is clearer, more continuous signing.
+hazard, and the fix is clearer, more continuous signing.**
 
-One honest refinement, though, so I don't oversell my own outrage: the dominant
-crash cause at these junctions is *not* the priority driver squinting at a grey
-triangle. It's the *yield-obligated* driver failing to apply the rule at all —
-the "nobody ever comes from here" mentality. And the system is built so that
-when you genuinely can't read the situation, the safe move is to treat it as
-equal and be ready to yield right, which never causes a collision — it just
-costs flow and predictability. So "terribly dangerous" is more precisely
-"measurably worse, and genuinely stressful." The thing that makes it worse is
-the ambiguity, more than the literal act of reading a sign backwards.
+Two honest caveats, so I don't oversell it:
 
-The cleaner alternative is, once again, exactly the Slovak model: re-declare
-priority at every junction so nobody has to infer anything from behind.
+- **How often does the purely unsigned case actually bite?** Less often than my
+  rant implied. The yield-to-the-right rule has no speed threshold, but Finland's
+  *sign-placement* rules do: in a built-up area, an equal intersection on a road
+  posted 50 km/h or higher must be flagged with an "intersection ahead" warning,
+  and outside built-up areas junctions are explicitly signed. So the genuinely
+  unsigned equal intersection lives mostly on 30–40 km/h residential streets. The
+  read-from-behind case, though, isn't bounded that way — a give-way triangle on
+  a side road hands you priority anywhere the two roads meet.
+- **The literal act of reading backwards isn't the top killer.** The dominant
+  crash cause at these junctions is the *yield-obligated* driver not applying the
+  rule at all — the "nobody ever comes from here" mentality — and the system is
+  built so that when you genuinely can't read the situation, treating it as equal
+  and being ready to yield right is the safe default; it costs flow, not
+  fenders. So "terribly dangerous" is more precisely "measurably worse, and
+  genuinely stressful." The hazard is the ambiguity; reading from behind is how
+  you *experience* it.
+
+And one separate, newer trap worth flagging, because it points the same way: the
+2020 Road Traffic Act lets a give-way obligation be signalled by *road structure*
+— a raised crossing — with **no sign at all.** Finnish motoring press calls it
+*kätketty väistämisvelvollisuus*, the "hidden give-way obligation," and notes the
+obvious failure mode: the raised hump disappears under snow. That's not the
+read-from-behind problem — it's a whole different way to have your right of way
+hidden from you — but it's the same instinct (save a sign, push the cost onto the
+driver) and it earns the same fix: put the information where the driver is.
 
 # Summary
 
@@ -211,19 +197,19 @@ this one it got **better** — and I don't mean "a defensible alternative," I me
 
 Here's the principle I'll die on: **I expect to be fully informed of my right of
 way *before* I enter a crossroads — by a sign facing me, at that crossroads.** Not
-by remembering whether I passed a yellow B1 diamond ten kilometres back and
+by remembering whether I passed a yellow B7 diamond ten kilometres back and
 whether anything has cancelled it since. Not by locating, identifying, and
-mentally rotating the grey rear of a triangle on some other driver's pole to
-work out whether it points up or down. A crossroads is precisely the moment my
+mentally rotating the grey rear of a triangle on some other driver's pole to work
+out whether it points up or down. A crossroads is precisely the moment my
 attention is most in demand — pedestrians, cyclists, cross-traffic — and it is
 exactly the wrong moment to be doing archaeology on signage I saw minutes ago or
 reverse-engineering signs aimed at somebody else.
 
 Slovakia re-declares priority at every junction, head-on, every time. It costs
-more metal in the ground. It is also the correct trade: the information is where
-the decision is. The Nordics optimised for fewer signs and pushed the cost onto
-the driver's memory and eyesight at the worst possible instant. On this one
-narrow thing, Slovakia is ahead — and the Nordics should copy it.
+more metal in the ground. It is also the correct trade: **the information is
+where the decision is.** The Nordics optimised for fewer signs and pushed the
+cost onto the driver's memory and eyesight at the worst possible instant. On this
+one narrow thing, Slovakia is ahead — and the Nordics should copy it.
 
 # Addendum: this is about to matter a lot more, because of self-driving cars
 

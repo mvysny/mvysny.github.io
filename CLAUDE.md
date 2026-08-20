@@ -28,7 +28,7 @@ jekyll serve               # serves on http://127.0.0.1:4000/
 
 ## Adding a post
 
-Create a file in `_posts/` named `YYYY-M-D-slug-or-Title.md` (the existing corpus mixes `lower-case-dashed` and `Title-Case-Dashed`; either works). Required front-matter:
+Create a file in `_posts/` named `YYYY-MM-DD-slug-or-Title.md` (the existing corpus mixes `lower-case-dashed` and `Title-Case-Dashed`; either works). Required front-matter:
 
 ```
 ---

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "No suitable destination host found: a Canon PIXMA with 2010-era TLS"
+title: "No suitable destination host found: a Canon PIXMA that can't handle TLS 1.3"
 date: 2026-08-22 14:24:44 +0300
 ---
 
@@ -21,10 +21,11 @@ device for Canon_TS5300_series: ///dev/null
 ...or Gnome cheerfully reporting the printer address as `(null):631`.
 
 The root cause turned out to be a genuinely interesting one: the printer's
-embedded TLS server is missing an extension from **2010**, and OpenSSL 3.x quite
-correctly refuses to talk to it. The fix, on the other hand, is embarrassingly
-boring. Here's the trail, including the dead ends, because the dead ends are
-where I lost the two hours.
+embedded TLS server hangs up the moment a client offers **TLS 1.3** - and every
+current Linux TLS stack offers TLS 1.3 by default. The pragmatic fix, on the
+other hand, is embarrassingly boring. Here's the trail, including the dead ends,
+because the dead ends are where I lost the two hours - and one of those dead
+ends was a confident, wrong diagnosis that I carried for most of them.
 
 # Step 1: confirm it's a connection problem, not a printing problem
 
@@ -153,81 +154,219 @@ openssl s_client -connect 192.168.1.50:631 -tls1_2 -cipher "ALL:@SECLEVEL=0" -le
 ```
 
 So this is not a hopelessly ancient TLS stack. It does TLS 1.2 with ECDHE and
-AES-GCM. Its *only* defect is a missing extension from fifteen years ago -
-which is exactly what you'd expect from an embedded TLS implementation shipped
-once and never touched again across a decade of firmware revisions.
+AES-GCM. Its only defect, from where OpenSSL is standing, is a missing extension
+from fifteen years ago - which is exactly what you'd expect from an embedded TLS
+implementation shipped once and never touched again across a decade of firmware
+revisions.
 
-# Step 6: trying to fix it "properly", and failing
+That was my diagnosis and I was pleased with it. It is also wrong - not about
+the missing extension, which is real, but about it being the thing that breaks
+CUPS. The give-away is one word in the log line from Step 4: *received*. That
+alert came from the printer. Every override I had been reaching for changes what
+**my** client is willing to accept.
 
-Two ways to relax the restriction. The one I actually ran is the Fedora/RHEL
-sledgehammer, `update-crypto-policies` - which Ubuntu 26.04 does ship, contrary
-to what I assumed at the time. It's in `universe` and not installed by default:
+# Step 6: the right instrument - gnutls-cli
 
-```bash
-sudo apt install crypto-policies
-sudo update-crypto-policies --set LEGACY
-```
-
-That re-enables RC4, SSLv3, TLS 1.0/1.1 and weak DH for every application that
-honours the policy - browser, SSH, VPN, all of it. Not something to leave
-switched on for one printer.
-
-And a caveat that matters more than the command: **I never verified the policy
-took effect.** The whole mechanism depends on each library being built to read
-its policy back-end - on Fedora that wiring is a distro-wide invariant, on
-Ubuntu I didn't check that it held. Applied-and-ineffective and
-never-actually-applied look identical from where I was standing.
-
-The second way sidesteps that question, and I never got to it: configure OpenSSL
-directly, with no policy layer in between. In `/etc/ssl/openssl.cnf`, under the
-`[system_default_sect]` Ubuntu ships:
-
-```
-[system_default_sect]
-Options = UnsafeLegacyServerConnect
-```
-
-Add `CipherString = DEFAULT:@SECLEVEL=0` and `MinProtocol = TLSv1` alongside it
-for the same blast radius as `LEGACY`. It takes effect on the next process
-start - no regeneration step, no daemon to reload - and you can tell it applied.
-This is where I'd start next time, but I haven't run it, so it's a signpost.
-
-Reality check: with `LEGACY` set, **`cups-browsed`'s IPPS attempt still
-failed.** One machine kept showing `(null):631`, the other went back to
-`implicitclass://` and swallowed jobs in silence.
-
-There's a good reason for that, and `ldd` spells it out. CUPS does its TLS with
-**GnuTLS**, not OpenSSL:
+Here is the thing I should have checked before Step 5, never mind before
+editing a single config file: **CUPS does its TLS with GnuTLS, not OpenSSL.**
 
 ```bash
 $ readelf -d /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep NEEDED | grep -E 'gnutls|ssl'
  0x0000000000000001 (NEEDED)  Shared library: [libgnutls.so.30]
 ```
 
-`libssl.so.3` and `libcrypto.so.3` *do* show up in `ldd $(which cups-browsed)`,
-which is misleading - they arrive transitively through `libldap`, itself dragged
-in by `libcurl-gnutls`. OpenSSL is loaded into the process and plays no part in
-the IPP connection whatsoever. Every minute spent in
-`/etc/ssl/openssl.cnf` was tuning a library that wasn't in the code path.
+Which makes the whole of Step 5 a sidestep. Not a *useless* one - `openssl
+s_client` did prove that "cannot reach the printer" was really a TLS interop
+problem, with CUPS and Avahi taken out of the picture, and that is worth
+knowing. But every specific finding it produced was OpenSSL's opinion of this
+printer, and OpenSSL is not the program that was failing. `unsafe legacy
+renegotiation disabled` is an error message that literally cannot appear in
+CUPS, because the code that emits it is never executed. I built an entire theory
+on a diagnostic from the wrong stack.
 
-Which forces an honest caveat on the diagnosis: `openssl s_client` proved the
-printer is missing RFC 5746, and that's real. But GnuTLS's default policy is
-*not* the same as OpenSSL 3.x's - it permits an initial handshake with a peer
-lacking secure renegotiation and only refuses to renegotiate later. So the
-`TLS fatal alert has been received` that CUPS reports may well have a
-*different* proximate cause - protocol floor, cipher list, certificate - than
-the error I reproduced with OpenSSL. Same printer, same era of firmware, two
-different TLS stacks each unhappy for their own reasons.
+The trap is that OpenSSL genuinely *is* loaded into the process. `libssl.so.3`
+and `libcrypto.so.3` both show up in `ldd $(which cups-browsed)` - but they
+arrive transitively through `libldap`, itself dragged in by `libcurl-gnutls`,
+and they play no part in the IPP connection whatsoever. So every minute spent in
+`/etc/ssl/openssl.cnf` - or in `update-crypto-policies`, for that matter - was
+spent tuning a library that is mapped into the address space and never called.
 
-The place to look, if you want to keep going, is the GnuTLS priority string -
-`%UNSAFE_RENEGOTIATION` and friends, set system-wide via `default-priority-string`
-in `/etc/gnutls/config`, and `gnutls-cli` rather than `openssl s_client` as your
-probe. I haven't tested that route, so take it as a signpost, not a fix. CUPS
-itself gives you no lever here: `client.conf`'s `SSLOptions` covers `AllowRC4`,
-`AllowSSL3` and `MinTLS1.x` - cipher and version toggles - and nothing about
-renegotiation.
+So throw away `openssl s_client` and re-run the same march with `gnutls-cli`,
+which *is* the library CUPS uses:
 
-At that point the return on further digging went negative.
+```bash
+sudo apt install gnutls-bin
+
+gnutls-cli --insecure --priority 'NORMAL'                            -p 631 192.168.1.50
+gnutls-cli --insecure --priority 'NORMAL:-VERS-TLS1.3'               -p 631 192.168.1.50
+gnutls-cli --insecure --priority 'NORMAL:%UNSAFE_RENEGOTIATION'      -p 631 192.168.1.50
+gnutls-cli --insecure --priority 'NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2' -p 631 192.168.1.50
+```
+
+`--insecure` on all four is deliberate: the certificate is self-signed, so
+without it every probe aborts at verification and tells you nothing about the
+handshake itself.
+
+| priority string | outcome |
+| --- | --- |
+| `NORMAL` | `*** Fatal error: A TLS fatal alert has been received.` `*** Received alert [40]: Handshake failed` |
+| `NORMAL:-VERS-TLS1.3` | **handshake completed** |
+| `NORMAL:%UNSAFE_RENEGOTIATION` | fails, identically to `NORMAL` |
+| `NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2` | **handshake completed** |
+
+Three conclusions, and the first one demolishes Step 5's.
+
+**The printer cannot tolerate a TLS 1.3 ClientHello.** Alert 40 is
+`handshake_failure`, and it is *received* - the printer sent it. Offer TLS 1.3
+and it hangs up; take 1.3 out of the offer and it is perfectly happy. Note that
+the first probe reproduces the CUPS log line from Step 4 character for character,
+which is what "I am now debugging the actual failure" looks like.
+
+**Secure renegotiation was a red herring.** GnuTLS defaults to
+`%PARTIAL_RENEGOTIATION`: an initial handshake with a peer lacking RFC 5746 is
+already permitted, and only a later renegotiation is refused. IPP does one
+handshake and never renegotiates. So `%UNSAFE_RENEGOTIATION` changes nothing,
+and the missing 2010 extension - real, and genuinely what OpenSSL objected to -
+was never what CUPS was objecting to.
+
+**The certificate is fine.**
+
+```
+- Certificate[0] info:
+ - subject `CN=192.168.1.50', issuer `CN=CanonIJProductXXXXXXXXXXXXXXXX',
+   RSA key 2048 bits, signed using RSA-SHA256,
+   activated `2018-01-01 00:00:00 UTC', expires `2037-12-31 23:59:59 UTC'
+- Description: (TLS1.2-X.509)-(ECDHE-SECP256R1)-(RSA-SHA256)-(AES-256-GCM)
+- Handshake was completed
+```
+
+RSA 2048, SHA-256, ECDHE, AES-256-GCM. Nothing here needs `SECLEVEL=0`, weak
+DH, RC4 or SSLv3. The single thing that has to change is the protocol
+*ceiling* - a cap, not a weakening. Every "legacy mode" I had been reaching for
+was solving a problem I did not have.
+
+## Telling CUPS about it, attempt one: client.conf
+
+CUPS has a documented lever for exactly this, and the version tokens are sitting
+in the library:
+
+```bash
+$ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -E '^(Min|Max)TLS'
+MaxTLS1.0
+MaxTLS1.1
+MaxTLS1.2
+MaxTLS1.3
+MinTLS1.0
+MinTLS1.1
+MinTLS1.2
+MinTLS1.3
+```
+
+So, in `/etc/cups/client.conf` (which did not exist and had to be created):
+
+```
+SSLOptions MinTLS1.2 MaxTLS1.2
+```
+
+It made no difference. `ipptool` is the right probe here - it goes through
+libcups and reads the same `client.conf`, so unlike `gnutls-cli` it tests my
+*configuration* and not just the printer:
+
+```bash
+$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+ipptool: Unable to connect to "192.168.1.50" on port 631 - A TLS fatal alert has been received.
+```
+
+Two things to know before you spend time here. libcups tries
+`$HOME/.cups/client.conf` **first** and, if that opens, never falls back to
+`/etc/cups/client.conf` - a stale file in your home directory silently wins.
+And Ubuntu's libcups is built without debug printfs, so the usual trick of
+setting `CUPS_DEBUG_LOG` to dump the priority string CUPS builds is unavailable:
+
+```bash
+$ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep CUPS_DEBUG_LOG
+$      # nothing
+```
+
+## Attempt two: the GnuTLS override, which works
+
+The obvious next idea is `default-priority-string` in `/etc/gnutls/config`. It
+does nothing for CUPS, and the binary says why: libcups never asks GnuTLS for
+the system default. It builds its own string starting from `NORMAL` and
+installs it directly.
+
+```bash
+$ nm -D --undefined-only /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -i priority
+     U gnutls_priority_set_direct@GNUTLS_3_4
+$ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -E 'NORMAL$|VERS-TLS-ALL'
+NORMAL
+:+VERS-TLS-ALL
+:-VERS-TLS-ALL
+:+VERS-TLS-ALL:+VERS-SSL3.0
+```
+
+That also settles the renegotiation question for good: `%UNSAFE_RENEGOTIATION`
+is a priority-string modifier, and there is no way to inject one into CUPS short
+of `LD_PRELOAD`.
+
+But `/etc/gnutls/config` has a second section that is applied *inside* GnuTLS at
+priority-parse time, below the priority string, where no application can
+override it. Ubuntu already ships one - which is itself the proof that the
+mechanism works:
+
+```
+[overrides]
+disabled-version = tls1.0
+disabled-version = tls1.1
+disabled-version = dtls0.9
+disabled-version = dtls1.0
+```
+
+Add one line:
+
+```
+disabled-version = tls1.3
+```
+
+restart the daemons:
+
+```bash
+sudo systemctl restart cups cups-browsed
+```
+
+...and it all works. `gnutls-cli` with an unmodified `NORMAL` priority now
+connects - which is the demonstration that the override bites below the priority
+string, and therefore reaches every GnuTLS caller regardless of what string it
+sets. `ipptool` over `ipps://` returns the attribute list:
+
+```bash
+$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+    Get printer attributes using get-printer-attributes    [PASS]
+        RECEIVED: 324135 bytes in response
+        status-code = successful-ok (successful-ok)
+```
+
+And the auto-discovered `cups-browsed` queue - the one that had been swallowing
+jobs all afternoon - prints.
+
+Reaching every GnuTLS caller matters more than it sounds, because **three**
+separate processes open TLS to this printer: `cups-browsed` during discovery,
+`cupsd` itself, and `/usr/lib/cups/backend/ipp`, which `cupsd` forks at print
+time. They all link libcups, so they all share the failure - and fixing only
+one of them would have moved the wall rather than removed it.
+
+**I have since reverted it.** `disabled-version = tls1.3` in
+`/etc/gnutls/config` applies to every GnuTLS consumer on the machine - `wget`,
+`curl-gnutls`, glib-networking and with it a good chunk of Gnome. Holding all of
+them at TLS 1.2 with ECDHE and AES-GCM is not *dangerous*, but it is a
+system-wide change made to accommodate one appliance, and that's the wrong shape
+of fix. A properly scoped version is what I'm looking for now - GnuTLS's
+`GNUTLS_SYSTEM_PRIORITY_FILE` environment variable, which points at an
+alternative config file and could in principle be set for the CUPS units alone,
+is the thread I'd pull next.
+
+So: right track at last, wrong blast radius. Which leaves the boring fix still
+standing.
 
 # Step 7: the fix that actually works
 
@@ -259,10 +398,9 @@ auto-discovered.
 
 Two more things. Set a **DHCP reservation** for the printer's MAC in your
 router, or `192.168.1.50` will change one day and silently break the static
-queue. And undo whichever crypto relaxation you tried - `sudo
-update-crypto-policies --set DEFAULT`, or your `/etc/ssl/openssl.cnf` edits -
-because there's no reason to run a whole machine at `SECLEVEL=0` for a printer
-that isn't even using OpenSSL.
+queue. And if you tried the `/etc/gnutls/config` override from Step 6, revert
+it - there's no reason to hold an entire machine at TLS 1.2 for the benefit of
+one appliance.
 
 # What I'd do differently
 
@@ -271,22 +409,32 @@ that isn't even using OpenSSL.
    Avahi bug instead, because "printer not found" *feels* like discovery.
 2. **`implicitclass://` is not an error.** It's normal multi-backend behaviour.
    Don't build a theory on it.
-3. **`openssl s_client` is the right instrument** for deciding whether "can't
-   reach the printer" is really a TLS interop problem - it takes CUPS and Avahi
-   out of the picture entirely. Just remember that `SECLEVEL` and
-   `-legacy_renegotiation` mean your own client can be the one saying no.
-4. **Check which TLS library your program actually uses before tuning one.**
-   `ldd` on the binary, `readelf -d` on the library. CUPS uses GnuTLS, so an
-   afternoon of OpenSSL crypto config edits was never going to move it - and
-   `openssl s_client`, useful as it was, is not the same client as the one
-   failing.
-5. **`unsafe legacy renegotiation disabled` against an embedded device is a
-   pattern**, not a one-off. Printers, switches, IoT gadgets: pre-2010 TLS
-   server code that no firmware update ever revisited.
-6. **The pragmatic fix beat the correct fix by an order of magnitude.** A
-   static plain-IPP queue took two minutes. Weakening TLS machine-wide to
-   accommodate one printer's fifteen-year-old bug was a bad trade on both
-   security and time - and I never even got it to demonstrably work.
+3. **Note who sent the alert.** "A TLS fatal alert has been **received**"
+   means the *server* rejected you. I read that line a dozen times and spent an
+   hour relaxing my own client's policy anyway, which by construction could not
+   have been the problem.
+4. **Probe with the library your program actually links.** `openssl s_client`
+   was the right tool for establishing that this was a TLS interop problem at
+   all - it takes CUPS and Avahi out of the picture. But the *specific* answer
+   it gave was OpenSSL's answer, not CUPS's. `ldd` the binary, `readelf -d` the
+   library, then pick your probe: `gnutls-cli` here, not `openssl s_client`.
+5. **Two TLS stacks routinely disagree about the same server.** OpenSSL 3.x
+   refused this printer over RFC 5746; GnuTLS never cared, because its default
+   `%PARTIAL_RENEGOTIATION` permits the initial handshake and IPP never
+   renegotiates. Same printer, same firmware, two entirely different objections
+   - and only one of them was breaking my printing.
+6. **`ipptool` is the end-to-end probe for CUPS.** `gnutls-cli` tells you what
+   the *printer* will accept; `ipptool` goes through libcups and the same
+   `client.conf`, so it tells you whether your configuration actually reached
+   CUPS. Those are different questions and I needed both - the config that
+   looked right and did nothing would otherwise have gone unnoticed.
+7. **TLS 1.3 intolerance in embedded devices is a pattern**, not a one-off.
+   Printers, switches, IoT gadgets: a stack that predates 1.3 and chokes on the
+   ClientHello rather than negotiating down. Worth trying `-VERS-TLS1.3` early.
+8. **The pragmatic fix beat the correct fix by an order of magnitude.** A static
+   plain-IPP queue took two minutes and has no blast radius. The correct fix took
+   two hours to find, does work, and is currently reverted because the only
+   version of it I have is system-wide.
 
 # The whole fix, start to finish
 

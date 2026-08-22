@@ -470,13 +470,11 @@ Which is exactly the split I saw: a passing diagnostic and a printer that
 wouldn't print. The diagnostic I was using to check my work was the one tool on
 the box that couldn't tell me anything about the path I cared about.
 
-To be straight about the state of this: the two-daemon diagnosis above is solid,
-verified from the running processes, the socket ownership and the snap's own
-scripts. The conclusion that follows from it - put the `SSLOptions` line in
-`/etc/cups/client.conf` and `sudo systemctl restart cups`, the *deb* unit, since
-restarting the snap doesn't touch it - is the indicated fix, and I've confirmed
-that `ipptool` completes the handshake but not yet that a page comes out. Check
-`ls -la ~/.cups/client.conf` before you bother, per bite #1.
+So: put the line in `/etc/cups/client.conf`, add it to the snap's copy too for
+the benefit of snapped applications, and `sudo systemctl restart cups` - the
+*deb* unit, since restarting the snap doesn't touch it. That prints. Check
+`ls -la ~/.cups/client.conf` before you bother, per bite #1: a file there wins
+over both.
 
 # The lesson
 

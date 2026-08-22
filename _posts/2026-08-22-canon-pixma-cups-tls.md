@@ -22,8 +22,10 @@ device for Canon_TS5300_series: ///dev/null
 
 The root cause turned out to be a genuinely interesting one: the printer's
 embedded TLS server hangs up the moment a client offers **TLS 1.3** - and every
-current Linux TLS stack offers TLS 1.3 by default. The pragmatic fix, on the
-other hand, is embarrassingly boring. Here's the trail, including the dead ends,
+current Linux TLS stack offers TLS 1.3 by default. The fix is one line in
+`client.conf` - containing one keyword nobody would think to type, because
+underneath the printer bug sits a second bug: since CUPS 2.4.12, on Debian and
+Ubuntu, `SSLOptions` is silently thrown away. Here's the trail, including the dead ends,
 because the dead ends are where I lost the two hours - and one of those dead
 ends was a confident, wrong diagnosis that I carried for most of them.
 
@@ -297,7 +299,7 @@ DH, RC4 or SSLv3. The single thing that has to change is the protocol
 *ceiling* - a cap, not a weakening. Every "legacy mode" I had been reaching for
 was solving a problem I did not have.
 
-## Telling CUPS about it, attempt one: client.conf (half a fix)
+## Telling CUPS about it, attempt one: client.conf (the actual fix)
 
 CUPS has a documented lever for exactly this, and the version tokens are sitting
 in the library:
@@ -387,22 +389,19 @@ else back verbatim. Why there are two CUPSes on a stock desktop at all, and how
 to tell which one owns printing on your box, is [a post of its
 own](../ubuntu-two-cupses/).
 
-So the honest score for attempt one is *half a fix*, and I want to be precise
-about which half, because it is the more interesting half:
+And with those two lines in place, **it prints**. Gnome's print dialog, the
+auto-discovered queue, paper. No static queue, no system-wide crypto policy, no
+environment variables. The entire two-hour hunt was one missing keyword.
 
-* **Fixed:** every libcups client that reads that `client.conf` can now talk to
-  the printer over IPPS. `ipptool` proves it.
-* **Not fixed:** printing. Jobs still do not come out.
-
-Which is a genuinely useful thing to have learned, because it splits one
-question into two. `ipptool` runs as me, reads `client.conf`, and given an
-`ipps://` URI connects to the printer directly - no daemon involved at all.
-Printing runs through `cups-browsed` and through the `ipp` backend that `cupsd`
-fork+execs per job - different processes, different environments, and evidently
-not all of them get the cap. I do not yet know which one is the holdout: `cupsd`
-exports `CUPS_SERVERROOT` into the filters and backends it forks, so the backend
-ought to resolve the same `client.conf` without any help, and "ought to" is
-doing a lot of work in that sentence. That is where this is still open.
+Two honest caveats about what I actually measured. I wrote the line into both
+`client.conf` files at the same time, so "the deb's copy is the one that matters
+for jobs" is inference from the process tree - the deb `cupsd` forks the deb
+backend, which reads `/etc/cups/client.conf` - and not something I separated by
+experiment. And keep `ipptool` and printing apart as questions, because
+conflating them is what cost me the afternoon: `ipptool` given an `ipps://` URI
+runs as me and connects to the printer directly, no daemon involved, while
+printing goes through `cupsd` and the `ipp` backend it fork+execs per job. A
+pass from the first is not a promise about the second.
 
 One more thing to know before you spend time here: Ubuntu's libcups is built
 without debug printfs, so the usual trick of setting `CUPS_DEBUG_LOG` to dump
@@ -413,27 +412,27 @@ $ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep CUPS_DEBUG_LOG
 $      # nothing
 ```
 
-## Attempt two: the GnuTLS override, which works
+## Attempt two: the GnuTLS override - the detour that explained the first one
 
-If `client.conf` caps some processes and not others, the obvious move is to stop
+This is the road I actually took while `client.conf` still looked inert: stop
 asking processes nicely and cap the protocol somewhere none of them can opt out
-of. That is what this does, and it is why it succeeds where attempt one only got
-halfway - it bites below the priority string, so it applies to every GnuTLS
-caller in the print path whether or not that process ever opens a `client.conf`.
+of. It works, and it is worth keeping in the post for one reason - *why* it works
+is what eventually explained why attempt one didn't. It bites below the priority
+string, which is the one place a setting cannot be overridden by an application,
+and, as it turns out, cannot be silently discarded by one either.
 
-The obvious next idea is `default-priority-string` in `/etc/gnutls/config`. It
-does nothing for CUPS, and the binary says why: libcups assembles its own
-priority string out of the `SSLOptions` values and installs it directly, over
-the top of whatever the system default was.
+The obvious next idea is `default-priority-string` in `/etc/gnutls/config`.
+libcups *does* ask GnuTLS for the system default - `gnutls_set_default_priority()`,
+unconditionally, on every connection - and then normally overwrites the answer
+with a string of its own, assembled from the `SSLOptions` values. Normally. On
+this distro that overwrite is precisely the call that fails, so the default is
+what you end up connected with after all. I never tested that knob and by the
+time I understood the mechanism I had a better lever, so I'll leave it at "not
+as inert as I assumed".
 
-```bash
-$ nm -D --undefined-only /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -i priority
-     U gnutls_priority_set_direct@GNUTLS_3_4
-```
-
-That also settles the renegotiation question for good: `%UNSAFE_RENEGOTIATION`
-is a priority-string modifier, and there is no way to inject one into CUPS short
-of `LD_PRELOAD`.
+The priority string does settle the renegotiation question, though:
+`%UNSAFE_RENEGOTIATION` is a priority-string modifier, and there is no way to
+inject one into CUPS short of `LD_PRELOAD`.
 
 But `/etc/gnutls/config` has a second section that is applied *inside* GnuTLS at
 priority-parse time, below the priority string, where no application can
@@ -486,31 +485,26 @@ of them would have moved the wall rather than removed it.
 `curl-gnutls`, glib-networking and with it a good chunk of Gnome. Holding all of
 them at TLS 1.2 with ECDHE and AES-GCM is not *dangerous*, but it is a
 system-wide change made to accommodate one appliance, and that's the wrong shape
-of fix. A properly scoped version is what I'm looking for now. What I have
-established so far:
+of fix.
 
-* **`SSLOptions` in `client.conf` already covers part of the ground** - see
-  attempt one. It caps every libcups client that reads that file, with no
-  system-wide change whatsoever, which is exactly the blast radius I want. It
-  just does not get a job printed, and until I know which process in the print
-  path is ignoring it, the rest of this list still stands.
-* **GnuTLS honours `GNUTLS_SYSTEM_PRIORITY_FILE`**, which *replaces*
-  `/etc/gnutls/config` rather than adding to it - so the scoped fix is a private
-  copy of that file carrying Ubuntu's four `disabled-version` lines plus
-  `tls1.3`. Set `GNUTLS_SYSTEM_PRIORITY_FAIL_ON_INVALID=1` beside it, or a
-  mistyped path fails silently and you are debugging the printer again.
-* **The third process is the awkward one.** A systemd drop-in with
-  `Environment=` covers `cupsd` and `cups-browsed`, but `cupsd` scrubs the
-  environment of the filters and backends it forks, so the `ipp` backend needs
-  its own lever - `SetEnv`, which lives in `cups-files.conf`, not `cupsd.conf`.
+The properly scoped version turned out to be attempt one plus one keyword, which
+retired two fairly elaborate plans I had for narrowing this down. Recording them
+in case you ever need to aim GnuTLS policy at a single unit: the library honours
+`GNUTLS_SYSTEM_PRIORITY_FILE`, which *replaces* `/etc/gnutls/config` rather than
+adding to it, so a private copy has to carry Ubuntu's four `disabled-version`
+lines too - and set `GNUTLS_SYSTEM_PRIORITY_FAIL_ON_INVALID=1` beside it, or a
+mistyped path fails silently and you're debugging the printer again. A systemd
+drop-in with `Environment=` then covers `cupsd` and `cups-browsed`, but `cupsd`
+scrubs the environment of the filters and backends it forks, so the `ipp`
+backend needs `SetEnv` - which lives in `cups-files.conf`, not `cupsd.conf`.
 
-So: right track at last, wrong blast radius. Which leaves the boring fix still
-standing.
+# Step 7: the alternative, if you would rather not touch TLS at all
 
-# Step 7: the fix that actually works
-
-Stop letting `cups-browsed` choose. Add the printer by hand, over **plain
-IPP**, at its mDNS hostname:
+This is what I ran on while the TLS side was still a mystery, and it is still the
+right answer if you'd rather not think about protocol versions at all - or if a
+printer's TLS turns out to be broken in some way no version cap fixes.
+Stop letting `cups-browsed` choose. Add the printer by hand, over **plain IPP**,
+at its mDNS hostname:
 
 ```bash
 # drop the broken auto-discovered queue
@@ -524,7 +518,10 @@ lp -d TS5351 /etc/hostname
 ```
 
 Instant, reliable, on both machines - because it never attempts a TLS handshake
-at all. The printer's broken IPPS advertisement is simply never consulted.
+at all. The printer's broken IPPS advertisement is simply never consulted. The
+trade is that IPP traffic on your LAN goes in the clear, which for a home
+network and a document you were about to print onto paper anyway is a trade I'd
+make without much thought.
 
 `cups-browsed` will keep re-discovering the printer and parking its broken
 `implicitclass` queue right next to your working one, so you end up with two
@@ -588,8 +585,7 @@ appliance.
    the *printer* will accept; `ipptool` goes through libcups and the same
    `client.conf`, so it tells you whether your configuration actually reached
    CUPS. Those are different questions and I needed both - a config that looks
-   right and is never read would otherwise go unnoticed, and so would one that
-   is read and works for clients while jobs still do not print. Two caveats:
+   right but is never read would otherwise go unnoticed. Two caveats:
    `ipptool` given an `ipps://` URI goes straight to the printer, so it is a
    test of your client configuration and not of your print path; and it reads
    `~/.cups/client.conf` before the system file, so check that one exists
@@ -597,12 +593,30 @@ appliance.
 8. **TLS 1.3 intolerance in embedded devices is a pattern**, not a one-off.
    Printers, switches, IoT gadgets: a stack that predates 1.3 and chokes on the
    ClientHello rather than negotiating down. Worth trying `-VERS-TLS1.3` early.
-9. **The pragmatic fix beat the correct fix by an order of magnitude.** A static
-   plain-IPP queue took two minutes and has no blast radius. The correct fix took
-   two hours to find, does work, and is currently reverted because the only
-   version of it I have is system-wide.
+9. **A silent no-op is worse than an error.** I found the correct fix in the
+   first twenty minutes. It then sat in the right file, on the right machine,
+   doing nothing at all, because CUPS handed GnuTLS a priority string GnuTLS
+   could not parse and dropped the error on the floor. Everything after that was
+   a hunt for the process that was ignoring my configuration - a process which
+   did not exist. One `if` around one return value would have turned this whole
+   post into a paragraph.
 
 # The whole fix, start to finish
+
+```bash
+# 0. cap TLS for CUPS. NoSystem is not optional - see OpenPrinting/cups#1677
+LINE='SSLOptions NoSystem MinTLS1.2 MaxTLS1.2'
+ls -la ~/.cups/client.conf     # must not exist, or it silently wins
+echo "$LINE" | sudo tee -a /etc/cups/client.conf
+echo "$LINE" | sudo tee -a /var/snap/cups/common/etc/cups/client.conf
+sudo systemctl restart cups
+
+# check it from the client side before trusting it
+ipptool -tv ipps://246989000000.local:631/ipp/print get-printer-attributes.test
+```
+
+That's it - the auto-discovered queue prints from there. If you'd rather stay off
+TLS altogether, the Step 7 route instead:
 
 ```bash
 # 1. find the printer's mDNS hostname

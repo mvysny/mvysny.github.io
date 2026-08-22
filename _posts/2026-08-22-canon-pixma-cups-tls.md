@@ -165,29 +165,40 @@ once and never touched again across a decade of firmware revisions.
 
 # Step 6: trying to fix it "properly", and failing
 
-Two ways to relax the restriction. On Fedora/RHEL-family, the sledgehammer:
+Two ways to relax the restriction. The first is the Fedora/RHEL sledgehammer,
+`update-crypto-policies` - which Ubuntu 26.04 does ship, contrary to what I
+assumed at the time. It's in `universe` and not installed by default:
 
 ```bash
+sudo apt install crypto-policies
 sudo update-crypto-policies --set LEGACY
 ```
 
-This re-enables RC4, SSLv3, TLS 1.0/1.1 and weak DH for *every* application on
-the machine - browser, SSH, VPN, all of it. Not something to leave switched on
-for one printer.
+That re-enables RC4, SSLv3, TLS 1.0/1.1 and weak DH for every application that
+honours the policy - browser, SSH, VPN, all of it. Not something to leave
+switched on for one printer. **Caveat: I never verified this one actually took
+effect on Ubuntu.** The whole mechanism depends on each library being built to
+read its policy back-end, and on Fedora that wiring is a distro-wide invariant;
+on Ubuntu I didn't check that it held. So don't read what follows as evidence
+that `LEGACY` didn't work - only that I couldn't show it did.
 
-The narrower version, allowing legacy renegotiation and nothing else, in
-`/etc/crypto-policies/back-ends/opensslcnf.config`:
+The second is OpenSSL's own config, `/etc/ssl/openssl.cnf`, under the
+`[system_default_sect]` Ubuntu ships. Allowing legacy renegotiation and nothing
+else:
 
 ```
+[system_default_sect]
 Options = UnsafeLegacyServerConnect
 ```
 
-followed by `sudo update-crypto-policies`.
+Add `CipherString = DEFAULT:@SECLEVEL=0` and `MinProtocol = TLSv1` alongside it
+and you have the same blast radius as `LEGACY`, minus the guesswork about
+whether it applied. Either way it takes effect on the next process start - no
+regeneration step, no daemon to reload.
 
-Reality check: **neither helped.** With the system-wide `LEGACY` policy applied
-on two different laptops, `cups-browsed`'s IPPS attempt still didn't work - one
-machine kept showing `(null):631`, the other went back to `implicitclass://`
-and swallowed jobs in silence.
+Reality check: **`cups-browsed`'s IPPS attempt still failed.** One machine kept
+showing `(null):631`, the other went back to `implicitclass://` and swallowed
+jobs in silence.
 
 There's a good reason for that, and `ldd` spells it out. CUPS does its TLS with
 **GnuTLS**, not OpenSSL:
@@ -200,9 +211,8 @@ $ readelf -d /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep NEEDED | grep -E 'gnu
 `libssl.so.3` and `libcrypto.so.3` *do* show up in `ldd $(which cups-browsed)`,
 which is misleading - they arrive transitively through `libldap`, itself dragged
 in by `libcurl-gnutls`. OpenSSL is loaded into the process and plays no part in
-the IPP connection whatsoever. Every minute spent on
-`/etc/crypto-policies/back-ends/opensslcnf.config` was tuning a library that
-wasn't in the code path.
+the IPP connection whatsoever. Every minute spent in
+`/etc/ssl/openssl.cnf` was tuning a library that wasn't in the code path.
 
 Which forces an honest caveat on the diagnosis: `openssl s_client` proved the
 printer is missing RFC 5746, and that's real. But GnuTLS's default policy is
@@ -253,11 +263,10 @@ auto-discovered.
 
 Two more things. Set a **DHCP reservation** for the printer's MAC in your
 router, or `192.168.1.50` will change one day and silently break the static
-queue. And revert the crypto policy if you tried it and it didn't help:
-
-```bash
-sudo update-crypto-policies --set DEFAULT
-```
+queue. And undo whichever crypto relaxation you tried - `sudo
+update-crypto-policies --set DEFAULT`, or your `/etc/ssl/openssl.cnf` edits -
+because there's no reason to run a whole machine at `SECLEVEL=0` for a printer
+that isn't even using OpenSSL.
 
 # What I'd do differently
 
@@ -272,7 +281,7 @@ sudo update-crypto-policies --set DEFAULT
    `-legacy_renegotiation` mean your own client can be the one saying no.
 4. **Check which TLS library your program actually uses before tuning one.**
    `ldd` on the binary, `readelf -d` on the library. CUPS uses GnuTLS, so an
-   afternoon of OpenSSL crypto-policy edits was never going to move it - and
+   afternoon of OpenSSL crypto config edits was never going to move it - and
    `openssl s_client`, useful as it was, is not the same client as the one
    failing.
 5. **`unsafe legacy renegotiation disabled` against an embedded device is a

@@ -5,10 +5,12 @@ Scratch file for the blog posts _posts/2026-08-22-canon-pixma-cups-tls.md and
 _posts/2026-08-22-ubuntu-two-cupses.md.
 Not committed. Purpose: stop re-establishing the same context every session.
 
-*** READ SECTION 7 FIRST. The root cause is found and it is an upstream CUPS
-bug: since 2.4.12, on Debian/Ubuntu/NixOS, EVERY SSLOptions setting is silently
-discarded unless you also pass NoSystem. Section 7b lists what that retracts in
-sections 3, 4.2 and 6. ***
+*** READ SECTION 7 FIRST. There is a proven upstream CUPS bug: since 2.4.12, on
+Debian/Ubuntu/NixOS, EVERY SSLOptions setting is silently discarded unless you
+also pass NoSystem. That is established at the library level and on HOST for
+ipptool. It is NOT established that it is the only thing wrong: PRINTING IS
+STILL UNVERIFIED. Section 7b lists what section 7 retracts in sections 3, 4.2
+and 6. ***
 
 
 0. THE TWO MACHINES  (read this first)
@@ -592,8 +594,23 @@ which the deb had owned since 17:55, hence the "Failed"/"Cannot connect" lines.
 18:02:29 is the new boot. Consistent with everything else; nothing anomalous.
 
 
-7. *** ROOT CAUSE. RESOLVED, AND IT IS AN UPSTREAM CUPS BUG ***
---------------------------------------------------------------
+7. THE SSLOptions NO-OP - A PROVEN UPSTREAM CUPS BUG
+---------------------------------------------------
+
+SCOPE OF THIS SECTION, BEFORE ANYTHING ELSE:
+
+  ESTABLISHED - the mechanism below, at the library level, on the VM, from
+  source and from gnutls-cli. And on HOST: adding NoSystem made ipptool honor
+  SSLOptions and complete a TLS 1.2 handshake with the printer.
+
+  NOT ESTABLISHED - that this is the only defect between here and a printed
+  page. ipptool is a client talking straight to the printer. A job goes deb
+  cupsd -> deb ipp backend, and NOTHING about the job path has been retested
+  since NoSystem was added. Until 7.1 comes back with paper, this is "a real bug
+  that was certainly hurting us", not "the fix". The remaining suspects if
+  printing still fails are unchanged and unrelated to TLS: which queue jobs
+  actually go to, cups-browsed's implicitclass queue, and mDNS resolution at job
+  time (section 3b, candidates (a), (b), (d)).
 
 New fact from HOST (Martin): adding **NoSystem** to /etc/cups/client.conf made
 ipptool finally honor SSLOptions, negotiate TLS 1.2 and connect to the printer.
@@ -754,10 +771,15 @@ STILL OPEN (one item, for HOST):
 7c. WHAT THIS DOES TO THE TWO POSTS
 -----------------------------------
 
-_posts/2026-08-22-canon-pixma-cups-tls.md - the hold in section 5 is over, and
-the rewrite is bigger than the one sketched there, because the ending is no
-longer "the pragmatic fix beat the correct fix", it is "the correct fix was
-being silently discarded by a regression in CUPS 2.4.12":
+_posts/2026-08-22-canon-pixma-cups-tls.md - PARTIALLY unblocked. The mechanism
+and the retractions can be written now; they rest on source and on gnutls-cli,
+not on the printer. The new ENDING cannot: "here is the fix, two lines and no
+blast radius" needs 7.1 to come back with paper. Until then the post can say no
+more than "ipptool now completes the handshake; whether a job prints is still
+open". With that caveat, the rewrite is bigger than the one sketched in section
+5, because the story is no longer "the pragmatic fix beat the correct fix", it
+is "the correct fix was being silently discarded by a regression in CUPS
+2.4.12":
 
   - "Attempt one: client.conf" stops being a dead end and becomes a *sabotaged*
     attempt. It was right; one missing keyword made it a no-op.
@@ -770,8 +792,11 @@ being silently discarded by a regression in CUPS 2.4.12":
     overwrite fails and the answer it asked for is what actually gets used.
   - Drop the `nm` probe entirely (section 6: it shows no real snap/deb
     difference; the deb lib is merely stripped).
-  - New ending: `SSLOptions NoSystem MinTLS1.2 MaxTLS1.2`, one file, blast
-    radius = CUPS. Plus the upstream bug and the NixOS issue as corroboration.
+  - New ending, ONCE 7.1 CONFIRMS PAPER: `SSLOptions NoSystem MinTLS1.2
+    MaxTLS1.2`, one file, blast radius = CUPS. Plus the upstream bug and the
+    NixOS issue as corroboration. If 7.1 fails, the ending is instead "the TLS
+    layer is fixed and the queue layer is the next bug", which is still a better
+    post than the current one - but do not write either ending on spec.
   - The static plain-IPP queue stays as the zero-config workaround, but it is
     no longer the only sane option.
 

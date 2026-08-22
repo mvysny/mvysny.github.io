@@ -463,12 +463,12 @@ only one of them matters:
   command pass.
 - A print job goes to the **deb** `cupsd`, which forks the **deb** backend
   `/usr/lib/cups/backend/ipp`, linked against the deb's libcups, which reads
-  `/etc/cups/client.conf`. If `SSLOptions` isn't in *that* file, the print path
-  still offers TLS 1.3 and still dies.
+  `/etc/cups/client.conf`. Whatever you put in the snap's copy, this path never
+  reads it.
 
 Which is exactly the split I saw: a passing diagnostic and a printer that
-wouldn't print. The right lever, aimed at the wrong file - and the diagnostic I
-was using to check my work was the one tool on the box that couldn't tell me.
+wouldn't print. The diagnostic I was using to check my work was the one tool on
+the box that couldn't tell me anything about the path I cared about.
 
 To be straight about the state of this: the two-daemon diagnosis above is solid,
 verified from the running processes, the socket ownership and the snap's own

@@ -38,10 +38,11 @@ Printer enabled, accepting jobs, jobs submitted, jobs sitting there forever.
 That signature - *submitted but silent* - means discovery or connection, not
 rendering. Nothing is wrong with your PPD or your driver.
 
-# Step 2: find the printer's real IP, independent of CUPS
+# Step 2: find the printer's real address, independent of CUPS
 
 Before debugging anything, get an address you *know* is true, without asking
-Avahi or CUPS what they believe.
+Avahi or CUPS what they believe. You want two things: the IP, to probe with, and
+the printer's mDNS hostname, which is what the final queue will actually use.
 
 From the printer itself is the most reliable: **Setup → Device settings → LAN
 settings → Confirm LAN settings**, or print the network settings page from its
@@ -64,6 +65,37 @@ Or just scan for anything listening on the IPP port:
 ```bash
 nmap -p 631 --open 192.168.1.0/24
 ```
+
+## Aside: what exactly is `246989000000.local`?
+
+Worth a paragraph, because the fix in Step 7 leans on it.
+
+It looks like a MAC address with the colons stripped - twelve digits, right
+length - and that *is* a real convention: Brother advertises
+`BRWxxxxxxxxxxxx`, which is literally the MAC. Here it isn't. On this printer
+the MAC is `74:38:B7:xx:xx:xx` and the serial number is `KMHH00159`; neither
+matches, in format or in content.
+
+It's a field of its own. The printer's **OK menu → System Information** has a
+`Printer Name` entry, sitting right next to the serial number, and it reads
+exactly `246989000000`. The mDNS hostname is that value with `.local` appended -
+nothing more. Canon assigns it at the factory as an independent production
+identifier; it is not derived from the MAC or the serial at runtime, which is
+why you cannot reconstruct it from anything printed on the case.
+
+Three properties that make it useful:
+
+* **Stable.** It's persistent system information, stored like the serial number.
+  It survives reboots, firmware updates, DHCP leases, a factory network reset,
+  and moving the printer to a different network.
+* **Unique per unit.** The value identifies this one printer. The *scheme* - an
+  opaque numeric `Printer Name` published over mDNS - is Canon's own convention,
+  not an industry standard; other vendors do their own thing.
+* **Opaque.** You have to read it, either from `avahi-browse -r _ipp._tcp`
+  above or from **OK menu → System Information → Printer Name** on the device.
+  Guessing is hopeless.
+
+Stable and printer-specific is exactly what a static print queue wants.
 
 # Step 3: `implicitclass://` is not the bug
 
@@ -371,14 +403,14 @@ standing.
 # Step 7: the fix that actually works
 
 Stop letting `cups-browsed` choose. Add the printer by hand, over **plain
-IPP**, at a known IP:
+IPP**, at its mDNS hostname:
 
 ```bash
 # drop the broken auto-discovered queue
 sudo lpadmin -x Canon_TS5300_series
 
 # static, plain-IPP queue
-sudo lpadmin -p TS5351 -E -v ipp://192.168.1.50:631/ipp/print -m everywhere
+sudo lpadmin -p TS5351 -E -v ipp://246989000000.local:631/ipp/print -m everywhere
 
 # test
 lp -d TS5351 /etc/hostname
@@ -396,11 +428,27 @@ queue unless something explicitly asks for the other one, and `cups-browsed`
 stays available for any other network printers you actually want
 auto-discovered.
 
-Two more things. Set a **DHCP reservation** for the printer's MAC in your
-router, or `192.168.1.50` will change one day and silently break the static
-queue. And if you tried the `/etc/gnutls/config` override from Step 6, revert
-it - there's no reason to hold an entire machine at TLS 1.2 for the benefit of
-one appliance.
+**Use the hostname, not the IP.** My first version of this queue pointed at
+`ipp://192.168.1.50:631/ipp/print` and that is a latent bug: the printer gets
+its address from DHCP, so sooner or later the lease moves and the static queue
+silently stops working - which is the same symptom I had just spent two hours
+chasing. `246989000000.local` doesn't move. You can paper over the IP version
+with a DHCP reservation for the printer's MAC, and that works, but it's a second
+piece of configuration to remember, in the router rather than on the machine
+doing the printing, and it only holds for that one router - move the printer
+somewhere else and you're back to hunting down its new address.
+
+The one thing the hostname costs is a runtime dependency on mDNS: Avahi has to
+be running and multicast has to reach the printer at print time. That's a real
+consideration if your printer lives behind a VLAN boundary or on an AP that
+filters multicast - in which case fall back to the IP plus a DHCP reservation.
+On a flat home network it's a non-issue, and worth noting: name resolution was
+never the broken part here. Step 3's Avahi rabbit hole was noise; `avahi-browse`
+resolved this printer correctly the entire time.
+
+And if you tried the `/etc/gnutls/config` override from Step 6, revert it -
+there's no reason to hold an entire machine at TLS 1.2 for the benefit of one
+appliance.
 
 # What I'd do differently
 
@@ -439,22 +487,21 @@ one appliance.
 # The whole fix, start to finish
 
 ```bash
-# 1. find the printer's IP (printer touchscreen, or:)
+# 1. find the printer's mDNS hostname
+#    (or read it off the printer: OK menu -> System Information -> Printer Name)
 avahi-browse -r _ipp._tcp
 
 # 2. remove the broken auto-discovered queue
 sudo lpadmin -x Canon_TS5300_series
 
-# 3. add a static plain-IPP queue
-sudo lpadmin -p TS5351 -E -v ipp://192.168.1.50:631/ipp/print -m everywhere
+# 3. add a static plain-IPP queue, by hostname - not by IP, which DHCP will move
+sudo lpadmin -p TS5351 -E -v ipp://246989000000.local:631/ipp/print -m everywhere
 
 # 4. test
 lp -d TS5351 /etc/hostname
 
 # 5. in Gnome Settings -> Printers, set TS5351 as the default queue
 #    (cups-browsed's duplicate can stay; it just won't be picked)
-
-# 6. set a DHCP reservation for the printer's MAC in your router
 ```
 
 If you're staring at `(null):631` and an endless stream of `No suitable

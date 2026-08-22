@@ -411,7 +411,8 @@ run with sudo, dumps everything in sections.
         The cache filename is UNCONFIRMED - AppArmor blocks reading that
         directory even from inside the snap namespace. List it first.
 
-[ ] 4.4 RESOLVE THE nm DISCREPANCY  (VM can do this; needs a source read)
+[x] 4.4 RESOLVE THE nm DISCREPANCY  ->  RESOLVED, see section 6 below.
+        (original notes kept for the record)
         The post's "Attempt two" claims libcups never asks GnuTLS for the system
         default, resting on there being exactly one priority symbol. That is
         true of the apt library but NOT of the snap's:
@@ -485,3 +486,101 @@ Rewrite that WOULD be needed if client.conf turns out to fix printing:
     magnitude") needs rewording for the same reason.
 
 Do not rewrite any of that until 4.1 and 4.2 have actually been run on HOST.
+
+
+6. RESOLVED: 4.4, THE nm DISCREPANCY  (verified on the VM, binary level)
+-----------------------------------------------------------------------
+
+THE DISCREPANCY WAS AN ARTIFACT. Both libcups builds reference BOTH symbols:
+
+    $ nm -D --undefined-only <lib> | grep -E 'priority|gnutls_set_default'
+    snap: U gnutls_priority_set_direct  +  U gnutls_set_default_priority
+    deb : U gnutls_priority_set_direct  +  U gnutls_set_default_priority
+
+Two ways the old command hid that:
+  - the DEB library is STRIPPED, the snap's is NOT. `nm -u` (no -D) on the deb
+    lib prints nothing at all ("no symbols", .symtab absent); on the snap lib it
+    works. So the same command yields 0 symbols vs 2.
+  - a grep for `gnutls_priority` matches only gnutls_priority_set_direct, since
+    the other symbol is gnutls_set_default_priority. That yields exactly 1 vs 1.
+Either way the post's nm probe does NOT show a real snap/deb difference. Fix or
+drop that probe; do not present it as evidence of anything.
+
+WHAT _httpTLSStart ACTUALLY DOES  (objdump of the snap's unstripped libcups;
+the snap lib being unstripped is what makes this readable):
+
+  Both calls live in _httpTLSStart, and BOTH ARE UNCONDITIONAL:
+
+    48d4d  gnutls_init(&http->tls, mode)     mode: http->mode==0 -> GNUTLS_CLIENT(2)
+                                                   else          -> GNUTLS_SERVER(1)
+    48d5f  gnutls_set_default_priority(...)  <-- no guard, client AND server
+    ...
+    4933c  gnutls_priority_set_direct(...)   <-- no guard, every path converges here
+
+  => so the answer to 4.4 is "yes, it IS reached", BUT it is then OVERWRITTEN by
+     gnutls_priority_set_direct on every single path. Functionally moot.
+  => /etc/gnutls/config's `default-priority-string` (an [overrides] key that
+     retargets gnutls_set_default_priority) is therefore INERT for CUPS - but
+     NOT for the reason the post gives. The post says libcups never asks for the
+     system default. It does ask, then discards the answer.
+
+THE PRIORITY STRING CUPS BUILDS  (globals decoded from .data, strings from
+.rodata, control flow from the disassembly):
+
+    0x8e1a8 tls_options      default -1  (sentinel -> _cupsSetDefaults())
+    0x8e1a4 tls_min_version  default  1  (_HTTP_TLS_1_0)
+    0x8e1a0 tls_max_version  default  5  (_HTTP_TLS_MAX)
+
+    version table @0x8c600 = { VERS-SSL3.0, VERS-TLS1.0, VERS-TLS1.1,
+                               VERS-TLS1.2, VERS-TLS1.3, VERS-TLS-ALL }
+
+    if !(tls_options & 8)      strlcpy "@SYSTEM,"      <-- 8 == NoSystem
+                               strlcat "NORMAL"
+    if tls_max_version > 4:    strlcat "+VERS-TLS-ALL" (or ":+VERS-TLS-ALL:+VERS-SSL3.0"
+                               when min==0), then ":-"+table[i] for i < min
+    else:                      strlcat ":-VERS-TLS-ALL", then ":+"+table[i]
+                               for i = min..max
+    tls_options & 1 ? ":+ARCFOUR-128" : ":!ARCFOUR-128"
+    always ":!ANON-DH"
+    tls_options & 4 ? ":!AES-128-CBC:!AES-256-CBC:!CAMELLIA-128-CBC:..." : ""
+
+  SSLOptions token list (rodata, 0x730b8..): AllowRC4, AllowSSL3, AllowDH,
+  DenyCBC, DenyTLS1.0, MaxTLS1.0-1.3, MinTLS1.0-1.3, NoSystem.
+  Note AllowDH (bit 2) is NEVER TESTED in _httpTLSStart - ":!ANON-DH" is
+  appended unconditionally. Dead option in the GnuTLS backend.
+
+  So, concretely:
+    default (no SSLOptions):
+      @SYSTEM,NORMAL:+VERS-TLS-ALL:-VERS-SSL3.0:!ARCFOUR-128:!ANON-DH
+    SSLOptions MinTLS1.2 MaxTLS1.2  (min=max=3):
+      @SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2:!ARCFOUR-128:!ANON-DH
+
+THE INTERESTING CONSEQUENCE - and this is genuinely new for the post:
+
+  The default string STARTS WITH "@SYSTEM," so CUPS *does* consult the system
+  [priorities] SYSTEM definition as its base. But it then appends
+  ":+VERS-TLS-ALL", which re-enables every TLS version. Later directives win in
+  a GnuTLS priority string, so any version narrowing done via @SYSTEM gets
+  clobbered. That is why priority-string-level overrides looked inert while
+  `disabled-version = tls1.3` under [overrides] worked: [overrides]
+  disabled-version is enforced BELOW the priority string and cannot be undone by
+  ":+VERS-TLS-ALL". The post's "bites below the priority string" instinct is
+  right; the "never asks the system" explanation is wrong.
+
+  NOT MEASURED: the "later directives win / +VERS-TLS-ALL clobbers @SYSTEM"
+  step is documented GnuTLS priority-string semantics, not something verified
+  on this box - gnutls-bin is not installed and I did not install it. If the
+  post is going to assert it, either install gnutls-bin and confirm with
+      gnutls-cli --priority '<string>' --list
+  (it prints the enabled Protocols), or word it as documented behaviour.
+
+  Also note SSLOptions MinTLS1.2 MaxTLS1.2 is confirmed to produce an
+  explicitly-enumerated, TLS1.2-only version set - so the scoped fix does not
+  depend on the @SYSTEM question at all.
+
+CORRECTION to an earlier reading of the probe output: the cups-browsed_log and
+error_log lines stamped 18:02:12, against ps start times of 18:02:29, are NOT a
+clock jump. 18:02:12 is the PREVIOUS (standalone) snap shutting down during the
+reboot - cups-browsed cancelling subscriptions against /run/cups/cups.sock,
+which the deb had owned since 17:55, hence the "Failed"/"Cannot connect" lines.
+18:02:29 is the new boot. Consistent with everything else; nothing anomalous.

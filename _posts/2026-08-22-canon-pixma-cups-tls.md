@@ -58,12 +58,6 @@ hostname = [246989000000.local]
 address = [192.168.1.50]
 ```
 
-Note the narrow query. **Don't use `avahi-browse -art`.** This printer
-advertises ten-plus service types, and browsing all of them at once overloads
-the resolver - `-art` hangs or returns half an answer. Ask for one service type
-and you get a reliable read. That was the only useful thing to come out of my
-mDNS detour.
-
 Or just scan for anything listening on the IPP port:
 
 ```bash

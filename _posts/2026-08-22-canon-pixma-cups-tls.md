@@ -165,9 +165,9 @@ once and never touched again across a decade of firmware revisions.
 
 # Step 6: trying to fix it "properly", and failing
 
-Two ways to relax the restriction. The first is the Fedora/RHEL sledgehammer,
-`update-crypto-policies` - which Ubuntu 26.04 does ship, contrary to what I
-assumed at the time. It's in `universe` and not installed by default:
+Two ways to relax the restriction. The one I actually ran is the Fedora/RHEL
+sledgehammer, `update-crypto-policies` - which Ubuntu 26.04 does ship, contrary
+to what I assumed at the time. It's in `universe` and not installed by default:
 
 ```bash
 sudo apt install crypto-policies
@@ -176,15 +176,17 @@ sudo update-crypto-policies --set LEGACY
 
 That re-enables RC4, SSLv3, TLS 1.0/1.1 and weak DH for every application that
 honours the policy - browser, SSH, VPN, all of it. Not something to leave
-switched on for one printer. **Caveat: I never verified this one actually took
-effect on Ubuntu.** The whole mechanism depends on each library being built to
-read its policy back-end, and on Fedora that wiring is a distro-wide invariant;
-on Ubuntu I didn't check that it held. So don't read what follows as evidence
-that `LEGACY` didn't work - only that I couldn't show it did.
+switched on for one printer.
 
-The second is OpenSSL's own config, `/etc/ssl/openssl.cnf`, under the
-`[system_default_sect]` Ubuntu ships. Allowing legacy renegotiation and nothing
-else:
+And a caveat that matters more than the command: **I never verified the policy
+took effect.** The whole mechanism depends on each library being built to read
+its policy back-end - on Fedora that wiring is a distro-wide invariant, on
+Ubuntu I didn't check that it held. Applied-and-ineffective and
+never-actually-applied look identical from where I was standing.
+
+The second way sidesteps that question, and I never got to it: configure OpenSSL
+directly, with no policy layer in between. In `/etc/ssl/openssl.cnf`, under the
+`[system_default_sect]` Ubuntu ships:
 
 ```
 [system_default_sect]
@@ -192,13 +194,13 @@ Options = UnsafeLegacyServerConnect
 ```
 
 Add `CipherString = DEFAULT:@SECLEVEL=0` and `MinProtocol = TLSv1` alongside it
-and you have the same blast radius as `LEGACY`, minus the guesswork about
-whether it applied. Either way it takes effect on the next process start - no
-regeneration step, no daemon to reload.
+for the same blast radius as `LEGACY`. It takes effect on the next process
+start - no regeneration step, no daemon to reload - and you can tell it applied.
+This is where I'd start next time, but I haven't run it, so it's a signpost.
 
-Reality check: **`cups-browsed`'s IPPS attempt still failed.** One machine kept
-showing `(null):631`, the other went back to `implicitclass://` and swallowed
-jobs in silence.
+Reality check: with `LEGACY` set, **`cups-browsed`'s IPPS attempt still
+failed.** One machine kept showing `(null):631`, the other went back to
+`implicitclass://` and swallowed jobs in silence.
 
 There's a good reason for that, and `ldd` spells it out. CUPS does its TLS with
 **GnuTLS**, not OpenSSL:
@@ -290,7 +292,7 @@ that isn't even using OpenSSL.
 6. **The pragmatic fix beat the correct fix by an order of magnitude.** A
    static plain-IPP queue took two minutes. Weakening TLS machine-wide to
    accommodate one printer's fifteen-year-old bug was a bad trade on both
-   security and time - and it didn't even work.
+   security and time - and I never even got it to demonstrably work.
 
 # The whole fix, start to finish
 

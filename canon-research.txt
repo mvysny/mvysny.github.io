@@ -260,6 +260,123 @@ And to remove (b) from the picture, repeat with the IP instead of the mDNS name:
     cups.lp -d TS5351ip /etc/hostname
 
 
+3c. RESOLVED: HOST RUNS **TWO** CUPS DAEMONS (snap AND deb)
+----------------------------------------------------------
+
+This explains the ipptool-works/printing-fails split completely.
+
+Observed on HOST:
+
+    $ ps -ef | grep cupsd
+    root  4137     1  /usr/sbin/cupsd -l                          <- DEB
+    root  4158     1  /bin/sh /snap/cups/1238/scripts/run-cupsd
+    root  4440  4158  cupsd -f -s /var/snap/cups/common/etc/cups/cups-files.conf \
+                            -c /var/snap/cups/common/etc/cups/cupsd.conf   <- SNAP
+
+    $ sudo ss -lptne 'sport = :631'
+    LISTEN 127.0.0.1:631  cupsd pid=4137  cgroup:.../system-cups.slice/cups.service
+    LISTEN [::1]:631      cupsd pid=4137
+
+    $ sudo ss -lpx | grep cups.sock
+    /run/cups/cups.sock                  cupsd pid=4137 + systemd pid=1 fd=98
+    /var/snap/cups/common/run/cups.sock  cupsd pid=4440
+
+=> the DEB cupsd owns port 631 and the canonical /run/cups/cups.sock.
+=> the SNAP cupsd is in PROXY MODE: no TCP port, only its private socket.
+
+THE CONSEQUENCE FOR THE BUG:
+  cups.ipptool is a SNAP binary -> snap libcups -> snap client.conf, and when
+  given an ipps:// URI it talks STRAIGHT TO THE PRINTER, bypassing every cupsd.
+  That is why the snap client.conf capped it and it passed.
+  Printing goes to the DEB cupsd, which forks the DEB backend
+  /usr/lib/cups/backend/ipp -> apt libcups 2.4.16 -> /etc/cups/client.conf.
+  That file is uncapped, so the print path still offers TLS 1.3 and dies.
+
+  => the SSLOptions line is needed in /etc/cups/client.conf for PRINTING.
+     The snap's copy only ever fixed snap clients. Both files, or the deb one.
+     Caveats: $HOME/.cups/client.conf is tried first by BOTH libcups builds and
+     never falls back, so check `ls -la ~/.cups/`; and the deb daemon needs
+     `sudo systemctl restart cups`, which restarting the snap does not do.
+
+PROXY MODE MECHANISM - verified by reading /snap/cups/current/scripts/run-cupsd:
+
+  detection (lines ~130-140):
+      [ ! -f /var/snap/cups/common/no-proxy ] && [ -r /etc/cups/cupsd.conf ]
+    NOTE: keyed on a CONFIG FILE BEING READABLE, not on the deb daemon running.
+    So `apt remove cups-daemon` without purging leaves /etc/cups/cupsd.conf
+    behind and the snap stays in proxy mode forever, proxying to nothing. The
+    script's own comment says to create the no-proxy file in that case.
+
+  in proxy mode:
+    - PORT is set empty -> cupsd.conf has every Listen/Port line stripped
+    - DOMAINSOCKET = /var/snap/cups/common/run/cups.sock (the ALT socket)
+    - client.conf gets `ServerName /var/snap/cups/common/run/cups.sock`
+    - $SNAP_DATA/var/run/proxy-mode is touched
+    - run-cups-browsed refuses to start cups-browsed while that file exists
+    - cups-proxyd <snap socket> <SYSTEM_CUPS_SERVER> -l --logdir ... is spawned,
+      mirroring the deb's queues into the snap's cupsd as proxy:// DeviceURIs
+    - SYSTEM_CUPS_SERVER is parsed out of /etc/cups/cupsd.conf
+      (Listen /socket | Port N | Listen *:N | Listen host:N), default
+      localhost:631
+
+  standalone mode, 631 already taken -> falls back to port 10631 plus the alt
+  socket ("parallel mode"). Escape hatch: touch /var/snap/cups/common/no-proxy.
+
+  on leaving proxy mode the script deletes leftover proxy:// mirrored queues.
+
+DIAGNOSTIC VALUE:
+  - `lpstat -v` vs `cups.lpstat -v` can show the SAME queue names; the snap side
+    has proxy:// DeviceURIs. Queue names are not decisive, DeviceURIs are.
+  - ls /var/snap/cups/current/var/run/proxy-mode  -> snap is only a proxy
+  - snap's client.conf ServerName value tells you the mode:
+        /run/cups/cups.sock                 -> standalone
+        /var/snap/cups/common/run/cups.sock -> proxy (or parallel)
+
+
+3d. THE REGRESSION, TAKE THREE - AND A RETRACTION
+------------------------------------------------
+
+RETRACTED: "the snap was standalone before the reboot and flipped to proxy mode
+after it". Martin confirms HOST had BOTH the deb and the snap installed from the
+start, so /etc/cups/cupsd.conf was readable at every snap start and the snap was
+in proxy mode before the reboot too. The mode did not change. Dead hypothesis.
+
+CURRENT BEST HYPOTHESIS: the print that worked was reading
+/etc/cups/client.conf - the DEB path, which is the correct one for the daemon
+that actually owns printing - and that file was cleaned up during the "revert
+everything except the snap client.conf" pass. That would leave exactly the
+observed state: cups.ipptool (snap libcups, snap client.conf) still passes,
+while jobs (deb cupsd -> deb backend -> /etc/cups/client.conf, now absent) fail.
+On the VM /etc/cups/client.conf does not exist at all - the deb ships no such
+file - which fits "had to be created" in the post.
+
+NEXT ACTION: put SSLOptions MinTLS1.2 MaxTLS1.2 in /etc/cups/client.conf and
+`sudo systemctl restart cups` (the DEB unit - restarting the snap does not
+touch it). Check `ls -la ~/.cups/client.conf` first: libcups opens that one
+first and never falls back.
+
+NEW FINDING - SNAP MODE IS STICKY UNTIL RESTART.  Observed on the VM: the deb
+was installed and started at 17:55 while the snap had been running since 16:11.
+Result - deb cups + cups-browsed active, /etc/cups/cupsd.conf readable, and yet
+the snap was STILL in standalone mode: no proxy-mode marker, client.conf still
+`ServerName /run/cups/cups.sock`, snap cups-browsed still running (proxy mode
+would have blocked it). run-cupsd evaluates the mode once, at snap service
+start. So installing or removing the deb changes nothing until the next
+`snap restart cups` or reboot. Good blog material even though it did not explain
+the HOST regression.
+
+ALSO: with the deb installed the VM now has TWO of every CLI tool -
+/usr/bin/ipptool and /usr/bin/lpstat from cups-ipp-utils / cups-client next to
+cups.ipptool and cups.lpstat. They read DIFFERENT client.conf files. And note
+`cups-config` is NOT in the deb runtime set at all (it lives in libcups2-dev),
+so the "ask cups-config --serverroot" advice now in the post's lesson 7 only
+works for the snap - worth fixing.
+
+VM is being rebooted to match HOST (both installed, both started at boot).
+Probe script for after the reboot: ./cups-probe.sh in this repo - read-only,
+run with sudo, dumps everything in sections.
+
+
 4. TODO / TO CHECK  (in this order)
 -----------------------------------
 

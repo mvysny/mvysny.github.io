@@ -169,7 +169,8 @@ $ strings /snap/cups/current/lib/libcups.so.2 | grep '^/var/snap'
 ```
 
 So a hand-written `/etc/cups/client.conf` is not merely overridden by something
-else - it is never opened at all. Remember that for Step 6.
+else - it is never opened at all. Keep that in mind for Step 6, where I write
+one anyway.
 
 **Both CUPSes can be installed at once, and then the snap steps aside.** The
 snap's launcher checks whether `/etc/cups/cupsd.conf` is readable and, if it is,
@@ -351,7 +352,7 @@ DH, RC4 or SSLv3. The single thing that has to change is the protocol
 *ceiling* - a cap, not a weakening. Every "legacy mode" I had been reaching for
 was solving a problem I did not have.
 
-## Telling CUPS about it, attempt one: client.conf
+## Telling CUPS about it, attempt one: client.conf (half a fix)
 
 CUPS has a documented lever for exactly this, and the version tokens are sitting
 in the library:
@@ -368,30 +369,63 @@ MinTLS1.2
 MinTLS1.3
 ```
 
-So, in `/etc/cups/client.conf` (which did not exist and had to be created):
+So, in `client.conf`:
 
 ```
 SSLOptions MinTLS1.2 MaxTLS1.2
 ```
 
-It made no difference. `ipptool` is the right probe here - it goes through
-libcups and reads the same `client.conf`, so unlike `gnutls-cli` it tests my
-*configuration* and not just the printer:
+Except - per Step 4 - *which* `client.conf`. Every write-up, including the one I
+was following, says `/etc/cups/client.conf`, which did not exist and had to be
+created. On this machine that is the wrong file: the snap's libcups compiles in
+`/var/snap/cups/common/etc/cups` as its `ServerRoot` and never opens the classic
+path. The file the daemons actually read is
+`/var/snap/cups/common/etc/cups/client.conf`, and unlike the classic one it
+already exists - the snap ships it, holding a single
+`ServerName /run/cups/cups.sock` line - so there is nothing to create, only a
+line to append.
+
+`ipptool` is the right probe for this, because it goes through libcups and reads
+that same `client.conf` - so unlike `gnutls-cli`, it tests my *configuration*
+and not just the printer. On the snap, use `cups.ipptool`, so it is the snap's
+libcups reading the snap's file:
 
 ```bash
-$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
-ipptool: Unable to connect to "192.168.1.50" on port 631 - A TLS fatal alert has been received.
+$ cups.ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+    Get printer attributes using get-printer-attributes    [PASS]
+        status-code = successful-ok (successful-ok)
 ```
 
-Three things to know before you spend time here. libcups tries
-`$HOME/.cups/client.conf` **first** and, if that opens, never falls back to
-`/etc/cups/client.conf` - a stale file in your home directory silently wins.
-**And on the snap, `/etc/cups/client.conf` is not in the search path at all**;
-the file to write is `/var/snap/cups/common/etc/cups/client.conf`. If you are on
-the snap, that on its own is the entire explanation for attempt one doing
-nothing - I was editing a file no process on the machine ever opens.
-And Ubuntu's libcups is built without debug printfs, so the usual trick of
-setting `CUPS_DEBUG_LOG` to dump the priority string CUPS builds is unavailable:
+**That is a pass, over `ipps://`, with nothing but a line in a config file.** No
+system-wide crypto policy, no environment variables, no `LD_PRELOAD`. The
+documented CUPS lever does exactly what the documentation says it does - and
+when I first tried it, I had written it to `/etc/cups/client.conf`, the file
+that under a snapped CUPS no CUPS process ever opens. "It made no difference"
+was me reporting on a file nothing reads. Put the same line in the snap's
+`client.conf` and the handshake that had failed all afternoon completes.
+
+So the honest score for attempt one is *half a fix*, and I want to be precise
+about which half, because it is the more interesting half:
+
+* **Fixed:** every libcups client that reads that `client.conf` can now talk to
+  the printer over IPPS. `cups.ipptool` proves it.
+* **Not fixed:** printing. Jobs still do not come out.
+
+Which is a genuinely useful thing to have learned, because it splits one
+question into two. `cups.ipptool` runs as me, reads `client.conf`, connects.
+Printing runs through `cups-browsed` and through the `ipp` backend that `cupsd`
+fork+execs per job - different processes, different environments, and evidently
+not all of them get the cap. I do not yet know which one is the holdout: the
+snap's libcups has the right `ServerRoot` compiled in, so the backend ought to
+find the file without any environment help, and "ought to" is doing a lot of
+work in that sentence. That is where this is still open.
+
+Two more things to know before you spend time here. libcups tries
+`$HOME/.cups/client.conf` **first** and, if that opens, never falls back to the
+system `client.conf` at all - a stale file in your home directory silently wins,
+whichever layout you are on. And Ubuntu's libcups is built without debug
+printfs, so the usual trick of setting `CUPS_DEBUG_LOG` to dump the priority
+string CUPS builds is unavailable:
 
 ```bash
 $ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep CUPS_DEBUG_LOG
@@ -399,6 +433,12 @@ $      # nothing
 ```
 
 ## Attempt two: the GnuTLS override, which works
+
+If `client.conf` caps some processes and not others, the obvious move is to stop
+asking processes nicely and cap the protocol somewhere none of them can opt out
+of. That is what this does, and it is why it succeeds where attempt one only got
+halfway - it bites below the priority string, so it applies to every GnuTLS
+caller in the print path whether or not that process ever opens a `client.conf`.
 
 The obvious next idea is `default-priority-string` in `/etc/gnutls/config`. It
 does nothing for CUPS, and the binary says why: libcups never asks GnuTLS for
@@ -451,7 +491,7 @@ string, and therefore reaches every GnuTLS caller regardless of what string it
 sets. `ipptool` over `ipps://` returns the attribute list:
 
 ```bash
-$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+$ cups.ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
     Get printer attributes using get-printer-attributes    [PASS]
         RECEIVED: 324135 bytes in response
         status-code = successful-ok (successful-ok)
@@ -496,6 +536,11 @@ system-wide change made to accommodate one appliance, and that's the wrong shape
 of fix. A properly scoped version is what I'm looking for now, and the snap
 narrows the field considerably. What I have established so far:
 
+* **`SSLOptions` in the snap's `client.conf` already covers part of the
+  ground** - see attempt one. It caps every libcups client that reads that file,
+  with no system-wide change whatsoever, which is exactly the blast radius I
+  want. It just does not get a job printed, and until I know which process in
+  the print path is ignoring it, the rest of this list still stands.
 * **GnuTLS honours `GNUTLS_SYSTEM_PRIORITY_FILE`**, which *replaces*
   `/etc/gnutls/config` rather than adding to it - so the scoped fix is a private
   copy of that file carrying Ubuntu's four `disabled-version` lines plus
@@ -595,8 +640,13 @@ appliance.
 7. **`ipptool` is the end-to-end probe for CUPS.** `gnutls-cli` tells you what
    the *printer* will accept; `ipptool` goes through libcups and the same
    `client.conf`, so it tells you whether your configuration actually reached
-   CUPS. Those are different questions and I needed both - the config that
-   looked right and did nothing would otherwise have gone unnoticed.
+   CUPS. Those are different questions and I needed both - a config that looks
+   right and is never read would otherwise go unnoticed, and so would one that
+   is read and works for clients while jobs still do not print. Make sure
+   it is the same `client.conf`: ask the daemons' own libcups where it looks -
+   `/snap/cups/current/bin/cups-config --serverroot` on the snap, since there is
+   no bare `cups-config` on `$PATH` there - and probe with `cups.ipptool` rather
+   than a host `ipptool` that would read the host's file.
 8. **TLS 1.3 intolerance in embedded devices is a pattern**, not a one-off.
    Printers, switches, IoT gadgets: a stack that predates 1.3 and chokes on the
    ClientHello rather than negotiating down. Worth trying `-VERS-TLS1.3` early.

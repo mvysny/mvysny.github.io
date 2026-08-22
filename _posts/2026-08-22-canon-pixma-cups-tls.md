@@ -354,7 +354,7 @@ that same `client.conf` - so unlike `gnutls-cli`, it tests my *configuration*
 and not just the printer:
 
 ```bash
-$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+$ ipptool -tv ipps://246989000000.local:631/ipp/print get-printer-attributes.test
     Get printer attributes using get-printer-attributes    [PASS]
         status-code = successful-ok (successful-ok)
 ```
@@ -465,7 +465,7 @@ string, and therefore reaches every GnuTLS caller regardless of what string it
 sets. `ipptool` over `ipps://` returns the attribute list:
 
 ```bash
-$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+$ ipptool -tv ipps://246989000000.local:631/ipp/print get-printer-attributes.test
     Get printer attributes using get-printer-attributes    [PASS]
         RECEIVED: 324135 bytes in response
         status-code = successful-ok (successful-ok)
@@ -610,6 +610,7 @@ ls -la ~/.cups/client.conf     # must not exist, or it silently wins
 echo "$LINE" | sudo tee -a /etc/cups/client.conf
 echo "$LINE" | sudo tee -a /var/snap/cups/common/etc/cups/client.conf
 sudo systemctl restart cups
+# or even better, REBOOT
 
 # check it from the client side before trusting it
 ipptool -tv ipps://246989000000.local:631/ipp/print get-printer-attributes.test

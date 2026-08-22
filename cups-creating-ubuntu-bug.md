@@ -327,3 +327,84 @@ Note that ~/.cups/client.conf is opened first and wins if it exists.
 - Same behaviour against GnuTLS 3.7.3 (core22, used by the openprinting CUPS
   snap): `_gnutls_resolve_priorities()` is identical there.
 - Longer write-up: https://mvysny.github.io/canon-pixma-cups-tls/
+
+---
+
+## 6b. FOLLOW-UP COMMENT for LP #2164820
+
+Filed 2026-08-22 as https://bugs.launchpad.net/ubuntu/+source/cups/+bug/2164820
+but with the printer, not libcups, as the headline - so the actionable Ubuntu
+defect is missing from the report's own text. Suggested title change:
+
+    libcups silently ignores SSLOptions since 2.4.12: no way to cap TLS for a
+    printer that rejects TLS 1.3
+
+Comment to paste:
+
+---8<---
+
+Follow-up, because the actionable defect here is not the printer - it is that
+`SSLOptions` does nothing at all on this release.
+
+Since 2.4.12 (upstream PR #1105) libcups builds its GnuTLS priority string as
+`@SYSTEM,NORMAL:...`. GnuTLS expands `@`-prefixed keywords only from the
+`[priorities]` section of /etc/gnutls/config, and Ubuntu's copy of that file
+(libgnutls30t64) has no `[priorities]` section at all - so neither `SYSTEM` nor
+the intended fallback `NORMAL` resolves, and the whole string is rejected with
+GNUTLS_E_INVALID_REQUEST. libcups then discards the return value:
+
+    gnutls_priority_set_direct(http->tls, priority_string, NULL);   // cups/tls-gnutls.c
+
+so the session silently keeps GnuTLS's default priorities - TLS 1.3 included -
+and every SSLOptions value is ignored: MinTLS*, MaxTLS*, DenyCBC, AllowRC4.
+Nothing is logged, at any log level. That is why the workaround needs
+`NoSystem`: it drops the `@SYSTEM,` prefix so the rest of the line survives.
+
+Reproducible with no printer involved:
+
+    $ gnutls-cli -d 3 --priority '@SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2' --list
+    gnutls[2]: resolved 'SYSTEM' to '', next 'NORMAL'
+    gnutls[2]: resolved 'NORMAL' to '', next ''
+    gnutls[2]: unable to resolve @SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2
+    Syntax error at: @SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2
+
+That is exactly the string libcups builds for `SSLOptions MinTLS1.2 MaxTLS1.2`.
+Dropping the `@SYSTEM,` prefix resolves fine, and so does adding
+`SYSTEM = NORMAL` under a `[priorities]` section.
+
+This is a regression, by release (source package cups):
+
+    24.04 LTS  2.4.7-1.2ubuntu7.14   not affected - predates the change
+    25.04      2.4.12-0ubuntu1.6     affected
+    25.10      2.4.12-0ubuntu3.10    affected
+    26.04 LTS  2.4.16-1ubuntu1.3     affected
+
+There is a second impact that has nothing to do with printers: on 25.04 and
+later, `SSLOptions MinTLS1.2 DenyCBC` in cupsd.conf is silently inert. Anyone
+who hardened an Ubuntu print server that way got nothing, and was not told.
+
+Fix: upstream report is https://github.com/OpenPrinting/cups/issues/1677 - check
+the return value of gnutls_priority_set_direct() and retry without the
+`@SYSTEM,` prefix, or at minimum log the failure. If carrying a delta on cups is
+unattractive, the distro-side alternative is to add `[priorities] SYSTEM = NORMAL`
+to /etc/gnutls/config in libgnutls30t64: that makes `@SYSTEM` resolve without
+changing any crypto default, and fixes any other application that made the same
+assumption.
+
+Two corrections to my own description above:
+
+- `SSLOptions NoSystem MinTLS1.2 MaxTLS1.3`, and dropping MaxTLS altogether,
+  both re-offer TLS 1.3 and fail again. With no MaxTLS set libcups appends
+  `:+VERS-TLS-ALL`; with MaxTLS1.3 it enumerates min..max, which includes 1.3.
+  The cap is the point - `MaxTLS1.2` is required.
+- "if a printer only speaks TLS1.2, a successful connection is never made" is
+  too broad: a TLS-1.2-only server is normally fine, GnuTLS negotiates down.
+  This printer's defect is that it answers a TLS 1.3 ClientHello with alert 40
+  (handshake_failure) instead of negotiating.
+
+---8<---
+
+Still to file separately, against cups-browsed: it prefers the printer's IPPS
+advertisement and never falls back to the plain-IPP route the same printer
+advertises in the same mDNS record, and the resulting failure reaches the user
+as nothing at all.

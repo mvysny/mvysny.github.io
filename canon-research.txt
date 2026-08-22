@@ -5,12 +5,11 @@ Scratch file for the blog posts _posts/2026-08-22-canon-pixma-cups-tls.md and
 _posts/2026-08-22-ubuntu-two-cupses.md.
 Not committed. Purpose: stop re-establishing the same context every session.
 
-*** READ SECTION 7 FIRST. There is a proven upstream CUPS bug: since 2.4.12, on
-Debian/Ubuntu/NixOS, EVERY SSLOptions setting is silently discarded unless you
-also pass NoSystem. That is established at the library level and on HOST for
-ipptool. It is NOT established that it is the only thing wrong: PRINTING IS
-STILL UNVERIFIED. Section 7b lists what section 7 retracts in sections 3, 4.2
-and 6. ***
+*** READ SECTION 7 FIRST. SOLVED. The root cause is an upstream CUPS bug: since
+2.4.12, on Debian/Ubuntu/NixOS, EVERY SSLOptions setting is silently discarded
+unless you also pass NoSystem. Filed as OpenPrinting/cups#1677. The fix is one
+line in client.conf, and PRINTING NOW WORKS FROM GNOME ON HOST - see 7.1.
+Section 7b lists what section 7 retracts in sections 3, 4.2 and 6. ***
 
 
 0. THE TWO MACHINES  (read this first)
@@ -603,14 +602,16 @@ SCOPE OF THIS SECTION, BEFORE ANYTHING ELSE:
   source and from gnutls-cli. And on HOST: adding NoSystem made ipptool honor
   SSLOptions and complete a TLS 1.2 handshake with the printer.
 
-  NOT ESTABLISHED - that this is the only defect between here and a printed
-  page. ipptool is a client talking straight to the printer. A job goes deb
-  cupsd -> deb ipp backend, and NOTHING about the job path has been retested
-  since NoSystem was added. Until 7.1 comes back with paper, this is "a real bug
-  that was certainly hurting us", not "the fix". The remaining suspects if
-  printing still fails are unchanged and unrelated to TLS: which queue jobs
-  actually go to, cups-browsed's implicitclass queue, and mDNS resolution at job
-  time (section 3b, candidates (a), (b), (d)).
+  ALSO ESTABLISHED, 7.1 - printing works. Martin put the line in BOTH
+  /etc/cups/client.conf and /var/snap/cups/common/etc/cups/client.conf and
+  printed from GNOME. So it is the fix, not just a real bug that was hurting us,
+  and none of section 3b's queue/mDNS candidates were load-bearing after all.
+
+  ONE THING STILL NOT ISOLATED - both client.conf files were edited at once, so
+  "the deb file is the one that matters for jobs" remains an inference from the
+  process tree (deb cupsd forks the deb backend, which reads /etc/cups), not
+  something separated by experiment. Fine for the post as long as it is not
+  claimed as measured.
 
 New fact from HOST (Martin): adding **NoSystem** to /etc/cups/client.conf made
 ipptool finally honor SSLOptions, negotiate TLS 1.2 and connect to the printer.
@@ -757,29 +758,26 @@ CONSISTENT WITH EVERYTHING - this also explains, at last:
     but the underlying "SSLOptions is inert" bug was hitting both stacks equally
     and the two-daemon split just moved which file was in play.
 
-STILL OPEN (one item, for HOST):
-  [ ] 7.1 Does a JOB print with `SSLOptions NoSystem MinTLS1.2 MaxTLS1.2` in
-          /etc/cups/client.conf plus `sudo systemctl restart cups` (the DEB
-          unit - restarting the snap does not touch it)? ipptool is confirmed;
-          the print path through the deb cupsd + deb ipp backend is not.
-          Check `ls -la ~/.cups/client.conf` first - libcups opens that one
-          first and never falls back.
-          If a job still fails, the next suspect is cups-browsed's
-          implicitclass queue, not TLS.
+CLOSED:
+  [x] 7.1 DOES A JOB PRINT?  YES. Confirmed on HOST: printing from GNOME works
+          with
+
+              SSLOptions MinTLS1.2 MaxTLS1.2 NoSystem
+
+          in /etc/cups/client.conf, and the same line also added to
+          /var/snap/cups/common/etc/cups/client.conf. Keyword order does not
+          matter - cups_set_ssl_options() loops over whitespace-separated
+          tokens, Min/Max are last-wins assignments and NoSystem is a bit-or.
+          The whole saga is therefore one missing keyword.
 
 
 7c. WHAT THIS DOES TO THE TWO POSTS
 -----------------------------------
 
-_posts/2026-08-22-canon-pixma-cups-tls.md - PARTIALLY unblocked. The mechanism
-and the retractions can be written now; they rest on source and on gnutls-cli,
-not on the printer. The new ENDING cannot: "here is the fix, two lines and no
-blast radius" needs 7.1 to come back with paper. Until then the post can say no
-more than "ipptool now completes the handshake; whether a job prints is still
-open". With that caveat, the rewrite is bigger than the one sketched in section
-5, because the story is no longer "the pragmatic fix beat the correct fix", it
-is "the correct fix was being silently discarded by a regression in CUPS
-2.4.12":
+_posts/2026-08-22-canon-pixma-cups-tls.md - FULLY unblocked now that 7.1 is
+closed. The rewrite is bigger than the one sketched in section 5, because the
+story is no longer "the pragmatic fix beat the correct fix", it is "the correct
+fix was being silently discarded by a regression in CUPS 2.4.12":
 
   - "Attempt one: client.conf" stops being a dead end and becomes a *sabotaged*
     attempt. It was right; one missing keyword made it a no-op.
@@ -792,11 +790,9 @@ is "the correct fix was being silently discarded by a regression in CUPS
     overwrite fails and the answer it asked for is what actually gets used.
   - Drop the `nm` probe entirely (section 6: it shows no real snap/deb
     difference; the deb lib is merely stripped).
-  - New ending, ONCE 7.1 CONFIRMS PAPER: `SSLOptions NoSystem MinTLS1.2
-    MaxTLS1.2`, one file, blast radius = CUPS. Plus the upstream bug and the
-    NixOS issue as corroboration. If 7.1 fails, the ending is instead "the TLS
-    layer is fixed and the queue layer is the next bug", which is still a better
-    post than the current one - but do not write either ending on spec.
+  - New ending: `SSLOptions MinTLS1.2 MaxTLS1.2 NoSystem`, one file, blast
+    radius = CUPS, printing confirmed from GNOME. Plus the upstream bug
+    (OpenPrinting/cups#1677) and the NixOS issue as corroboration.
   - The static plain-IPP queue stays as the zero-config workaround, but it is
     no longer the only sane option.
 
@@ -816,8 +812,16 @@ upstream and precise:
     Fix: check the return value, and/or fall back to plain "NORMAL" when the
     @SYSTEM form fails to resolve.
 
-  Searched OpenPrinting/cups: no existing issue for this (only #1105 that
-  introduced it and #1130 that added NoSystem for a different reason). The two
+  FILED 2026-08-22: https://github.com/OpenPrinting/cups/issues/1677 (the
+  library-level bug only - no printer, no paper, nothing that depends on 7.1).
+  Commented on NixOS/nixpkgs#467175 pointing at it (cause + the NoSystem
+  workaround): https://github.com/NixOS/nixpkgs/issues/467175#issuecomment-5381239441
+  Not yet filed: the Ubuntu/Launchpad report. Nothing to file against
+  GnuTLS - the manual documents @KEYWORD expansion as config-file-only
+  ("The system file should have the format 'KEYWORD=VALUE'") and promises only
+  that "the first valid keyword will be used", so it behaves as documented.
+  Before filing, searched OpenPrinting/cups: no pre-existing issue (only #1105
+  that introduced it and #1130 that added NoSystem for a different reason). The two
   original UX complaints - cups-browsed never falling back from IPPS to the
   plain-IPP route the same printer advertises, and the failure reaching the
   user as complete silence - are still worth filing, separately, against

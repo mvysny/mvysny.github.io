@@ -172,8 +172,10 @@ So a hand-written `/etc/cups/client.conf` is not merely overridden by something
 else - it is never opened at all. Keep that in mind for Step 6, where I write
 one anyway.
 
-**Both CUPSes can be installed at once, and then the snap steps aside.** The
-snap's launcher checks whether `/etc/cups/cupsd.conf` is readable and, if it is,
+**On a stock Ubuntu 26.04 desktop both CUPSes are installed at once, and then
+the snap steps aside.** That is the default, not something you did to your box:
+`ubuntu-desktop-minimal` recommends the deb, and snapped applications that print
+pull in the cups snap as a default provider. The snap's launcher checks whether `/etc/cups/cupsd.conf` is readable and, if it is,
 starts in *proxy mode*: it does not bind port 631, it does not start
 `cups-browsed` at all, and it merely mirrors the deb CUPS' queues through
 `cups-proxyd`. One file tells you which of the two columns above you should be

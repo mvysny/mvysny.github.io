@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Two CUPSes: what Ubuntu does when the deb and the snap are both installed"
+title: "Two CUPSes: what a stock Ubuntu 26.04 desktop actually runs"
 date: 2026-08-22 18:14:22 +0300
 ---
 
@@ -10,12 +10,94 @@ same config file, same protocol. The reason turned out to be that the machine
 had **two complete CUPS installations** on it - the Ubuntu deb and the
 OpenPrinting snap - and I had been configuring the one that wasn't printing.
 
+One thing to get straight before anything else, because it is easy to read the
+paragraph above as a confession: **I didn't build this arrangement, and neither
+did you.** A stock Ubuntu 26.04 desktop has both CUPSes. It is what the default
+install looks like - there is no leftover experiment to blame, no exotic
+decision to un-make, and both halves are there on purpose.
+
 This is a write-up of how that arrangement actually works, because every
 troubleshooting guide on the internet assumes there is one CUPS, and on a
 current Ubuntu desktop that assumption is no longer safe. The specific bug that
 sent me down here is [a Canon PIXMA that can't handle TLS
 1.3](../canon-pixma-cups-tls/); this post is only about the two-daemon problem,
 which is worth understanding on its own.
+
+# Why there are two, and why it's deliberate
+
+Neither half is something you opt into.
+
+**The deb comes with the desktop.** `ubuntu-desktop-minimal` recommends it, and
+Ubuntu installs recommends by default:
+
+```bash
+$ apt-cache depends ubuntu-desktop-minimal | grep -i cups
+  Recommends: bluez-cups
+  Recommends: cups
+  Recommends: cups-bsd
+  Recommends: cups-client
+  Recommends: cups-filters
+```
+
+**The snap arrives as somebody else's dependency.** Nobody types `snap install
+cups`. Snapped applications that want to print declare the cups snap as a
+*default provider*, and snapd pulls it in silently. Chromium does it with a
+dummy content interface that exists for no other purpose:
+
+```yaml
+# /snap/chromium/current/meta/snap.yaml
+  install-cups-runtime-dependency:
+    content: foo
+    interface: content
+    target: $SNAP_DATA/foo
+    default-provider: cups
+```
+
+The printing itself then goes over snapd's `cups` interface - and the only thing
+in the world that provides a slot for that interface is the cups snap. snapd
+itself provides `cups-control` (full, unmediated control) but not `cups` (send
+a job, nothing else):
+
+```bash
+$ snap connections cups          # abridged to the printing rows
+Interface      Plug                       Slot                                  Notes
+content        -                          cups:install-cups-runtime-dependency  -
+cups           chromium:cups              cups:cups                             -
+cups-control   thunderbird:cups-control   cups:cups-control                     -
+cups-control   cups:cups-host             -                                     -
+
+$ snap interface cups
+name:          cups
+summary:       allows access to the CUPS socket for printing
+documentation: https://snapcraft.io/docs/cups-interface
+plugs:
+  - chromium
+slots:
+  - cups        # <- the snap, and nothing else
+```
+
+Read the `chromium:cups` and `cups:cups-host` rows together and the whole design
+falls out: `chromium:cups` &rarr; `cups:cups` is a snapped application handing its
+job to the snap under Snap mediation, and `cups:cups-host` is the snap handing
+that job on to the host's CUPS. The snap is a mediation shim. Its own source
+says so:
+
+```sh
+# Determine if we have a classically installed system CUPS (from
+# DEB/RPM/source for example). If so, we will run as a proxy to pass
+# through jobs of snapped applications to prevent these applications
+# from doing administrative tasks on the system's CUPS, even if the
+# system's CUPS has no Snap mediation functionality.
+```
+
+So both halves have a job: the deb is the system print service for everything
+classic, and the snap is the mediated door that snapped applications knock on so
+that they can submit a job without being handed administrative control of your
+print system. The two-stack machine is not a misconfiguration, and it isn't two
+copies of one thing with one of them redundant. It's the design.
+
+What's missing is any hint, anywhere at the command line, about which half you
+are talking to.
 
 # What's on the machine
 
@@ -62,6 +144,19 @@ where the snap actually keeps it:
 Both trees are fully populated at the same time. Both `ipp` and `ipps` backends
 exist twice; each backend links its own libcups, and therefore reads its own
 `client.conf`. That single sentence is the whole bug I opened with.
+
+And this is what makes the arrangement a genuine nightmare to debug: the design
+is defensible, but **nothing on the box tells you which daemon honours which
+file.** Two `cupsd`s, two `cupsd.conf`s, three `client.conf`s, two sets of
+command-line tools with the same names, two error logs - and every single one of
+those looks correct and complete when you inspect it on its own. You can open a
+config file, confirm the setting is exactly right, restart the service you
+believe owns it, and be no closer, because the process that actually reads that
+file is the other one. Nothing errors. Nothing warns. The snap's launcher is the
+only thing on the machine that even acknowledges the other stack, and it does so
+once, silently, at startup - so nothing ever tells you that you are working in
+the wrong tree. You just get the old behaviour back, with a more confident
+expression on your face.
 
 # Three modes, and the one line that picks between them
 
@@ -196,6 +291,13 @@ Same two packages, same disk, two completely different topologies depending on
 boot order. If you install or remove one of the two stacks and don't restart,
 what you observe afterwards describes the *previous* arrangement.
 
+(How I got to watch that happen, given that both are supposed to be installed
+from the start: months earlier I had run an `apt autoremove --purge ufw cups*`
+during an unrelated cleanup, so this box had been snap-only for a while.
+Reinstalling the deb during this session put it back into the stock Ubuntu
+configuration - and let me observe the arrangement forming in the wrong order
+first, then correctly after a reboot.)
+
 # Six things that bite
 
 **1. There are three `client.conf` files, and libcups picks one.** The search
@@ -290,35 +392,69 @@ which dumps versions, daemons, port and socket ownership, snap mode, all three
 `client.conf` files, both queue views, both logs and the GnuTLS system config in
 one pass. `sudo ./cups-probe.sh`. It changes nothing and restarts nothing.
 
-# Pick one
+# Can you just have one?
 
-The two-stack arrangement has no upside on a personal machine. Decide which one
-you want and make the other one absent:
+Partly - but not the way I first assumed. "Purge the other one" was going to be
+my advice until I read the interfaces, and for one of the two directions it is
+wrong.
+
+**Removing the snap costs you snapped-application printing.** Chromium's only
+route to a print queue is the `cups` interface, and the only slot for that
+interface is the snap. Take the snap away and that connection has nowhere to go;
+snapd's own `cups-control` is a different interface that Chromium does not plug.
+Nothing degrades gracefully here, and the next snap you install that names cups
+as its default provider quietly brings it back anyway.
 
 ```bash
-# Keep the snap. Purge the deb so /etc/cups/cupsd.conf is really gone,
-# then restart so the snap re-evaluates and comes up standalone.
-sudo apt purge cups cups-daemon cups-browsed
-sudo snap restart cups
-
-# Or keep the deb and drop the snap entirely.
+# only if you genuinely have no snapped application that prints
 sudo snap remove cups
 ```
 
-If you must keep both and want the snap to be the real daemon anyway, that's
-what the escape hatch is for - but note the script's own warning that this mode
-is under-tested:
+**Purging the deb is the one that really collapses to a single stack.** The snap
+re-evaluates on restart, finds no `/etc/cups/cupsd.conf`, and comes up
+standalone - which means it binds port 631 *and* `/run/cups/cups.sock`, so
+classic applications keep working through the socket they already use while
+snapped ones keep their mediation. Both constituencies are served by one daemon:
+
+```bash
+# purge, so that /etc/cups/cupsd.conf is really gone - remove is not enough
+sudo apt purge cups cups-daemon cups-browsed
+sudo snap restart cups
+```
+
+The catch is that `ubuntu-desktop-minimal` recommends the deb, so you are one
+`apt install` of something printing-adjacent away from being back here, without
+being told.
+
+**Keeping both and forcing the snap to be the real daemon** is the third option,
+and the escape hatch exists for it - but the script's own comments call this mode
+under-tested and not recommended for production, so I'd treat it as a debugging
+tool rather than a configuration:
 
 ```bash
 sudo touch /var/snap/cups/common/no-proxy
 sudo snap restart cups
 ```
 
+Leaving the default two-stack arrangement in place is the honest recommendation:
+it's what Ubuntu ships and what snapped applications expect. What you owe
+yourself instead is the five-second check above, every time - before editing
+anything, establish which daemon reads it.
+
 # The worked example
 
 Back to the printer. The Canon needs CUPS to stop offering TLS 1.3, and the
-lever for that is `SSLOptions MinTLS1.2 MaxTLS1.2` in `client.conf`. On this
-machine that lever exists in three places and only one of them matters:
+lever for that is a line in `client.conf`:
+
+```
+SSLOptions NoSystem MinTLS1.2 MaxTLS1.2
+```
+
+`NoSystem` is load-bearing - without it CUPS 2.4.12 and later throw the whole
+`SSLOptions` line away without saying so, which is [a separate bug and a
+separate story](../canon-pixma-cups-tls/). Assume for the rest of this section
+that the line is complete. On this machine that lever exists in three places and
+only one of them matters:
 
 - `cups.ipptool -tv ipps://printer:631/ipp/print` is a **snap** binary using the
   **snap's** libcups, so it reads
@@ -336,11 +472,11 @@ was using to check my work was the one tool on the box that couldn't tell me.
 
 To be straight about the state of this: the two-daemon diagnosis above is solid,
 verified from the running processes, the socket ownership and the snap's own
-scripts. The conclusion that follows from it - put `SSLOptions` in
+scripts. The conclusion that follows from it - put the `SSLOptions` line in
 `/etc/cups/client.conf` and `sudo systemctl restart cups`, the *deb* unit, since
-restarting the snap doesn't touch it - is the indicated fix, and I haven't
-confirmed a printed page from it yet. Check `ls -la ~/.cups/client.conf` before
-you bother, per bite #1.
+restarting the snap doesn't touch it - is the indicated fix, and I've confirmed
+that `ipptool` completes the handshake but not yet that a page comes out. Check
+`ls -la ~/.cups/client.conf` before you bother, per bite #1.
 
 # The lesson
 

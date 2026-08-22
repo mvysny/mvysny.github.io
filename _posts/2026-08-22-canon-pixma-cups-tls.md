@@ -122,81 +122,30 @@ NSS config, rate limiting, stray daemons. **None of that was the bug.** If
 `avahi-browse -r _ipp._tcp` gives you a sane `hostname =` / `address =` pair,
 name resolution works. Move on.
 
-# Step 4: which CUPS is this, and what is in its log?
+# Step 4: read the error log
 
-## First: which CUPS is this?
+One check first, and be pedantic about it: **make sure you are reading the log
+of the CUPS that actually owns printing.** A stock Ubuntu 26.04 desktop runs
+*two* complete CUPS installations - the Ubuntu deb and the OpenPrinting snap -
+each with its own daemon, its own config tree, its own logs and its own
+command-line tools, and nothing on the box tells you which of the two your
+`lpstat` or your `ipptool` is answering about. On this machine the deb is the
+one that prints: it owns port 631 and `/run/cups/cups.sock`, while the snap
+steps aside into a proxy mode beside it. Every path in the rest of this post is
+the deb's. It is worth being paranoid here, because *every* config file and log
+below exists twice and only one copy of each is load-bearing - I edited the
+wrong copy for a good stretch of that afternoon, and nothing anywhere warned
+me. [Two CUPSes: what a stock Ubuntu 26.04 desktop actually
+runs](../ubuntu-two-cupses/) is that story, with a five-second check for
+telling them apart.
 
-On Ubuntu 26.04 that is no longer a rhetorical question, and I lost time to it.
-The CUPS on this machine does not come from a deb:
-
-```bash
-$ snap list cups
-Name  Version   Rev   Tracking       Publisher
-cups  2.4.19-2  1238  latest/stable  openprinting**
-
-$ systemctl list-units --all 'snap.cups*'
-snap.cups.cups-browsed.service  loaded active running
-snap.cups.cupsd.service         loaded active running
-```
-
-The `openprinting` CUPS snap is the whole printing stack in a container, on the
-`core22` base, with its own libcups, its own config tree, its own logs and its
-own service names. Almost nothing is where the documentation says it is:
-
-| classic (deb) | snap |
-| --- | --- |
-| `/var/log/cups/error_log` | `/var/snap/cups/current/var/log/error_log` |
-| `cups-browsed` &rarr; syslog | `/var/snap/cups/current/var/log/cups-browsed_log` |
-| `/etc/cups/{cupsd,cups-files,client}.conf` | `/var/snap/cups/common/etc/cups/...` |
-| `/etc/cups/cups-browsed.conf` | `/var/snap/cups/common/etc/cups/cups-browsed.conf` |
-| `/usr/lib/x86_64-linux-gnu/libcups.so.2` | `/snap/cups/current/lib/libcups.so.2` |
-| `/usr/lib/cups/backend/ipp` | `/snap/cups/current/lib/cups/backend/ipp` |
-| `systemctl restart cups cups-browsed` | `sudo snap restart cups` |
-| `lpstat`, `lpadmin`, `ipptool` | `cups.lpstat`, `cups.lpadmin`, `cups.ipptool` |
-
-That last row is the one that gives it away fastest: on a snap-only machine
-there is no bare `lpstat` on `$PATH` at all, only `/snap/bin/cups.lpstat`.
-
-Two consequences that are easy to miss.
-
-**The snap's libcups has its own `ServerRoot`, compiled in, and it is not
-`/etc/cups`:**
-
-```bash
-$ strings /snap/cups/current/lib/libcups.so.2 | grep '^/var/snap'
-/var/snap/cups/common/etc/cups
-/var/snap/cups/common/etc/cups/ssl
-```
-
-So a hand-written `/etc/cups/client.conf` is not merely overridden by something
-else - it is never opened at all. Keep that in mind for Step 6, where I write
-one anyway.
-
-**On a stock Ubuntu 26.04 desktop both CUPSes are installed at once, and then
-the snap steps aside.** That is the default, not something you did to your box:
-`ubuntu-desktop-minimal` recommends the deb, and snapped applications that print
-pull in the cups snap as a default provider. The snap's launcher checks whether `/etc/cups/cupsd.conf` is readable and, if it is,
-starts in *proxy mode*: it does not bind port 631, it does not start
-`cups-browsed` at all, and it merely mirrors the deb CUPS' queues through
-`cups-proxyd`. One file tells you which of the two columns above you should be
-reading:
-
-```bash
-# exists => the snap is only a proxy, and the deb CUPS is the one to debug
-ls /var/snap/cups/current/var/run/proxy-mode
-```
-
-For the rest of this post I write the classic paths, because they are the ones
-you will find in every other write-up. Substitute the right-hand column
-throughout if you are on the snap - including the `readelf`, `strings` and `nm`
-probes below, which have to point at `/snap/cups/current/lib/libcups.so.2` and
-not at the host's copy.
-
-## Then: the clue was in the log all along
+With that settled: the clue was sitting there the whole time. `cupsd` and the
+backends it forks write to the error log; the deb's `cups-browsed` logs to the
+journal:
 
 ```bash
 sudo tail -50 /var/log/cups/error_log
-# snap: sudo tail -50 /var/snap/cups/current/var/log/error_log
+sudo journalctl -u cups-browsed -n 50
 ```
 
 ```
@@ -277,12 +226,6 @@ editing a single config file: **CUPS does its TLS with GnuTLS, not OpenSSL.**
 $ readelf -d /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep NEEDED | grep -E 'gnutls|ssl'
  0x0000000000000001 (NEEDED)  Shared library: [libgnutls.so.30]
 ```
-
-On the snap the copy that matters is the snap's own, and it says the same thing -
-`readelf -d /snap/cups/current/lib/libcups.so.2` also needs `libgnutls.so.30`,
-resolved out of the `core22` base. Not quite the *same* library, mind: `core22`
-carries GnuTLS 3.7.3 where the host has 3.8.12, which is worth remembering if
-you end up comparing exact handshake behaviour between `gnutls-cli` and CUPS.
 
 Which makes the whole of Step 5 a sidestep. Not a *useless* one - `openssl
 s_client` did prove that "cannot reach the printer" was really a TLS interop
@@ -371,63 +314,99 @@ MinTLS1.2
 MinTLS1.3
 ```
 
-So, in `client.conf`:
+So, in `/etc/cups/client.conf`:
 
 ```
-SSLOptions MinTLS1.2 MaxTLS1.2
+SSLOptions NoSystem MinTLS1.2 MaxTLS1.2
 ```
 
-Except - per Step 4 - *which* `client.conf`. Every write-up, including the one I
-was following, says `/etc/cups/client.conf`, which did not exist and had to be
-created. On this machine that is the wrong file: the snap's libcups compiles in
-`/var/snap/cups/common/etc/cups` as its `ServerRoot` and never opens the classic
-path. The file the daemons actually read is
-`/var/snap/cups/common/etc/cups/client.conf`, and unlike the classic one it
-already exists - the snap ships it, holding a single
-`ServerName /run/cups/cups.sock` line - so there is nothing to create, only a
-line to append.
+Two things about the file before the line itself. **No deb ships it** - nothing
+owns `/etc/cups/client.conf`, so it is a file you create, and a
+revert-my-experiments pass will delete it again without trace:
+
+```bash
+$ dpkg -S /etc/cups/client.conf
+dpkg-query: no path found matching pattern /etc/cups/client.conf
+```
+
+And libcups tries `$HOME/.cups/client.conf` **first**, never falling back to the
+system copy if that one opens - so a stale file in your home directory silently
+wins, and `ls -la ~/.cups/client.conf` is worth a look before you conclude
+anything about the system one.
+
+Now the line. **`NoSystem` is load-bearing**, and omitting it is what cost me
+the afternoon: written the way every write-up and the documentation show it,
+`SSLOptions MinTLS1.2 MaxTLS1.2` does nothing whatsoever. Since CUPS 2.4.12
+libcups builds its GnuTLS priority string as `@SYSTEM,NORMAL:...`, GnuTLS cannot
+resolve that on a system with no `[priorities] SYSTEM` entry - Debian and Ubuntu
+have none - and CUPS discards the resulting error, leaving the session on
+GnuTLS's default priorities with TLS 1.3 in them. Every `SSLOptions` value goes
+in the bin, silently. `NoSystem` drops the `@SYSTEM,` prefix and the rest of the
+line starts working. That is
+[OpenPrinting/cups#1677](https://github.com/OpenPrinting/cups/issues/1677), it
+deserves a post of its own, and until then treat it as the keyword you cannot
+leave out.
 
 `ipptool` is the right probe for this, because it goes through libcups and reads
 that same `client.conf` - so unlike `gnutls-cli`, it tests my *configuration*
-and not just the printer. On the snap, use `cups.ipptool`, so it is the snap's
-libcups reading the snap's file:
+and not just the printer:
 
 ```bash
-$ cups.ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
     Get printer attributes using get-printer-attributes    [PASS]
         status-code = successful-ok (successful-ok)
 ```
 
 **That is a pass, over `ipps://`, with nothing but a line in a config file.** No
-system-wide crypto policy, no environment variables, no `LD_PRELOAD`. The
-documented CUPS lever does exactly what the documentation says it does - and
-when I first tried it, I had written it to `/etc/cups/client.conf`, the file
-that under a snapped CUPS no CUPS process ever opens. "It made no difference"
-was me reporting on a file nothing reads. Put the same line in the snap's
-`client.conf` and the handshake that had failed all afternoon completes.
+system-wide crypto policy, no environment variables, no `LD_PRELOAD`.
+
+## Write the same line into the snap's tree as well
+
+One more copy of that file, and it is worth doing even though nothing complains
+if you skip it. A stock Ubuntu 26.04 desktop also carries the OpenPrinting CUPS
+**snap** - it is what snapped applications such as Chromium print through - and
+it has its own libcups with its own compiled-in `ServerRoot`, so it never opens
+`/etc/cups/client.conf`. Cap both:
+
+```bash
+LINE='SSLOptions NoSystem MinTLS1.2 MaxTLS1.2'
+
+# the deb: the daemon, its backends, and the classic client tools
+echo "$LINE" | sudo tee -a /etc/cups/client.conf
+
+# the snap: snapped applications that print
+echo "$LINE" | sudo tee -a /var/snap/cups/common/etc/cups/client.conf
+
+sudo systemctl restart cups
+```
+
+The snap ships its `client.conf` already, holding a single `ServerName` line, so
+there is nothing to create there - only a line to append, and appending is safe:
+its launcher rewrites the `ServerName` line on every start and copies everything
+else back verbatim. Why there are two CUPSes on a stock desktop at all, and how
+to tell which one owns printing on your box, is [a post of its
+own](../ubuntu-two-cupses/).
 
 So the honest score for attempt one is *half a fix*, and I want to be precise
 about which half, because it is the more interesting half:
 
 * **Fixed:** every libcups client that reads that `client.conf` can now talk to
-  the printer over IPPS. `cups.ipptool` proves it.
+  the printer over IPPS. `ipptool` proves it.
 * **Not fixed:** printing. Jobs still do not come out.
 
 Which is a genuinely useful thing to have learned, because it splits one
-question into two. `cups.ipptool` runs as me, reads `client.conf`, connects.
+question into two. `ipptool` runs as me, reads `client.conf`, and given an
+`ipps://` URI connects to the printer directly - no daemon involved at all.
 Printing runs through `cups-browsed` and through the `ipp` backend that `cupsd`
 fork+execs per job - different processes, different environments, and evidently
-not all of them get the cap. I do not yet know which one is the holdout: the
-snap's libcups has the right `ServerRoot` compiled in, so the backend ought to
-find the file without any environment help, and "ought to" is doing a lot of
-work in that sentence. That is where this is still open.
+not all of them get the cap. I do not yet know which one is the holdout: `cupsd`
+exports `CUPS_SERVERROOT` into the filters and backends it forks, so the backend
+ought to resolve the same `client.conf` without any help, and "ought to" is
+doing a lot of work in that sentence. That is where this is still open.
 
-Two more things to know before you spend time here. libcups tries
-`$HOME/.cups/client.conf` **first** and, if that opens, never falls back to the
-system `client.conf` at all - a stale file in your home directory silently wins,
-whichever layout you are on. And Ubuntu's libcups is built without debug
-printfs, so the usual trick of setting `CUPS_DEBUG_LOG` to dump the priority
-string CUPS builds is unavailable:
+One more thing to know before you spend time here: Ubuntu's libcups is built
+without debug printfs, so the usual trick of setting `CUPS_DEBUG_LOG` to dump
+the priority string CUPS builds is unavailable:
 
 ```bash
 $ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep CUPS_DEBUG_LOG
@@ -443,18 +422,13 @@ halfway - it bites below the priority string, so it applies to every GnuTLS
 caller in the print path whether or not that process ever opens a `client.conf`.
 
 The obvious next idea is `default-priority-string` in `/etc/gnutls/config`. It
-does nothing for CUPS, and the binary says why: libcups never asks GnuTLS for
-the system default. It builds its own string starting from `NORMAL` and
-installs it directly.
+does nothing for CUPS, and the binary says why: libcups assembles its own
+priority string out of the `SSLOptions` values and installs it directly, over
+the top of whatever the system default was.
 
 ```bash
 $ nm -D --undefined-only /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -i priority
      U gnutls_priority_set_direct@GNUTLS_3_4
-$ strings /usr/lib/x86_64-linux-gnu/libcups.so.2 | grep -E 'NORMAL$|VERS-TLS-ALL'
-NORMAL
-:+VERS-TLS-ALL
-:-VERS-TLS-ALL
-:+VERS-TLS-ALL:+VERS-SSL3.0
 ```
 
 That also settles the renegotiation question for good: `%UNSAFE_RENEGOTIATION`
@@ -484,7 +458,6 @@ restart the daemons:
 
 ```bash
 sudo systemctl restart cups cups-browsed
-# snap: sudo snap restart cups
 ```
 
 ...and it all works. `gnutls-cli` with an unmodified `NORMAL` priority now
@@ -493,7 +466,7 @@ string, and therefore reaches every GnuTLS caller regardless of what string it
 sets. `ipptool` over `ipps://` returns the attribute list:
 
 ```bash
-$ cups.ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
+$ ipptool -tv ipps://192.168.1.50:631/ipp/print get-printer-attributes.test
     Get printer attributes using get-printer-attributes    [PASS]
         RECEIVED: 324135 bytes in response
         status-code = successful-ok (successful-ok)
@@ -504,56 +477,28 @@ jobs all afternoon - prints.
 
 Reaching every GnuTLS caller matters more than it sounds, because **three**
 separate processes open TLS to this printer: `cups-browsed` during discovery,
-`cupsd` itself, and `/usr/lib/cups/backend/ipp`
-(`/snap/cups/current/lib/cups/backend/ipp` on the snap), which `cupsd` forks at
-print time. They all link libcups, so they all share the failure - and fixing
-only one of them would have moved the wall rather than removed it.
-
-**And it reaches inside the snap too**, which is not obvious, because `core22`
-ships no `/etc/gnutls` whatsoever:
-
-```bash
-$ ls /snap/core22/current/etc/gnutls
-ls: cannot access '/snap/core22/current/etc/gnutls': No such file or directory
-
-$ echo 'cat /etc/gnutls/config' | snap run --shell cups.lpstat
-[overrides]
-disabled-version = tls1.0
-disabled-version = tls1.1
-disabled-version = dtls0.9
-disabled-version = dtls1.0
-```
-
-`snap-confine` fills in the `/etc` entries that a base snap lacks from the
-host's `/etc`, so the snap reads the host's file verbatim. Good news for the
-fix; worse news for the blast radius, because the cap then also lands on every
-other `core22`-based snap on the machine, none of which appear in the host's
-package list.
+`cupsd` itself, and `/usr/lib/cups/backend/ipp`, which `cupsd` forks at print
+time. They all link libcups, so they all share the failure - and fixing only one
+of them would have moved the wall rather than removed it.
 
 **I have since reverted it.** `disabled-version = tls1.3` in
 `/etc/gnutls/config` applies to every GnuTLS consumer on the machine - `wget`,
 `curl-gnutls`, glib-networking and with it a good chunk of Gnome. Holding all of
 them at TLS 1.2 with ECDHE and AES-GCM is not *dangerous*, but it is a
 system-wide change made to accommodate one appliance, and that's the wrong shape
-of fix. A properly scoped version is what I'm looking for now, and the snap
-narrows the field considerably. What I have established so far:
+of fix. A properly scoped version is what I'm looking for now. What I have
+established so far:
 
-* **`SSLOptions` in the snap's `client.conf` already covers part of the
-  ground** - see attempt one. It caps every libcups client that reads that file,
-  with no system-wide change whatsoever, which is exactly the blast radius I
-  want. It just does not get a job printed, and until I know which process in
-  the print path is ignoring it, the rest of this list still stands.
+* **`SSLOptions` in `client.conf` already covers part of the ground** - see
+  attempt one. It caps every libcups client that reads that file, with no
+  system-wide change whatsoever, which is exactly the blast radius I want. It
+  just does not get a job printed, and until I know which process in the print
+  path is ignoring it, the rest of this list still stands.
 * **GnuTLS honours `GNUTLS_SYSTEM_PRIORITY_FILE`**, which *replaces*
   `/etc/gnutls/config` rather than adding to it - so the scoped fix is a private
   copy of that file carrying Ubuntu's four `disabled-version` lines plus
   `tls1.3`. Set `GNUTLS_SYSTEM_PRIORITY_FAIL_ON_INVALID=1` beside it, or a
   mistyped path fails silently and you are debugging the printer again.
-* **The variable survives `snap run`.** Tested: it arrives inside the snap's
-  confinement unchanged, and the snap's AppArmor profile grants read access to
-  `/var/snap/cups/**` - so that is where the private file can live.
-* **`LD_PRELOAD` does not survive `snap run`**; `snap-confine` strips it. That
-  kills the one mechanism able to inject priority-string *modifiers* such as
-  `%UNSAFE_RENEGOTIATION`. On the snap, the `[overrides]` section is all you get.
 * **The third process is the awkward one.** A systemd drop-in with
   `Environment=` covers `cupsd` and `cups-browsed`, but `cupsd` scrubs the
   environment of the filters and backends it forks, so the `ipp` backend needs
@@ -568,7 +513,6 @@ Stop letting `cups-browsed` choose. Add the printer by hand, over **plain
 IPP**, at its mDNS hostname:
 
 ```bash
-# on a snap-only install these are cups.lpadmin, cups.lp, cups.lpstat
 # drop the broken auto-discovered queue
 sudo lpadmin -x Canon_TS5300_series
 
@@ -615,11 +559,12 @@ appliance.
 
 # What I'd do differently
 
-1. **Establish which CUPS you are actually debugging.** deb, snap, or both
-   with the snap in proxy mode - that answer decides where the error log is,
-   which config files are live, which libcups is loaded and what the services
-   are called. `snap list cups` is a two-second check, and skipping it had me
-   editing files that no process on this machine ever opens.
+1. **Establish which process is going to read the file you are editing.** On a
+   stock Ubuntu 26.04 desktop `client.conf` exists in three places, and the
+   tools you would naturally reach for to check your work answer about
+   whichever CUPS shipped them rather than about the one holding your print
+   queue. I spent a stretch of that afternoon editing a file no process on this
+   machine ever opens - [its own write-up](../ubuntu-two-cupses/).
 2. **Read the error log first.** `A TLS fatal alert has been received` was
    sitting there from the very beginning. I went looking for an Avahi bug
    instead, because "printer not found" *feels* like discovery.
@@ -644,11 +589,11 @@ appliance.
    `client.conf`, so it tells you whether your configuration actually reached
    CUPS. Those are different questions and I needed both - a config that looks
    right and is never read would otherwise go unnoticed, and so would one that
-   is read and works for clients while jobs still do not print. Make sure
-   it is the same `client.conf`: ask the daemons' own libcups where it looks -
-   `/snap/cups/current/bin/cups-config --serverroot` on the snap, since there is
-   no bare `cups-config` on `$PATH` there - and probe with `cups.ipptool` rather
-   than a host `ipptool` that would read the host's file.
+   is read and works for clients while jobs still do not print. Two caveats:
+   `ipptool` given an `ipps://` URI goes straight to the printer, so it is a
+   test of your client configuration and not of your print path; and it reads
+   `~/.cups/client.conf` before the system file, so check that one exists
+   nowhere before you trust the result.
 8. **TLS 1.3 intolerance in embedded devices is a pattern**, not a one-off.
    Printers, switches, IoT gadgets: a stack that predates 1.3 and chokes on the
    ClientHello rather than negotiating down. Worth trying `-VERS-TLS1.3` early.
@@ -660,7 +605,6 @@ appliance.
 # The whole fix, start to finish
 
 ```bash
-# on a snap-only install, prefix the CUPS tools: cups.lpadmin, cups.lp
 # 1. find the printer's mDNS hostname
 #    (or read it off the printer: OK menu -> System Information -> Printer Name)
 avahi-browse -r _ipp._tcp

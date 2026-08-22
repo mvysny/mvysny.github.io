@@ -202,3 +202,128 @@ buries the report.
 
 Not yet done: the draft itself, and the actual filing (needs a Launchpad login
 in a browser).
+
+---
+
+## 6. THE REPORT, ready to paste  (written 2026-08-22, after the root cause was found)
+
+Sections 1-5 above predate the root cause and frame this as a cups-browsed/UX
+bug. That framing is now secondary: the headline bug is a libcups regression.
+File the UX complaints - cups-browsed never falling back from IPPS to the
+plain-IPP route the same printer advertises, and the failure reaching the user
+as silence - as a SEPARATE report against cups-browsed.
+
+Also obsolete: section 4's "apport has nothing to attach to" snag. HOST has the
+deb stack installed alongside the snap, so `ubuntu-bug cups` works normally.
+
+**How to open it:** `ubuntu-bug cups` on HOST, as a normal user, NOT under sudo
+(apport escalates on its own where it needs to, and sudo breaks the browser
+handoff). It runs the cups apport hook, attaches package versions, the error log
+and both client.conf files, then opens Launchpad with the payload attached.
+Review the collected data in the browser before submitting - the queue names and
+the printer's mDNS host name will be in there.
+
+**Title:**
+
+    libcups silently ignores every SSLOptions setting (@SYSTEM,NORMAL priority string never resolves on Ubuntu)
+
+**Body:**
+
+### Summary
+
+Since CUPS 2.4.12, libcups builds its GnuTLS priority string as
+`@SYSTEM,NORMAL:...`. GnuTLS expands an `@`-prefixed keyword only from the
+`[priorities]` section of `/etc/gnutls/config`, and Ubuntu's copy of that file
+(from libgnutls30t64) has no `[priorities]` section at all - so neither `SYSTEM`
+nor the intended fallback `NORMAL` resolves, and the whole string is rejected
+with `GNUTLS_E_INVALID_REQUEST`.
+
+libcups discards that return value:
+
+    gnutls_priority_set_direct(http->tls, priority_string, NULL);
+
+so the connection silently proceeds on GnuTLS's default priorities and *every*
+`SSLOptions` value in client.conf / cupsd.conf is ignored - `MinTLS*`,
+`MaxTLS*`, `DenyCBC`, `AllowRC4`. Nothing is logged, at any log level.
+
+Upstream report: https://github.com/OpenPrinting/cups/issues/1677
+
+### Impact
+
+Two kinds.
+
+1. A printer that cannot do TLS 1.3 becomes unusable over ipps, with no way to
+configure around it - `SSLOptions MaxTLS1.2`, the documented lever, in the
+correct file, does nothing. Mine is a Canon PIXMA TS5351: it answers any TLS 1.3
+ClientHello with alert 40, cups-browsed prefers its IPPS advertisement, and jobs
+are held forever with `A TLS fatal alert has been received` in the error log and
+nothing whatsoever shown to the user. Same symptom on NixOS:
+https://github.com/NixOS/nixpkgs/issues/467175
+
+2. Security hardening silently does not apply. Anyone who put
+`SSLOptions MinTLS1.2 DenyCBC` in cupsd.conf on an Ubuntu print server got
+nothing, with no indication of it.
+
+### Affected releases (source package cups)
+
+| release | version | affected |
+| --- | --- | --- |
+| 24.04 LTS noble | 2.4.7-1.2ubuntu7.14 | no - predates the change |
+| 25.04 plucky | 2.4.12-0ubuntu1.6 | yes |
+| 25.10 questing | 2.4.12-0ubuntu3.10 | yes |
+| 26.04 LTS resolute | 2.4.16-1ubuntu1.3 | yes (this box) |
+
+### Test case
+
+The GnuTLS half reproduces on a stock system with no printer involved
+(gnutls-bin, libgnutls30t64 3.8.12-2ubuntu1.1):
+
+    $ gnutls-cli -d 3 --priority '@SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2' --list
+    gnutls[2]: resolved 'SYSTEM' to '', next 'NORMAL'
+    gnutls[2]: resolved 'NORMAL' to '', next ''
+    gnutls[2]: unable to resolve @SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2
+    Syntax error at: @SYSTEM,NORMAL:-VERS-TLS-ALL:+VERS-TLS1.2
+
+That is exactly the string libcups builds for `SSLOptions MinTLS1.2 MaxTLS1.2`.
+Dropping the `@SYSTEM,` prefix resolves fine, and so does adding
+`SYSTEM = NORMAL` under a `[priorities]` section.
+
+End to end: put `SSLOptions MaxTLS1.2` in /etc/cups/client.conf,
+`sudo systemctl restart cups`, print to any ipps printer and check the
+negotiated version - TLS 1.3 regardless.
+
+### Expected
+
+`SSLOptions` is honoured. Failing that, the failure to apply it is logged.
+
+### Fix
+
+Upstream, either: check the return value of `gnutls_priority_set_direct()` and
+retry without the `@SYSTEM,` prefix, or at minimum log the failure. The change
+that introduced this is a one-line diff (OpenPrinting/cups PR #1105), so a
+cherry-pick should be small once upstream lands something.
+
+Distro-side alternative, if carrying a delta on cups is unattractive: add a
+`[priorities] SYSTEM = NORMAL` entry to /etc/gnutls/config in libgnutls30t64.
+That makes `@SYSTEM` resolve without changing any crypto default, and fixes any
+other application that made the same assumption. Trade-off: it is a conffile
+change affecting every `@SYSTEM` user, so the upstream fix is cleaner.
+
+### Workaround
+
+Add `NoSystem`, which skips the `@SYSTEM,` prefix:
+
+    SSLOptions NoSystem MinTLS1.2 MaxTLS1.2
+
+in /etc/cups/client.conf - plus /var/snap/cups/common/etc/cups/client.conf if
+the openprinting CUPS snap is installed - then `sudo systemctl restart cups`.
+Note that ~/.cups/client.conf is opened first and wins if it exists.
+
+### Other info
+
+- cups/tls-gnutls.c in the v2.4.19 tree: the `@SYSTEM,` prefix at line 1518, the
+  unchecked `gnutls_priority_set_direct()` at line 1568.
+- Unchanged in current upstream master and in libcups3.
+- Same behaviour against GnuTLS 3.7.3 (core22, used by the openprinting CUPS
+  snap): `_gnutls_resolve_priorities()` is identical there.
+- Longer write-up: https://mvysny.github.io/canon-pixma-cups-tls/

@@ -345,9 +345,12 @@ have none - and CUPS discards the resulting error, leaving the session on
 GnuTLS's default priorities with TLS 1.3 in them. Every `SSLOptions` value goes
 in the bin, silently. `NoSystem` drops the `@SYSTEM,` prefix and the rest of the
 line starts working. That is
-[OpenPrinting/cups#1677](https://github.com/OpenPrinting/cups/issues/1677), it
-deserves a post of its own, and until then treat it as the keyword you cannot
-leave out.
+[OpenPrinting/cups#1677](https://github.com/OpenPrinting/cups/issues/1677)
+upstream, and I have filed it against Ubuntu as [LP
+#2164820](https://bugs.launchpad.net/ubuntu/+source/cups/+bug/2164820) - the
+regression landed in 2.4.12, so 25.04, 25.10 and 26.04 LTS all ship an affected
+libcups while 24.04 LTS predates it. It deserves a post of its own, and until
+then treat `NoSystem` as the keyword you cannot leave out.
 
 `ipptool` is the right probe for this, because it goes through libcups and reads
 that same `client.conf` - so unlike `gnutls-cli`, it tests my *configuration*
@@ -605,6 +608,7 @@ appliance.
 
 ```bash
 # 0. cap TLS for CUPS. NoSystem is not optional - see OpenPrinting/cups#1677
+#    and https://bugs.launchpad.net/ubuntu/+source/cups/+bug/2164820
 LINE='SSLOptions NoSystem MinTLS1.2 MaxTLS1.2'
 ls -la ~/.cups/client.conf     # must not exist, or it silently wins
 echo "$LINE" | sudo tee -a /etc/cups/client.conf

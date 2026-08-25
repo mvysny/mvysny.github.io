@@ -20,8 +20,25 @@ The default UEFI installation of Ubuntu is described in [Ubuntu UEFI Secure Boot
 
 The problem is step 3 - the `/boot` partition is unencrypted and initrd image can be tampered by the attacker.
 
-This article has been obsoleted by [Ubuntu Secure Boot: take 2](../ubuntu-secure-boot2/),
-but I'm keeping it here for historical purposes.
+> **2026 update — read this first.** This article is the exploration, not the destination.
+> The chain it describes is the right one, but the key-enrollment method it uses (put the
+> firmware into Setup Mode, delete the Platform Key, enroll your own PK/KEK/db) is the risky
+> way to get there, and everything below is written against Ubuntu 25.10.
+>
+> The maintained solution is
+> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/):
+> the same shim → systemd-boot → UKI chain as below, but signed with a **MOK** enrolled
+> through shim rather than by replacing the firmware's own keys, and driven by a script that
+> keeps working across kernel and GRUB package updates. Start there.
+>
+> [Ubuntu Secure Boot: take 2](../ubuntu-secure-boot2/) is *not* the successor to this
+> article — it solves a different problem with a different mechanism. This chain works by
+> **signature**: shim refuses to run a tampered image and the boot stops. `systemd-cryptenroll`
+> works by **measurement**: the tampered initrd runs, and the TPM merely declines to unseal
+> afterwards — leaving you to notice the fallback prompt and not type your passphrase into it.
+> The two compose. Neither obsoletes the other.
+>
+> I'm keeping the rest of this article for historical purposes.
 
 # GRUB + Encrypted `/boot`
 
@@ -145,6 +162,20 @@ You can now unlink all Type #1 entries, via `sudo bootctl unlink` command. Reboo
 You can verify that with `sudo bootctl status` and `sudo bootctl list`.
 
 ### Signing .efi for Secure Boot
+
+> **Don't do this part by hand.** The process below enrolls *your own* Platform Key, which
+> means putting the firmware into Setup Mode and clearing the manufacturer's certificates.
+> Get it wrong on real hardware and you can end up with a machine that refuses to boot
+> anything.
+>
+> There is a safer route to the same place: enroll a **Machine Owner Key (MOK)** through
+> shim. Shim is already signed by Microsoft and already trusted by your firmware, and it
+> keeps its own key database that you can add to with `mokutil` — no firmware key is
+> touched, and the worst case is a key you have to enroll again.
+> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/)
+> does exactly that, and also handles the part this article misses: the
+> `grub-efi-amd64-signed` package overwrites `grubx64.efi` on every update, which quietly
+> puts GRUB back in the boot path unless an APT hook restores the signed systemd-boot.
 
 The article [Secure Boot with UKI](https://copyninja.in/blog/enable_secureboot_ukify.html) describes the
 process in detail. You'll need to generate new keys, configure UKI signing and

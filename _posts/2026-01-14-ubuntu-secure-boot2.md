@@ -3,6 +3,50 @@ layout: post
 title: Ubuntu Secure Boot, take 2
 ---
 
+> **Deprecated — do not follow the PCR recommendation below.** The approach in this article
+> works in the narrow sense that it boots, but the set of PCRs it tells you to bind is wrong,
+> and I'm no longer running it.
+>
+> - **PCR 11 and 12 do nothing here.** Both are measured by `systemd-stub`, so they are only
+>   populated when you boot a UKI. This article describes a GRUB setup with a separate kernel
+>   and initrd, where both registers read zero — as the article itself notices further down,
+>   while still binding them in the command above.
+> - **PCR 7 is the wrong anchor.** Binding disk encryption to the Secure Boot policy register
+>   is now advised against upstream: the ArchWiki says so outright, systemd v258 stopped
+>   defaulting to it, and Canonical's own `secboot` calls the PCR 7 and PCR 4 profiles
+>   "inherently fragile". An unattended `dbx` revocation pushed by fwupd is enough to lock you
+>   out of your own disk.
+> - **The "super-secure" `0+2+4+7+9+11+12` set is a lockout recipe.** PCR 0 changes on any BIOS
+>   update, PCR 2 on any GPU, NIC or Thunderbolt change, PCR 4 on every bootloader or shim
+>   update. Those are routine events, not attacks.
+>
+> That leaves PCR 9 doing all the actual work — and the EDIT below, where the setup stopped
+> unlocking after a kernel upgrade, is PCR 9 behaving exactly as designed.
+>
+> There is a deeper problem than the register list, though. `systemd-cryptenroll` works by
+> **measurement**: a tampered initrd still runs, and the TPM merely declines to unseal
+> afterwards. What protects you at that point is you recognising the fallback prompt and
+> refusing to type your passphrase into it — a judgement call, under time pressure, in front of
+> a password box that looks entirely normal. A signed boot chain works by **prevention**: shim
+> refuses the image, the boot stops, and there is no judgement call to get wrong.
+>
+> **What I run instead:**
+> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/) —
+> a signed shim → systemd-boot → UKI chain, which is the [first article](../ubuntu-secure-boot/)'s
+> approach done properly. It uses no TPM at all.
+>
+> **Where the TPM half is going:** having both — a signed chain *and* a TPM-checked measurement —
+> is the right end state, and I'm still researching it. The shape it needs is a *signed PCR
+> policy* (`ukify --pcr-private-key` plus `systemd-cryptenroll --tpm2-public-key`, binding PCR 11
+> only), which survives UKI rebuilds without re-enrollment and never touches PCR 7, 4 or 2. The
+> working notes, including a register-by-register breakdown and a fact-check of the PCR 7
+> brittleness claims, are in
+> [ideas/tpm2-auto-unlock.md](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/src/branch/master/ideas/tpm2-auto-unlock.md).
+> It is not solidified, and I'd rather say so than publish another recipe I have to retract.
+>
+> The rest of this article is still accurate and still useful: the `crypttab` wiring, the
+> `initramfs-tools`-versus-dracut trap, and how to recover once you've locked yourself out.
+
 The first [Ubuntu Secure Boot](../ubuntu-secure-boot/) article didn't
 really suggested a viable solution for fully secure boot, but there is a surprisingly
 easy way to do this: by using `systemd-cryptenroll`.
@@ -83,6 +127,9 @@ Now when you reboot, you'll be prompted for a password - a clear sign of
 tampering.
 
 ## PCR
+
+> This section is the part that is wrong — see the deprecation notice at the top. It is left
+> unedited below.
 
 The PCR 7 guards against tampering with the Secure Boot state (PK/KEK/DB keys, enabled/disabled)
 and should always be enabled. The PCR 9, 11 and 12 guard against

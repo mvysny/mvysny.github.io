@@ -25,6 +25,18 @@ none of these: no colleague, no memory across sessions, and often no ability to 
 at all. So every property that used to be *nice for maintainers* becomes *load-bearing for
 agents*. The list below is the 2017 list, re-derived for a reader who cannot ask anybody.
 
+The mapping is close to one-to-one:
+
+| 2017, for human maintainers | This post, for agents |
+|---|---|
+| Code Readability | Information density (5) + Idiom convergence (6) |
+| Code Locality | Locality of reasoning (4) |
+| Ability to Navigate | Introspectable as data (11) + Knowable on demand (13) |
+
+What's genuinely new is the rest: an oracle, because there is nobody to ask whether the
+change is right; and a reproducible loop, because the agent will run that loop a few hundred
+times in an afternoon.
+
 ## Part 1: the properties
 
 Thirteen of them, in five groups. Each one exists because of a specific way agent work goes
@@ -34,39 +46,35 @@ doing any work.
 ### The oracle — can a machine tell right from wrong?
 
 **1. Verifiability.** A machine can decide whether a change is correct, with no human
-looking. Compiler, type checker, test suite — whatever answers yes/no.
+looking — compiler, type checker, test suite, whatever answers yes/no. Of the last ten bugs
+you fixed, how many would `build && test` have caught? That fraction is the property.
 *Failure mode:* the agent cannot tell whether it is finished, so it either stops and asks
 you, or declares victory on a guess.
-*How to observe it:* of the last ten bugs you fixed, how many would `build && test` have
-caught?
 
-**2. Oracle honesty.** When the oracle says green, the application actually works. No
-category of failure passes silently.
+**2. Oracle honesty.** When the oracle says green, the application actually works: no
+category of failure passes silently. Name a class of failure your suite structurally cannot
+see — and if you can't name one, that is the dangerous case, not the reassuring one.
 *Failure mode:* the agent declares victory on a broken app — and it is not being careless,
 the oracle told it so.
-*How to observe it:* name a class of failure your suite structurally cannot see. If you
-can't name one, you haven't looked hard enough, and that's the dangerous case.
 
 Easy to conflate with the first one. A fast, cheap, comprehensive oracle that lies is worse
 than no oracle, because it converts "I don't know" into "I checked".
 
 **3. Errors that close the loop.** A failure names the fix, and names it at the site of the
-fix.
+fix. Take the errors your build printed this week: how many name the file *and* what to
+change?
 *Failure mode:* the agent mutates code semi-randomly until the red goes away. Each iteration
 is cheap, so it will do this for a long time before it gives up, and what it lands on may be
 green for the wrong reason.
-*How to observe it:* take the errors your build printed this week. How many name the file
-*and* what to change?
 
 ### Reading — what has to be in context?
 
 **4. Locality of reasoning.** You can determine what the code does by reading the code in
-front of you.
+front of you. The 2017 test still works: follow the execution flow of one request by
+`Ctrl`+clicking, and count how many times you land somewhere with no code in it.
 *Failure mode:* the agent reads the three files it can see, reasons correctly about them,
 and is wrong — because the behaviour was decided elsewhere, by a classpath entry, a proxy,
 or a property file.
-*How to observe it:* the `Ctrl`+click test from the 2017 post. Follow the execution flow of
-one request by clicking. Count how many times you land somewhere with no code in it.
 
 **5. Information density.** Meaning per token.
 *Failure mode:* the agent's attention is spent on ceremony rather than on your logic.
@@ -85,10 +93,9 @@ codebase just stops pattern-matching against itself, which degrades every later 
 ### Writing — what happens when the agent acts?
 
 **7. Bounded blast radius.** A wrong edit stays contained, and a mechanical refactor is
-atomic.
+atomic. Can your tooling rename a public method across the repo such that you would merge
+the diff without reading it?
 *Failure mode:* a rename half-lands. The build is green and one call site is wrong.
-*How to observe it:* can your tooling rename a public method across the repo such that you'd
-merge the diff without reading it?
 
 **8. Safe defaults.** The default is the correct one, and nothing important requires
 remembering.
@@ -138,13 +145,35 @@ recalled one.
 This is where an unfamiliar-but-small framework beats a famous-but-sprawling one — and it
 does most of the work in part 4.
 
-### Two things to say out loud before the tables
+### Three things to say out loud before the tables
 
 **These properties trade against each other.** Density buys you attention and spends
 locality — Kotlin's extension functions are the clean example. Safe defaults buy you
 correctness and spend locality, because magic that protects you is still magic. More oracle
 buys you verifiability and spends loop latency. Nothing here sweeps, and a stack that scored
 full marks on all thirteen would be suspicious.
+
+**Locality is the usual currency.** Two of those three trades are paid in it, and that is
+not a coincidence of my examples — locality is the largest family in the list. Property 4 is
+locality in *reading*; 3 is locality in *diagnosis*, since an error that names the site of
+the fix is a local one; 7 is locality in *effect*, whether the change stays where you put
+it; and 11 and 13 are the two recovery mechanisms for when locality has already failed —
+navigate to the answer, or look it up. That is the 2017 grouping again, which listed Code
+Locality and Ability to Navigate side by side for exactly this reason: the second is needed
+in proportion to how much the first is missing.
+
+It would be tidy-minded to go one step further and call locality the root of the whole list.
+It isn't. Verifiability, oracle honesty, density, idiom convergence, loop latency,
+reproducibility and version legibility are all independent of it — and property 8 is
+actively *anti*-local, because a safe default is correct behaviour you did not write and
+cannot see. That is mechanically the same thing as the autoconfiguration I complain about in
+part 4, pointed somewhere useful. Non-locality is a cost, not a defect, and it is sometimes
+worth paying.
+
+Which is why this is thirteen rows and not one. Spring Boot and Python both score badly on
+locality, for unrelated reasons — Spring in effect and diagnosis, Python in reading and
+recovery — and a single merged row would hide precisely the distinction the tables exist to
+draw.
 
 **Some of these measure tooling, not syntax.** A language is syntax *plus* its tooling; the
 best-designed language in the world doesn't help if nothing can catch its errors or steer an

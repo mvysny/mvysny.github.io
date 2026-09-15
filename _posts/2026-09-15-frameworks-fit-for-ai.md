@@ -4,7 +4,7 @@ title: Frameworks and Languages Fit for AI
 date: 2026-09-15 11:14:51 +0300
 ---
 
-> DRAFT — part 1 is final; parts 2-4 are tables plus stubs.
+> DRAFT — parts 1 and 2 are final; parts 3-4 are tables plus stubs.
 
 When an AI agent writes code in your project, some of your stack helps it and some of it
 doesn't. This post tries to say *which parts*, as a comparison of known facts rather than a
@@ -189,7 +189,7 @@ most intimately — and it is weakest on the oracle group. If the thirteen prope
 worth anything, Python should come out mixed rather than sweeping.
 
 Which Python: the one agents usually meet — no mandatory typing, `pip` and `venv`. A
-disciplined Python (`uv` with a lockfile, strict `pyright`, `ruff`) moves four of these
+disciplined Python (`uv` with a lockfile, strict `pyright`, `ruff`) moves three of these
 cells, noted below.
 
 `●` strong · `◐` partial · `○` weak
@@ -204,13 +204,13 @@ cells, noted below.
 | 6. Idiom convergence | ● one way to do it | ○ five scope functions | ◐ stated value; three packaging tools |
 | 7. Bounded blast radius | ● JDT LS rename, mature | ◐ rename listed, Alpha | ○ duck typing defeats rename |
 | 8. Safe defaults | ◐ null allowed by default | ● non-null by default | ○ dynamic and mutable by default |
-| 9. Loop latency | ◐ compile step | ○ slower than Java | ● no compile step |
+| 9. Loop latency | ◐ compile step | ◐ compile step, slower than `javac` | ● no compile step |
 | 10. Reproducible environment | ● coordinates + lockfile | ● same | ○ `venv`/`pip` — `◐` with `uv` |
 | 11. Introspectable as data | ● JDT LS, blind only to Kotlin | ◐ exact refs; call hierarchy skips tests | ◐ `pyright` decent; dynamism limits it |
-| 12. Version legibility | ● 2012 code still idiomatic | ◐ stable; coroutine/K2 churn | ● Python 3 settled, corpus current |
+| 12. Version legibility | ● 2012 code still compiles and reads fine | ◐ stable; coroutine/K2 churn | ● Python 3 settled, corpus current |
 | 13. Knowable on demand | ● javadoc ships in the jar | ● KDoc, same mechanism | ● docstrings, `help()`, REPL |
 
-Only the rows where the three actually differ get prose:
+Row 13 is a three-way tie and gets no prose. The other rows do, biggest differences first:
 
 ### Where Kotlin moves the compiler (2, 8)
 
@@ -225,8 +225,9 @@ default makes the oracle quietly narrower than it appears.
 `when` exhaustiveness over sealed hierarchies is the same mechanism pointed at business logic
 rather than at types. Add a case to a sealed type and every incomplete branch becomes a compile
 error — a silent behavioural gap converted into a loud failure, which is the whole game. Java
-has this now via sealed interfaces and pattern matching; Kotlin's version is more complete and
-much more idiomatic, and idiomatic is what decides whether a model actually writes it.
+has had the same check since Java 21, via sealed interfaces and pattern-matching `switch`. The
+difference is how common it is: Kotlin code has used it routinely for a decade, while most Java
+in the training data predates it, and how common an idiom is decides whether a model writes it.
 
 Python's position here is the honest counterweight: type hints plus `mypy` or `pyright` can get
 a long way, and modern strict-mode `pyright` is genuinely good. But it is opt-in at every
@@ -263,7 +264,7 @@ this function" is to delete the function.
 Rule of thumb for this row: if the agent does most of its editing through a language server,
 check the current state on your own repo before you commit to it. That claim moves faster than
 anything else in this post, and the research post ends with a checklist you can hand to an agent.
-If the agent mostly reads and writes whole files and uses the compiler and Karibu as its oracle,
+If the agent mostly reads and writes whole files and uses the compiler and Karibu-Testing (browserless UI tests, part 3) as its oracle,
 which is the common setup, the gap costs much less, and Kotlin's nullability and density come out
 ahead.
 
@@ -288,6 +289,30 @@ the project's spec file — which scope functions are allowed, where extension f
 live, no operator overloading, no custom DSLs — fixes most of it. That is property 13 being
 spent to buy property 6, and it is the cheapest trade available anywhere in this post.
 
+### The smaller gaps (3, 5, 9, 12)
+
+**Errors (3).** `javac` errors are plain: a file, a line, and a sentence that usually names the
+fix. Most Kotlin errors are just as good. The exception is type inference: when a generic call
+or a lambda fails to infer, the error can be long and can point at the call rather than at the
+argument that caused it. Python's traceback is the best of the three to read, but it only
+arrives when the line runs, so it catches only what the tests executed.
+
+**Density (5).** Java's ceremony is shrinking — records and `var` cut a lot of it — but the
+code models learned Java from is full of getters, setters and builders, and that is the Java
+they write. Kotlin and Python both state a data class or a function call with default
+arguments in one line. As part 1 argued, the cost of ceremony is attention, not tokens.
+
+**Loop latency (9).** Kotlin compiles more slowly than `javac`. Incremental builds and the K2
+compiler have narrowed the gap, which is why both JVM languages score `◐`. Both lose clearly to
+Python, which has no compile step at all.
+
+**Version legibility (12).** Java never breaks old code, so the model's Java drifts in style,
+not correctness: pre-records, pre-`var` code that still compiles. That costs density, not the
+build. Kotlin's language is also stable, but its ecosystem has moved underneath it: coroutines
+went from experimental to stable, `kapt` gave way to KSP, and K2 replaced the compiler. So
+the model writes `GlobalScope.launch` and `kapt` with the same fluency as the current idioms.
+The compiler catches some of that as deprecation warnings; an agent tends to ignore warnings.
+
 ### Where Python is strongest, and what it costs (1, 9, 10)
 
 No compile step is the best loop latency in the table, and it is not a small advantage — the
@@ -306,15 +331,16 @@ produces errors that look like code errors. The agent then fixes the code.
 
 Two things keep this fair. First, the disciplined-Python delta is real: `uv` with a lockfile
 moves row 10 from `○` to `◐`, and strict `pyright` moves rows 1 and 7 up a step. Neither touches
-row 2, because an untyped boundary still passes silently. Second, Python wins row 12 outright
-and it is worth saying why: Python 3 is settled, and the model's Python is *current*, where its
+row 2, because an untyped boundary still passes silently. Second, Python ties Java for the
+lead on row 12, ahead of Kotlin, and it is worth saying why: Python 3 is settled, and the model's Python is *current*, where its
 Vaadin is several years old. That is the single strongest argument for using the language models
 know best, and it is a genuine one.
 
-Which is the result the control was there to produce. Python takes four rows outright, loses
-six, and is mixed on three — and the wins and losses cluster rather than cancelling out. It is
-strongest on knowledge, where it takes both rows; weakest on the oracle, where it takes none;
-and split down the middle on the loop, holding the fastest iteration in the table and the least
+Which is the result the control was there to produce. Python leads outright on one row (9),
+ties for the lead on three more (5, 12, 13), trails both rivals on six, and trails only Java on
+the remaining three. The wins and losses cluster rather than cancelling out. It is level with
+the best on both knowledge rows; weakest on the oracle, last on two of its three rows and
+ahead on none; and split down the middle on the loop, holding the fastest iteration in the table and the least
 reproducible environment. Corpus mass is worth a great deal, and it does not buy verification.
 
 ## Part 3: Karibu-Testing vs Selenium

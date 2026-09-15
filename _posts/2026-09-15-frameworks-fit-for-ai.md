@@ -4,7 +4,7 @@ title: Frameworks and Languages Fit for AI
 date: 2026-09-15 11:14:51 +0300
 ---
 
-> DRAFT — parts 1 and 2 are final; part 3 is a full first draft; part 4 is tables plus stubs.
+> DRAFT — parts 1–3 are final; part 4 is a full first draft; the closing section is a stub.
 
 When an AI agent writes code in your project, some of your stack helps it and some of it
 doesn't. This post tries to say *which parts*, as a comparison of known facts rather than a
@@ -544,49 +544,201 @@ anything, and it is the only one a faster oracle cannot buy back.
 
 ## Part 4: Vaadin Boot vs Spring Boot
 
-> STUB. Disclosure line needed: I wrote Vaadin Boot. So this section states facts either
-> reader can check and lets Spring win the rows it wins, which are real ones.
+Disclosure again, and a bigger one: I wrote Vaadin Boot, and the security library it relies on
+below. So this section works the way part 3 did: where a claim could be measured, I measured it,
+on Vaadin's own
+[Spring Boot starter](https://github.com/vaadin/skeleton-starter-flow-spring) and on my
+[Vaadin Boot example](https://github.com/mvysny/vaadin-boot-example-gradle). And Spring wins the rows
+it wins, which are real ones.
+
+Both columns run the same Vaadin, on the same JVM, built by the same tools, and are tested the
+same browserless way, so rows 1, 5, 7 and 10 come out equal and are left out. What differs is
+the layer between `main()` and your first view. Spring Boot fills it with a container, and
+Vaadin Boot leaves it almost empty.
 
 | | Vaadin Boot | Spring Boot |
 |---|---|---|
-| 2. Oracle honesty | ◐ Maven servlet-scope trap | ◐ context loads ≠ app works |
-| 4. Locality of reasoning | ● `main()`, `@WebListener`, static getters | ○ autoconfiguration, proxies, property precedence |
-| 3. Errors that close the loop | ● your code plus Jetty | ◐ deep reflective stack traces |
-| 8. Safe defaults | ○ wire `vaadin-simple-security` yourself | ● deny-by-default with Spring Security |
-| 11. Introspectable as data | ○ nothing built in | ● Actuator |
-| 12. Version legibility | ◐ thin corpus, but one version of it | ○ enormous corpus, many versions at once |
-| 13. Knowable on demand | ● whole surface in a few hundred tokens | ○ answer is not at `@Transactional` |
+| 2. Oracle honesty | ◐ Maven: `mvn test` green, app won't start | ◐ `@Transactional` self-call: green, no transaction |
+| 3. Errors that close the loop | ● compile error, or your own stack trace | ◐ excellent report, buried mid-log |
+| 4. Locality of reasoning | ● `main()`, `@WebListener`, static getters | ○ auto-configuration, proxies |
+| 8. Safe defaults | ○ forget the security wiring, everything is open | ● the dependency alone locks the app |
+| 9. Loop latency | ● first UI test under a second | ◐ context start per test configuration |
+| 11. Introspectable as data | ○ nothing built in | ◐ Actuator: all of Spring, none of Vaadin |
+| 12. Version legibility | ◐ thin corpus; the API you write barely moved | ○ `javax`→`jakarta`, security DSL rewritten twice |
+| 13. Knowable on demand | ● whole API in about a dozen methods | ○ the answer isn't at `@Transactional` |
 
-> STUB, and the rows to argue:
->
-> **4 and 13 are the case for Vaadin Boot.** The API is `new VaadinBoot().run()` plus about
-> eight configuration methods; initialisation is a plain `@WebListener`; services are a class
-> of static getters, so the call chain is one you follow by reading, with no container in
-> between. Whole surface fits in a spec file. Link the
-> [Annotatiomania section of the 2017 post](../code-locality-and-ability-to-navigate/) —
-> `Ctrl`+clicking `@Transactional` lands on an annotation definition containing no code, which
-> is property 13's failure mode described nine years before anyone was worried about agents.
->
-> **8 and 11 are the case for Spring Boot, and they are not small.** Deny-by-default is the
-> highest-leverage safe default there is, and dropping it means a new `@Route` is unprotected
-> until somebody remembers. Actuator is genuine introspection-as-data with no equivalent.
-> Both are replaceable by things you write — a Karibu test that enumerates every discovered
-> route and fails if the view lacks an access annotation; a twenty-line `describe` endpoint
-> dumping routes and services as JSON — but "replaceable by code you own" is a different claim
-> from "present by default", and the difference is exactly property 8.
->
-> **12 is the interesting row.** Spring's familiarity advantage is real and is the strongest
-> argument against everything else in this section. It is also familiarity with many Spring
-> versions simultaneously, which is the drift problem, not a solution to it.
->
-> **Row 2 needs the concrete trap**, because it is the best specimen in the post: on Maven
-> with Jetty, `vaadin-bom` manages `jakarta.servlet-api` to `provided` scope — correct for WAR
-> deployment, wrong when Vaadin Boot *is* the container — so the app dies at startup with
-> `NoClassDefFoundError`, and `mvn test` still passes, because Karibu-Testing pulls the servlet
-> API in at test scope. Green oracle, broken application, agent moves on. Two fixes, and both
-> generalise: prefer Gradle, where `platform()` contributes version constraints without
-> propagating scopes; and add a smoke test calling `start()` / `getServerURL()` / `stop()`, so
-> "the app boots" is *inside* the oracle rather than outside it.
+### Where behaviour is decided (4, 13)
+
+A Vaadin Boot application starts in a `main()` you can read:
+
+```java
+public static void main(String[] args) throws Exception {
+    new VaadinBoot().run();
+}
+```
+
+The rest of the public API is eight configuration methods — port, listen address, context root,
+and a handful of switches — plus `run()`, `start()`, `stop()` and `getServerURL()`. Initialisation
+is a plain `@WebListener` whose `contextInitialized()` you wrote. Services are a class of static
+getters, so `Services.getGreetService()` is a call you `Ctrl`+click into and land in code. The whole
+framework fits in a spec file with room to spare.
+
+Spring Boot decides much of the same behaviour elsewhere. I turned on Actuator in Vaadin's own
+Spring starter — one view, one service — and asked it which auto-configurations had been
+evaluated: 168 conditions matched and 86 did not. None of those decisions appears in the
+project's source; they depend on the classpath, on properties and on each other. That is property
+4's failure mode exactly: the agent reasons correctly about the files in front of it, and is wrong.
+
+Row 13 has a clean specimen. `Ctrl`+click `@Transactional` and you land on an annotation
+definition with no code in it — the case I called Annotatiomania in the
+[2017 locality post](../code-locality-and-ability-to-navigate/), nine years before anyone worried
+about agents. The behaviour lives in a proxy, and its most important rule lives in the
+[reference documentation](https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html):
+"in proxy mode (which is the default), only external method calls coming in through the proxy are
+intercepted", so a method that calls another `@Transactional` method on the same object "does not
+lead to an actual transaction at runtime". Nothing at the call site says so: a model that
+remembers the rule is fine, and one reasoning from the code cannot find it.
+
+### Where Spring wins: security (8)
+
+I added one dependency, `spring-boot-starter-security`, to the Spring starter and wrote no
+configuration at all. The application logged a generated password and answered 401 to every
+unauthenticated request: the view, the static resources, Actuator. That is the strongest safe
+default in this post: an agent that adds a view or a REST endpoint doesn't need to know security
+exists.
+
+Vaadin Boot has no equivalent. Security comes from
+[vaadin-simple-security](https://github.com/mvysny/vaadin-simple-security), a library you call. If
+you don't call it, nothing is protected and nothing fails. And it guards Vaadin navigation only:
+a Javalin servlet at `/rest/*` stays open, where Spring's catch-all rule would have covered it.
+
+To be precise: once security is wired up, both stacks deny a view that has
+no access annotation. That comes from Vaadin itself, not from Spring — the documentation says of
+`@DenyAll` that "if a view isn't annotated at all, the `@DenyAll` logic is applied". So the
+difference isn't the rule, it's whether anyone has to remember to switch the rule on.
+
+You can buy most of it back with code you own. A browserless test can enumerate every discovered
+route and fail when one lacks an access annotation, and another can assert that the access
+control is actually registered. But "replaceable by code you own" is a different claim from
+"present by default", and the difference between them is property 8.
+
+### Introspection (11)
+
+Actuator is genuine introspection as data. With every endpoint exposed on the Spring starter, it
+listed 311 beans, including `greetService`, plus the conditions report, configuration properties,
+environment and loggers. It did not list `MainView`: Vaadin instantiates route targets itself, so
+they aren't registered beans. The `mappings` endpoint showed the Vaadin servlet at
+`/vaadinServlet/*` and Spring's own handlers, and not a single Vaadin route.
+
+So for a Vaadin application Actuator answers "what did Spring configure?" thoroughly, and "which
+views exist, and who may open them?" not at all — hence `◐`. (It also exposes only `health` over
+HTTP until you switch the rest on.) The first question isn't idle, either: the conditions report
+exists because row 4 is weak, which is part 1's point that introspection is needed in proportion
+to the locality that's missing.
+
+Vaadin Boot has nothing built in. The route question can be answered the same way on both stacks:
+Vaadin's route registry knows every route and its target class, and so its access annotation, and
+a twenty-line endpoint or test can dump that as JSON.
+
+### Errors (3)
+
+I broke the wiring on purpose. In a Spring Boot 3.5 project with Karibu tests, I added a
+service whose constructor needs a `java.time.Clock` that nobody provides, and ran `mvn test`.
+Spring's diagnosis is excellent:
+
+```
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.example.application.views.helloworld.AuditService required a bean of type 'java.time.Clock' that could not be found.
+
+Action:
+
+Consider defining a bean of type 'java.time.Clock' in your configuration.
+```
+
+It names the class, the parameter and the fix. The problem is where it lands: at line 1,164 of a
+1,850-line log, after a thousand-odd lines of conditions report that a failed test context prints
+first. The summary Maven prints at
+the end — the part an agent reads — had six errors. Five said
+`ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context`,
+and the sixth said `Failed to load ApplicationContext`, followed by a line and a half of context
+configuration. None of the six names `Clock` or `AuditService`. It is a good error in the wrong
+place, and property 3 is about both.
+
+The same mistake in Vaadin Boot doesn't reach the test run. A service handed out by a static
+getter is constructed with `new`, so a missing argument is a compile error at the call site. What
+Vaadin Boot lacks is the analysis: a failing `Bootstrap` gives a plain stack trace with no
+"Action:" — but it is your own, thrown straight into the test that called `contextInitialized()`.
+
+### Green, but broken (2)
+
+This row goes against my own project.
+
+On Maven with Jetty, `vaadin-bom` manages `jakarta.servlet-api` to `provided` scope. That is
+right for a WAR or a Spring Boot deployment, where the container supplies the servlet API — but
+Vaadin Boot *is* the container. Maven applies the importing project's managed scope to the whole
+dependency graph, overriding the `compile` scope Jetty declares, so the application dies at
+startup with `NoClassDefFoundError: jakarta/servlet/ServletContext`. That happens both in dev mode
+and from the packaged zip. And `mvn test` still passes, because Karibu-Testing brings the servlet
+API in at test scope. Green oracle, broken application, and an agent moves on.
+
+It can't be fixed from Vaadin Boot's side: the importing project's dependency management wins over
+anything Vaadin Boot declares, and a Vaadin Boot BOM would work only until someone reorders the
+imports. So it is documented in
+[vaadin-boot#40](https://github.com/mvysny/vaadin-boot/issues/40), fixed in the example projects
+with a few lines of XML, and reported upstream as
+[flow-components#10107](https://github.com/vaadin/flow-components/issues/10107). Gradle is
+unaffected, because `platform()` contributes version constraints and not scopes; so is the Tomcat
+variant, whose jar bundles the servlet classes itself.
+
+Two fixes generalise beyond this bug. Prefer the build tool whose defaults can't produce the
+failure — here, Gradle. And add a smoke test that calls `start()`, fetches `getServerURL()` and calls `stop()`,
+so that "the application boots" is *inside* the oracle rather than outside it.
+
+Spring's side of this row is better than I expected: a `@SpringBootTest` really starts the
+context, so the wiring failure above turned the suite red. Its silent failure is the one from row 13: a `@Transactional` method called from its own
+class passes every test that doesn't specifically check for a rollback, and runs without a
+transaction.
+
+### The smaller gaps (9, 12)
+
+**Loop latency (9).** Startup in dev mode is a wash: the Vaadin Boot example started in 5.1
+seconds and the Spring starter in 6.2–7.0, most of it Vaadin's dev mode on both. Tests are where
+the gap is. With Vaadin Boot and Karibu, the first test took 0.9 seconds and later ones 56–115
+ms. With Spring and Karibu, the first test class took 6 seconds, including 3.3 seconds of context startup.
+After that Spring caches the context and tests are fast again, until a test class needs a
+different configuration — a mocked bean, an extra import — which starts another context.
+
+**Version legibility (12).** Spring's familiarity advantage is real, and it is the strongest
+argument against everything else in this section. It is also familiarity with several
+incompatible Springs at once:
+
+- Spring Boot 3 moved from `javax` to `jakarta`;
+- Spring Security 6 removed `WebSecurityConfigurerAdapter` and `antMatchers()`;
+- Spring Security 7 removed `AntPathRequestMatcher`;
+- Vaadin 25 removed `VaadinWebSecurity`, deprecated since 24.9.
+
+My own Spring example project still extends `VaadinWebSecurity` and constructs an
+`AntPathRequestMatcher`, so it is part of the corpus teaching models the old idiom.
+
+Vaadin Boot's corpus is thin, and not a single version: four major versions since 2022, moving
+from `javax` to `jakarta` and from Jetty 10 to 12. What an application actually writes barely
+moved: `new VaadinBoot().run()`, the port settings and `start()`/`stop()` are the same in 10.0 as
+today, and only two methods are gone. The drift an agent would hit is
+the servlet imports in `Bootstrap`, and that one is a compile error.
+
+### Tally
+
+Vaadin Boot leads on five rows (3, 4, 9, 12, 13), Spring Boot on two (8, 11), and row 2 is a tie.
+Unlike part 3, the two columns aren't covering different ground; they're competing for the same
+job. Spring's two wins can mostly be bought back by writing code: a test that checks access
+annotations, an endpoint that dumps the route registry. Vaadin Boot's wins can't be bought the
+same way, because they consist of something being absent, and no amount of added code produces
+absence.
 
 ## What to do with this
 

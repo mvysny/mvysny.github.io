@@ -4,7 +4,7 @@ title: Frameworks and Languages Fit for AI
 date: 2026-09-15 11:14:51 +0300
 ---
 
-> DRAFT — parts 1 and 2 are final; parts 3-4 are tables plus stubs.
+> DRAFT — parts 1 and 2 are final; part 3 is a full first draft; part 4 is tables plus stubs.
 
 When an AI agent writes code in your project, some of your stack helps it and some of it
 doesn't. This post tries to say *which parts*, as a comparison of known facts rather than a
@@ -345,31 +345,200 @@ reproducible environment. Corpus mass is worth a great deal, and it does not buy
 
 ## Part 3: Karibu-Testing vs Selenium
 
-> STUB. Framing correction to make early: these are not two ways of doing the same thing at
-> different speeds. Karibu **structurally cannot see** what Selenium sees. So this table is
-> not a ranking, it is a map of two non-overlapping oracles.
+Disclosure first: I wrote Karibu-Testing. So this section sticks to things you can check, most
+of them by running a test, and it is explicit about where the browser wins — which turns out to
+be the row that matters most.
+
+The framing matters more than the scores. These are not two ways of doing the same job at
+different speeds. Karibu-Testing runs your Vaadin component tree inside the test JVM, with no
+browser, no servlet container and no JavaScript, so it **structurally cannot see** anything that
+happens on the client. A browser test sees exactly that. The table below is therefore not a
+ranking. It is a map of two oracles that cover different ground, and the useful question is how
+to split the work between them.
+
+"Selenium" stands for the browser-driven family. TestBench is Selenium plus Vaadin-aware element
+classes and automatic waiting; Playwright replaces the driver architecture and retries its
+assertions. Where either changes a cell, the prose says so. On the other side, Vaadin's own
+browserless testing (formerly UI Unit Testing, free since Vaadin 25.1) works on the same
+principle as Karibu, so the structural rows — 2, 9 and 10 — apply to it too. I haven't measured
+its error messages.
+
+Rows 4, 5 and 7 are left out: they describe the code you ship, not the tool that checks it.
 
 | | Karibu-Testing | Selenium |
 |---|---|---|
-| 1. Verifiability | ● | ● |
-| 2. Oracle honesty | ◐ blind to visual/bundle failures | ● sees the real browser |
-| 3. Errors that close the loop | ● JVM stack trace into your code | ○ "element not found" |
-| 9. Loop latency | ● sub-second, in-JVM | ○ browser start, seconds to minutes |
-| 10. Reproducible environment | ● plain JVM test | ◐ browser + driver versions |
-| 13. Knowable on demand | ● small API, KDoc at the cursor | ◐ large surface, flakiness undocumented |
+| 1. Verifiability | ● pass/fail in JUnit | ● pass/fail in JUnit |
+| 2. Oracle honesty | ◐ blind to JS, CSS, the bundle | ● sees the real browser |
+| 3. Errors that close the loop | ● prints the component tree | ○ "wrong place or wrong time" |
+| 6. Idiom convergence | ● `_get` plus a search spec | ○ five locators, three ways to wait |
+| 8. Safe defaults | ◐ `_click()` checks; `click()` doesn't | ○ implicit wait is zero |
+| 9. Loop latency | ● tens of ms per test, in-JVM | ○ app server + browser, seconds per test |
+| 10. Reproducible environment | ● one test dependency | ◐ Selenium Manager; still a browser and a server |
+| 11. Introspectable as data | ● component tree as Java objects | ◐ DOM, mostly behind shadow roots |
+| 12. Version legibility | ◐ thin corpus; API stable since 2020 | ○ Selenium 2/3 idiom dominates |
+| 13. Knowable on demand | ● small API, KDoc at the cursor | ◐ knowing Selenium ≠ knowing Vaadin's DOM |
 
-> STUB, the argument: Karibu is the inner loop, browser tests are a thin outer gate. Hundreds
-> of Karibu tests sub-second on every change; a handful of browser tests covering only what
-> Karibu is blind to — layout doesn't overflow, the production bundle builds and loads, real
-> JS components initialise. **Small in number, not lower in priority.** Framing them as a
-> "distant second" is how they rot, and then the one failure class your fast oracle cannot
-> detect is also the untested one. That is property 2 failing by neglect rather than by
-> design.
->
-> Second point, on mocks: Karibu bootstraps the real database and real services. This matters
-> more for agents than for humans. Mocks are precisely where an agent writes a green suite
-> over a broken app, because it mocked the thing that was wrong — and it will do this
-> confidently, since the oracle agreed.
+### What Karibu cannot see (2)
+
+Karibu's README says it in one line: there is no browser, so it is not possible to test or call
+JavaScript. Everything downstream of that is invisible as well, and it is worth listing, because
+part 1's test for this property was *name a class of failure your suite structurally cannot
+see*:
+
+- CSS and layout: a form that overflows, a button hidden behind a dialog;
+- the production frontend bundle failing to build, or building and failing to load;
+- a JavaScript component — an add-on, a chart, anything rendered client-side by a `LitTemplate`
+  — failing to initialise;
+- anything your code does through `executeJs()`.
+
+Being able to write that list is the good news. A blind spot you can name is one you can cover.
+
+A subtler gap follows from something Karibu does on purpose. In a browser, the Grid shows the
+rows it last fetched until something calls `DataProvider.refreshAll()`. Karibu has no client-side
+cache to go stale: every Grid operation in a test polls the data provider for fresh rows. That
+makes Grid tests simple, and it also means a forgotten `refreshAll()` — the database changed, the
+screen still shows the old rows — passes under Karibu. It is the same shape as the list above: a
+failure that lives in what the client *keeps*, which a server-side oracle never sees.
+
+Selenium's blind spot is of a different kind: economic rather than structural. A browser test
+can see the hundredth validation path perfectly well. Nobody writes it at several seconds a run.
+
+### Karibu fakes Vaadin, not your app
+
+Karibu mocks exactly one thing: the servlet environment Vaadin expects — the session, the
+request, the `UI`. Your services and your database are real. You start the application inside
+the test JVM, typically by calling the same `ServletContextListener` the server would call, so a
+`_click()` runs the real listener against the real service and the real database.
+
+That matters more for agents than for humans. The usual fast alternative to a browser test is a
+unit test with the service mocked out, and a mock is exactly where an agent writes a green suite
+over a broken app: it mocked the thing that was wrong, the oracle agreed, and it moved on with
+full confidence. Karibu gets its speed by removing the browser, not by removing your code.
+
+### Errors and introspection (3, 11)
+
+I measured this row rather than describing it. In the Vaadin Boot example project, with
+Karibu-Testing 2.7.2, I misspelled a label in a lookup — `withLabel("Your nme")` — and ran the
+test:
+
+```
+java.lang.AssertionError: /: No visible TextField in MockedUI[] matching TextField and label='Your nme': []. Component tree:
+└── MockedUI[]
+    └── MainView[@class='centered-content', @style='width:100%', @theme='padding spacing']
+        ├── TextField[label='Your name', value='', @class='bordered']
+        └── Button[text='Say hello', @data-vaadin-shortcut-owner='sc-f7e6…', @theme='primary']
+```
+
+The message names the lookup that failed, says what it matched (nothing), and prints the whole
+component tree, where the real label sits two lines below. The agent can fix this without running
+anything else. It is also row 11 in miniature: `toPrettyTree()` can be called from any test, and
+the components are ordinary Java objects that the test can query directly.
+
+Selenium's equivalent is `NoSuchElementException`. Its documentation describes it as the element
+not being found "at the exact moment you attempted to locate it", and gives two causes: looking in
+the wrong place, or looking at the wrong time. Those call for opposite fixes — change the locator,
+or add a wait — and the error cannot say which one applies. An agent will try both, which is row
+3's failure mode word for word. Worse, if the server threw an exception, that exception sits in
+the application server's log, in another process; the test only sees an element that never
+appeared. Under Karibu the server's exception is thrown straight into the test.
+
+For row 11 the browser has real data too — the DOM — but a Vaadin app keeps most of it out of
+reach. Vaadin components are web components: the actual `<input>` of a `TextField` lives in shadow
+DOM, XPath cannot cross a shadow root, and Selenium only gained `getShadowRoot()` in version 4.
+Vaadin's own Playwright guide has to spell out recipes such as
+`vaadin-confirm-dialog vaadin-button[slot='confirm-button']` for a dialog button, and
+`:visible` for Grid cells, because the Grid recycles them while scrolling. None of those are
+facts about Selenium or Playwright; they are facts about Vaadin's DOM. That is row 13's gap: an
+agent that knows Selenium perfectly still has to learn a DOM that isn't documented anywhere near
+its cursor. Hiding that DOM is what TestBench's element classes are for.
+
+### Defaults and dialects (8, 6)
+
+I measured row 8 as well. Disable the button, then call Vaadin's own `button.click()`: **the test
+passes.** Call Karibu's `_click(button)` instead and it fails:
+
+```
+java.lang.IllegalStateException: The Button[DISABLED, text='Say hello', …] is not enabled
+```
+
+In a real browser the user cannot click a disabled button, and Vaadin's server ignores events
+from disabled components anyway. So the green from `click()` is false — a property 8 gap
+producing a property 2 failure, the same pattern as the missing nullability checker in part 2.
+Karibu's cell is `◐` rather than `●` because both spellings exist, and the one that doesn't check
+is plain Vaadin API, which a model has seen far more often. `_setValue()` versus `setValue()` has
+the same trap. The fix is the cheapest one in this post: one line in the spec file — "in tests,
+always `_click()` and `_setValue()`" — plus a `grep` in CI that fails on the other spelling, which
+turns the rule into an oracle. Lookups are safe by default already: `_get` fails when it finds zero
+matches *or more than one*, where Selenium's `findElement` silently returns the first of several.
+
+Selenium's unsafe default is time. The implicit wait defaults to zero: "if the element is not
+found, it will immediately return an error". Add waits and the documentation warns you not to
+mix the implicit and explicit kinds, because a 10-second implicit wait combined with a 15-second
+explicit one can time out after 20. It also names race conditions as "one of the primary causes
+of flaky tests". A flaky test is the oracle lying in the other direction — red for an app that
+works — and it teaches the agent, and the team, that red means "run it again". Karibu has nothing
+to wait for: `_click()` returns once the listeners have run.
+
+The browser-side tools differ most on this row. TestBench fixes the default and waits for Vaadin
+to finish every round trip by itself. Playwright retries its own assertions, but Vaadin's guide
+warns that reading `textContent()` and asserting with plain JUnit "might fail as the server
+round-trip response might not yet be completed". That is a rule the agent has to remember — which
+is property 8's failure mode again.
+
+On row 6, Selenium lets you locate by id, name, CSS selector, XPath or link text, and wait
+implicitly, explicitly, fluently or with `Thread.sleep()`; Page Objects are optional. Every
+combination is in the training data, and every one will turn up in your repository. Karibu has one
+way to find a component and one family of underscore functions to act on it.
+
+### The smaller gaps (9, 10, 12, 13)
+
+**Loop latency (9).** In the same example project the greeting test took 111 ms and the probes
+above 56–115 ms; the first test of the run took 0.9 s, most of it Vaadin warming up. For a bigger
+sample, the Karibu-DSL test suite is almost entirely Karibu-Testing tests: 302 of them, exercising
+every Vaadin component, ran in 5.3 seconds on Vaadin 25.2 — about 18 ms a test — and the same
+suite took 5.5 seconds on Vaadin 25.3. A browser test costs seconds apiece; I reported 5–10
+seconds back in 2017, which puts the same 302 tests somewhere between half an hour and an hour.
+That is the difference between running the UI suite after every edit and running it before a
+commit, and as part 1 argued, it decides whether the agent batches its changes.
+
+**Reproducible environment (10).** Selenium Manager, used by default since Selenium 4.6 and able
+to download browsers since 4.11, removed most of the driver pain. Not all of it: my own
+[notes on running TestBench on Ubuntu](../testbench-ubuntu/) record years of browsers and drivers
+that wouldn't talk to each other. And a browser test still needs the application built, started
+and reachable. Karibu is a `testImplementation` line.
+
+**Version legibility (12).** Selenium's corpus is the cleanest drift specimen in the post. Selenium
+4 removed the `findElementByXPath()` family in favour of `findElement(By.xpath(…))`,
+`implicitlyWait(10, TimeUnit.SECONDS)` became a `Duration`, and Selenium Manager made
+`System.setProperty("webdriver.chrome.driver", …)` unnecessary — and my Ubuntu post above still
+uses that last one, so I am part of the problem. Karibu's corpus is thin, but its API has been
+stable since 2020, so the little a model knows is still current. Its one trap is naming: the
+artifact is `karibu-testing-v24` and it also serves Vaadin 25. There is no `-v25`, and an agent
+reasoning from version numbers will go looking for one. Writing this row turned it up; it is now
+[issue #216](https://github.com/mvysny/karibu-testing/issues/216).
+
+**Knowable on demand (13).** Karibu's API is small and documented in KDoc plus one README.
+Selenium's API is small too; as row 11 showed, the knowledge it's missing is Vaadin's DOM.
+
+### Inner loop, outer gate
+
+The split follows from row 2. Karibu is the inner loop: hundreds of tests, run on every change.
+Browser tests are the outer gate: a handful, covering exactly the list from row 2 — the production
+bundle builds and the page loads, the key views don't overflow, the JavaScript components
+initialise, and one happy path goes end to end over real HTTP.
+
+**Small in number, not lower in priority.** My 2017 post on
+[browserless web testing](../browserless-web-testing/) drew this as a test pyramid, which is
+right about the counts and misleading about importance. Treat browser tests as a distant second
+and they rot: they are slow and flaky, and nobody notices when one gets `@Disabled`. Then the one
+failure class your fast oracle cannot see is also the untested one — property 2 failing through
+neglect rather than by design. An agent will not catch it, because the agent only ever runs the
+inner loop. So make the outer gate a required CI check the agent cannot skip, and keep its list of
+what it covers written down next to it, because that list is row 2's blind spot, named.
+
+On the table, Karibu leads on eight rows, ties on one and trails on one. With equal rows that
+would be a sweep. The rows are not equal: row 2 decides whether the other nine are worth
+anything, and it is the only one a faster oracle cannot buy back.
 
 ## Part 4: Vaadin Boot vs Spring Boot
 

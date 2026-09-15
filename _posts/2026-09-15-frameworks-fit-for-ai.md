@@ -4,8 +4,6 @@ title: Frameworks and Languages Fit for AI
 date: 2026-09-15 11:14:51 +0300
 ---
 
-> DRAFT — parts 1–3 are final; part 4 is a full first draft; the closing section is a stub.
-
 When an AI agent writes code in your project, some of your stack helps it and some of it
 doesn't. This post tries to say *which parts*, as a comparison of known facts rather than a
 verdict on anyone's favourite framework. Spring Boot turns up as a contrast case in part 4;
@@ -740,25 +738,154 @@ annotations, an endpoint that dumps the route registry. Vaadin Boot's wins can't
 same way, because they consist of something being absent, and no amount of added code produces
 absence.
 
+## Part 5: counting the points
+
+The tables have been kept apart so far. Here they are added up, the crudest possible way: `●` is
+two points, `◐` one, `○` nothing, and every row weighs the same.
+
+| | Rows scored | Score | Out of |
+|---|---|---|---|
+| **Part 2** | all 13 | **Java 21** · Kotlin 18 · Python 11 | 26 |
+| **Part 3** | 10 | **Karibu-Testing 17** · Selenium 7 | 20 |
+| **Part 4** | 8 | **Vaadin Boot 10** · Spring Boot 6 | 16 |
+
+Every row weighing the same is wrong; part 3 said so outright. So each result below gets a
+second question after the count, the one part 4's tally already asked: **which losses can be
+bought back, and at what price?** A loss you can fix by writing a test or a paragraph is cheap. A
+loss you can't fix is the real score.
+
+### Java wins the count, and I still pick Kotlin
+
+Java leads Kotlin on six rows (3, 4, 6, 7, 11, 12), Kotlin leads on three (2, 5, 8), and four
+are tied. Three points is a clear margin, so picking the loser needs an argument, and the
+argument is what each lead would cost to buy back:
+
+- **Java's leads are mostly cheap to buy back.** Rows 6 and 4 are what part 2's style section
+  fixes: which scope functions, where extension functions live. Row 12 is a "don't write these"
+  list in the same file. Rows 7 and 11 measure a language server that is Alpha today, and they
+  cost little if the agent edits whole files and uses the compiler plus Karibu as its oracle.
+  What remains is row 3's inference tail, and that is a small loss.
+- **Kotlin's leads are expensive to buy.** Java can get nullability with JSpecify and NullAway,
+  but that setup is opt-in: exactly the wiring an agent won't notice is missing, which is the
+  row 8 failure producing the row 2 failure. And density (5) doesn't come back at all, because
+  the Java a model writes is the getter-and-setter Java it learned from.
+
+So Kotlin's wins sit in the oracle, and Java's wins sit in things a spec file fixes. That has a
+condition attached, and it's the useful part of the result: **if nobody is going to write and
+maintain that spec file, pick Java.** Java's lead is real whenever nobody spends property 13 to
+close it.
+
+Python comes last by a wide margin. That isn't a verdict on Python. It is the control doing its
+job: the language models know best scores lowest on the group that decides whether the agent's
+work is right.
+
+### Karibu-Testing wins, and you still need the browser
+
+17 to 7 is the widest margin in the post. The one row Karibu loses is row 2, and part 3 argued
+that row 2 decides what the other nine are worth. So there's no single winner here, just a
+division of labour. Karibu is the inner loop and runs on every edit. A small browser suite is a
+required CI gate that covers the list of things Karibu can't see. Pick only one and you lose
+something: Karibu alone has a blind spot you named and didn't cover, and Selenium alone makes the agent
+batch its changes.
+
+### Vaadin Boot wins, with two receipts to write
+
+Part 4's tally found that Spring's two wins, security (8) and introspection (11), can be bought
+back with code you own. Vaadin Boot's wins can't be bought for Spring, because they come from
+something being absent. The receipts are short: a test that fails on a route without an access
+annotation, and a route-registry dump for when the agent needs one. Add the boot smoke test from
+part 4's row 2: Vaadin Boot needs it, and Spring's test context gives you one for free.
+
+### The pattern, and the disclosure
+
+In all three parts, the option models know best lost on points: Python, Selenium, Spring Boot.
+Familiarity won rows (Python tied for the lead on both knowledge rows), but it never won a table.
+What beat it was never more knowledge. It was a stronger oracle (1, 2, 3), or a smaller surface:
+fewer places for behaviour to hide (4), fewer ways to spell the same thing (6), an API that fits
+in a file (13).
+
+I wrote two of the three winners, so discount accordingly. I don't think the list was bent to
+fit them, though; the causality runs the other way. I wrote Karibu-Testing and Vaadin Boot
+*because* I wanted these properties, years before agents made them urgent. That is why part 1 comes first. If the list is right, the
+results follow from it, and if the results look self-serving, the list is the thing to attack.
+
 ## What to do with this
 
-> STUB: the list is more useful than the verdicts. Score your own stack, find the one or two
-> rows where you're weakest, and convert the weakness into an oracle — that is the move that
-> recurs in every section above. A missing default becomes a test. A missing Actuator becomes
-> twenty lines of JSON. An untested boot path becomes a smoke test. Properties you cannot fix
-> get written down in a spec file instead, which is property 13 paying for everything else.
->
-> Optional closing subsection — the stack these criteria actually pick, if I want to end on
-> something concrete rather than abstract: Kotlin + Vaadin 24 + Vaadin Boot (Jetty) + Gradle
-> + vok-orm + Flyway + vaadin-simple-security + Karibu-Testing + slf4j-simple, on JDK 21.
-> Javalin 5.x if REST is needed, since Javalin 6 doesn't support the Jetty 12 that Vaadin
-> Boot 13+ uses. Gradle over Maven for the scope reason in part 4.
->
-> And the `SPEC.md` that goes with it, kept under ~2k tokens — this is property 13 made
-> concrete, and is arguably the single most useful paragraph in the post: pinned versions
-> with a "do not write these deprecated idioms" list (property 12); the allowed Kotlin subset
-> — which scope functions, where extension functions may live, no operator overloading, no
-> custom DSLs (property 6); the services-as-static-getters convention (property 4); "every
-> route needs an access annotation, enforced by test" (property 8); "schema changes go
-> through Flyway, never by hand"; and the Karibu test template. That file does the job
-> Spring's conventions used to do, except it is three screens long and you can diff it.
+The list is more useful than my verdicts. Score your own stack, find the one or two rows where
+it's weakest, and **turn that weakness into an oracle.** That move recurs in every part above:
+
+- a missing default becomes a test (every route has an access annotation);
+- a missing Actuator becomes twenty lines of JSON from the route registry;
+- an untested boot path becomes a smoke test that calls `start()` and `stop()`;
+- a trap spelled the same as the safe API becomes a `grep` in CI (`click()` versus `_click()`);
+- a structural blind spot becomes a required CI gate, with its coverage list written next to it.
+
+Some weaknesses can't become an oracle: an idiom, an outdated habit, a convention. Those go in a
+spec file instead, which is property 13 paying for the rows no oracle can reach.
+
+### The stack these rows pick
+
+As of September 2026:
+
+- **Kotlin** on **JDK 21**, with the spec file below (without it, Java; see part 5);
+- **Gradle**, not Maven, for the scope bug in part 4's row 2;
+- **Vaadin 25** on **Vaadin Boot**, with Jetty;
+- **Karibu-Testing** for the inner loop, plus a handful of browser tests as a required gate;
+- **vaadin-simple-security**, with the route-annotation test;
+- **vok-orm** and **Flyway** for the database, and **slf4j-simple** for logging;
+- **Javalin 7** if you need REST, with its own Jetty excluded as the Vaadin Boot README shows.
+
+vok-orm and Flyway weren't scored in this post. I picked them on the same grounds: the SQL is
+in front of you (4), and a schema change is a file in the repository instead of something done
+by hand (10).
+
+### The spec file
+
+This is the part to steal. It is property 13 made concrete: short enough to hand to the agent
+at the start of every session, and it closes most of the rows Kotlin lost in part 2. Keep it
+under about 2,000 tokens. Anything longer and it starts to cost attention, the same way row 5
+does.
+
+```markdown
+# SPEC.md
+
+## Stack
+Kotlin, JDK 21, Gradle, Vaadin 25, Vaadin Boot (Jetty), Karibu-Testing,
+vaadin-simple-security, vok-orm, Flyway. Versions: gradle/libs.versions.toml.
+Read versions from there; don't recall them.
+
+## Don't write (outdated idioms)
+- `javax.servlet` — it's `jakarta.servlet`.
+- `GlobalScope.launch`, `kapt`.
+- Anything Spring, including `VaadinWebSecurity`.
+- `karibu-testing-v25` doesn't exist: `karibu-testing-v24` serves Vaadin 25.
+
+## Kotlin subset
+- Scope functions: `apply` to configure a new object, `?.let` for nullables. No `run`,
+  `also`, `with`.
+- An extension function lives in the file of the type it extends, or is private to
+  the file that uses it.
+- No operator overloading, no infix functions, no new DSLs.
+
+## Structure
+- `main()` calls `VaadinBoot().run()`; app init is `Bootstrap` (`@WebListener`).
+- Services are static getters on `Services`. No DI container.
+- Schema changes are Flyway migrations. Never alter the database by hand.
+
+## Security
+- Every `@Route` has `@AnonymousAllowed`, `@PermitAll`, `@RolesAllowed` or `@DenyAll`.
+  `RouteAccessTest` fails otherwise.
+- `/rest/*` is NOT covered by route security; check access in the Javalin handler.
+
+## Tests
+- `./gradlew test` is the oracle. Run it after every change, not after five.
+- UI tests use Karibu: `_get<Button> { text = "Save" }._click()`, and
+  `_value =` / `_setValue()` for fields. Never `click()` or `setValue()`: they skip the
+  enabled and read-only checks. CI greps for them.
+- `./gradlew test` can't see CSS and layout, the production bundle, JS components or
+  `executeJs()`. The `browserTest` CI job covers those; it is required.
+- `BootSmokeTest` starts the app, fetches `getServerURL()`, and stops it.
+```
+
+That file does the job Spring's conventions do, and it does it where an agent can read it:
+three screens long, in the repository, and diffable when it drifts.

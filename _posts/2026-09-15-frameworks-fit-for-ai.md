@@ -370,7 +370,7 @@ Rows 4, 5 and 7 are left out: they describe the code you ship, not the tool that
 | 1. Verifiability | ● pass/fail in JUnit | ● pass/fail in JUnit |
 | 2. Oracle honesty | ◐ blind to JS, CSS, the bundle | ● sees the real browser |
 | 3. Errors that close the loop | ● prints the component tree | ○ "wrong place or wrong time" |
-| 6. Idiom convergence | ● `_get` plus a search spec | ○ five locators, three ways to wait |
+| 6. Idiom convergence | ● `_get` plus a search spec | ○ eight locators, three ways to wait |
 | 8. Safe defaults | ◐ `_click()` checks; `click()` doesn't | ○ implicit wait is zero |
 | 9. Loop latency | ● tens of ms per test, in-JVM | ○ app server + browser, seconds per test |
 | 10. Reproducible environment | ● one test dependency | ◐ Selenium Manager; still a browser and a server |
@@ -397,8 +397,9 @@ A subtler gap follows from something Karibu does on purpose. In a browser, the G
 rows it last fetched until something calls `DataProvider.refreshAll()`. Karibu has no client-side
 cache to go stale: every Grid operation in a test polls the data provider for fresh rows. That
 makes Grid tests simple, and it also means a forgotten `refreshAll()` — the database changed, the
-screen still shows the old rows — passes under Karibu. It is the same shape as the list above: a
-failure that lives in what the client *keeps*, which a server-side oracle never sees.
+screen still shows the old rows — passes under Karibu. Like everything in the list above, it is a
+failure that lives on the client, here in what the client *keeps*, so a server-side oracle never
+sees it.
 
 Selenium's blind spot is of a different kind: economic rather than structural. A browser test
 can see the hundredth validation path perfectly well. Nobody writes it at several seconds a run.
@@ -412,12 +413,13 @@ the test JVM, typically by calling the same `ServletContextListener` the server 
 
 That matters more for agents than for humans. The usual fast alternative to a browser test is a
 unit test with the service mocked out, and a mock is exactly where an agent writes a green suite
-over a broken app: it mocked the thing that was wrong, the oracle agreed, and it moved on with
+over a broken app: it mocks the thing that was wrong, the oracle agrees, and it moves on with
 full confidence. Karibu gets its speed by removing the browser, not by removing your code.
 
 ### Errors and introspection (3, 11)
 
-I measured this row rather than describing it. In the Vaadin Boot example project, with
+I measured row 3 rather than describing it. In the
+[Vaadin Boot example project](https://github.com/mvysny/vaadin-boot-example-gradle), with
 Karibu-Testing 2.7.2, I misspelled a label in a lookup — `withLabel("Your nme")` — and ran the
 test:
 
@@ -430,7 +432,7 @@ java.lang.AssertionError: /: No visible TextField in MockedUI[] matching TextFie
 ```
 
 The message names the lookup that failed, says what it matched (nothing), and prints the whole
-component tree, where the real label sits two lines below. The agent can fix this without running
+component tree, where the real label sits three lines below. The agent can fix this without running
 anything else. It is also row 11 in miniature: `toPrettyTree()` can be called from any test, and
 the components are ordinary Java objects that the test can query directly.
 
@@ -466,7 +468,7 @@ from disabled components anyway. So the green from `click()` is false — a prop
 producing a property 2 failure, the same pattern as the missing nullability checker in part 2.
 Karibu's cell is `◐` rather than `●` because both spellings exist, and the one that doesn't check
 is plain Vaadin API, which a model has seen far more often. `_setValue()` versus `setValue()` has
-the same trap. The fix is the cheapest one in this post: one line in the spec file — "in tests,
+the same trap. The fix is as cheap as part 2's style section: one line in the spec file — "in tests,
 always `_click()` and `_setValue()`" — plus a `grep` in CI that fails on the other spelling, which
 turns the rule into an oracle. Lookups are safe by default already: `_get` fails when it finds zero
 matches *or more than one*, where Selenium's `findElement` silently returns the first of several.
@@ -485,19 +487,20 @@ warns that reading `textContent()` and asserting with plain JUnit "might fail as
 round-trip response might not yet be completed". That is a rule the agent has to remember — which
 is property 8's failure mode again.
 
-On row 6, Selenium lets you locate by id, name, CSS selector, XPath or link text, and wait
-implicitly, explicitly, fluently or with `Thread.sleep()`; Page Objects are optional. Every
-combination is in the training data, and every one will turn up in your repository. Karibu has one
+On row 6, Selenium lets you locate by id, name, class name, tag name, CSS selector, XPath, link
+text or partial link text, and wait implicitly, explicitly or with `Thread.sleep()`; Page Objects
+are optional. Every combination is in the training data, and an agent will reproduce all of them
+in your repository. Karibu has one
 way to find a component and one family of underscore functions to act on it.
 
 ### The smaller gaps (9, 10, 12, 13)
 
 **Loop latency (9).** In the same example project the greeting test took 111 ms and the probes
 above 56–115 ms; the first test of the run took 0.9 s, most of it Vaadin warming up. For a bigger
-sample, the Karibu-DSL test suite is almost entirely Karibu-Testing tests: 302 of them, exercising
-every Vaadin component, ran in 5.3 seconds on Vaadin 25.2 — about 18 ms a test — and the same
+sample, the [Karibu-DSL](https://github.com/mvysny/karibu-dsl) test suite is almost entirely
+Karibu-Testing tests: 302 of them, exercising Vaadin's components, ran in 5.3 seconds on Vaadin 25.2 — about 18 ms a test — and the same
 suite took 5.5 seconds on Vaadin 25.3. A browser test costs seconds apiece; I reported 5–10
-seconds back in 2017, which puts the same 302 tests somewhere between half an hour and an hour.
+seconds back in 2017, which puts the same 302 tests at somewhere between 25 and 50 minutes.
 That is the difference between running the UI suite after every edit and running it before a
 commit, and as part 1 argued, it decides whether the agent batches its changes.
 
@@ -507,8 +510,7 @@ to download browsers since 4.11, removed most of the driver pain. Not all of it:
 that wouldn't talk to each other. And a browser test still needs the application built, started
 and reachable. Karibu is a `testImplementation` line.
 
-**Version legibility (12).** Selenium's corpus is the cleanest drift specimen in the post. Selenium
-4 removed the `findElementByXPath()` family in favour of `findElement(By.xpath(…))`,
+**Version legibility (12).** Selenium's corpus is a clean drift specimen. Selenium 4 removed the `findElementByXPath()` family in favour of `findElement(By.xpath(…))`,
 `implicitlyWait(10, TimeUnit.SECONDS)` became a `Duration`, and Selenium Manager made
 `System.setProperty("webdriver.chrome.driver", …)` unnecessary — and my Ubuntu post above still
 uses that last one, so I am part of the problem. Karibu's corpus is thin, but its API has been

@@ -4,50 +4,36 @@ title: The State of Java and Kotlin Language Servers
 date: 2026-09-15 12:45:28 +0300
 ---
 
-> **Working document.** Verified facts are marked `[verified]` with a date; things I believe but
-> have not run are marked `[unverified]`. Measurements were run against three repositories in turn:
-> `jdbi-orm`, then `vaadin-boot` (findings marked `[verified 2026-09-15, vaadin-boot]`), then
-> `vaadin-boot-example-maven` (`[verified 2026-09-15, maven]`). Each later subject retracted
-> something from the earlier ones; those retractions are told once, in place, where the measurement
-> that caused them sits. One measurement bypassed the harness to drive kotlin-lsp over stdio; it is
-> marked `[verified 2026-09-15, maven, stdio]`.
+> **A snapshot, September 2026.** Measured on 2026-09-15 against three repositories through the
+> Claude Code LSP tool, plus one experiment that drove kotlin-lsp directly over stdio. Every number
+> here will rot; the methodology at the bottom is the part meant to outlive it.
 
-An agent editing a codebase has two ways to answer "what else touches this?": `grep`, or a
-language server. The difference is not convenience. `grep` finds text and cannot tell you what
-it missed; a language server finds *symbols* and knows the difference between a call and a
-comment. Which one your agent gets is mostly decided by which language you picked, and — as it
-turns out — by something much dumber than that.
+An agent editing a codebase has two ways to answer "what else touches this?": `grep`, or a language
+server. `grep` finds text and cannot tell you what it missed; a language server finds *symbols* and
+knows a call from a comment. Which one your agent gets is mostly decided by the language you picked
+— and, it turns out, by something much dumber than that.
 
-I set out to measure whether Kotlin's server is good enough to trust. It is, at the thing I most
-doubted. The uncomfortable answers were elsewhere: in what each server says when asked about code
-it cannot see, and — the lesson that cost me the most — in how much of what I thought I had
-measured was really a property of the one repository I measured it on.
+I set out to measure whether Kotlin's language server is good enough to trust. It is, at the thing I
+most doubted. The uncomfortable answers were elsewhere: in what each server says about code it
+cannot see, and in how much of what I thought I had measured was really a property of the one
+repository I measured it on.
 
-If you read nothing else here, read this: **start the session in the repository root, or every
-answer you get is quietly worthless.** The language server is rooted at the session's working
-directory, you cannot move it once the session is running, and when it is rooted wrong one of the
-two servers does not tell you — it just answers wrong. That is the whole of *The trap* below, and
-it cost me a published draft.
-
-This is a snapshot as of **September 2026**. Every number here will rot; the methodology at the
-bottom is the part meant to outlive it.
+If you read nothing else, read this: **start the session in the repository root, or every answer
+you get is quietly worthless.** The language server is rooted at the session's working directory,
+you cannot move it once the session is running, and when it is rooted wrong, one of the two servers
+does not tell you — it just answers wrong. See *The trap* below; it cost me a retracted draft.
 
 ## What is under test
 
-`[verified 2026-09-15]` **`Kotlin/kotlin-lsp`, JetBrains' free standalone server.** The repository
-carries an Alpha badge and a *Project Status* section reading "⚠️ The project is currently in the
-Alpha state ⚠️". It ships a VS Code extension and a standalone `kotlin-lsp` CLI for any LSP-capable
-editor. This is what a terminal agent gets today, and it is the only Kotlin server this post
-measures. Two other things exist and are out of scope here: the community
+**Kotlin: `Kotlin/kotlin-lsp`**, JetBrains' free standalone server. Its README carries an Alpha
+badge and says so outright ("⚠️ The project is currently in the Alpha state ⚠️"). It ships a VS Code
+extension and a standalone CLI for any LSP-capable editor. It is what a terminal agent gets today,
+and the only Kotlin server measured here. Two others exist and are out of scope: the community
 `fwcd/kotlin-language-server`, which most older writing on this topic means, and the IntelliJ IDEA
 LSP extension announced in August 2026, which targets VS Code and its forks and needs an Ultimate
-subscription once the preview ends. Neither is what is installed on this machine.
+subscription once the preview ends.
 
-On the Java side, **Eclipse JDT LS** — what VS Code's Java extension runs, with a decade of
-maturity behind it.
-
-`[verified 2026-09-15]` Worth stating because it is easy to benchmark the wrong binary. The machine
-has JetBrains' server, not the community one:
+It is easy to benchmark the wrong binary, so check `product-info.json`. This machine had:
 
 ```
 name             kotlin-server
@@ -59,17 +45,36 @@ minRequiredJavaVersion  25
 ```
 
 with a bundled JetBrains Runtime (`jbr/`) and `intellij.*` platform jars. The community server is a
-plain Java app with none of those. Check `product-info.json` before you believe anything.
+plain Java app with neither.
 
-The Java side of every number below is **Eclipse JDT LS `1.61.0.202609031315`**, launcher
-`org.eclipse.equinox.launcher_1.8.0.v20260804-1928`, resolving the JDK as Java 25.0.4.1.
+**Java: Eclipse JDT LS `1.61.0.202609031315`** (launcher
+`org.eclipse.equinox.launcher_1.8.0.v20260804-1928`, JDK 25.0.4.1) — what VS Code's Java extension
+runs, with a decade of maturity behind it.
 
-Neither server is cheap. At rest, after indexing one small single-module repo, `kotlin-lsp` held
-**2658 MB** RSS (plus a second 1849 MB instance and a 141 MB launcher) against jdtls' **1870 MB**.
+Neither is cheap. After indexing one small single-module repo, kotlin-lsp held **2658 MB** RSS, plus
+a second 1849 MB instance and a 141 MB launcher; jdtls held **1870 MB**.
 
-## Supported features, as published
+The three subjects, each chosen to vary what the previous one held fixed:
 
-`[verified 2026-09-15]` From `Kotlin/kotlin-lsp`'s README, verbatim:
+- **`jdbi-orm`** — 23 Kotlin files, **all under `src/test`** (that detail decides a whole section),
+  50 Java files, one Gradle module. Kotlin and Java share a compilation unit, so the cross-language
+  boundary is real rather than staged.
+- **[`vaadin-boot`](https://github.com/mvysny/vaadin-boot)** — 16 Kotlin files, 28 Java files,
+  **seven Gradle modules**, with Kotlin in two modules of its own and in both `src/main` and
+  `src/test`, so the language boundary is a project dependency. It also deliberately ships **two
+  classes with the same fully-qualified name**, `com.github.mvysny.vaadinboot.VaadinBoot`: one in
+  the Jetty module, one in the Tomcat module, neither depending on the other. That produced the
+  sharpest result of any run.
+- **[`vaadin-boot-example-maven`](https://github.com/mvysny/vaadin-boot-example-maven)** — four Java
+  files in `src/main`, one in `src/test`, no Kotlin, one Maven module.
+
+Each was built first (`./gradlew testClasses` and `downloadSources`; `./mvnw -C test-compile` and
+`dependency:sources`), the session was rooted at the repo, and ground truth came from `grep` before
+each query, never after.
+
+## What the README promises
+
+From `Kotlin/kotlin-lsp`'s README, verbatim:
 
 - Up-to-date Kotlin language versions support
 - IntelliJ-powered code completion
@@ -84,60 +89,53 @@ Neither server is cheap. At rest, after indexing one small single-module repo, `
 - **Call Hierarchy**
 - Code Folding
 
-Note what is absent: **find-references and go-to-definition are not on that list.** Rename is, and
-call hierarchy is. That is an unusual combination, because rename is normally implemented on top of
-reference search — so either the omission is a documentation gap or rename is doing something
-narrower than it sounds. This was the question the whole post was built to answer.
+**Find-references and go-to-definition are not on it**, yet rename is — odd, since rename is normally
+built on reference search. Either the list has a gap, or rename does something narrower than it
+sounds. That question started this post.
 
-`[verified 2026-09-15]` And note what a terminal agent can do with the list. The LSP tool in Claude
-Code exposes nine operations — `goToDefinition`, `findReferences`, `hover`, `documentSymbol`,
-`workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls`.
-**Seven of the eleven published features are unreachable through them**: completion, diagnostics and
-quick fixes, semantic highlighting, organize imports, rename, formatting, folding. What remains
-measurable is hover, call hierarchy, and whether the build system was understood at all. Meanwhile
-the two best things in the server are the two that are not on the list. Hold that inversion in your
-head, because the measurements keep producing it.
+A terminal agent can reach less of the list than it suggests. The Claude Code LSP tool exposes nine
+operations — `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`,
+`goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls` — and **seven of the
+eleven published features are unreachable through them**: completion, diagnostics and quick fixes,
+semantic highlighting, organize imports, rename, formatting, folding. Meanwhile the two best things
+in the server turn out to be the two that are not on the list.
 
-## The trap that invalidated my first attempt
+## The trap
 
-`[verified 2026-09-15]` **The Claude Code harness roots the language server at the session's
-working directory.** If you start a session in repo A and query a file in repo B, the server does
-not import B. It analyses the file standalone, with no workspace model.
+**The Claude Code harness roots the language server at the session's working directory.** Start a
+session in repo A, query a file in repo B, and the server does not import B; it analyses the file
+standalone, with no workspace model.
 
-`[verified 2026-09-15]` And the root is decided once, at startup. **There is no way to move it from
-inside a running session.** `cd` in a Bash call changes where shell commands run and nothing else;
-the language server keeps the workspace it was given. So this is not a mistake you notice and
-correct mid-session — the only fix is to quit and start again from the repository root, which is why
-it is worth checking before you ask the first question rather than after you disbelieve the tenth.
+**The root is decided once, at startup, and cannot be moved from inside the session.** `cd` in a
+Bash call changes where shell commands run and nothing else. This is not a mistake you correct
+mid-session: the only fix is to quit and start again from the repository root. Check it before the
+first question, not after you disbelieve the tenth.
 
-What that looks like from the agent's side is the dangerous part, because the two servers degrade
-differently:
+Rooted wrong, the two servers degrade differently:
 
 | | Behaviour with no workspace model |
 |---|---|
 | Eclipse JDT LS | `EntityMeta.java is a non-project file, only syntax errors are reported` |
 | `kotlin-lsp` | `Found 1 reference` (the declaration) · `No incoming calls found (nothing calls this function)` |
 
-Both are equally blind. One says so. The other returns a confident, well-formed, wrong answer —
-and the natural next action on "nothing calls this function" is to delete the function.
+Both are equally blind. One says so. The other returns a confident, well-formed, wrong answer — and
+the natural next action on "nothing calls this function" is to delete the function.
 
-I took the Kotlin answers at face value and concluded its reference search was broken. The check
-that exposed my error: `goToDefinition` also failed on a Kotlin extension property **defined in
-another file of the same source set**. That is not a find-references limitation. That is no project
-at all. Rooted properly, the same query returns 7 references, and the canary passes:
+I took the Kotlin answers at face value and concluded its reference search was broken. What exposed
+the error was `goToDefinition` failing on an extension property **defined in another file of the
+same source set**: that is not a limitation of reference search, that is no project at all. Rooted
+properly, the same reference query returns 7 hits and the jump works:
 
 ```
 goToDefinition  Person.kt 68:96  (.withZeroNanos)
 → Defined in .../AbstractMappingTests.kt:272:13
 ```
 
-The exact query, on the exact symbol, that failed before. The trap was the root.
+`No incoming calls found`, though, persisted under a good root — a genuine limitation I had wrongly
+blamed on my own setup, which is the other way this mistake goes. See *Call Hierarchy: not broken,
+blind*.
 
-`No incoming calls found`, though, says the same thing under a good root — a genuine limitation I
-had wrongly filed under my own setup error, which is the other way this mistake goes. What it
-actually means took a second repository to find; see *Call Hierarchy: not broken, blind*.
-
-**Diagnosing rootedness before trusting any result:**
+**To check what jdtls actually imported:**
 
 ```bash
 # What projects has jdtls actually imported?
@@ -146,37 +144,26 @@ for d in ~/.cache/jdtls/jdtls-*; do
 done
 ```
 
-A workspace containing only `jdt.ls-java-project` is the single-file fallback — nothing was
-imported. A healthy one lists the actual Gradle/Maven module names. `[verified]` On this machine a
-correctly-imported multi-module workspace listed 13 modules for one repo and 17 for another, so
-jdtls imports Gradle fine when given the root.
+A workspace containing only `jdt.ls-java-project` is the single-file fallback: nothing was imported.
+A healthy one lists the real Gradle or Maven module names. The workspace is keyed by path, so a git
+worktree gets its own and re-imports the build from scratch.
 
-`[verified 2026-09-15]` A detail that bit me while setting up the rerun: **the workspace hash is
-derived from the path, so a git worktree is a different workspace from its own main checkout.**
-Running from `jdbi-orm/.claude/worktrees/lsp-tests` produced a brand new `jdtls-16fae7d5…` alongside
-the main checkout's `jdtls-7090b22b…`. Both healthy, but the worktree re-imports Gradle from scratch
-and pays for it.
+**Subagents are no escape hatch**, though spawning one "in the other repo" is the obvious move when
+you cannot move yourself. Two facts rule it out, either one sufficient. A subagent **inherits the
+parent's working directory**, so it is rooted exactly where you are. And **the LSP tool is not
+exposed to subagents at all** — five `ToolSearch` variants found nothing. A subagent asked "what
+calls this?" falls back to `grep` without saying so, and its answer reads exactly like one written
+from real symbol data.
 
-**Subagents are not the escape hatch**, which is the first thing you will try, because spawning one
-"in the other repo" is the obvious move when you cannot move yourself. `[verified 2026-09-15]` Two
-separate facts kill it, and either would be enough. A subagent **inherits the parent session's
-working directory**, so it is rooted exactly where you already are. And **the LSP tool is not
-exposed to subagents at all** — five `ToolSearch` variants returned nothing — so even correctly
-rooted it would have no language server to ask. A subagent sent to answer "what calls this?" falls
-back to `grep` without saying so, and hands you back prose that reads exactly like the prose it
-would have written from real symbol data.
-
-One more dead end, so nobody repeats it: `[verified 2026-09-15]` nuking `~/.cache/jdtls/<ws>` does
-not help. The cache was never the problem.
+Nor does deleting `~/.cache/jdtls/<ws>` help. The cache was never the problem.
 
 ## Cold start is a race, and it does not always lose loudly
 
-`[verified]` The honest version of this failure: a query issued immediately after the first one dies
-with `Cannot send notification to LSP server 'plugin:kotlin-lsp:kotlin-lsp': server is starting`.
-That is fine. That is a refusal.
+Sometimes a query issued right after startup fails honestly: `Cannot send notification to LSP server
+'plugin:kotlin-lsp:kotlin-lsp': server is starting`. That is a refusal, and a refusal is fine.
 
-`[verified 2026-09-15]` On the measurement run it did something else. The first two queries of the
-session, fired while `intellij-server` was pegged at 298% CPU indexing, came back as:
+On the measurement run it did something else. The first two queries, fired while `intellij-server`
+sat at 298% CPU indexing, came back as:
 
 ```
 goToDefinition Person.kt 68:96 → "No definition found. This may occur if the cursor is not on a
@@ -184,34 +171,13 @@ goToDefinition Person.kt 68:96 → "No definition found. This may occur if the c
 hover          Person.kt 68:96 → "No hover information available…"
 ```
 
-Two minutes later the identical query returned the correct answer. So **cold start has two failure
-modes and one of them is a silent wrong answer wearing a plausible explanation.** Never trust an
+Two minutes later the identical query returned the correct answer. **Cold start has two failure
+modes, and one is a silent wrong answer with a plausible explanation attached.** Never trust an
 empty result from a first query.
-
-## The subjects
-
-`[verified 2026-09-15]` **`jdbi-orm`** — 23 Kotlin files (**all under `src/test`**; remember that,
-it decides a whole section), 50 Java files, a single Gradle module, so Kotlin and Java sit in the
-same compilation unit and the cross-language boundary is real rather than staged. Session rooted at
-the repo, `./gradlew testClasses` green first, then `./gradlew downloadSources`. Ground truth
-established by `grep` before each query, never after.
-
-`[verified 2026-09-15, vaadin-boot]` **[`vaadin-boot`](https://github.com/mvysny/vaadin-boot)** —
-16 Kotlin files, 28 Java files, **seven Gradle modules**, Kotlin confined to two modules of its own,
-so the cross-language boundary is a *project dependency* rather than a shared compilation unit, and
-Kotlin appears in both `src/main` and `src/test`. It also has a property I could not have designed
-better: the project deliberately ships **two classes with the identical fully-qualified name**,
-`com.github.mvysny.vaadinboot.VaadinBoot`, one in the Jetty module and one in the Tomcat module, in
-modules that do not depend on each other. That accident produced the sharpest result of any run.
-
-`[verified 2026-09-15, maven]`
-**[`vaadin-boot-example-maven`](https://github.com/mvysny/vaadin-boot-example-maven)** — four Java
-files in `src/main`, one in `src/test`, **no Kotlin**, one Maven module. Built with
-`./mvnw -C test-compile`, then `./mvnw dependency:sources`. It varies exactly one thing.
 
 ## kotlin-lsp: reference search is the best thing in it
 
-The feature that is *not* on the published list is excellent. Four reference queries, four exact
+The feature missing from the README is excellent. On `jdbi-orm`, four reference queries, four exact
 answers:
 
 | Query | Result | Ground truth |
@@ -221,96 +187,76 @@ answers:
 | `findReferences` `Entity.save()` — *a Java symbol*, asked from Kotlin | **111 refs / 7 files** | exact |
 | `findReferences` `EntityMeta` — *a Java class*, asked from Kotlin | **57 refs / 10 files** | exact (two entries duplicated) |
 
-"Exact" is doing real work in that table. `grep -w age` returns 41 lines in `DaoTest.kt` alone; the
-server returned 30 of them and dropped precisely eleven — four `Person2(…, age = …)`, a different
-class that happens to have a property of the same name, and seven SQL string literals like
-`"age > :age"` and `"age DESC"`. On one line it kept the named argument in
-`Person(name = "Zaphod", age = 42)` while skipping the `"age":42` inside the JSON string literal
-sitting next to it. On `withZeroNanos` it returned the six calls to the *function* and excluded
-`DaoTest.kt:239` and `:247`, which use an unrelated extension property of the same name.
+"Exact" is doing real work there. `grep -w age` returns 41 lines in `DaoTest.kt` alone; the server
+returned 30 and dropped precisely eleven — four `Person2(…, age = …)`, a different class with a
+property of the same name, and seven SQL string literals like `"age > :age"` and `"age DESC"`. On
+one line it kept the named argument in `Person(name = "Zaphod", age = 42)` and skipped the `"age":42`
+inside the JSON string literal next to it. On `withZeroNanos` it returned the six calls to the
+*function* and excluded `DaoTest.kt:239` and `:247`, which use an unrelated extension property of
+the same name.
 
-This is the thing grep structurally cannot do, and it is the reason to wire a language server into
-an agent at all.
+This is what grep structurally cannot do, and the reason to wire a language server into an agent at
+all.
 
-The rest of the navigation family works too, and works **across the language boundary**:
-`goToDefinition` jumps from Kotlin into `Entity.java`, `Dao.java` and `EntityMeta.java` in the same
-module; `goToImplementation` on the Java interface `Entity` returned all **9** implementors — six
-Kotlin, three Java, including one reached transitively through a Java sub-interface. `hover` is
-solid and the nullability tell holds (`data class Person(id: Long?, …)` on a built project).
+The rest of the navigation family also works **across the language boundary**: `goToDefinition`
+jumps from Kotlin into `Entity.java`, `Dao.java` and `EntityMeta.java`, and `goToImplementation` on
+the Java interface `Entity` returns all **9** implementors — six Kotlin, three Java, one of them
+reached through a Java sub-interface. `hover` is solid, and the nullability tell holds
+(`data class Person(id: Long?, …)`).
 
-`[verified 2026-09-15, vaadin-boot]` Across a *module* boundary it does something I did not expect
-it to survive. Asked for references to the Jetty `VaadinBoot` from a Kotlin file, it returned
-**25 refs across 8 files — exactly ground truth**, spanning four modules and both languages, and
-containing **not one reference to the Tomcat class of the same fully-qualified name**. The same
-discrimination shows up in navigation:
+On `vaadin-boot` it holds across *modules* too, and passes a test I did not expect it to. Asked from
+a Kotlin file for references to the Jetty `VaadinBoot`, it returned **25 refs in 8 files — exactly
+ground truth**, spanning four modules and both languages, with **not one reference to the Tomcat
+class of the same fully-qualified name**. Navigation discriminates the same way:
 
 ```
 goToDefinition  testapp-kotlin/…/Bootstrap.kt         75:9 → vaadin-boot/…/VaadinBoot.java:53:12
 goToDefinition  testapp-kotlin-tomcat/…/Bootstrap.kt  75:9 → vaadin-boot-tomcat/…/VaadinBoot.java:20:12
 ```
 
-Identical source line, identical symbol, identical FQN — resolved to different files according to
-which module's dependencies the *calling file* sits behind. `hover` at the first renders the Java
-javadoc, the Java signature and a Kotlin-ized view of the class, and the platform-type tell survives
-the crossing: `VaadinBootBase<VaadinBoot?>`.
+Same source line, same symbol, same FQN — resolved to different files according to which module the
+*calling file* depends on. `hover` there renders the Java javadoc and signature, and the
+platform-type tell survives the crossing: `VaadinBootBase<VaadinBoot?>`.
 
-Two gaps. `goToDefinition` does not resolve into external dependencies — but `hover` does, with full
-javadoc and a path into the sources jar, so the information is reachable and the gap is visible
-rather than silent. And `workspaceSymbol` is **Kotlin-only**: searching `EntityMeta` returned only
-the Kotlin `EntityMetaTest`, silently omitting the Java class of that exact name that the same
-server will happily `goToDefinition` into.
-
-`[verified 2026-09-15, vaadin-boot]` That second gap is worse than "Kotlin-only" makes it sound.
-Searching `VaadinBoot` on the multi-module repo returned **two results, both of them lowercase
-`vaadinBoot` local properties**, and omitted all four Java *classes* of that exact name — one of
-which is the declaration the same server had resolved `goToDefinition` into a minute earlier. It is
-not merely filtering by language; the things it does return are the least useful matches available.
-jdtls, asked the same query, returned all six Java symbols, correctly separated by package and
+Two gaps. `goToDefinition` does not resolve into external libraries — but `hover` does, with full
+javadoc and a path into the sources jar, so that gap is visible rather than silent. `workspaceSymbol`
+is the bad one. Searching `EntityMeta` returned only the Kotlin `EntityMetaTest`, omitting the Java
+class of that exact name. Searching `VaadinBoot` returned **two lowercase `vaadinBoot` local
+properties** and none of the four Java classes of that name — including the one `goToDefinition` had
+just jumped into. jdtls, asked the same, returned all six Java symbols, separated by package and
 module.
 
-### Declaration positions are approximate on both servers
+### Declaration positions are approximate, on both servers
 
-`documentSymbol` is otherwise flawless, with one wrinkle: its line numbers point at the start of the
-declaration *including* the KDoc and annotations, not at the identifier.
-`[verified 2026-09-15, vaadin-boot]` That is not a kotlin-lsp quirk — jdtls reports
-`WebServer (Interface) - Line 5` for an interface declared on line 39, line 5 being where its javadoc
-opens. `[verified 2026-09-15, maven]` And it is not a `documentSymbol` quirk either; the third
-subject produced the same offset from three more operations:
+Operations that name an enclosing declaration report the line where its javadoc or annotation block
+opens, not the identifier. kotlin-lsp's `documentSymbol` does it, and jdtls does it across
+operations:
 
 ```
+documentSymbol        WebServer (Interface)      - Line 5   ← declared on 39; 5 opens the javadoc
 documentSymbol        Bootstrap (Class)          - Line 7   ← declared on 13; 7 opens the javadoc
 documentSymbol        contextInitialized(…)      - Line 14  ← declared on 15; 14 is @Override
 incomingCalls         bootstrapApp() : void      - Line 36  ← declared on 37; 36 is @BeforeAll
 prepareCallHierarchy  testGreeting() : void      - Line 77  ← declared on 78; 77 is @Test
 ```
 
-So the rule is broad: **every operation that names an enclosing declaration reports the line where
-its javadoc-or-annotation block opens, not the identifier.** The one number in that run that *was*
-exact is the nested one — `[calls at: 38:25]` hit the correct column when checked with `awk`. Which
-is a usable distinction: positions describing a *reference* are precise, positions describing a
-*declaration* are approximate, whatever operation produced them. Do not feed a declaration line
-number straight into a positional query on either server.
+Positions describing a *reference* are exact — `[calls at: 38:25]` hit the right column when checked
+with `awk`. Never feed a declaration's line number straight into a positional query.
 
 ## Call Hierarchy: not broken, blind
 
-`[verified 2026-09-15]` `prepareCallHierarchy` resolves the item correctly, for both
-expression-body and block-body functions. Then:
+On `jdbi-orm`, `prepareCallHierarchy` resolves the item correctly, for expression-body and
+block-body functions alike. Then:
 
 ```
 incomingCalls  Person.kt 68:9  (withZeroNanos)
 → No incoming calls found (nothing calls this function)
 ```
 
-At that same position, one query earlier, `findReferences` listed all six call sites. On `jdbi-orm`
-it is empty for every symbol I tried, and `outgoingCalls` matches: `PersonDao.findAll2()` is
-reported to call nothing, and its entire body is
-`jdbi().withHandle { handle.createQuery(…).map(rowMapper).list() }`.
-
-I concluded that Call Hierarchy does not work. That conclusion was wrong, and the second repository
-is what broke it.
-
-`[verified 2026-09-15, vaadin-boot]` On `vaadin-boot`, Call Hierarchy works — some of the time, with
-a rule behind it:
+One query earlier, at the same position, `findReferences` listed all six call sites. Every symbol I
+tried came back empty, and `outgoingCalls` agreed: `PersonDao.findAll2()`, whose entire body is
+`jdbi().withHandle { handle.createQuery(…).map(rowMapper).list() }`, reportedly calls nothing. I
+concluded that Call Hierarchy did not work. `vaadin-boot` showed that it does — under a rule:
 
 | Query | Edge crosses | Result |
 |---|---|---|
@@ -320,57 +266,39 @@ a rule behind it:
 | `incomingCalls` `Bootstrap.contextInitialized` | main ← **test** | **empty** — 1 real caller |
 | `outgoingCalls` `JettyTest.testAppIsUp` | test → main *and* test | **both `src/main` callees, `src/test` callee dropped** |
 
-The first row also disposes of a smaller suspicion: the caller it found was `Counter.onAttach`, and
-the call sits inside a lambda passed to `scheduleWithFixedDelay`. It named the enclosing method
-correctly, the same thing jdtls does well.
+**Every edge whose far end lives in a test source set is silently dropped.** The last row shows both
+outcomes in one query: asked what `testAppIsUp()` calls, the server returned the two `src/main`
+properties it touches and omitted `wget(...)` three lines below, declared in `src/test`. The first
+row shows the rest is sound: that call sits inside a lambda passed to `scheduleWithFixedDelay`, and
+the server correctly named the enclosing `Counter.onAttach`.
 
-**Every call-hierarchy edge whose far end lives in a test source set is silently dropped.** The last
-row is the cleanest demonstration, because one query contains both outcomes: asked what
-`testAppIsUp()` calls, the server returned the two `src/main` properties it touches and omitted
-`wget(...)` on line 44, which is three lines below them and declared in `src/test`.
+It is not the index: `findReferences` at the same position on `wget` returns all three references.
+Nor is it a general source-set filter: on `jdbi-orm`, `goToImplementation` found six Kotlin
+implementors, every one of them under `src/test`. The blindness belongs to call hierarchy alone.
 
-It is not an indexing gap. `findReferences` at the *identical position* on `wget` returns all three
-references, both call sites included. The index knows. Call Hierarchy declines to look.
+That explains `jdbi-orm` completely. Its Kotlin is all test code, so every call-hierarchy query there
+had a test-source far end; I had sampled one source set and read it as a sample of the feature.
+`findAll2()` fell to a second rule: every callee is an external library symbol, and those are
+omitted too — on `vaadin-boot`, `super.onAttach`, `UI.getCurrent` and `scheduleWithFixedDelay` are
+missing from an otherwise correct result. "Calls nothing" was two narrow rules wearing a trenchcoat.
 
-Nor is it a general source-set filter in the server. On `jdbi-orm`, `goToImplementation` on `Entity`
-returned six Kotlin implementors — and every Kotlin file in that repo is under `src/test`. The same
-server that cannot see test sources through call hierarchy sees them perfectly well through
-implementation search. The blindness belongs to one operation, not to the index.
+So Call Hierarchy belongs on the README. What the README does not say is that it cannot see your
+tests — close to the worst half to lose, because "who calls this?" is usually asked when deciding
+whether something is dead, and the tests are where the evidence tends to live.
 
-Which retro-explains the entire `jdbi-orm` result. That repo's 23 Kotlin files were **all under
-`src/test`** — so every Kotlin call-hierarchy query I ran had a test-source far end, and every one
-came back empty. I had a sample of one source set and read it as a sample of the feature. The
-`outgoingCalls` example goes the same way once you look at what `findAll2()` actually calls:
-`jdbi()`, `withHandle`, `createQuery`, `map`, `list` — every one an *external library* symbol, and
-external callees are omitted too, as `vaadin-boot` confirms separately (`super.onAttach`,
-`UI.getCurrent` and `scheduleWithFixedDelay` are all missing from an otherwise correct result).
-"Reported to call nothing" was two narrow rules wearing a trenchcoat.
-
-So the README's inclusion of Call Hierarchy is defensible — the feature exists and works. What the
-README does not say is that it cannot see your tests, which for an agent is close to the worst
-possible half to lose: "who calls this?" is most often asked precisely when deciding whether
-something is dead code, and the test suite is where the evidence that it is not tends to live.
-
-## jdtls: the Java control I never actually ran
+## jdtls: excellent at Java, blind to Kotlin
 
 On Java, jdtls earns its reputation. Hover gives full javadoc for project, dependency and JDK
-symbols; `goToDefinition` and `workspaceSymbol` behave; and — the one place it beats kotlin-lsp
-outright — **its call hierarchy works**. `incomingCalls` on `EntityMeta.getDatabaseTableName()`
-returned all 15 callers and correctly named the enclosing lambda (`withHandle(Handle) : Integer`)
-rather than the method containing it.
+symbols; `goToDefinition` and `workspaceSymbol` behave; and **its call hierarchy works** — the one
+place it beats kotlin-lsp outright. `incomingCalls` on `EntityMeta.getDatabaseTableName()` returned
+all 15 callers and named the enclosing lambda (`withHandle(Handle) : Integer`) rather than the method
+around it. On `vaadin-boot`, `incomingCalls` on the `VaadinBoot()` constructor returned four callers
+across two modules, **three of them in `src/test`**, and `goToImplementation` on `WebServer` found
+all **5** implementors across three modules, two of them through a nested subclass in test code.
 
-`[verified 2026-09-15, vaadin-boot]` And it works on the axis kotlin-lsp fails: `incomingCalls` on
-the `VaadinBoot()` constructor returned four callers, **three of them in `src/test`**, across two
-modules. `goToImplementation` is just as solid — asked for implementors of the `WebServer` interface
-it returned all **5**, spanning three modules and including two reached transitively through a
-nested subclass in a test source set.
-
-That it cannot read Kotlin is not a defect; `Person2 cannot be resolved to a type` in a Java test
-file that references a Kotlin class is the correct thing for it to say. What I wanted to know was
-what it does with the half of the repo it cannot see — and the answer is that it depends on the
-operation, in a way no caller can predict.
-
-Six `incomingCalls` queries, one clean rule:
+It cannot read Kotlin, and says so correctly: `Person2 cannot be resolved to a type` in a Java test
+that references a Kotlin class. The question is what it does with the half of the repo it cannot
+see. On `jdbi-orm`, six `incomingCalls` queries sorted cleanly:
 
 | Callers of the Java symbol | Result |
 |---|---|
@@ -378,90 +306,57 @@ Six `incomingCalls` queries, one clean rule:
 | Java **and** Kotlin — `EntityMeta.of` (9+17), `getProperty` (4+9) | **`Internal error`** |
 | Kotlin only — `Entity.save()` (0+127), `DaoOfAny.findAll()` (0+58) | **"nothing calls this function"** |
 
-The middle row is a crash, and a crash is *fine* — it is loud, reproducible, and an agent that sees
+The middle row is a crash, and a crash is *fine*: loud, reproducible, and an agent that sees
 `LSP request 'callHierarchy/incomingCalls' failed … Internal error` falls back to grep.
 
-`[verified 2026-09-15, vaadin-boot]` **The middle row did not reproduce, and that is bad news.** The
-same shape on `vaadin-boot` — `VaadinBootBase.run()`, two Java callers and two Kotlin ones — did not
-crash. It returned the two Java callers, cleanly formatted, with no error and no indication that
-half the answer was missing. So "Java-and-Kotlin callers produce a loud failure" is not a property
-of jdtls; it is a property of `jdbi-orm`. The plausible mechanism is the one thing the two repos
-differ on here: in `jdbi-orm` the Kotlin and Java share a module, so jdtls must chew on a source
-root full of files it cannot parse; in `vaadin-boot` the Kotlin lives in modules of its own, which
-jdtls imports and then finds nothing in. Nothing to choke on, nothing to report. Crashes are still
-trustworthy — what I can no longer say is which queries will give you one.
+**It did not reproduce.** On `vaadin-boot`, `VaadinBootBase.run()` — two Java callers, two Kotlin —
+returned the two Java callers, cleanly, with no hint that half the answer was missing. The likely
+difference: in `jdbi-orm` the Kotlin shares a module with the Java, so jdtls chokes on files it
+cannot parse; in `vaadin-boot` the Kotlin sits in modules of its own, which jdtls imports and finds
+empty. Crashes are still trustworthy. You just cannot count on getting one.
 
-The bottom row is the problem. `Entity.save()` is a documented public API method with **127 call
-sites across six files**, and jdtls will tell you nothing calls it. Same shape in `findReferences`
-(9 refs, seven of them javadoc `{@link}`s inside the declaring file itself) and in
-`goToImplementation` (3 of 9 implementors). No warning, no partial-result flag, no difference in
-wording from a genuinely unused symbol.
+The bottom row is the real problem. `Entity.save()` is documented public API with 127 `.save()` call
+sites, and jdtls says nothing calls it. `findReferences` has the same shape (9 refs, seven of them
+javadoc `{@link}`s in the declaring file), and so does `goToImplementation` (3 of 9). No warning, no
+partial-result flag, no difference in wording from a genuinely unused symbol.
 
-### jdtls also over-reports, which nothing else here does
+### jdtls also over-reports
 
-`[verified 2026-09-15, vaadin-boot]` Every failure catalogued so far is a missing result. This one
-is the opposite, and I had no category for it.
-
-`vaadin-boot` ships two classes named `com.github.mvysny.vaadinboot.VaadinBoot` — same simple name,
-same package, one in the Jetty module and one in the Tomcat module, and neither module depends on
-the other. Asked for references to the Jetty one, jdtls answered:
+Every failure so far is a missing result. This one is the opposite. Asked for references to the
+Jetty `VaadinBoot`, jdtls answered:
 
 ```
 findReferences  vaadin-boot/…/VaadinBoot.java 21:14
 → Found 28 references across 10 files
 ```
 
-Twenty of those are right. **Eight belong to the other class** — `testapp-tomcat/Main.java`,
-`TomcatTest.java`, the declaration line of `vaadin-boot-tomcat/VaadinBoot.java` itself, and a
-`{@link}` in `TomcatWebServer`. And the five Kotlin references are missing, as expected. So the
-answer is wrong in both directions at once: it under-reports across the language boundary and
-over-reports across the module boundary, and the two errors partially cancel into a plausible
-number.
+Twenty are right. **Eight belong to the Tomcat twin** — `testapp-tomcat/Main.java`, `TomcatTest.java`,
+the twin's own declaration line, and a `{@link}` in `TomcatWebServer`. The five Kotlin references are
+missing, as expected. The answer is wrong in both directions at once, and the two errors partly
+cancel into a plausible number.
 
-The sharp part is that the same server does not make this mistake elsewhere. `goToDefinition` from
-`testapp/Main.java` and from `testapp-tomcat/Main.java` — identical source lines — resolve to the
-correct module's class each time. `incomingCalls` on the constructor correctly excludes the Tomcat
-twin. `workspaceSymbol` lists all three `VaadinBoot` classes as distinct entries with their
-packages. Only `findReferences` flattens them, which suggests it is keyed by name against a global
-index while the other operations resolve against the project's real classpath.
+Only `findReferences` does this. `goToDefinition` from the identical lines in `testapp/Main.java` and
+`testapp-tomcat/Main.java` resolves to the right class each time; `incomingCalls` on the constructor
+excludes the twin; `workspaceSymbol` lists the classes separately. Reference search looks keyed by
+name against a global index, while the other operations resolve against each module's real
+classpath.
 
-For an agent, this is a worse shape than an empty list. A list of 28 hits spanning ten files, with
-correct line and column numbers, every entry pointing at real source text containing the real
-identifier, reads as the authoritative answer — and acting on it means editing a module that does
-not use the symbol you asked about.
+For an agent this is worse than an empty list. Twenty-eight hits across ten files, with correct lines
+and columns, each pointing at real source text containing the real identifier, reads as
+authoritative — and acting on it means editing a module that does not use the symbol.
 
-## Maven changes nothing, which is what I wanted to know
+## Maven changes nothing for jdtls
 
-`[verified 2026-09-15, maven]` jdtls imports `vaadin-boot-example-maven` cleanly — the workspace loop
-lists a real module name, not the `jdt.ls-java-project` fallback — and every operation behaves as it
-did on Gradle. Both `findReferences` probes exact and crossing main↔test (4 refs / 2 files, 3 refs /
-2 files with the `{@link}` included); `goToImplementation` resolves through a *dependency's*
-interface; `workspaceSymbol` names packages; `hover` renders javadoc for local, dependency and JDK
-symbols alike, tagged `vaadin-ordered-layout-flow-25.2.7.jar` and
-`Java 25.0.4.1 (module: java.base)`, generics substituted; and `goToDefinition` into an external
-library refuses out loud, exactly as documented. The probes worth stealing are in *Concrete first
-probes* below.
+On `vaadin-boot-example-maven`, jdtls imports cleanly — a real module name in the workspace, not the
+fallback — and behaves exactly as on Gradle: exact references across main and test,
+`goToImplementation` through a dependency's interface, javadoc on hover for local, dependency and JDK
+symbols, and an explicit "not indexed" refusal when asked to jump into a library. The source-set
+canary passes in both directions. The one difference is a side effect: the Maven importer does not
+litter modules with `bin/` directories.
 
-The source-set canary passes here in both directions: `contextInitialized()` lives in `src/main` and
-its only caller is a `@BeforeAll` method in `src/test`, and `outgoingCalls` crosses back the other
-way. So nothing in the jdtls half of this post is Gradle-specific.
+This subject has no Kotlin, so it says nothing about kotlin-lsp on Maven. It did correct something.
 
-One difference, and it is in the side effects rather than the answers: **the Maven importer does not
-create `bin/`.** Ground rule 2's warning about jdtls filling every imported module with copies of
-your sources is a Gradle-importer artifact; on Maven, excluding `target/` is the whole job.
-
-Cold start also behaved, which is worth recording *because* the rule says not to count on it: the
-first query of the session, fired while the import was still running, returned a correct answer
-rather than a plausible empty one. A five-file repo imports faster than you can mistrust it. Rule 4
-stands — it guards against a race you can lose, not one you always lose.
-
-And the honest limit: this subject has no Kotlin in it, so it says nothing about kotlin-lsp's Maven
-support, which is the half of the README claim I actually doubted.
-
-### The empty list I had assigned to the wrong server
-
-`[verified 2026-09-15, maven]` The one new failure the third repo produced is a correction, not an
-addition. Asked what a method calls:
+### Both servers omit library callees
 
 ```
 outgoingCalls  MainViewTest.java 78:17 (testGreeting)      → No outgoing calls found
@@ -472,25 +367,19 @@ outgoingCalls  MainView.java     17:12 (the constructor)   → No outgoing calls
 
 `testGreeting()` calls `_setValue`, `_get` twice, `_click` and `expectNotifications`, plus
 `spec.withLabel` and `spec.withText` inside two lambdas. The constructor calls `new TextField`,
-`addClassName`, `new Button`, `Notification.show`, `addThemeVariants`, `addClickShortcut` and `add`.
-Both come back empty.
+`addClassName`, `new Button`, `Notification.show`, `addThemeVariants`, `addClickShortcut` and `add` —
+none of them static imports, which rules that out as the cause. Meanwhile `bootstrapApp()` in the
+same test file, whose callees are project code, returns both of them.
 
-The second query isolates the cause, and is why I ran it: none of those seven are static imports, so
-the rule is not "statically imported calls are invisible". **External callees are omitted** — which
-is precisely the rule I had catalogued as kotlin-lsp's. It is not a kotlin-lsp property. jdtls has
-it too, and renders it with the same interpretive parenthetical.
-
-Neither Gradle subject could have caught this. `jdbi-orm`'s all-external `findAll2()` was asked of
-kotlin-lsp only, and no jdtls `outgoingCalls` in either run happened to land on a method whose
-callees were *all* in libraries. A browserless Vaadin test is nothing but framework calls, so this
-repo could not dodge the question. It is also the shape where an agent most often asks it — "what
-does this touch?" is asked about wrappers and test helpers far more than about leaf logic — and on
-both servers the answer is "nothing".
+**External callees are omitted** — the rule I had filed as kotlin-lsp's. jdtls does the same, with
+the same parenthetical. Neither Gradle subject happened to ask jdtls about a method whose callees were
+all libraries; a browserless Vaadin test is nothing else. And that is exactly where agents ask: "what
+does this touch?" comes up about wrappers and test helpers far more than about leaf logic, and both
+servers answer "nothing".
 
 ## The comparison that matters
 
-Same repo, same module, same minute, same symbol — `Entity.save()`, declared in Java, called from
-Kotlin:
+Same repo, same module, same symbol — `Entity.save()`, declared in Java, called from Kotlin:
 
 | | `findReferences` | `incomingCalls` | `goToImplementation` on `Entity` |
 |---|---|---|---|
@@ -499,12 +388,11 @@ Kotlin:
 | ground truth | 9 Java + ~102 Kotlin | 127 `.save()` sites | 9 |
 
 The uncomfortable part is not that jdtls is Java-only. It is that on a mixed module the *Kotlin*
-server is the better **Java** reference engine, and that the bottom-left cell and the middle column
-are indistinguishable to the caller — an empty list and a wrong empty list look exactly the same.
+server is the better **Java** reference engine — and that a correct empty list and a wrong one look
+identical.
 
-`[verified 2026-09-15, vaadin-boot]` The second repo puts the same question to both servers, and the
-margin is wider. Symbol: the Jetty `VaadinBoot`, declared in Java, used from Java and Kotlin across
-four modules, with an identically-named twin in a fifth.
+On `vaadin-boot` the margin is wider. The Jetty `VaadinBoot`, declared in Java, used from Java and
+Kotlin across four modules, with its twin in a fifth:
 
 | | `findReferences` on `VaadinBoot` |
 |---|---|
@@ -512,36 +400,28 @@ four modules, with an identically-named twin in a fifth.
 | **jdtls**, asked from Java | **28** refs / 10 files — 20 right, 8 from the twin, 5 Kotlin missing ✗ |
 | ground truth | 20 Java + 5 Kotlin = 25 |
 
-Twice now, on two repositories that share almost nothing structurally, the Kotlin server has given
-the better answer about a Java symbol. That is no longer a curiosity about one codebase. If your
-repo has any Kotlin in it at all, the Kotlin server is the one to ask about your Java — **from a
-Kotlin use site of it.** Every win above was asked from a `.kt` position; on a `.java` document
-kotlin-lsp answers almost nothing, and the harness would not route one to it anyway (see *kotlin-lsp
-is not a Java server* below). Still, close to the opposite of the advice anyone would give from the
-feature lists alone.
+Two structurally unrelated repositories, one result: if your repo has any Kotlin, ask the Kotlin
+server about your Java — **from a Kotlin use site.** Every win above was asked from a `.kt` file; on a
+`.java` file kotlin-lsp answers almost nothing, as the next section shows. That is close to the
+opposite of what either feature list would suggest.
 
-**One honest caveat about reference search.** `findReferences` on `Person.save(Boolean)` — an
-override — returns 1: the declaration. That is defensible, because no call site in the repo names
-that overload. But the naive reading, "nothing uses this override, delete it", is wrong: 127
-`.save()` calls dispatch to it at runtime through `Entity.save()`. Reference search answers a
-syntactic question. An agent deciding whether a method is dead has to ask about the interface method
-too, and neither server volunteers that.
+One caveat about reference search. `findReferences` on `Person.save(Boolean)`, an override, returns
+only its declaration. That is defensible — no call site names the override — but "nothing uses it,
+delete it" is wrong: `.save()` calls on a `Person` dispatch to it at runtime through `Entity.save()`.
+Reference search answers a syntactic question. To decide whether a method is dead, also ask about
+what it overrides; neither server volunteers that.
 
 ### kotlin-lsp is not a Java server
 
-`[verified 2026-09-15, maven, stdio]` Since kotlin-lsp reads Java so well from Kotlin, the obvious
-follow-up is whether it answers on a `.java` file at all — and on a project with no Kotlin, whether
-it is simply a better jdtls.
+Since kotlin-lsp reads Java so well from Kotlin: does it answer on a `.java` file — and on a project
+without Kotlin, is it simply a better jdtls?
 
-It cannot be asked through the harness. The kotlin-lsp plugin claims `.kt` and `.kts`; jdtls claims
-`.java`. Point the LSP tool at `MainView.java` and it goes to jdtls, and only a jdtls process
-starts. Reaching kotlin-lsp would take a local plugin override mapping `.java` to it with jdtls
-disabled.
-
-So I drove kotlin-lsp directly: a small stdio client sending the same requests the LSP tool makes,
-against the installed `263.4702.0-EAP`, on `vaadin-boot-example-maven`. The Maven import itself was
-fine — it ran `./mvnw`, took about 20 seconds, resolved the classpath from `~/.m2` and logged
-`Successfully imported`. Then, all on `MainView.java`:
+The harness will not let you ask. The kotlin-lsp plugin claims `.kt` and `.kts` and jdtls claims
+`.java`, so the LSP tool on `MainView.java` goes to jdtls; reaching kotlin-lsp would need a local
+plugin override mapping `.java` to it, with jdtls disabled. So I drove kotlin-lsp directly over
+stdio, with a small client sending the same requests the LSP tool makes, on
+`vaadin-boot-example-maven`. The Maven import worked — `./mvnw`, about 20 seconds, classpath resolved
+from `~/.m2`, `Successfully imported`. Then, on `MainView.java`:
 
 | Request | kotlin-lsp |
 |---|---|
@@ -553,115 +433,101 @@ fine — it ran `./mvnw`, took about 20 seconds, resolved the classpath from `~/
 | `goToImplementation`, `workspaceSymbol "MainView"`, call hierarchy | ✗ null / empty |
 | diagnostics after injecting a type error, `new TextField(42, 43, 44)` | ✗ none, pull or push |
 
-The requests went out about five minutes after startup, long after the import finished, so this is
-not the cold-start race, and the server log shows no errors. jdtls on the same positions found all 4
-references to `MainView`, 3 of them in `MainViewTest.java`, and returned the document symbols.
+The requests went out five minutes after startup, well after the import finished, and the log showed
+no errors. jdtls at the same positions found all 4 references to `MainView`, 3 of them in
+`MainViewTest.java`, and returned the document symbols.
 
-So kotlin-lsp understands the Java project model and resolves Java symbols for hover, but does not
-serve navigation, symbols or diagnostics on a `.java` document. That reconciles with everything
-above rather than contradicting it: it reads Java *as seen from Kotlin*. One confound I have not
-separated — this project also has no Kotlin, so "the document is `.java`" and "the project has no
-Kotlin" changed together. It makes no difference to an agent, since the harness routes `.java` to
-jdtls either way; it matters only to someone wiring kotlin-lsp into a different client.
+kotlin-lsp understands the Java project model and resolves Java symbols for hover, but serves no
+navigation, symbols or diagnostics on a `.java` file: it reads Java *as seen from Kotlin*. One
+confound remains — the project also had no Kotlin, so "`.java` document" and "no Kotlin in the
+project" changed together. For an agent that is moot, since the harness routes `.java` to jdtls
+either way.
 
 ## Verdict
 
 As of September 2026, for an agent working in a terminal:
 
 **Java: jdtls is mature. Trust it, with two exceptions.** On pure Java it was right about everything
-measured, on Gradle and Maven alike, including a call hierarchy that reads test sources. Both
-exceptions look exactly like correct answers: `findReferences` merges classes that share a
-fully-qualified name across modules, and anything used only from Kotlin is silently missing from
-references, implementations and call hierarchy.
+measured, on Gradle and Maven, including a call hierarchy that sees test code. Both exceptions look
+exactly like correct answers: `findReferences` merges classes that share a fully-qualified name
+across modules, and anything used only from Kotlin is silently missing from references,
+implementations and call hierarchy.
 
 **Kotlin: kotlin-lsp is Alpha, and split down the middle.** Its navigation — references,
-definitions, implementations, hover — is production-grade, crosses languages and modules precisely,
-and on mixed repos beats jdtls at *Java* symbols, provided you ask from a Kotlin use site. Its call
-hierarchy silently drops every edge whose far end is in a test source set. It is not a Java server.
-And seven of its eleven advertised features cannot be reached through the Claude Code LSP tool at
-all.
+definitions, implementations, hover — is production-grade, precise across languages and modules, and
+on mixed repos better than jdtls at *Java* symbols, provided you ask from a Kotlin use site.
+`workspaceSymbol` is unreliable. Call hierarchy silently drops every edge that ends in test code. It
+is not a Java server. And seven of its eleven advertised features cannot be reached through the
+Claude Code LSP tool.
 
 **Using the two together:**
 
-- **"What touches this?"** For a symbol declared in Kotlin, ask kotlin-lsp. For a Java symbol in a
-  repo with Kotlin, `grep` the Kotlin sources for its name first: if there is a use site, ask
-  kotlin-lsp from there and take its answer. If there is none, jdtls is safe — there are no Kotlin
-  references for it to miss — except across FQN twins.
-- **"Is this dead code?"** Never through call hierarchy, on either server: kotlin-lsp cannot see
-  tests, jdtls cannot see Kotlin, and `outgoingCalls` on both leaves out every library callee. Use
-  `findReferences` as above, on the method *and* on whatever it overrides.
-- **Before any of it,** start the session in the repository root and run both canaries. Nothing
-  above holds otherwise, and a wrongly rooted kotlin-lsp will not tell you.
+- **"What touches this?"** For a symbol declared in Kotlin, ask kotlin-lsp. For a Java symbol, `grep`
+  the Kotlin sources for its name first: if it is used there, ask kotlin-lsp from that use site. If
+  not, jdtls is safe — it has no Kotlin references to miss — except across FQN twins.
+- **"Is this dead code?"** Never via call hierarchy, on either server: kotlin-lsp cannot see tests,
+  jdtls cannot see Kotlin, and both omit library callees. Use `findReferences` as above, on the method
+  *and* on whatever it overrides.
+- **Before any of it,** start the session in the repository root and run the canaries in *Pre-flight*
+  below. A wrongly rooted kotlin-lsp will not tell you.
 
-**Limits of this verdict.** Two small-to-medium Gradle repositories and one Maven repository.
-kotlin-lsp's Maven import works; its Kotlin analysis on a Maven project was not measured. Memory is
-steep — 2.6 GB for kotlin-lsp on a small repo — and nothing large was tried. And it expires:
-kotlin-lsp is Alpha, and the IntelliJ LSP extension changes the picture the moment it runs outside VS
-Code or settles its price.
+**Limits.** Two small-to-medium Gradle repositories and one Maven repository. kotlin-lsp's Maven
+import works; its Kotlin analysis on Maven is unmeasured. Nothing large was tried. And this verdict
+expires: kotlin-lsp is Alpha, and the IntelliJ LSP extension changes the picture the moment it runs
+outside VS Code or settles its price.
 
 ## How to verify this yourself
 
-*This section is written to be handed to an agent. It is the deliverable of this post.*
+*This section is written to be handed to an agent.*
 
 ### Ground rules
 
 1. **Run the session from the repository root.** `cd ~/work/my/<repo> && claude`. Not a subagent, not
-   a session rooted elsewhere, and not a session you `cd` afterwards — the root is fixed at startup
-   and cannot be changed from inside, so getting it wrong means quitting and starting over. This is
-   the whole trap.
-2. **Establish ground truth with `grep` first, then ask the LSP.** Never the other way round —
-   otherwise you are calibrating your expectations to the tool you are testing. Exclude build
-   output: `build/` obviously, but also `bin/`, which the Gradle importer makes jdtls create in
-   every module and fill with *copies of your Kotlin sources*. `[verified 2026-09-15, maven]` On a
-   Maven project jdtls creates no `bin/`, and excluding `target/` is enough.
-3. **Build the project first** so dependencies resolve, then restart the language server, so results
-   are not unresolved-project artifacts.
-4. **Throw away your first two queries.** They are cold-start noise, and they can come back as
-   plausible empty answers rather than errors. Wait until the server process drops off the CPU, then
-   re-run them.
-5. **On a mixed-language repo, ask both servers the same question.** Half the findings here came
-   from putting one server's answer next to the other's on one symbol. Either alone looks
-   authoritative.
-6. **Report raw output verbatim.** No interpretation in the same step as measurement.
-7. **Verify column positions with `awk`,** not by eye. I wasted a cycle querying character 13 of the
-   wrong line and briefly believed a false negative:
+   a session rooted elsewhere, and not a session you `cd` afterwards — the root is fixed at startup,
+   so getting it wrong means quitting and starting over.
+2. **Establish ground truth with `grep` first, then ask the LSP.** Never the other way round, or you
+   calibrate your expectations to the tool under test. Exclude build output — `build/` or `target/`,
+   and on Gradle also `bin/`, which jdtls creates in every imported module and fills with *copies of
+   your Kotlin sources*.
+3. **Build the project first**, then restart the language server, so results are not
+   unresolved-project artifacts.
+4. **Throw away your first two queries.** Cold start can return plausible empty answers rather than
+   errors. Wait until the server drops off the CPU, then re-run them.
+5. **On a mixed-language repo, ask both servers the same question.** Half the findings here came from
+   putting one server's answer next to the other's. Either alone looks authoritative.
+6. **Report raw output verbatim.** Interpret in a separate step.
+7. **Verify column positions with `awk`,** not by eye. A query at the wrong column looks exactly like
+   a false negative:
    ```bash
    awk 'NR==19{for(i=1;i<=30;i++) printf "%d:%s ", i, substr($0,i,1); print ""}' File.kt
    ```
-8. **Vary the source set on purpose.** For every symbol you test, know whether the *far end* of the
-   relationship — the caller, the callee, the implementor — sits in `src/main` or `src/test`, and
-   test both. Not having this rule cost me a whole section: `jdbi-orm`'s Kotlin was entirely under
-   `src/test`, so a limitation scoped to test sources looked exactly like a feature that was broken
-   outright.
-9. **Run the matrix on a second repository with a different shape before you believe any of it.**
-   Single-module vs. multi-module, languages mixed in one module vs. split across modules, Kotlin in
-   `src/main` vs. only in `src/test`. Two of this post's conclusions survived the first repo and
-   died on the second, and neither looked fragile at the time. One repository measures the
-   repository at least as much as it measures the server.
+8. **Vary the source set on purpose.** For every symbol, know whether the *far end* of the
+   relationship — caller, callee, implementor — sits in `src/main` or `src/test`, and test both.
+   Without this rule, a limitation scoped to test code looked like a broken feature.
+9. **Run the matrix on a second repository of a different shape before you believe any of it.**
+   Single- vs. multi-module, languages mixed in one module vs. split across modules, Kotlin in
+   `src/main` vs. only in `src/test`. Two conclusions here survived the first repo and died on the
+   second, and neither looked fragile at the time.
 
-### Pre-flight: prove the workspace is rooted
+### Pre-flight
 
-Before any measurement, confirm the server imported the project — see the `~/.cache/jdtls` loop
-above for Java. For Kotlin, the cheap proof is a cross-file `goToDefinition`: pick a symbol defined
-in file A and used in file B, and jump from B to A. If that fails, **stop** — every subsequent
-result is meaningless.
+First prove the workspace is real. For jdtls, run the `~/.cache/jdtls` loop from *The trap*; on a
+multi-module build it should list every module plus a root entry — `vaadin-boot`'s seven modules came
+back as eight entries, Kotlin-only modules included. For kotlin-lsp, `goToDefinition` from a use in
+one file to a definition in another. If either fails, **stop**: every later result is meaningless.
 
-On a multi-module build, check the *count* as well as the names: the loop should list every module
-in `settings.gradle.kts`, plus a root entry. `vaadin-boot`'s seven modules came back as eight
-entries including the Kotlin-only ones, which is what a healthy import of a polyglot Gradle build
-looks like — jdtls imports Kotlin modules as projects even though it cannot read a line inside them.
-
-**Then run the source-set canary, which I now consider mandatory.** Pick a function in `src/main`
-that is called only from `src/test`, and ask for its `incomingCalls`. If the answer is empty while
-`findReferences` at the identical position lists the call sites, the server's call hierarchy cannot
-see your tests, and every "nothing calls this" you collect for the rest of the session means
-"nothing in `src/main` calls this". kotlin-lsp fails this canary; jdtls passes it, on Gradle and on
-Maven alike.
+Then run the **source-set canary**. Pick a `src/main` function called only from `src/test` and ask
+for its `incomingCalls`. If that comes back empty while `findReferences` at the same position lists
+the call sites, the server's call hierarchy cannot see tests, and every "nothing calls this" it gives
+you means "nothing in `src/main` calls this". kotlin-lsp fails the canary; jdtls passes it on Gradle
+and Maven.
 
 ### The matrix
 
-For each operation, record: result, correct?, and how it failed if it did — silent wrong answer vs.
-explicit refusal, which is the most interesting output.
+For each row, record the result, whether it is correct, and — the most useful column — whether a
+failure was a silent wrong answer or an explicit refusal. **Bold** rows are the hard questions that
+overturned a conclusion here; without them, a server that is quietly half-blind gets a clean sheet.
+Rows marked ‡ have not been run yet.
 
 | Operation | Test | Correct answer looks like |
 |---|---|---|
@@ -671,61 +537,45 @@ explicit refusal, which is the most interesting output.
 | `goToDefinition` | **cross-file, same module** | jumps — *rootedness canary* |
 | `goToDefinition` | **Kotlin → Java, same module** | jumps |
 | `goToDefinition` | **Kotlin → Java, across a module dependency** | jumps |
-| `goToDefinition` | ***two classes sharing an FQN in unrelated modules***, from each side | each resolves to its own module's class |
-| `goToDefinition` | external dependency | jumps, or documented as unsupported |
+| `goToDefinition` | **two classes sharing an FQN in unrelated modules, from each side** | each resolves to its own module's class |
+| `goToDefinition` | external dependency | jumps, or refuses explicitly |
 | `findReferences` | symbol used in ≥3 files | all of them, not just the declaration |
-| `findReferences` | **a symbol whose name also appears in strings / on a sibling class** | the real ones only — this is where it beats grep |
-| `findReferences` | ***a symbol with an identically-named twin in another module*** | the twin's call sites absent — watch for over-reporting, not just gaps |
-| `findReferences` | ‡ **a *Kotlin* symbol referenced from Java** | the Java call sites, asked of kotlin-lsp |
-| any | † **kotlin-lsp on a `.java` document** — needs a client other than the harness | answers, or you know it will not |
-| `workspaceSymbol` | a known class name, **in each language** | found |
+| `findReferences` | **a name that also appears in strings or on a sibling class** | the real ones only — where it beats grep |
+| `findReferences` | **a symbol with an identically-named twin in another module** | none of the twin's — watch for over-reporting |
+| `findReferences` | ‡ **a Kotlin symbol referenced from Java, via kotlin-lsp** | the Java call sites |
+| any | **kotlin-lsp on a `.java` document** (needs a client other than the harness) | answers, or you know it will not |
+| `workspaceSymbol` | **a known class name, in each language** | found |
 | `prepareCallHierarchy` | expression-body fun; block-body fun | resolves both |
 | `incomingCalls` | function with ≥5 known callers | all callers |
-| `incomingCalls` | **the same, with callers in the other language only** | all callers, or a refusal |
-| `incomingCalls` | ‡ **a `src/main` Kotlin function called from `src/main` Java** | all callers — the language axis, unconfounded by source set |
-| `incomingCalls` | ***a `src/main` function called only from `src/test`*** | all callers — *source-set canary* |
+| `incomingCalls` | **the same, with callers only in the other language** | all callers, or a refusal |
+| `incomingCalls` | ‡ **a `src/main` Kotlin function called from `src/main` Java** | all callers — the language axis without the source-set confound |
+| `incomingCalls` | **a `src/main` function called only from `src/test`** | all callers — *source-set canary* |
 | `outgoingCalls` | function calling ≥3 things | all callees |
-| `outgoingCalls` | ***a function calling both a `src/main` and a `src/test` symbol*** | both — one query, both outcomes |
-| `outgoingCalls` | **a function whose callees are *all* in external libraries** † | all callees, or a refusal — never "calls nothing" |
-| `goToImplementation` | interface with ≥2 impls **in both languages** | all impls |
-| `goToImplementation` | ***impls spread across modules, incl. a test source set*** | all impls |
+| `outgoingCalls` | **a function calling both `src/main` and `src/test` symbols** | both |
+| `outgoingCalls` | **a function whose callees are all in external libraries** | all callees, or a refusal — never "calls nothing" |
+| `goToImplementation` | **interface with implementations in both languages** | all of them |
+| `goToImplementation` | **implementations across modules, including test code** | all of them |
 | rename | a public method used cross-file | every call site updated atomically |
-
-The rows in bold are the ones the `jdbi-orm` run added; the *bold italic* ones came from
-`vaadin-boot`; the ones marked † came from `vaadin-boot-example-maven`. The two marked ‡ are not
-results — they are the cells I have not filled and consider the most valuable remaining, for the
-reasons in *Still open* below. Between them, the rest produced every finding that overturned
-something. A matrix that only asks easy questions gets a clean sheet from a server that is quietly
-half-blind — and a matrix run on one repository only asks the questions that repository happens to
-contain.
 
 ### Suggested subjects
 
-Pick repos that isolate one variable each. The first three are measured above; the rest are the
-holes.
+Pick repos that each isolate one variable:
 
-- **Kotlin + Java in one Gradle module** — does the cross-language boundary resolve?
-- **Kotlin and Java in *separate* modules of one multi-module build** — is the boundary still a
-  boundary when it is a project dependency? This is what produced the source-set canary and the
-  over-reporting finding.
-- **A repo that ships two classes with the same FQN in unrelated modules** — the sharpest
-  disambiguation test there is. If you maintain something with an `-api` / `-impl` split or a shaded
-  twin, you may already have one.
-- **A polyglot *Maven* build** — the README claims Gradle and Maven; the Maven repo measured here
-  has no Kotlin, so it settles the jdtls half and only the jdtls half.
-- **A build with a *third* source set** — an `integrationTest` set, or a custom one. Separates "call
-  hierarchy is blind to tests" from "call hierarchy sees only `main`".
-- **Large pure-Kotlin multi-module** — does it scale? (`vok`: ~576 Kotlin files)
-- **A repo whose methods mostly wrap a framework** — any test suite, any thin service layer. This
-  surfaced the external-callee rule, and is a far more common shape than any of the exotic ones
-  above.
+- **Kotlin and Java in one module** — does the language boundary resolve at all?
+- **Kotlin and Java in separate modules** — does it survive a project dependency?
+- **Two classes sharing an FQN in unrelated modules** — the sharpest disambiguation test there is. An
+  `-api` / `-impl` split or a shaded twin may already give you one.
+- **A framework-heavy codebase** — any test suite or thin service layer. This is the shape that
+  exposes the library-callee rule, and it is far more common than the others.
+- **The holes this post leaves** — a polyglot Maven build, a build with a third source set, and
+  something large (`vok`, ~576 Kotlin files).
 
 ### Concrete first probes
 
 Exact positions and verified values, so you can check your setup against a known answer rather than
-against your expectations. The ones already quoted verbatim above are not repeated.
+against your expectations. Probes already quoted above are not repeated.
 
-`jdbi-orm` at `266e843`, built, ground truth by `grep`:
+`jdbi-orm` at `266e843`:
 
 ```
 goToDefinition  Person.kt 30:5    (Entity)         → Entity.java:51:18     ✓ cross-language
@@ -739,12 +589,8 @@ findReferences  EntityMeta.java 38:20  via jdtls   → 37 refs / 7 files, Java o
                  (same symbol via kotlin-lsp, from a Kotlin file) → 57 refs / 10 files, both
 ```
 
-An earlier draft listed the `withZeroNanos` callers as `DaoTest.kt:165,166,191,192`. Those line
-numbers were stale — its own small lesson about hand-maintained ground truth, and the reason step 2
-says to re-run the `grep` rather than trust the table.
-
-`[verified 2026-09-15, vaadin-boot]` `vaadin-boot` at `86a7988`, built with `./gradlew testClasses`.
-These vary source set and module, so they are the ones worth running first on a repo of your own:
+`vaadin-boot` at `86a7988` — these vary source set and module, so run them first on a repo of your
+own:
 
 ```
 incomingCalls   testapp-kotlin/…/Counter.kt 13:7  (Counter)      → 1 caller, MainView.kt  ✓ main ← main
@@ -762,129 +608,83 @@ workspaceSymbol "VaadinBoot" via kotlin-lsp → 2 lowercase properties, zero cla
                 "VaadinBoot" via jdtls      → all 6 Java symbols, packages distinguished  ✓
 ```
 
-`[verified 2026-09-15, maven]` `vaadin-boot-example-maven` at `d95c806`, built with
-`./mvnw -C test-compile`. All jdtls; the repo has no Kotlin. The canary:
+`vaadin-boot-example-maven` at `d95c806`, all jdtls. The canary:
 
 ```
 incomingCalls   Bootstrap.java 15:17 (contextInitialized, src/main, sole caller in src/test)
                 → 1 caller: MainViewTest.bootstrapApp, calls at 38:25   ✓ passes on Maven too
 ```
 
-Then the trap and its control, which is the pair that matters: `outgoingCalls` on
+Then the trap and its control, which only work as a pair: `outgoingCalls` on
 `MainViewTest.java 78:17` and `MainView.java 17:12` both come back empty, while
-`MainViewTest.java 37:24` — same file, same source set, project callees only — returns its 2
-callees. Run either without the other and you will draw the wrong conclusion, which is the same
-mistake this post has now made twice.
+`MainViewTest.java 37:24` — same file, same source set, project callees only — returns its 2 callees.
+Run either without the other and you will draw the wrong conclusion.
 
 ## Open questions
 
-Answered above, in one line each:
+Roughly cheapest first:
 
-1. ~~Does `findReferences` work when properly rooted?~~ **Yes — the best feature in the server.**
-2. ~~Is the README's omission of find-references and go-to-definition a docs gap or real?~~ **A docs
-   gap.** Its real omission is that Call Hierarchy cannot see test sources.
-3. ~~Does the Kotlin→Java boundary resolve inside one module?~~ **Yes, in one direction.** jdtls not
-   reading Kotlin is expected; reporting the gap as an empty result is not.
-4. ~~Does it also resolve *across* modules?~~ **Yes, and precisely** — including between two classes
-   sharing a fully-qualified name in sibling modules.
-5. ~~How does jdtls compare, measured rather than assumed?~~ Excellent on pure Java, except that
-   `findReferences` merges FQN twins — the only *over*-reporting failure either server produced.
-6. ~~Maven vs Gradle?~~ **For jdtls, no difference in the answers and one in the side effects:** the
-   Maven importer creates no `bin/`. The kotlin-lsp half survives below.
-7. ~~Is kotlin-lsp a better Java server on a project with no Kotlin?~~ **No.** Its Maven import
-   works, but on a `.java` document only hover answers, and the harness never routes `.java` to it
-   anyway.
+1. **Does kotlin-lsp find *Java* references to a *Kotlin* symbol?** Every `findReferences` here ran
+   the other way. It probably works — kotlin-lsp already returns hits inside `.java` files — but the
+   verdict leans on it. `jdbi-orm` has the subject: a Java test that references the Kotlin class
+   `Person2`.
+2. **Does kotlin-lsp's call hierarchy cross languages?** Every clean data point is Kotlin→Kotlin; the
+   one cross-language query, `Entity.save()`, had only test-code callers, so the source-set rule
+   already explains its empty answer. Needed: a Java `src/main` caller of a Kotlin `src/main` function.
+3. **Does kotlin-lsp analyse Kotlin on Maven?** Its Maven import works; the only Maven subject had no
+   Kotlin to ask about.
+4. **Blind to tests, or to everything but `main`?** Both Gradle subjects have exactly two source sets.
+   An `integrationTest` set would tell the two apart, and the workarounds differ.
+5. **Does it scale?** 2.6 GB for kotlin-lsp on a small repo; on the seven-module one, 1.4 GB for jdtls
+   against 1.7 GB + 1.3 GB for kotlin-lsp — which, for reasons I cannot explain, keeps running two
+   instances.
+6. **Why does kotlin-lsp's `workspaceSymbol` prefer local properties over exact-name Java classes?** It
+   looks less like a language filter than like a different index from the one `goToDefinition` uses.
+7. **Does jdtls' FQN merging hit shaded jars?** A relocated package that collides with a project
+   package is the same bug in a far more common shape.
+8. **Is omitting library callees a reading of the LSP spec, or the same shortcut taken twice?** If it
+   is deliberate, `outgoingCalls` is useless by design on any method that wraps a framework, and
+   "(this function calls nothing)" is simply false.
 
-Still open, roughly in order of how cheaply each could be closed:
-
-1. **Does kotlin-lsp's reference search find *Java* call sites of a *Kotlin* symbol?** Every
-   `findReferences` above runs Kotlin→Java or Kotlin→Kotlin; the reverse direction is untested. It
-   will probably work — kotlin-lsp already returns reference locations inside `.java` files when
-   asked from Kotlin — but the verdict's "for a symbol declared in Kotlin, ask kotlin-lsp" leans on
-   it. `jdbi-orm` already contains the subject: a Java test file that references the Kotlin class
-   `Person2`. One query.
-2. **Does kotlin-lsp's call hierarchy cross the language boundary at all?** All five `vaadin-boot`
-   call-hierarchy rows are Kotlin→Kotlin. The one cross-boundary datapoint — `Entity.save()` on
-   `jdbi-orm` — is confounded, because its callers were Kotlin *and* all under `src/test`, so the
-   source-set rule already accounts for the empty answer. What is needed is a Java `src/main` caller
-   of a Kotlin `src/main` function. Reference search crosses the boundary brilliantly; whether call
-   hierarchy inherits that is unknown.
-3. **Does kotlin-lsp's *Kotlin* analysis work on Maven?** The import does — on the pure-Java
-   subject it ran `./mvnw`, resolved `~/.m2` and logged `Successfully imported` — but with no
-   Kotlin in the tree there was nothing Kotlin to ask. A polyglot Maven build is still the missing
-   subject, and it is not an exotic one.
-4. **Is the call-hierarchy blindness about test source sets specifically, or about any source set
-   other than the primary one?** Both Gradle subjects have exactly two. A build with a third — an
-   `integrationTest` set, or a custom one — would separate those, and they imply very different
-   workarounds.
-5. **Does any of this scale?** One small single-module repo cost 2.6 GB of RSS and roughly two
-   minutes of indexing; the seven-module one was cheaper, at 1.4 GB for jdtls against 1.7 GB +
-   1.3 GB for two kotlin-lsp instances — and why there are consistently *two* instances is itself
-   unexplained. A large pure-Kotlin multi-module tree is the obvious next subject.
-6. **Does kotlin-lsp's `workspaceSymbol` omit Java classes, or omit classes it did not index as
-   Kotlin?** It returned lowercase local properties over exact-name Java classes, which looks less
-   like a language filter than like a different index being consulted than the one `goToDefinition`
-   uses.
-7. **Does jdtls' FQN-merging in `findReferences` extend to shaded or relocated jars?** The
-   `vaadin-boot` case is two source modules. A shaded dependency that relocates a package into a
-   name a project source file also uses is the same collision with worse consequences, and is far
-   more common than a deliberately duplicated class.
-8. **Is the external-callee omission in `outgoingCalls` a reading of the LSP spec, or the same
-   performance shortcut taken twice?** Both servers do it, so it is not a quirk of either. If it is
-   deliberate, the operation is by design useless on any method that wraps a framework — which is
-   most methods in most test suites and most service layers — and the parenthetical "(this function
-   calls nothing)" is then not merely unhelpful but actively false as a summary of documented
-   behaviour.
-
-And one that cannot be closed from here. **Rename** is the only matrix cell with no result, along
-with the six other published features the Claude Code LSP tool does not expose. It needs a different
-client — the VS Code extension, or an LSP client driven by hand. It no longer settles the docs
-question, since find-references turned out to work; what it would settle is narrower: whether rename
-is reference-search-complete, given that reference search itself is sound.
+Out of reach from a terminal agent: **rename**, and the six other published features the LSP tool
+does not expose. They need a different client. Rename no longer settles the docs question — reference
+search works — only whether rename is as complete as reference search.
 
 ## The part that generalises
 
-The finding that outlives the numbers is not about Kotlin at all: **when you wire a tool into an
-agent loop, how it fails matters as much as how well it works.**
+The finding that outlives the numbers is not about Kotlin: **when you wire a tool into an agent loop,
+how it fails matters as much as how well it works.**
 
-A tool that degrades loudly is safe at any quality level — the agent detects the refusal, falls back
-to `grep`, tells you. A tool that degrades silently is dangerous in proportion to how much the agent
-trusts it, and an empty result is the worst possible shape for a silent failure, because "no
-results" and "no answer" are indistinguishable to the caller while implying opposite actions.
+A tool that fails loudly is safe at any quality level: the agent sees the refusal, falls back to
+`grep`, and tells you. A tool that fails silently is dangerous in proportion to how much the agent
+trusts it, and an empty result is the worst shape a silent failure can take, because "no results"
+and "no answer" look the same while implying opposite actions.
 
-Over two servers and three repositories I collected five distinct empty lists — kotlin-lsp's call
-hierarchy, which means *your callers are in a source set I do not read*; jdtls' `incomingCalls` on a
-Kotlin-called method, which means *I cannot read that language*; kotlin-lsp's `workspaceSymbol` on a
-Java class, which means the same thing in mirror image; `outgoingCalls` on a function whose callees
-are all in libraries, which means *I only report project symbols*; and a cold-start
-`No definition found`, which means *ask me again in two minutes*. Five different causes, one
-identical rendering, and in every case the phrasing implies the one thing that is not true: that the
-server looked and there was nothing there.
+Across two servers and three repositories I collected five kinds of empty list: kotlin-lsp's call
+hierarchy (*your callers are in a source set I do not read*), jdtls on a Kotlin-called method (*I
+cannot read that language*), kotlin-lsp's `workspaceSymbol` on a Java class (roughly the mirror
+image), `outgoingCalls` on library callees (*I only report project symbols*), and cold start (*ask me
+again in two minutes*). Five causes, one rendering, and each implies the one thing that is not true:
+that the server looked and found nothing.
 
-`[verified 2026-09-15, maven]` Note what the fourth of those lost when the third repository ran: its
-owner. I had written it as kotlin-lsp's; jdtls produces it word for word. That is a small fact about
-jdtls and a larger one about this list — I had been collecting these as properties of *servers*, and
-at least one is a property of the thing both servers are. The taxonomy that matters is not "which
-server fails here" but "which question has an answer this tool never looks for", and the second
-framing is the one that transfers to whatever server replaces these.
+The fourth started out as kotlin-lsp's and turned out to be jdtls' too, word for word. The useful
+taxonomy is not "which server fails here" but "which question has an answer this tool never looks
+for" — and that framing will transfer to whatever replaces these servers.
 
 `No incoming calls found (nothing calls this function)` is the worst of them, because the
-parenthetical is not a rendering of the result — it is an interpretation, supplied by the tool, of a
-result the tool has no grounds to interpret. An agent that reads it has been handed a conclusion,
-not data.
+parenthetical is not the result. It is an interpretation the tool has no grounds to make, and an
+agent reading it has been handed a conclusion, not data.
 
-Exactly once did a server refuse out loud: jdtls returning `Internal error`. On the day's evidence
-it was the most trustworthy thing either of them said — though the same query shape elsewhere
-returned a quiet half-answer instead, so you cannot rely on being told.
+Loud failures were rare: `server is starting`, a "not indexed" for library code, and one jdtls
+`Internal error` — which the same query shape elsewhere replaced with a quiet half-answer.
 
-And worse than any empty list is the failure mode I had not budgeted for: **a wrong answer that is
-not empty.** There is no cue in jdtls' over-long reference list — correct paths, correct line and
-column numbers, every entry pointing at real source text containing the real identifier. An empty
-list at least prompts a second thought; a confident, well-formed one gets acted on. So: **a tool in
-an agent loop should be judged on what its wrong answers look like, and the dangerous ones are the
-answers shaped exactly like right ones.**
+Worse than any empty list is **a wrong answer that is not empty.** jdtls' over-long reference list
+carries no cue at all: correct paths, lines and columns, every entry real source text containing the
+real identifier. An empty list invites a second thought; a confident, well-formed one gets acted on.
+**Judge a tool in an agent loop by what its wrong answers look like. The dangerous ones are shaped
+exactly like right ones.**
 
-Which is also the case for running the matrix twice. Everything I got wrong in the first draft, I
-got wrong because one repository answered clearly and I mistook a clear answer for a general one.
+That is also the case for running the matrix more than once. Everything I got wrong, I got wrong
+because one repository answered clearly and I mistook a clear answer for a general one.
 
-I would take a reference search that refuses over one that returns an empty list.
+I would take a server that refuses over one that returns an empty list.

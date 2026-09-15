@@ -4,14 +4,13 @@ title: Frameworks and Languages Fit for AI
 date: 2026-09-15 11:14:51 +0300
 ---
 
-> DRAFT — the property set is settled; parts 2-4 are tables plus stubs.
+> DRAFT — part 1 is final; parts 2-4 are tables plus stubs.
 
 When an AI agent writes code in your project, some of your stack helps it and some of it
-doesn't. This post is an attempt to say *which parts*, and to say it as a comparison of
-known facts rather than as a verdict on anyone's favourite framework. I use Spring Boot as
-a contrast case in part 4 and I am not claiming it is bad software; I am claiming it scores
-a particular way against a particular list, and the list is stated first so you can disagree
-with the list rather than with me.
+doesn't. This post tries to say *which parts*, as a comparison of known facts rather than a
+verdict on anyone's favourite framework. Spring Boot turns up as a contrast case in part 4;
+that is not a claim that it is bad software, only that it scores a particular way against a
+particular list. The list comes first, so you can disagree with the list rather than with me.
 
 Nothing in the first part is new. Back in 2017 I wrote
 [Code Locality and the Ability To Navigate](../code-locality-and-ability-to-navigate/),
@@ -48,17 +47,16 @@ the oracle told it so.
 *How to observe it:* name a class of failure your suite structurally cannot see. If you
 can't name one, you haven't looked hard enough, and that's the dangerous case.
 
-This is the property most often confused with the first one. A fast, cheap, comprehensive
-oracle that lies is worse than no oracle, because it converts "I don't know" into
-"I checked".
+Easy to conflate with the first one. A fast, cheap, comprehensive oracle that lies is worse
+than no oracle, because it converts "I don't know" into "I checked".
 
 **3. Errors that close the loop.** A failure names the fix, and names it at the site of the
 fix.
 *Failure mode:* the agent mutates code semi-randomly until the red goes away. Each iteration
 is cheap, so it will do this for a long time before it gives up, and what it lands on may be
 green for the wrong reason.
-*How to observe it:* read your last ten stack traces and compiler errors. How many name the
-file *and* what to change?
+*How to observe it:* take the errors your build printed this week. How many name the file
+*and* what to change?
 
 ### Reading — what has to be in context?
 
@@ -73,10 +71,10 @@ one request by clicking. Count how many times you land somewhere with no code in
 **5. Information density.** Meaning per token.
 *Failure mode:* the agent's attention is spent on ceremony rather than on your logic.
 
-The obvious justification for this one — "more of the app fits in the window" — is the weak
-one, and getting weaker as context windows grow. The real cost of low-density code is
-**attention, not tokens**. Everything in the window competes for it. Ten lines of getters
-and setters don't overflow anything; they dilute the three lines that matter.
+The obvious justification — "more of the app fits in the window" — is the weak one, and gets
+weaker as context windows grow. The real cost of low-density code is **attention, not
+tokens**: everything in the window competes for it. Ten lines of getters and setters
+overflow nothing; they dilute the three lines that matter.
 
 **6. Idiom convergence.** There is one canonical way to do a given thing, and the codebase
 does it that way throughout.
@@ -122,9 +120,9 @@ and it cannot tell you what it missed.
 
 **12. Version legibility.** The model can tell *which version* it is writing against.
 
-Raw familiarity is not the property here. A model that has seen an enormous amount of a
-framework has usually seen an enormous amount of *several incompatible versions of it at
-once*, and nothing in the training data says which one you are on.
+Raw familiarity is not the property. A model that has seen an enormous amount of a framework
+has usually seen *several incompatible versions of it at once*, with nothing in the training
+data saying which one you are on.
 *Failure mode:* fluent, confident, six-year-old idiom. This is the same defect as a
 documentation file that drifted from the code: the agent acts decisively on something that
 used to be true.
@@ -137,8 +135,8 @@ in one readable file.
 one. This is the worst reading failure, because an invented answer looks exactly like a
 recalled one.
 
-This is where an unfamiliar-but-small framework beats a famous-but-sprawling one, and it is
-the property that does most of the work in part 4.
+This is where an unfamiliar-but-small framework beats a famous-but-sprawling one — and it
+does most of the work in part 4.
 
 ### Two things to say out loud before the tables
 
@@ -306,3 +304,18 @@ Only the rows where the three actually differ get prose:
 > recurs in every section above. A missing default becomes a test. A missing Actuator becomes
 > twenty lines of JSON. An untested boot path becomes a smoke test. Properties you cannot fix
 > get written down in a spec file instead, which is property 13 paying for everything else.
+>
+> Optional closing subsection — the stack these criteria actually pick, if I want to end on
+> something concrete rather than abstract: Kotlin + Vaadin 24 + Vaadin Boot (Jetty) + Gradle
+> + vok-orm + Flyway + vaadin-simple-security + Karibu-Testing + slf4j-simple, on JDK 21.
+> Javalin 5.x if REST is needed, since Javalin 6 doesn't support the Jetty 12 that Vaadin
+> Boot 13+ uses. Gradle over Maven for the scope reason in part 4.
+>
+> And the `SPEC.md` that goes with it, kept under ~2k tokens — this is property 13 made
+> concrete, and is arguably the single most useful paragraph in the post: pinned versions
+> with a "do not write these deprecated idioms" list (property 12); the allowed Kotlin subset
+> — which scope functions, where extension functions may live, no operator overloading, no
+> custom DSLs (property 6); the services-as-static-getters convention (property 4); "every
+> route needs an access annotation, enforced by test" (property 8); "schema changes go
+> through Flyway, never by hand"; and the Karibu test template. That file does the job
+> Spring's conventions used to do, except it is three screens long and you can diff it.

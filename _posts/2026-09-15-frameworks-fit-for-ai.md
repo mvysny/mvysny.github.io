@@ -202,11 +202,11 @@ cells, noted below.
 | 4. Locality of reasoning | ● bland and explicit | ◐ extension fns resolve by import | ○ duck typing, decorators, monkeypatching |
 | 5. Information density | ○ ceremony | ● data classes, default args | ● minimal syntax |
 | 6. Idiom convergence | ● one way to do it | ○ five scope functions | ◐ stated value; three packaging tools |
-| 7. Bounded blast radius | ● JDTLS atomic rename | ◐ LSP immature | ○ duck typing defeats rename |
+| 7. Bounded blast radius | ● JDTLS atomic rename | ○ no reference search (alpha) | ○ duck typing defeats rename |
 | 8. Safe defaults | ◐ null allowed by default | ● non-null by default | ○ dynamic and mutable by default |
 | 9. Loop latency | ◐ compile step | ○ slower than Java | ● no compile step |
 | 10. Reproducible environment | ● coordinates + lockfile | ● same | ○ `venv`/`pip` — `◐` with `uv` |
-| 11. Introspectable as data | ● JDTLS call hierarchies | ○ LSP immature | ◐ `pyright` decent; dynamism limits it |
+| 11. Introspectable as data | ● JDTLS call hierarchies | ○ answers "nothing calls this" | ◐ `pyright` decent; dynamism limits it |
 | 12. Version legibility | ● 2012 code still idiomatic | ◐ stable; coroutine/K2 churn | ● Python 3 settled, corpus current |
 | 13. Knowable on demand | ● javadoc ships in the jar | ● KDoc, same mechanism | ● docstrings, `help()`, REPL |
 
@@ -214,43 +214,143 @@ Only the rows where the three actually differ get prose:
 
 ### Where Kotlin moves the compiler (2, 8)
 
-> STUB: nullability moves into the type system with no annotations, no external checker, no
-> build configuration. For an agent, "the oracle catches NPEs" vs "the oracle catches NPEs
-> if someone wired up JSpecify correctly" is the whole difference, because the agent will
-> not notice the wiring is missing. Plus `when` exhaustiveness over sealed hierarchies:
-> compiler-as-oracle applied to business logic, not just to types. Java has this now via
-> sealed interfaces and pattern matching; Kotlin's is more idiomatic, so a model is more
-> likely to actually write it.
+Nullability is in the type system, with no annotations, no external checker and no build
+configuration. The difference that makes for an agent is not "fewer NPEs" — it is the
+difference between *the oracle catches this* and *the oracle catches this if somebody wired up
+JSpecify correctly*. An agent will not notice that the wiring is missing. It will read code
+that looks annotated, write code that looks annotated, and get no complaint from a checker that
+was never switched on. That is a property 8 failure producing a property 2 failure: the missing
+default makes the oracle quietly narrower than it appears.
+
+`when` exhaustiveness over sealed hierarchies is the same mechanism pointed at business logic
+rather than at types. Add a case to a sealed type and every incomplete branch becomes a compile
+error — a silent behavioural gap converted into a loud failure, which is the whole game. Java
+has this now via sealed interfaces and pattern matching; Kotlin's version is more complete and
+much more idiomatic, and idiomatic is what decides whether a model actually writes it.
+
+Python's position here is the honest counterweight: type hints plus `mypy` or `pyright` can get
+a long way, and modern strict-mode `pyright` is genuinely good. But it is opt-in at every
+boundary, and an untyped boundary doesn't fail — it just stops checking. Opt-in safety and
+agents interact badly for exactly the reason property 8 exists.
 
 ### Where Kotlin's tooling costs it (7, 11)
 
-> STUB — the row to fact-check before publishing. JDTLS is mature and is effectively a
-> structured `describe --json` for a Java codebase: call hierarchies, reference search,
-> cross-project rename, no build required. Kotlin's compiler is excellent and its language
-> server is not: the community `kotlin-language-server` has been under-maintained for
-> years, and JetBrains' official Kotlin LSP is recent. State its September 2026 status
-> plainly and date the claim. Consequence: the agent hand-edits call sites that JDTLS would
-> have renamed atomically (7), and falls back to grep for reference search (11).
+This is the row I could not write from memory, so I measured it. **All of this is September
+2026 and will age faster than anything else in the post.**
+
+First, what is actually installed matters, because there are two different things called a
+Kotlin language server. [`Kotlin/kotlin-lsp`](https://github.com/Kotlin/kotlin-lsp) is the
+free standalone server, and its README opens by declaring the project **in Alpha**. Separately,
+in August 2026 JetBrains previewed
+[IntelliJ IDEA's own intelligence over LSP](https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/)
+for Java *and* Kotlin, with refactorings, Gradle/Maven/Bazel support, and an explicit nod to
+"agentic, terminal-based workflows". That second one is the good one — and it ships for VS Code
+and its forks, and after the preview it will require an IntelliJ IDEA Ultimate subscription. So
+"Kotlin has an official LSP now" is true and is not the same sentence as "Kotlin has a free
+LSP that agents can rely on".
+
+I tested the free one, since that is what an agent in a terminal gets. The subject was
+[jdbi-orm](https://gitlab.com/mvysny/jdbi-orm) — Gradle, 21 Kotlin files and 51 Java files in
+one workspace — with `kotlin-server` 2026.3 (build `263.4702.0`, JetBrains' own distribution,
+bundled JBR). I built the project first (`./gradlew testClasses`, populating a 5 GB dependency
+cache) and restarted the server afterwards, so nothing below is an unresolved-project artifact.
+
+What works, and works well:
+
+- **`hover`** returns the KDoc plus a synthesized signature, and after the build it got
+  nullability right — `data class Person(id: Long?, …)` where the unbuilt workspace had said
+  `id: Long`.
+- **`documentSymbol`** is flawless: full nested structure, companion objects, even test-DSL
+  method names with spaces in them.
+
+What doesn't:
+
+- **`findReferences` returns only the declaration.** Every symbol I tried — the class, a
+  public property, a private constructor field — came back as "Found 1 reference", pointing at
+  the declaration itself. This includes symbols used a few lines further down *in the same
+  file*. Checking upstream afterwards explains it: find-references is simply **not in
+  `kotlin-lsp`'s supported-features list**. Rename and call hierarchy are; reference search
+  isn't.
+- **`incomingCalls` reports absence as fact.** Asked who calls `Person.withZeroNanos()`, the
+  server replied *"No incoming calls found (nothing calls this function)"*. There are five call
+  sites, in two other Kotlin files, in the same test source set — and I had opened those files
+  in the server first, to be sure it had seen them.
+- **The Kotlin→Java boundary is invisible.** `Person` implements `Entity<Long>`, a Java
+  interface in the same module; `goToDefinition` and `hover` on it both return nothing.
+- **Cold start is a race.** A query issued a second too early fails outright with
+  `server is starting`.
+
+The `incomingCalls` answer is the one worth dwelling on, because it is property 2 — oracle
+honesty — appearing one level below where I defined it. The server did not say "I could not
+index this". It said *nothing calls this function*. An agent asking the obvious question before
+a cleanup gets a clear, confident, wrong answer, and the failure looks exactly like a success.
+Compare the Eclipse JDT language server in the same harness, which declined a file it hadn't
+imported with `EntityMeta.java is a non-project file, only syntax errors are reported` — also a
+degraded answer, but one an agent can detect and route around.
+
+One honest caveat, because it cuts against the neat version of this story: in my setup JDTLS
+never imported the Gradle project either — it opened the file as a single-file "invisible
+project" — so I do **not** have a clean Java control here, and the Java column's `●` rests on
+JDTLS's documented capabilities rather than on a measurement I made. What I measured is
+narrower and, I think, more interesting: both servers were degraded, and only one of them said
+so.
+
+So the practical consequence for property 7 is that the agent hand-edits call sites that a
+mature server would have renamed atomically, and for property 11 that it falls back to `grep` —
+which is fine, as long as it *knows* to. The decision rule: if your agent's primary interface
+is a language server, this is the assumption to check first, because most of Java's advantage
+here rests on it. If your agent mostly reads and writes whole files and leans on the compiler
+and Karibu as its oracle — the common pattern — the gap costs much less, and Kotlin's
+nullability and density win the exchange.
 
 ### Where expressiveness cuts against reading (4, 6)
 
-> STUB: `user.toDto()` resolves by import, so reading the file tells you nothing about where
-> `toDto` lives — action at a distance, milder than a proxy but the same category. Scope
-> functions are the idiom-convergence case: `let`, `run`, `also`, `apply`, `with` are five
-> spellings of nearly one thing and models pick among them inconsistently. Java's blandness
-> is doing real work here. Mitigable with a project style section, which is property 13
-> paying for property 6.
+Extension functions resolve by import, so `user.toDto()` tells you nothing about where `toDto`
+lives. That is action at a distance — milder than a runtime proxy, but the same category, and
+it lands on the property that has no recovery mechanism when the reference search is also
+missing. The two Kotlin weaknesses compound: non-local by language, unnavigable by tooling.
+
+Scope functions are the idiom-convergence case, and a clean one. `let`, `run`, `also`, `apply`
+and `with` are five spellings of nearly the same thing; models pick among them inconsistently,
+because the training data does. Nothing breaks, and that is the point — the codebase simply
+stops being self-similar, so the next edit generalises from a worse sample. Operator
+overloading and infix functions extend the same problem. Java's blandness is doing real work
+here, and it is the clearest case in the post of a property that looks like a weakness
+(property 5, density) protecting a property that isn't (property 6).
+
+All of this is the most controllable risk in the table: a short, opinionated style section in
+the project's spec file — which scope functions are allowed, where extension functions may
+live, no operator overloading, no custom DSLs — fixes most of it. That is property 13 being
+spent to buy property 6, and it is the cheapest trade available anywhere in this post.
 
 ### Where Python is strongest, and what it costs (1, 9, 10)
 
-> STUB: no compile step is the best loop latency in the table — but the verdict you get
-> fast is a *narrower* verdict, covering only the lines the tests executed. That is the
-> trade the whole oracle group is about: Python gets to the answer quickest and the answer
-> says least. Reproducible environment is the sharpest factual split in this table, and the
-> one that costs agents the most session time in practice.
->
-> The disciplined-Python delta: `uv` moves row 10 to `◐`, strict `pyright` moves rows 1 and
-> 7 up one, and neither touches row 2 — an untyped boundary still passes.
+No compile step is the best loop latency in the table, and it is not a small advantage — the
+agent gets a verdict in the time the JVM spends starting. But the verdict is *narrower*: it
+covers the lines the tests actually executed, and nothing else. That is the trade the entire
+oracle group is about. Python reaches an answer fastest and the answer says least; Kotlin takes
+longest and says most. Neither is wrong, and which one you want depends on whether your failures
+are the kind that show up when a line runs.
+
+Reproducible environment is the sharpest factual split in the table, and in my experience the
+one that costs agent sessions the most wall-clock time. A JVM project names its dependencies by
+coordinates and resolves them the same way on every machine; the failure mode is a slow
+download. Python's default toolchain gives an agent several plausible ways to be in the wrong
+environment, and — the part that matters for property 2 — being in the wrong environment
+produces errors that look like code errors. The agent then fixes the code.
+
+Two things keep this fair. First, the disciplined-Python delta is real: `uv` with a lockfile
+moves row 10 from `○` to `◐`, and strict `pyright` moves rows 1 and 7 up a step. Neither touches
+row 2, because an untyped boundary still passes silently. Second, Python wins row 12 outright
+and it is worth saying why: Python 3 is settled, and the model's Python is *current*, where its
+Vaadin is several years old. That is the single strongest argument for using the language models
+know best, and it is a genuine one.
+
+Which is the result the control was there to produce. Python takes four rows outright, loses
+six, and is mixed on three — and the wins and losses cluster rather than cancelling out. It is
+strongest on knowledge, where it takes both rows; weakest on the oracle, where it takes none;
+and split down the middle on the loop, holding the fastest iteration in the table and the least
+reproducible environment. Corpus mass is worth a great deal, and it does not buy verification.
 
 ## Part 3: Karibu-Testing vs Selenium
 

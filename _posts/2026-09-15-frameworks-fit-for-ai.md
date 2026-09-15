@@ -202,11 +202,11 @@ cells, noted below.
 | 4. Locality of reasoning | ● bland and explicit | ◐ extension fns resolve by import | ○ duck typing, decorators, monkeypatching |
 | 5. Information density | ○ ceremony | ● data classes, default args | ● minimal syntax |
 | 6. Idiom convergence | ● one way to do it | ○ five scope functions | ◐ stated value; three packaging tools |
-| 7. Bounded blast radius | ● JDTLS atomic rename | ◐ rename yes, alpha | ○ duck typing defeats rename |
+| 7. Bounded blast radius | ● JDT LS rename, mature | ◐ rename listed, Alpha | ○ duck typing defeats rename |
 | 8. Safe defaults | ◐ null allowed by default | ● non-null by default | ○ dynamic and mutable by default |
 | 9. Loop latency | ◐ compile step | ○ slower than Java | ● no compile step |
 | 10. Reproducible environment | ● coordinates + lockfile | ● same | ○ `venv`/`pip` — `◐` with `uv` |
-| 11. Introspectable as data | ● JDTLS call hierarchies | ◐ call hierarchy, no find-refs | ◐ `pyright` decent; dynamism limits it |
+| 11. Introspectable as data | ● JDT LS, blind only to Kotlin | ◐ exact refs; call hierarchy skips tests | ◐ `pyright` decent; dynamism limits it |
 | 12. Version legibility | ● 2012 code still idiomatic | ◐ stable; coroutine/K2 churn | ● Python 3 settled, corpus current |
 | 13. Knowable on demand | ● javadoc ships in the jar | ● KDoc, same mechanism | ● docstrings, `help()`, REPL |
 
@@ -235,69 +235,45 @@ agents interact badly for exactly the reason property 8 exists.
 
 ### Where Kotlin's tooling costs it (7, 11)
 
-This is the row I could not write from memory, so I measured it. **All of this is September
-2026 and will age faster than anything else in the post.**
+I couldn't write this row from memory, so I measured it. The measurements got long enough for a
+post of their own:
+[The State of Java and Kotlin Language Servers](../java-kotlin-lsp-status/). It compares
+JetBrains' free, Alpha `kotlin-lsp` with Eclipse JDT LS, run through an agent's LSP tool on three
+repositories. The short version, as of September 2026:
 
-First, what is actually installed matters, because there are two different things called a
-Kotlin language server. [`Kotlin/kotlin-lsp`](https://github.com/Kotlin/kotlin-lsp) is the
-free standalone server, and its README opens by declaring the project **in Alpha**. Separately,
-in August 2026 JetBrains previewed
-[IntelliJ IDEA's own intelligence over LSP](https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/)
-for Java *and* Kotlin, with refactorings, Gradle/Maven/Bazel support, and an explicit nod to
-"agentic, terminal-based workflows". That second one is the good one — and it ships for VS Code
-and its forks, and after the preview it will require an IntelliJ IDEA Ultimate subscription. So
-"Kotlin has an official LSP now" is true and is not the same sentence as "Kotlin has a free
-LSP that agents can rely on".
+- **Kotlin's navigation is better than its Alpha label suggests.** Find-references,
+  go-to-definition, go-to-implementation and hover are precise. They cross into Java and across
+  Gradle modules, and in a mixed repo `kotlin-lsp` is a better reference engine for *Java* symbols
+  than JDT LS, as long as you ask from a Kotlin file. Row 11 doesn't lose where I expected.
+- **It loses on call hierarchy.** The call hierarchy silently drops every caller or callee that
+  lives in test code, so "who calls this?" gets a confident `nothing calls this function`. Search
+  by symbol name misses classes that plainly exist.
+- **JDT LS is mature on Java**, and its call hierarchy does see tests. It fails silently too:
+  callers written in Kotlin are simply missing, and `findReferences` merges two classes that share
+  a fully-qualified name in different modules.
+- **Row 7 stays on reputation.** The agent's LSP tool can't call rename on either server, so
+  Java's `●` is a decade of JDT and Kotlin's `◐` is the Alpha label. Neither is a measurement.
 
-What the free server's own README says is the solid part. It carries an **Alpha** badge and a
-"Project Status: ⚠️ the project is currently in the Alpha state ⚠️" section, and its supported
-features list reads: IntelliJ-powered completion, diagnostics and quick fixes, Gradle/Maven
-build-system support, semantic highlighting, organize imports, **rename refactoring**, code
-formatting, documentation and hover, **call hierarchy**, code folding. Note what is on that
-list and what isn't. Rename is there. Call hierarchy is there. **Find-references and
-go-to-definition are not.** That is an unusual combination, since rename is normally built on
-reference search, and it is the single most relevant fact in this section: the operation an
-agent needs before it deletes or renames anything is the one not listed.
+The lesson that carries over to other tools isn't about Kotlin: **when you wire a tool into an
+agent loop, how it fails matters as much as how well it works.** A server that refuses is safe at
+any quality level, because the agent falls back to `grep` and says so. A server that returns an
+empty list, or a well-formed wrong one, gets acted on. The obvious next step after "nothing calls
+this function" is to delete the function.
 
-I also tried to measure this directly, and the attempt is worth reporting because it failed in
-an instructive way. Querying `kotlin-server` 2026.3 (build `263.4702.0`) against a built Gradle
-project, `findReferences` returned only the declaration and `incomingCalls` answered
-*"No incoming calls found (nothing calls this function)"* about a function with five call sites.
-Both looked damning. Both turned out to be my error: the harness roots the language server at
-the session's working directory, and I was querying files in a different repository, so every
-file was analysed standalone with no workspace model. The Eclipse JDT server, asked the same
-kind of question under the same misconfiguration, was equally blind.
-
-So I have no measurement of Kotlin's reference search to offer, and the table's `◐` for rows 7
-and 11 rests on the published feature list rather than on anything I ran. What the botched run
-did produce is worth keeping, because it is property 2 appearing one level below where I defined
-it. Under *identical* degradation, the two servers behaved differently: JDT said
-`EntityMeta.java is a non-project file, only syntax errors are reported`, while the Kotlin
-server said `Found 1 reference` and `nothing calls this function`. One reported that it could
-not answer. The other reported an answer. An agent can detect the first and route around it —
-fall back to `grep`, tell the user, stop. The second is indistinguishable from success, and the
-obvious next action on "nothing calls this function" is to delete the function.
-
-That is the transferable lesson, and it is not really about Kotlin: **when you wire a tool into
-an agent loop, how it fails matters as much as how well it works.** A tool that degrades loudly
-is safe at any quality level. A tool that degrades silently is dangerous in proportion to how
-much you trust it. I would rather have a reference search that refuses than one that returns an
-empty list.
-
-The decision rule for the row itself: if your agent's primary editing interface is a language
-server, verify the current state yourself, on your own machine, before committing — that is
-where most of Java's advantage here lives, it is the fastest-moving claim in this post, and my
-own attempt to check it is a decent illustration of how easy it is to measure the wrong thing.
-If your agent mostly reads and writes whole files and leans on the compiler and Karibu as its
-oracle — the common pattern — the gap costs much less, and Kotlin's nullability and density win
-the exchange.
+Rule of thumb for this row: if the agent does most of its editing through a language server,
+check the current state on your own repo before you commit to it. That claim moves faster than
+anything else in this post, and the research post ends with a checklist you can hand to an agent.
+If the agent mostly reads and writes whole files and uses the compiler and Karibu as its oracle,
+which is the common setup, the gap costs much less, and Kotlin's nullability and density come out
+ahead.
 
 ### Where expressiveness cuts against reading (4, 6)
 
 Extension functions resolve by import, so `user.toDto()` tells you nothing about where `toDto`
-lives. That is action at a distance — milder than a runtime proxy, but the same category, and
-it lands on the property that has no recovery mechanism when the reference search is also
-missing. The two Kotlin weaknesses compound: non-local by language, unnavigable by tooling.
+lives. That is action at a distance — milder than a runtime proxy, but the same category. Here
+tooling does recover it: go-to-definition resolves the import, and `kotlin-lsp` gets it right.
+But that only helps an agent that asks the language server. An agent that greps for `toDto`
+finds the call plus every other function with the same name, and has no way to tell them apart.
 
 Scope functions are the idiom-convergence case, and a clean one. `let`, `run`, `also`, `apply`
 and `with` are five spellings of nearly the same thing; models pick among them inconsistently,

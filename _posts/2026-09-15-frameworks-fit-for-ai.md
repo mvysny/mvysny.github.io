@@ -151,27 +151,22 @@ correctness and spend locality, because magic that protects you is still magic. 
 buys you verifiability and spends loop latency. Nothing here sweeps, and a stack that scored
 full marks on all thirteen would be suspicious.
 
-**Locality is the usual currency.** Two of those three trades are paid in it, and that is
-not a coincidence of my examples — locality is the largest family in the list. Property 4 is
-locality in *reading*; 3 is locality in *diagnosis*, since an error that names the site of
-the fix is a local one; 7 is locality in *effect*, whether the change stays where you put
-it; and 11 and 13 are the two recovery mechanisms for when locality has already failed —
-navigate to the answer, or look it up. That is the 2017 grouping again, which listed Code
-Locality and Ability to Navigate side by side for exactly this reason: the second is needed
-in proportion to how much the first is missing.
+**Locality is the usual currency.** Two of those three trades are paid in it, because
+locality is the largest family in the list: 4 is locality in *reading*, 3 in *diagnosis* (an
+error that names the site of the fix), 7 in *effect* (the change stays where you put it), and
+11 and 13 are the recovery mechanisms for when locality has already failed — navigate to the
+answer, or look it up. That is why the 2017 post put Code Locality and Ability to Navigate
+side by side: the second is needed in proportion to how much the first is missing.
 
-It would be tidy-minded to go one step further and call locality the root of the whole list.
-It isn't. Verifiability, oracle honesty, density, idiom convergence, loop latency,
-reproducibility and version legibility are all independent of it — and property 8 is
-actively *anti*-local, because a safe default is correct behaviour you did not write and
-cannot see. That is mechanically the same thing as the autoconfiguration I complain about in
-part 4, pointed somewhere useful. Non-locality is a cost, not a defect, and it is sometimes
-worth paying.
+It is not the root of the whole list, though. Seven properties are independent of it, and
+property 8 is actively *anti*-local: a safe default is correct behaviour you did not write
+and cannot see. Mechanically, that is the autoconfiguration I complain about in part 4,
+pointed somewhere useful. Non-locality is a cost, not a defect, and sometimes worth paying.
 
-Which is why this is thirteen rows and not one. Spring Boot and Python both score badly on
-locality, for unrelated reasons — Spring in effect and diagnosis, Python in reading and
-recovery — and a single merged row would hide precisely the distinction the tables exist to
-draw.
+It is also why locality gets five rows instead of one. Spring Boot and Python both score
+badly on it, for unrelated reasons: Spring decides behaviour in auto-configuration and
+proxies, and the answer isn't at the annotation (4, 13); Python's duck typing defeats both
+reading and rename (4, 7). One merged row would hide exactly that difference.
 
 **Some of these measure tooling, not syntax.** A language is syntax *plus* its tooling; the
 best-designed language in the world doesn't help if nothing can catch its errors or steer an
@@ -253,18 +248,17 @@ repositories. The short version, as of September 2026:
 - **Row 7 stays on reputation.** The agent's LSP tool can't call rename on either server, so
   Java's `●` is a decade of JDT and Kotlin's `◐` is the Alpha label. Neither is a measurement.
 
-The lesson that carries over to other tools isn't about Kotlin: **when you wire a tool into an
-agent loop, how it fails matters as much as how well it works.** A server that refuses is safe at
-any quality level, because the agent falls back to `grep` and says so. A server that returns an
-empty list, or a well-formed wrong one, gets acted on. The obvious next step after "nothing calls
-this function" is to delete the function.
+The lesson that carries over isn't about Kotlin: **when you wire a tool into an agent loop, how
+it fails matters as much as how well it works.** A server that refuses is safe at any quality
+level, because the agent falls back to `grep`. A server that returns an empty list, or a
+well-formed wrong one, gets acted on — and the obvious next step after "nothing calls this
+function" is to delete the function.
 
-Rule of thumb for this row: if the agent does most of its editing through a language server,
-check the current state on your own repo before you commit to it. That claim moves faster than
-anything else in this post, and the research post ends with a checklist you can hand to an agent.
-If the agent mostly reads and writes whole files and uses the compiler and Karibu-Testing (browserless UI tests, part 3) as its oracle,
-which is the common setup, the gap costs much less, and Kotlin's nullability and density come out
-ahead.
+Rule of thumb: if the agent does most of its editing through a language server, check the
+current state on your own repo first; the research post ends with a checklist you can hand to
+an agent. If the agent reads and writes whole files and uses the compiler and Karibu-Testing
+(browserless UI tests, part 3) as its oracle, which is the common setup, the gap costs much
+less, and Kotlin's nullability and density come out ahead.
 
 ### Where expressiveness cuts against reading (4, 6)
 
@@ -309,7 +303,7 @@ not correctness: pre-records, pre-`var` code that still compiles. That costs den
 build. Kotlin's language is also stable, but its ecosystem has moved underneath it: coroutines
 went from experimental to stable, `kapt` gave way to KSP, and K2 replaced the compiler. So
 the model writes `GlobalScope.launch` and `kapt` with the same fluency as the current idioms.
-The compiler catches some of that as deprecation warnings; an agent tends to ignore warnings.
+The compiler flags some of that with warnings, and an agent tends to ignore warnings.
 
 ### Where Python is strongest, and what it costs (1, 9, 10)
 
@@ -329,17 +323,16 @@ produces errors that look like code errors. The agent then fixes the code.
 
 Two things keep this fair. First, the disciplined-Python delta is real: `uv` with a lockfile
 moves row 10 from `○` to `◐`, and strict `pyright` moves rows 1 and 7 up a step. Neither touches
-row 2, because an untyped boundary still passes silently. Second, Python ties Java for the
-lead on row 12, ahead of Kotlin, and it is worth saying why: Python 3 is settled, and the model's Python is *current*, where its
-Vaadin is several years old. That is the single strongest argument for using the language models
-know best, and it is a genuine one.
+row 2, because an untyped boundary still passes silently. Second, Python ties Java for the lead
+on row 12, ahead of Kotlin: Python 3 is settled, so the model's Python is *current*, where its
+Vaadin is several years old. That is the strongest argument for using the language models know
+best, and it is a genuine one.
 
-Which is the result the control was there to produce. Python leads outright on one row (9),
-ties for the lead on three more (5, 12, 13), trails both rivals on six, and trails only Java on
-the remaining three. The wins and losses cluster rather than cancelling out. It is level with
-the best on both knowledge rows; weakest on the oracle, last on two of its three rows and
-ahead on none; and split down the middle on the loop, holding the fastest iteration in the table and the least
-reproducible environment. Corpus mass is worth a great deal, and it does not buy verification.
+So the control did its job. Python leads or ties for the lead on four rows (5, 9, 12, 13) and
+trails both rivals on six, and the results cluster rather than cancel out: level with the best
+on both knowledge rows, ahead on none of the oracle rows, and split on the loop between the
+fastest iteration in the table and the least reproducible environment. Corpus mass is worth a
+great deal, and it does not buy verification.
 
 ## Part 3: Karibu-Testing vs Selenium
 
@@ -488,16 +481,16 @@ is property 8's failure mode again.
 On row 6, Selenium lets you locate by id, name, class name, tag name, CSS selector, XPath, link
 text or partial link text, and wait implicitly, explicitly or with `Thread.sleep()`; Page Objects
 are optional. Every combination is in the training data, and an agent will reproduce all of them
-in your repository. Karibu has one
-way to find a component and one family of underscore functions to act on it.
+in your repository. Karibu has one way to find a component and one family of underscore
+functions to act on it.
 
 ### The smaller gaps (9, 10, 12, 13)
 
 **Loop latency (9).** In the same example project the greeting test took 111 ms and the probes
 above 56–115 ms; the first test of the run took 0.9 s, most of it Vaadin warming up. For a bigger
 sample, the [Karibu-DSL](https://github.com/mvysny/karibu-dsl) test suite is almost entirely
-Karibu-Testing tests: 302 of them, exercising Vaadin's components, ran in 5.3 seconds on Vaadin 25.2 — about 18 ms a test — and the same
-suite took 5.5 seconds on Vaadin 25.3. A browser test costs seconds apiece; I reported 5–10
+Karibu-Testing tests: 302 of them, exercising Vaadin's components, ran in 5.3 seconds on Vaadin
+25.2, about 18 ms a test. A browser test costs seconds apiece; I reported 5–10
 seconds back in 2017, which puts the same 302 tests at somewhere between 25 and 50 minutes.
 That is the difference between running the UI suite after every edit and running it before a
 commit, and as part 1 argued, it decides whether the agent batches its changes.
@@ -508,7 +501,8 @@ to download browsers since 4.11, removed most of the driver pain. Not all of it:
 that wouldn't talk to each other. And a browser test still needs the application built, started
 and reachable. Karibu is a `testImplementation` line.
 
-**Version legibility (12).** Selenium's corpus is a clean drift specimen. Selenium 4 removed the `findElementByXPath()` family in favour of `findElement(By.xpath(…))`,
+**Version legibility (12).** Selenium's corpus is a clean drift specimen. Selenium 4 removed the
+`findElementByXPath()` family in favour of `findElement(By.xpath(…))`,
 `implicitlyWait(10, TimeUnit.SECONDS)` became a `Duration`, and Selenium Manager made
 `System.setProperty("webdriver.chrome.driver", …)` unnecessary — and my Ubuntu post above still
 uses that last one, so I am part of the problem. Karibu's corpus is thin, but its API has been
@@ -550,13 +544,13 @@ on Vaadin's own
 it wins, which are real ones.
 
 Both columns run the same Vaadin, on the same JVM, built by the same tools, and are tested the
-same browserless way, so rows 1, 5, 7 and 10 come out equal and are left out. What differs is
+same browserless way, so rows 1, 5, 6, 7 and 10 come out equal and are left out. What differs is
 the layer between `main()` and your first view. Spring Boot fills it with a container, and
 Vaadin Boot leaves it almost empty.
 
 | | Vaadin Boot | Spring Boot |
 |---|---|---|
-| 2. Oracle honesty | ◐ Maven: `mvn test` green, app won't start | ◐ `@Transactional` self-call: green, no transaction |
+| 2. Oracle honesty | ◐ Maven, ≤ 25.2: `mvn test` green, app won't start | ◐ `@Transactional` self-call: green, no transaction |
 | 3. Errors that close the loop | ● compile error, or your own stack trace | ◐ excellent report, buried mid-log |
 | 4. Locality of reasoning | ● `main()`, `@WebListener`, static getters | ○ auto-configuration, proxies |
 | 8. Safe defaults | ○ forget the security wiring, everything is open | ● the dependency alone locks the app |
@@ -612,7 +606,7 @@ a Javalin servlet at `/rest/*` stays open, where Spring's catch-all rule would h
 
 To be precise: once security is wired up, both stacks deny a view that has
 no access annotation. That comes from Vaadin itself, not from Spring — the documentation says of
-`@DenyAll` that "if a view isn't annotated at all, the `@DenyAll` logic is applied". So the
+`@DenyAll` that "if a view isn't annotated, the `@DenyAll` logic is applied". So the
 difference isn't the rule, it's whether anyone has to remember to switch the rule on.
 
 You can buy most of it back with code you own. A browserless test can enumerate every discovered
@@ -640,7 +634,9 @@ a twenty-line endpoint or test can dump that as JSON.
 
 ### Errors (3)
 
-I broke the wiring on purpose. In a Spring Boot 3.5 project with Karibu tests, I added a
+I broke the wiring on purpose. In my
+[Spring Boot 3.5 example](https://github.com/mvysny/vaadin-spring-karibu-testing) with Karibu
+tests (on Vaadin 24.9; the failure below is Spring's, not Vaadin's), I added a
 service whose constructor needs a `java.time.Clock` that nobody provides, and ran `mvn test`.
 Spring's diagnosis is excellent:
 
@@ -660,8 +656,7 @@ Consider defining a bean of type 'java.time.Clock' in your configuration.
 
 It names the class, the parameter and the fix. The problem is where it lands: at line 1,164 of a
 1,850-line log, after a thousand-odd lines of conditions report that a failed test context prints
-first. The summary Maven prints at
-the end — the part an agent reads — had six errors. Five said
+first. The summary Maven prints at the end — the part an agent reads — had six errors. Five said
 `ApplicationContext failure threshold (1) exceeded: skipping repeated attempt to load context`,
 and the sixth said `Failed to load ApplicationContext`, followed by a line and a half of context
 configuration. None of the six names `Clock` or `AuditService`. It is a good error in the wrong
@@ -676,7 +671,7 @@ Vaadin Boot lacks is the analysis: a failing `Bootstrap` gives a plain stack tra
 
 This row goes against my own project.
 
-On Maven with Jetty, `vaadin-bom` manages `jakarta.servlet-api` to `provided` scope. That is
+On Maven with Jetty, `vaadin-bom` up to 25.2 manages `jakarta.servlet-api` to `provided` scope. That is
 right for a WAR or a Spring Boot deployment, where the container supplies the servlet API — but
 Vaadin Boot *is* the container. Maven applies the importing project's managed scope to the whole
 dependency graph, overriding the `compile` scope Jetty declares, so the application dies at
@@ -686,21 +681,24 @@ API in at test scope. Green oracle, broken application, and an agent moves on.
 
 It can't be fixed from Vaadin Boot's side: the importing project's dependency management wins over
 anything Vaadin Boot declares, and a Vaadin Boot BOM would work only until someone reorders the
-imports. So it is documented in
-[vaadin-boot#40](https://github.com/mvysny/vaadin-boot/issues/40), fixed in the example projects
-with a few lines of XML, and reported upstream as
-[flow-components#10107](https://github.com/vaadin/flow-components/issues/10107). Gradle is
-unaffected, because `platform()` contributes version constraints and not scopes; so is the Tomcat
-variant, whose jar bundles the servlet classes itself.
+imports. So it went into
+[vaadin-boot#40](https://github.com/mvysny/vaadin-boot/issues/40), the example projects got a
+few lines of XML, and I reported it upstream as
+[flow-components#10107](https://github.com/vaadin/flow-components/issues/10107). Vaadin fixed it
+five days later, and **Vaadin 25.3.0 no longer overrides the scope**; on 25.2 and older you still
+need the workaround. Gradle was never affected, because `platform()` contributes version
+constraints and not scopes; neither was the Tomcat variant, whose jar bundles the servlet classes
+itself.
 
 Two fixes generalise beyond this bug. Prefer the build tool whose defaults can't produce the
-failure — here, Gradle. And add a smoke test that calls `start()`, fetches `getServerURL()` and calls `stop()`,
-so that "the application boots" is *inside* the oracle rather than outside it.
+failure — here, Gradle. And add a smoke test that calls `start()`, fetches `getServerURL()` and
+calls `stop()`, so that "the application boots" is *inside* the oracle rather than outside it.
+The next BOM mistake won't have an issue number yet.
 
 Spring's side of this row is better than I expected: a `@SpringBootTest` really starts the
-context, so the wiring failure above turned the suite red. Its silent failure is the one from row 13: a `@Transactional` method called from its own
-class passes every test that doesn't specifically check for a rollback, and runs without a
-transaction.
+context, so the wiring failure above turned the suite red. Its silent failure is the one from
+row 13: a `@Transactional` method called from its own class passes every test that doesn't
+specifically check for a rollback, and runs without a transaction.
 
 ### The smaller gaps (9, 12)
 
@@ -781,20 +779,18 @@ work is right.
 
 ### Karibu-Testing wins, and you still need the browser
 
-17 to 7 is the widest margin in the post. The one row Karibu loses is row 2, and part 3 argued
-that row 2 decides what the other nine are worth. So there's no single winner here, just a
-division of labour. Karibu is the inner loop and runs on every edit. A small browser suite is a
-required CI gate that covers the list of things Karibu can't see. Pick only one and you lose
-something: Karibu alone has a blind spot you named and didn't cover, and Selenium alone makes the agent
-batch its changes.
+17 to 7 is the most lopsided table in the post, and it still isn't a single winner. The one row
+Karibu loses is row 2, the one that decides what the other nine are worth. Pick only one and you
+lose something: Karibu alone leaves a blind spot you named and didn't cover, and Selenium alone
+makes the agent batch its changes. Hence part 3's split: Karibu on every edit, a small browser
+suite as a required CI gate.
 
-### Vaadin Boot wins, with two receipts to write
+### Vaadin Boot wins, with receipts to write
 
-Part 4's tally found that Spring's two wins, security (8) and introspection (11), can be bought
-back with code you own. Vaadin Boot's wins can't be bought for Spring, because they come from
-something being absent. The receipts are short: a test that fails on a route without an access
-annotation, and a route-registry dump for when the agent needs one. Add the boot smoke test from
-part 4's row 2: Vaadin Boot needs it, and Spring's test context gives you one for free.
+As part 4's tally found, Spring's two wins can be bought back with code you own, and Vaadin
+Boot's can't be bought for Spring. The receipts are short: a test that fails on a route without
+an access annotation, a route-registry dump for when the agent needs one, and the boot smoke test
+from part 4's row 2, which Spring's test context gives you for free.
 
 ### The pattern, and the disclosure
 
@@ -806,8 +802,8 @@ in a file (13).
 
 I wrote two of the three winners, so discount accordingly. I don't think the list was bent to
 fit them, though; the causality runs the other way. I wrote Karibu-Testing and Vaadin Boot
-*because* I wanted these properties, years before agents made them urgent. That is why part 1 comes first. If the list is right, the
-results follow from it, and if the results look self-serving, the list is the thing to attack.
+*because* I wanted these properties, years before agents made them urgent. That is why part 1
+comes first: if the results look self-serving, the list is the thing to attack.
 
 ## What to do with this
 
@@ -828,7 +824,8 @@ spec file instead, which is property 13 paying for the rows no oracle can reach.
 As of September 2026:
 
 - **Kotlin** on **JDK 21**, with the spec file below (without it, Java; see part 5);
-- **Gradle**, not Maven, for the scope bug in part 4's row 2;
+- **Gradle**, not Maven: `platform()` can't carry a scope, so part 4's row 2 bug can't happen,
+  whatever the next BOM gets wrong;
 - **Vaadin 25** on **Vaadin Boot**, with Jetty;
 - **Karibu-Testing** for the inner loop, plus a handful of browser tests as a required gate;
 - **vaadin-simple-security**, with the route-annotation test;

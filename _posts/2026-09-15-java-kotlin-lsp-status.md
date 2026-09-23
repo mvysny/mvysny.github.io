@@ -222,7 +222,7 @@ Two gaps. `goToDefinition` does not resolve into external libraries — but `hov
 javadoc and a path into the sources jar, so that gap is visible rather than silent. `workspaceSymbol`
 is the bad one. Searching `EntityMeta` returned only the Kotlin `EntityMetaTest`, omitting the Java
 class of that exact name. Searching `VaadinBoot` returned **two lowercase `vaadinBoot` local
-properties** and none of the four Java classes of that name — including the one `goToDefinition` had
+properties** and none of the three Java classes of that name — including the one `goToDefinition` had
 just jumped into. jdtls, asked the same, returned all six Java symbols, separated by package and
 module.
 
@@ -635,9 +635,9 @@ Roughly cheapest first:
    Kotlin to ask about.
 4. **Blind to tests, or to everything but `main`?** Both Gradle subjects have exactly two source sets.
    An `integrationTest` set would tell the two apart, and the workarounds differ.
-5. **Does it scale?** 2.6 GB for kotlin-lsp on a small repo; on the seven-module one, 1.4 GB for jdtls
-   against 1.7 GB + 1.3 GB for kotlin-lsp — which, for reasons I cannot explain, keeps running two
-   instances.
+5. **Does it scale?** On the small repo, 2.6 GB + 1.8 GB for kotlin-lsp against 1.9 GB for jdtls; on
+   the seven-module one, 1.7 GB + 1.3 GB against 1.4 GB. Why kotlin-lsp keeps running two instances,
+   I cannot explain.
 6. **Why does kotlin-lsp's `workspaceSymbol` prefer local properties over exact-name Java classes?** It
    looks less like a language filter than like a different index from the one `goToDefinition` uses.
 7. **Does jdtls' FQN merging hit shaded jars?** A relocated package that collides with a project
@@ -656,35 +656,29 @@ The finding that outlives the numbers is not about Kotlin: **when you wire a too
 how it fails matters as much as how well it works.**
 
 A tool that fails loudly is safe at any quality level: the agent sees the refusal, falls back to
-`grep`, and tells you. A tool that fails silently is dangerous in proportion to how much the agent
-trusts it, and an empty result is the worst shape a silent failure can take, because "no results"
-and "no answer" look the same while implying opposite actions.
+`grep`, and tells you. Loud failures were rare here: `server is starting`, a "not indexed" for
+library code, and one jdtls `Internal error`, which the same query shape elsewhere replaced with a
+quiet half-answer.
 
-Across two servers and three repositories I collected five kinds of empty list: kotlin-lsp's call
-hierarchy (*your callers are in a source set I do not read*), jdtls on a Kotlin-called method (*I
-cannot read that language*), kotlin-lsp's `workspaceSymbol` on a Java class (roughly the mirror
-image), `outgoingCalls` on library callees (*I only report project symbols*), and cold start (*ask me
-again in two minutes*). Five causes, one rendering, and each implies the one thing that is not true:
-that the server looked and found nothing.
+Silent omissions were everywhere. Across two servers and three repositories I collected five:
+kotlin-lsp's call hierarchy (*your callers are in a source set I do not read*), jdtls on a
+Kotlin-called method (*I cannot read that language*), kotlin-lsp's `workspaceSymbol` on a Java class
+(roughly the mirror image), `outgoingCalls` on library callees (*I only report project symbols*), and
+cold start (*ask me again in two minutes*). Five causes, no flag on any of them, and each implies the
+one thing that is not true: that the server looked and found nothing. The library-callee rule
+started out as kotlin-lsp's and turned out to be jdtls' too, word for word — so the useful taxonomy
+is not "which server fails here" but "which question has an answer this tool never looks for", and
+that framing will transfer to whatever replaces these servers.
 
-The fourth started out as kotlin-lsp's and turned out to be jdtls' too, word for word. The useful
-taxonomy is not "which server fails here" but "which question has an answer this tool never looks
-for" — and that framing will transfer to whatever replaces these servers.
-
-`No incoming calls found (nothing calls this function)` is the worst of them, because the
+`No incoming calls found (nothing calls this function)` is the worst phrasing of it, because the
 parenthetical is not the result. It is an interpretation the tool has no grounds to make, and an
 agent reading it has been handed a conclusion, not data.
 
-Loud failures were rare: `server is starting`, a "not indexed" for library code, and one jdtls
-`Internal error` — which the same query shape elsewhere replaced with a quiet half-answer.
+Worse still is **a wrong answer that is not empty.** jdtls' over-long reference list carries no cue
+at all: correct paths, lines and columns, every entry real source text containing the real
+identifier. An empty list at least invites a second thought; a confident, well-formed one gets acted
+on. Everything I got wrong in this post, I got wrong the same way: one repository answered clearly,
+and I mistook a clear answer for a general one.
 
-Worse than any empty list is **a wrong answer that is not empty.** jdtls' over-long reference list
-carries no cue at all: correct paths, lines and columns, every entry real source text containing the
-real identifier. An empty list invites a second thought; a confident, well-formed one gets acted on.
 **Judge a tool in an agent loop by what its wrong answers look like. The dangerous ones are shaped
 exactly like right ones.**
-
-That is also the case for running the matrix more than once. Everything I got wrong, I got wrong
-because one repository answered clearly and I mistook a clear answer for a general one.
-
-I would take a server that refuses over one that returns an empty list.

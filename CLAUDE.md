@@ -52,6 +52,7 @@ Standard Jekyll Now layout — nothing custom beyond a Google Analytics snippet 
 - `_sass/` — `_reset.scss`, `_variables.scss`, `_highlights.scss` (rouge/pygments theme), `_svg-icons.scss`. Imported by top-level `style.scss`.
 - `index.html` — home page, lists all posts with excerpts in reverse chronological order.
 - `images/` — post images and site assets.
+- `files/<post-slug>/` — downloadable files referenced from a post (config files, scripts), linked as `/files/<post-slug>/<file>`.
 
 ## Conventions observed in existing posts
 

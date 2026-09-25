@@ -1,0 +1,92 @@
+{
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.hideOnboarding": true,
+  "redhat.telemetry.enabled": false,
+
+  "vim.easymotion": true,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": false,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.leader": "<space>",
+  "vim.handleKeys": {
+    "<C-b>": false,
+    "<C-p>": false,
+    "<C-c>": false
+  },
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // window/tab management (LazyVim-flavored)
+    { "before": ["<leader>", "b", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["<leader>", "b", "b"], "commands": ["workbench.action.showAllEditorsByMostRecentlyUsed"] },
+    { "before": ["<leader>", "b", "o"], "commands": ["workbench.action.closeOtherEditors"] },
+    { "before": ["<leader>", "w", "d"], "commands": ["workbench.action.closeActiveEditor"] },
+    { "before": ["<leader>", "w", "s"], "commands": ["workbench.action.splitEditorDown"] },
+    { "before": ["<leader>", "w", "v"], "commands": ["workbench.action.splitEditorRight"] },
+
+    // file/search (roughly telescope-ish)
+    { "before": ["<leader>", "f", "f"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "f", "r"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "<leader>"], "commands": ["workbench.action.quickOpen"] },
+    { "before": ["<leader>", "f", "g"], "commands": ["workbench.action.findInFiles"] },
+    { "before": ["<leader>", "/"], "commands": ["workbench.action.findInFiles"] },
+    { "before": ["<leader>", "e"], "commands": ["workbench.view.explorer"] },
+    { "before": ["<leader>", "`"], "commands": ["workbench.action.openPreviousRecentlyUsedEditor"] },
+    { "before": ["<leader>", "q", "S"], "commands": ["workbench.action.openRecent"] },
+    { "before": ["<leader>", "s", "k"], "commands": ["workbench.action.showCommands"] },
+    { "before": ["<leader>", "s", "s"], "commands": ["workbench.action.gotoSymbol"] },
+    { "before": ["<leader>", "s", "S"], "commands": ["workbench.action.showAllSymbols"] },
+    { "before": ["<leader>", "s", "c"], "commands": ["workbench.action.showAllSymbols"] },
+    { "before": ["<leader>", "g", "g"], "commands": ["workbench.view.scm"] },
+    { "before": ["<leader>", "l"], "commands": ["workbench.view.extensions"] },
+
+    // buffer nav
+    { "before": ["<S-h>"], "commands": ["workbench.action.previousEditor"] },
+    { "before": ["<S-l>"], "commands": ["workbench.action.nextEditor"] },
+
+    // save
+    { "before": ["<leader>", "w"], "commands": ["workbench.action.files.save"] },
+    { "before": ["<C-s>"], "commands": ["workbench.action.files.save", "extension.vim_escape"] },
+
+    // easymotion / flash.vim
+    { "before": ["s"], "after": ["<leader>", "<leader>", "/"] },
+
+    // code
+    { "before": ["K"], "commands": ["editor.action.showHover"] },
+    { "before": ["g", "r"], "commands": ["editor.action.goToReferences"] },
+    { "before": ["<leader>", "g", "I"], "commands": ["editor.action.goToImplementation"] },
+    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatDocument"] },
+    { "before": ["<leader>", "c", "r"], "commands": ["editor.action.rename"] },
+    { "before": ["<leader>", "c", "a"], "commands": ["editor.action.quickFix"] },
+    { "before": ["<leader>", "c", "A"], "commands": ["editor.action.sourceAction"] },
+    { "before": ["<leader>", "c", "o"], "commands": ["editor.action.organizeImports"] },
+    { "before": ["<leader>", "c", "x", "v"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.variable", "apply": "ifSingle" } }] },
+    { "before": ["<leader>", "c", "x", "m"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.function", "apply": "ifSingle" } }] },
+    { "before": ["<leader>", "c", "x", "c"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.constant", "apply": "ifSingle" } }] },
+    { "before": ["<leader>", "d", "b"], "commands": ["editor.debug.action.toggleBreakpoint"] },
+
+    // diagnostics / git hunks
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["]", "e"], "commands": ["editor.action.marker.next"] },
+    { "before": ["[", "e"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["]", "w"], "commands": ["editor.action.marker.next"] },
+    { "before": ["[", "w"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["]", "h"], "commands": ["workbench.action.editor.nextChange"] },
+    { "before": ["[", "h"], "commands": ["workbench.action.editor.previousChange"] }
+  ],
+
+  "vim.insertModeKeyBindingsNonRecursive": [
+    { "before": ["<C-s>"], "commands": ["workbench.action.files.save", "extension.vim_escape"] }
+  ],
+
+  "vim.visualModeKeyBindingsNonRecursive": [
+    { "before": ["s"], "after": ["<leader>", "<leader>", "/"] },
+    { "before": ["<leader>", "c"], "commands": ["editor.action.commentLine"] },
+    { "before": ["<leader>", "c", "f"], "commands": ["editor.action.formatSelection"] },
+    { "before": ["<leader>", "c", "x", "v"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.variable", "apply": "ifSingle" } }] },
+    { "before": ["<leader>", "c", "x", "m"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.function", "apply": "ifSingle" } }] },
+    { "before": ["<leader>", "c", "x", "c"], "commands": [{ "command": "editor.action.codeAction", "args": { "kind": "refactor.extract.constant", "apply": "ifSingle" } }] }
+  ]
+}

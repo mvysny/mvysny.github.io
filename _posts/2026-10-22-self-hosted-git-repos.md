@@ -62,7 +62,8 @@ useful when you hand out access to other people or to less trusted machines
 (CI runners, deploy keys), and want those keys limited to git only. Here it's
 just me, with the same keys that already give me a full shell on `my-server`.
 A `git` user wouldn't add any protection. I'd only get a second
-`authorized_keys` to keep in sync, so I reuse my own account.
+`authorized_keys` to keep in sync, so I reuse my own account. If you do need
+one, see [the end of this post](#alternative-a-dedicated-git-user).
 
 If ssh says `Permission denied` and the username on `my-server` differs from the
 one on your client, tell ssh which user to use in `~/.ssh/config` on the client:
@@ -173,3 +174,66 @@ alias lg=lazygit
 
 If you want a web UI and the rest anyway, Forgejo is a lightweight self-hosted
 option. I'll cover that in a follow-up post.
+
+# Alternative: a dedicated git user
+
+If you give push access to someone else, or to a machine you trust less than
+your own computers (a CI runner, a deploy key), don't put their key into your
+own `authorized_keys`: it'd give them a full shell as you. Create a `git` user
+instead, whose login shell is `git-shell`. `git-shell` comes with git and only
+runs the git commands needed to push and pull, nothing else.
+
+On the server:
+
+```bash
+sudo useradd --create-home --shell /usr/bin/git-shell git
+```
+
+The user has no password, so the only way in is an ssh key. Create its
+`~/.ssh/authorized_keys`, one public key per line:
+
+```bash
+sudo install -d -m 700 -o git -g git ~git/.ssh
+sudo install -m 600 -o git -g git /dev/null ~git/.ssh/authorized_keys
+sudoedit ~git/.ssh/authorized_keys
+```
+
+Prefix every key with `restrict`, which turns off port forwarding, agent
+forwarding and the like. `git-shell` limits what the key can run, but not what
+it can tunnel through ssh:
+
+```
+restrict ssh-ed25519 AAAAC3Nza... ci-runner
+```
+
+`git-shell` won't run `git init`, so create repos as the `git` user via sudo.
+I put them straight into git's home dir, `/home/git`:
+
+```bash
+ssh -t my-server sudo -u git git init --bare -b master /home/git/foo.git
+```
+
+(`-t` gives sudo a terminal to ask for your password.) The remote URL now
+names the user, and the path is relative to git's home dir:
+
+```bash
+git clone git@my-server:foo.git
+```
+
+To move an existing repo over, move it on the server and fix its owner:
+
+```bash
+sudo mv ~/git/foo.git /home/git/
+sudo chown -R git:git /home/git/foo.git
+```
+
+then point every clone to the new location:
+
+```bash
+git remote set-url origin git@my-server:foo.git
+```
+
+On Ubuntu, home dirs aren't readable by other users, so on the server itself
+your own account can't `git clone /home/git/foo.git` either. Clone over ssh
+instead, `git clone git@localhost:foo.git`, with your own key added to git's
+`authorized_keys`.

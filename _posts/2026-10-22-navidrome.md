@@ -66,7 +66,7 @@ services:
     image: docker.io/deluan/navidrome:latest
     ports:
       - "4533:4533"
-    restart: always
+    restart: unless-stopped
     environment:
       ND_ENABLEINSIGHTSCOLLECTOR: "false"
     volumes:
@@ -87,24 +87,27 @@ Replace `mavi` with your username. A few notes:
   on the host, so Navidrome can write into `data/` and read `~/Music` as-is.
   With `user: 1000:1000` it would run as one of your subordinate UIDs instead,
   which can't write into `data/`.
-- I'll explain `restart: always` below.
+- I'll explain `restart: unless-stopped` below.
 
-Start it:
+I start Navidrome in [tmux](https://github.com/tmux/tmux), so that it keeps
+running after I close the terminal or log out of ssh:
 
 ```bash
+tmux new -s navidrome
 cd ~/local/navidrome
-podman compose up -d
+podman compose up
 ```
 
-`-d` runs it in the background. Leave it out the first time if you want to
-watch Navidrome scan your library; `podman compose logs -f` shows the log
-later.
+`podman compose up` runs in the foreground and shows Navidrome's log, so you
+can watch it scan your library. Detach with `Ctrl+b d`; Navidrome keeps
+running. `tmux attach -t navidrome` takes you back to the log, and `Ctrl+C`
+there stops Navidrome.
 
 `podman compose` is only a wrapper: it runs an external compose provider and
 prints which one, e.g.
 `>>>> Executing external compose provider "/usr/bin/podman-compose"`. If you
 have Docker's compose plugin installed as well, it may run Docker's
-`docker-compose` instead. In that case call `podman-compose up -d` directly.
+`docker-compose` instead. In that case call `podman-compose up` directly.
 
 # Create the user
 
@@ -136,45 +139,31 @@ Make sure the Tailscale app on the iPhone is connected, and that's it. Plain
 `http` is fine here: the traffic goes through Tailscale's WireGuard tunnel,
 which is encrypted end to end.
 
-# Surviving a reboot
+# Restarts and reboots
 
-Podman has no daemon, but it does honor the restart policy while the box is
-up: if Navidrome crashes, Podman starts it again. What Podman doesn't do by
-itself is start the container when the box boots. There's no daemon to remember
-it.
+Podman has no daemon, but it does honor the restart policy: if Navidrome
+crashes, Podman starts it again. `Ctrl+C` in tmux counts as stopping it
+yourself, so with `unless-stopped` it stays stopped.
 
-Podman ships a systemd user unit for that, `podman-restart.service`, which
-starts all containers at login. Enable it, and enable **lingering**, so that
-your user's systemd starts at boot, without you having to log in:
+What Podman doesn't do is start Navidrome when the box boots. There's no daemon
+to remember it. After a reboot I simply open the tmux session again and run
+`podman compose up`. My box rarely reboots, so that's fine with me.
 
-```bash
-systemctl --user enable podman-restart.service
-sudo loginctl enable-linger $USER
-```
-
-Here's the catch: `podman-restart.service` only starts containers whose restart
-policy is `always`:
-
-```
-ExecStart=/usr/bin/podman $LOGGING start --all --filter restart-policy=always
-```
-
-A container with `restart: unless-stopped` stays down after a reboot. That's why
-the compose file above says `restart: always`.
-
-In the [Podman](../podman/) post I wrote that I use Docker for long-running
-services. Navidrome shows that Podman handles a simple one just fine: one
-restart policy, two commands.
+If you'd rather have it start on boot, Podman ships a systemd user unit,
+`podman-restart.service`, which you'd enable together with lingering
+(`sudo loginctl enable-linger $USER`). Note that this unit only starts
+containers whose policy is `restart: always`, not `unless-stopped`.
 
 # Updating
 
+In the tmux session, stop Navidrome with `Ctrl+C`, then:
+
 ```bash
-cd ~/local/navidrome
 podman compose pull
-podman compose up -d
+podman compose up
 ```
 
-`pull` fetches the newest `latest` image, and `up -d` recreates the container
+`pull` fetches the newest `latest` image, and `up` recreates the container
 from it. Your library, users and playlists live in `data/`, so they survive.
 
 # Stay secure

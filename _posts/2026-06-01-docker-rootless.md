@@ -207,6 +207,11 @@ sudo rm -rf /var/lib/docker /var/lib/containerd /etc/docker
 sudo groupdel docker
 ```
 
+This doesn't hurt Podman. Podman doesn't use containerd at all: it runs containers
+straight through `runc` and keeps its own storage in `/var/lib/containers`
+(note the "s") and `~/.local/share/containers`. `/var/lib/containerd` belongs to
+the `containerd` package you just purged.
+
 **Already purged the package and the service is still there?** The setup tool
 went away with the package, so do step 1 by hand:
 

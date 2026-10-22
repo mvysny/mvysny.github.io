@@ -206,6 +206,13 @@ it can tunnel through ssh:
 restrict ssh-ed25519 AAAAC3Nza... ci-runner
 ```
 
+If you've limited ssh logins with `AllowUsers` (or `AllowGroups`) in
+`/etc/ssh/sshd_config`, add `git` there too. Otherwise sshd rejects every key
+with `Permission denied (publickey)`, even a correct one.
+`sudo sshd -T | grep -i allow` shows what's in effect. After editing, run
+`sudo systemctl reload ssh`. sshd's log, `sudo journalctl -u ssh`, gives the
+actual reason for any rejected login.
+
 `git-shell` won't run `git init`, so create repos as the `git` user via sudo.
 I put them straight into git's home dir, `/home/git`:
 

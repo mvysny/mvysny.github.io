@@ -161,6 +161,67 @@ sudo loginctl enable-linger $USER
 systemctl --user enable docker
 ```
 
+# Uninstalling
+
+Say you're moving on (to [Podman](../podman/), for example).
+`sudo apt purge docker.io` is **not enough**. The setup tool wrote your
+user-level `~/.config/systemd/user/docker.service` and its auto-start symlink,
+and dpkg doesn't own either file, so apt never touches them. After the purge,
+`systemctl --user status docker` still shows the service, which now fails to
+start because its script is gone. Your images in `~/.local/share/docker` and the
+`rootless` context in `~/.docker` stay behind too.
+
+Do it in this order, because step 1 needs tools that ship in `docker.io`:
+
+**1. Undo the rootless setup while Docker is still installed.** `uninstall`
+stops and disables the user service, deletes its unit file, removes the
+`rootless` CLI context and switches the CLI back to `default`:
+
+```bash
+/usr/share/docker.io/contrib/dockerd-rootless-setuptool.sh uninstall
+rootlesskit rm -rf ~/.local/share/docker
+rm -rf ~/.docker
+```
+
+The images and containers in `~/.local/share/docker` belong to your
+*subordinate* UIDs, not to you, so a plain `rm -rf` fails with
+`Permission denied`. `rootlesskit rm` runs inside the same user namespace as the
+daemon, where those files are yours. Also remove the `DOCKER_HOST` line from
+`~/.bashrc` if you went with Option A, and run `sudo loginctl disable-linger $USER`
+if you enabled lingering and nothing else needs it.
+
+**2. Remove the packages:**
+
+```bash
+sudo apt purge docker.io docker-buildx docker-compose-v2 containerd rootlesskit
+sudo apt autoremove --purge
+```
+
+Leave `runc` and `slirp4netns` installed if you use Podman, because it depends
+on both.
+
+**3. Remove what's left of the old rootful setup:**
+
+```bash
+sudo rm -rf /var/lib/docker /var/lib/containerd /etc/docker
+sudo groupdel docker
+```
+
+**Already purged the package and the service is still there?** The setup tool
+went away with the package, so do step 1 by hand:
+
+```bash
+systemctl --user disable --now docker
+rm ~/.config/systemd/user/docker.service
+systemctl --user daemon-reload
+systemctl --user reset-failed
+podman unshare rm -rf ~/.local/share/docker
+```
+
+Without `rootlesskit`, `podman unshare` does the same job: it enters a user
+namespace with the same `/etc/subuid` mapping. If Podman isn't installed either,
+`sudo rm -rf ~/.local/share/docker` works too.
+
 # Was it worth it?
 
 For me, yes - without hesitation. The `docker` group is one of those defaults

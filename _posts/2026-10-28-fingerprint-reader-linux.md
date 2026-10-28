@@ -121,6 +121,12 @@ GNOME asks for the password anyway, right after you logged in. It's an
 acknowledged GNOME limitation, not a bug. It doesn't touch disk encryption
 either: with LUKS you still type a password at boot.
 
+I'm fine with that. In practice the laptop rarely boots: I power it up, log in
+with the password once, and from then on I only suspend it and unlock it with
+a finger. That goes on for weeks, until a kernel update needs a reboot and I
+type the password again. The keyring gets unlocked by that first password
+login, and the finger does the rest.
+
 # Does GNOME 51 help?
 
 GNOME 51 came out in September 2026 and the headlines say "passkey login".

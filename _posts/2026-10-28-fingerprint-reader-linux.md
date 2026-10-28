@@ -100,44 +100,17 @@ A FIDO2 security key can log you in to Linux via the
   so on. The key needs to support standard CTAP 2.1 biometric enrollment, so
   that you can enroll fingers from Linux with standard tools.
 - **The setup is completely different from `fprintd`.** No GNOME Settings, no
-  fingerprint icon. You enroll fingers on the key with a CLI tool and edit the
-  PAM config by hand.
+  fingerprint icon. You set a PIN on the key and enroll your fingers into the
+  key itself, with a CLI tool: the vendor-neutral `fido2-token` from libfido2,
+  or a vendor tool such as YubiKey's `ykman` or Token2's
+  [fido2-manage](https://www.token2.com/site/page/using-token2-fido2-keys-under-linux).
+  Then you register the key for your user with `pamu2fcfg`, and add
+  `pam_u2f` to the PAM config of `sudo` and GDM by hand.
 
-Here's how the setup is supposed to go, from my research. I haven't run it
-yet, so take it with a grain of salt:
-
-```bash
-sudo apt install libpam-u2f pamu2fcfg fido2-tools
-fido2-token -L                         # find the key, e.g. /dev/hidraw4
-fido2-token -S /dev/hidraw4            # set the key's PIN; required before enrolling fingers
-fido2-token -S -e /dev/hidraw4         # enroll a fingerprint
-mkdir -p ~/.config/Yubico
-pamu2fcfg -V > ~/.config/Yubico/u2f_keys
-```
-
-`-V` asks the key to verify you (fingerprint, or PIN) during login instead of
-just a touch. Then add this line at the top of `/etc/pam.d/sudo`, and test it
-with `sudo -k; sudo true` while keeping a root shell open in another terminal,
-in case you lock yourself out:
-
-```
-auth sufficient pam_u2f.so cue userverification=1
-```
-
-If that works, add the same line to the top of `/etc/pam.d/gdm-password` for
-the login and the lock screen. With `sufficient`, the key alone logs you in,
-and if it's not plugged in, PAM falls through to the regular password. You can
-also stack two lines, so that the key's PIN is tried as a fallback if the
-fingerprint fails, before the password:
-
-```
-auth sufficient pam_u2f.so cue pinverification=0 userverification=1
-auth sufficient pam_u2f.so cue pinverification=1 userverification=0
-```
-
-Vendor tools exist too: YubiKey has `ykman`, Token2 has
-[fido2-manage](https://www.token2.com/site/page/using-token2-fido2-keys-under-linux),
-built from source on Linux.
+The upside: with the right PAM options, the key alone logs you in, the
+password still works when the key isn't plugged in, and the key's PIN can act
+as a fallback when the finger isn't recognized. I'll go through the concrete
+steps in a follow-up post, see below.
 
 # The keyring problem
 

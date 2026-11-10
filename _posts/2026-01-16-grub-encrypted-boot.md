@@ -18,6 +18,26 @@ which is signed but doesn't support Argon2.
 Also, if at any point is Argon2 deemed insecure, you'll have to wait years
 for support to appear in GRUB. Therefore, I don't recommend this method.
 
+> **The easier way.** Encrypting `/boot` is one answer to the evil maid; *signing* everything
+> that boots is another, and on Ubuntu it's far less work. My
+> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/)
+> replaces GRUB with a signed shim → systemd-boot → UKI chain: the kernel, initrd and
+> command line are bundled into one Unified Kernel Image signed with a MOK enrolled through
+> shim, so a tampered initrd is refused before it runs, even though `/boot` stays unencrypted.
+> You run its script twice on Ubuntu 26.04+ with the usual LUKS root, rebooting in between
+> to enroll the MOK. There's no custom GRUB, no
+> LUKS1 or PBKDF2 compromise, no replacing the firmware's own keys, and it keeps working
+> across kernel and GRUB package updates.
+>
+> Related posts:
+>
+> - [LUKS, LVM and Linux Boot](../luks-lvm-boot/): how LUKS, LVM and `/boot` fit together.
+> - [Ubuntu Secure Boot](../ubuntu-secure-boot/): the evil maid attack on Ubuntu, and my first
+>   try at a signed systemd-boot + UKI chain, which the project above now does properly.
+> - [Ubuntu Secure Boot, take 2](../ubuntu-secure-boot2/): the TPM route with
+>   `systemd-cryptenroll`. It detects a tampered initrd by measurement instead of refusing to
+>   run it, and its PCR advice is deprecated.
+
 Nevertheless, here are instructions on how to have encrypted boot on ArchLinux.
 
 # Installation

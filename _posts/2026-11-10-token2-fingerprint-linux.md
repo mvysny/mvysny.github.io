@@ -93,13 +93,24 @@ List the enrolled fingers:
 fido2-token -L -e $DEV
 ```
 
-Each enrollment has an ID (a base64 string) and an optional name. To give an
-enrollment a friendly name, or to delete it:
+Each enrollment has an ID (a base64 string) and an optional name. A listing
+looks like this:
+
+```
+00: AAE= right-index
+```
+
+`00` is just the position in the list, `AAE=` is the template ID, and
+`right-index` is the name. To give an enrollment a friendly name, or to delete
+it, pass the template ID:
 
 ```bash
-fido2-token -S -e -i <template_id> -n "right-index" $DEV
-fido2-token -D -e -i <template_id> $DEV
+fido2-token -S -e -i AAE= -n "right-index" $DEV
+fido2-token -D -e -i AAE= $DEV
 ```
+
+Copy the ID exactly, including the trailing `=`. If you get it wrong, the tool
+fails with a cryptic `fido2-token: base64_decode` and nothing else.
 
 If you'd rather click: Chromium has a GUI for the same thing, under Settings →
 Privacy and security → Security → Manage security keys. Token2 also offers

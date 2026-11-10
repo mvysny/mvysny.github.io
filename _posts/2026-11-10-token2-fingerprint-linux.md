@@ -121,25 +121,40 @@ but I didn't need them.
 # Step 5: Register the key with your account
 
 ```bash
-mkdir -p ~/.config/Yubico
-pamu2fcfg -V > ~/.config/Yubico/u2f_keys
+pamu2fcfg -V > u2f_mappings
 ```
 
 Touch the sensor when it blinks (it may ask for the PIN first). The `-V` flag
 says that this credential requires *user verification*: the key must verify
 your fingerprint (or PIN), not just register a touch. The file now holds one
-line starting with your username, followed by the key's credential. Don't mind
-the `Yubico` in the path; that's just the default location `pam_u2f` looks in,
-for keys from any vendor.
+line starting with your username, followed by the key's credential.
 
-If you have a second key (a good idea, see below), append it:
+If you have a second key (a good idea, see below), plug it in instead of the
+first one and append it:
 
 ```bash
-pamu2fcfg -n -V >> ~/.config/Yubico/u2f_keys
+pamu2fcfg -n -V >> u2f_mappings
 ```
 
 `-n` leaves out the username, so the second credential is appended to the
 same line.
+
+Now move the file to `/etc`, owned by root:
+
+```bash
+sudo install -m 644 -o root -g root u2f_mappings /etc/u2f_mappings
+rm u2f_mappings
+```
+
+By default, `pam_u2f` reads the mappings from `~/.config/Yubico/u2f_keys` in
+your home directory. Don't use that: the file would be writable by you, and
+therefore by anything running as you. More on that
+[below](#can-someone-elses-key-log-me-in). A root-owned file in `/etc` is
+what `man pam_u2f` uses in its own example, and it's one line per user, so
+other users on the machine can have their own line in the same file.
+
+To register another key later, run `pamu2fcfg -n -V`, then `sudoedit
+/etc/u2f_mappings` and paste its output at the end of your line.
 
 One gotcha: the credential is bound to `pam://<your hostname>`, both in
 `pamu2fcfg` and in `pam_u2f`. If you rename the machine, the key stops working
@@ -163,12 +178,13 @@ Now, from the root shell, add these two lines at the very top of
 `/etc/pam.d/sudo`, above the `@include common-auth` line:
 
 ```
-auth sufficient pam_u2f.so cue pinverification=0 userverification=1
-auth sufficient pam_u2f.so cue pinverification=1 userverification=0
+auth sufficient pam_u2f.so authfile=/etc/u2f_mappings cue pinverification=0 userverification=1
+auth sufficient pam_u2f.so authfile=/etc/u2f_mappings cue pinverification=1 userverification=0
 ```
 
 This is taken straight from the "biometrics with a fallback to PIN" example
-in `man pam_u2f`. PAM tries the lines in order:
+in `man pam_u2f`. `authfile=` points `pam_u2f` at the mapping file from step 5.
+PAM tries the lines in order:
 
 1. The first line asks the key to verify your fingerprint. If it matches,
    you're in: `sufficient` means no further checks are needed.
@@ -228,6 +244,32 @@ type the password once after boot. `pam_u2f` is a plain module in the
 `gdm-password` stack, and GDM has no idea a fingerprint was involved; as far as
 it's concerned, the password service said yes. Logging in with the key alone
 works fine on GNOME 51.
+
+# Can someone else's key log me in?
+
+What if someone plugs in their own Token2 and touches it with their own
+finger? No, that doesn't work. You need *your* key, and *your* finger on it.
+
+The key doesn't just say "fingerprint OK". When you ran `pamu2fcfg`, your key
+created a key pair for this login. The private key never leaves your key; the
+public key, along with a credential ID, went into `/etc/u2f_mappings`. At
+login, `pam_u2f` sends the key a random challenge together with the credential
+ID. The key verifies the finger, signs the challenge with the private key, and
+`pam_u2f` checks the signature against the public key from the mapping file.
+Someone else's key doesn't have your private key, so it can't produce a valid
+signature, no matter whose finger is on it. The fingerprint only unlocks the
+key; the signature is what proves it's *your* key.
+
+The same goes the other way around: someone who steals your key can't use
+their own finger, since the key only accepts the fingers enrolled on it. With
+the PIN fallback line, they'd need your PIN, and the key locks itself after a
+few wrong guesses.
+
+So the weak spot isn't the key, it's the mapping file: whoever can write to
+it can add their own key's credential, and then log in with *their* key and
+*their* finger. That's why it lives in `/etc`, owned by root, and not in
+`~/.config/Yubico/u2f_keys`, where any malicious script running as you could
+quietly add a key and then pass `sudo` with it.
 
 # Living with it
 

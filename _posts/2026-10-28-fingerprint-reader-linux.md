@@ -175,3 +175,6 @@ passkey for websites.
 Will it enroll fingers from Linux without a Windows box? Will `pam_u2f` and
 the GNOME lock screen play along? Will I lock myself out of `sudo`? I'll
 document the whole setup once the key arrives. Stay tuned.
+
+**Update:** the key arrived and works very well. The setup is in [Fingerprint
+login on Linux with a Token2 FIDO2 key](../token2-fingerprint-linux/).

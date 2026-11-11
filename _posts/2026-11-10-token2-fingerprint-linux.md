@@ -320,3 +320,10 @@ vendor software, works on any Linux distro with `pam_u2f`, and doubles as a
 passkey for websites. The setup is CLI-only, but it's seven steps that you do
 once. Touching the key to unlock the screen dozens of times a day is exactly
 the convenience I was after.
+
+And it's not just convenience. A password I don't type is a password that
+nobody looking over my shoulder, and no security camera behind me, can pick
+up. That matters most on the lock screen, which I unlock all day long, often
+in public. I still type the password once after boot, but usually somewhere
+private. The password still works as a fallback, so a leaked one would still
+get someone in; the key just makes it far less likely to leak.

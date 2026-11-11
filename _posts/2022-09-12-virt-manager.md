@@ -42,6 +42,9 @@ Video drivers:
   the image won't be chopped off but rather will correctly match the host window size.
 * Bochs, VGA and ramfb are horribly slow, don't bother.
 
+If the screen of a Virtio + 3D + OpenGL VM keeps going black and frozen, see
+[virt-manager: the VM screen is black and frozen](../virt-manager-black-screen/).
+
 ## Ubuntu 23.10 Host
 
 Intel: `virtio` with 3d acceleration works smooth.

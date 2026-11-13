@@ -200,6 +200,8 @@ The security issue above was closed as invalid. Any other tickets I created (abo
 Compared to that, [Ubuntu Ticket 2122654](https://bugs.launchpad.net/ubuntu/+bug/2122654) received quick attention and someone responded **within a day**.
 And that's an open-source system you get for free.
 
+And it's not just me: [Apple tells its support community to STFU](https://www.theregister.com/personal-tech/2026/11/11/apple-tells-its-support-community-to-stfu/5309090).
+
 Apple Doesn't Give Shit About You, so fuck you Apple too.
 
 ## Overpriced Hardware Upgrades

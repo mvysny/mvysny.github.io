@@ -29,8 +29,8 @@ machine and an SSH tunnel.
 ```
 
 code-server listens only on the VM's loopback, so nothing on the network can
-reach it. The SSH tunnel is the only way in. That's why it doesn't need a
-password.
+reach it. The SSH tunnel is the only way in. It still has a password, though,
+because of what the tunnel opens on the terminal machine (more below).
 
 # Install code-server on the VM
 
@@ -51,23 +51,29 @@ code-server as the user `mavi`, starts it at boot and restarts it if it dies.
 One thing to know: the `.deb` doesn't add an apt repository, so
 `apt upgrade` won't update it. To upgrade, install a newer `.deb` the same way.
 
-# Configure it: localhost only, no password
+# Configure it: localhost only, with a password
 
 The config file is `~/.config/code-server/config.yaml`. On first start
 code-server generates one with a random password. Mine looks like this:
 
 ```yaml
 bind-addr: 127.0.0.1:5000
-auth: none
+auth: password
+password: <the generated one, or your own>
 cert: false
 ```
 
 - `bind-addr: 127.0.0.1:5000` binds to loopback only, so the VM's network
   interfaces don't expose it at all.
-- `auth: none` turns off the password page. The only way to reach the port is
-  through SSH, and SSH already authenticated me. A second password adds
-  nothing. (This assumes the VM is single-user: any other local user or process
-  on the VM can also reach the port.)
+- `auth: password` keeps the login page. It's tempting to turn it off with
+  `auth: none`: the VM is mine alone, and SSH already authenticated me. The
+  catch is the other end of the tunnel. `ssh -L` opens `localhost:5000` on the
+  terminal machine, and a loopback port has no notion of users: every account
+  logged in there can connect to it. Without a password, any other user on the
+  terminal machine gets a full VS Code running as me on the VM: a terminal, my
+  files, my SSH keys. A password is cheap, so
+  why not. The browser remembers the login in a cookie, so I rarely have to
+  type it.
 - `cert: false` means plain HTTP. There's no need for TLS, because the tunnel
   already encrypts the traffic.
 

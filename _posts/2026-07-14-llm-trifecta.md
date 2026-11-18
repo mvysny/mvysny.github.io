@@ -76,17 +76,17 @@ call a tool you were never given.
 
 In pikuri this is the first thing to reach for. The vector-DB recall agent has
 no network tool at all — it is safe by construction. The OS assistant
-[severs the network leg in the kernel](https://github.com/mvysny/pikuri/blob/master/book/07-os-assistant.md)
+[severs the network leg in the kernel](https://github.com/mvysny/pikuri-workshop/blob/master/book/os-assistant.md)
 and only reattaches the internet through a quarantined sub-agent behind a
 human-authored gate. The full reasoning lives in the
-[security chapter](https://github.com/mvysny/pikuri/blob/master/book/06-security.md).
+[security chapter](https://github.com/mvysny/pikuri/blob/master/book/security.md).
 
 Here's the honest problem: **the trifecta break cripples the very assistant you
 wanted.** A general assistant's whole appeal *is* the trifecta. You want it to
 read your private notes (leg 1), pull in a web page or an email (leg 2), and act
 on the result by sending something (leg 3). Take a leg away and you've amputated
 the feature. That's exactly why `pikuri-assistant` is
-[the last, still-unfinished chapter](https://github.com/mvysny/pikuri/blob/master/book/13-assistant.md):
+[the last, still-unfinished chapter](https://github.com/mvysny/pikuri/blob/master/book/apps.md):
 it's the one binary that reaches for all three legs on purpose, and there is no
 clean structural cut that leaves it whole.
 
@@ -102,7 +102,7 @@ The other school says: inspect the untrusted text and refuse it if it looks like
 an attack. Run a mechanical pre-pass for the obvious tricks (zero-width
 characters, bidi overrides, tag characters) and then an LLM-driven scan of every
 field for injection-shaped instructions. Pikuri ships a version of this as the
-[MCP Verifier](https://github.com/mvysny/pikuri/blob/master/book/05-mcp.md).
+[MCP Verifier](https://github.com/mvysny/pikuri-workshop/blob/master/book/mcp.md#the-verifier-a-pre-flight-prompt-injection-check).
 
 And it is genuinely useful — it catches the low-effort stuff, and it never
 amputates a leg, so your assistant stays whole. But it is **best-effort, not
@@ -155,7 +155,7 @@ detective everywhere else, and a non-LLM decision point between the two.** Break
 the legs you don't need; you'll be surprised how many you don't. For the legs
 you must keep, wrap them in detection *and* in mechanisms that don't depend on a
 model's judgment at all. The most promising of those, to me, is
-[the human as author, not approver](https://github.com/mvysny/pikuri/blob/master/ideas/more-confirmers.md):
+[the human as author, not approver](https://github.com/mvysny/pikuri/blob/15d56e36ce8b89e5fed064a887fa22588e655496/design/ideas/private-context-taint.md#the-human-is-the-only-clean-post-taint-egress):
 once private data has entered the context, the outbound query or URL has to be
 *retyped by a human*, not merely approved. A patient human approving requests
 fails to encoding and slow drip — patience actually makes the covert channel
@@ -164,7 +164,7 @@ trying to leak. That's a real trifecta break, and crucially it lives *outside*
 the LLM.
 
 The other piece is knowing when you're exposed at all. A
-[trifecta detector](https://github.com/mvysny/pikuri/blob/master/ideas/trifecta-detector.md)
+[trifecta detector](https://github.com/mvysny/pikuri/blob/master/book/trifecta-detector.md)
 — a boot-time check that tags each tool as private/untrusted/egress, unions the
 legs an agent can reach (including through its sub-agents), and warns when one
 agent holds all three — is a smoke alarm, not a firewall. It can't prove you're
@@ -181,7 +181,7 @@ cut anything. No single layer is trustworthy. The stack might be.
 This is the design I'm building toward in
 [pikuri](https://github.com/mvysny/pikuri) — a privacy-first assistant on a
 local model, small enough to
-[audit in an evening](https://github.com/mvysny/pikuri/blob/master/book/06-security.md),
+[audit in an evening](https://github.com/mvysny/pikuri/blob/master/book/security.md),
 where the security posture is structural first and detective second rather than
 the other way round. The assistant chapter is still a stub, and honestly that's
 the point: the general assistant is the hard case, and I'd rather ship it late

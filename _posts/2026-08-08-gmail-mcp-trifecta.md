@@ -171,4 +171,4 @@ a model doing its job well, and a Send button someone was willing to stop
 pressing.
 
 *The assistant, the guards I keep referring to, and the design notes are all in
-the open at [codeberg.org/mvysny/pikuri](https://codeberg.org/mvysny/pikuri).*
+the open at [github.com/mvysny/pikuri](https://github.com/mvysny/pikuri).*

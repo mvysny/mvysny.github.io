@@ -41,7 +41,7 @@ ordinary agent you could build. "Read my mail and help me reply" is the trifecta
 with a bow on it.
 
 I know this because I built it:
-[pikuri-thunderbird](https://codeberg.org/mvysny/pikuri), a gem that lets a
+[pikuri-thunderbird](https://github.com/mvysny/pikuri), a gem that lets a
 local-model agent search and read your Thunderbird mail. Its *default* surface
 is deliberately inbound-only — four read tools, no compose — so it has legs 1
 and 2 but no egress, and the trifecta is broken by construction. You have to
@@ -297,5 +297,5 @@ something. The email client didn't need a vulnerability. It just needed to be an
 email client with an LLM attached, doing its job well.
 
 The gem, the guards, and the design notes are all in the open at
-[codeberg.org/mvysny/pikuri](https://codeberg.org/mvysny/pikuri). If this is your
+[github.com/mvysny/pikuri](https://github.com/mvysny/pikuri). If this is your
 problem too, I'd rather build it honest and slow than convincing and leaky.

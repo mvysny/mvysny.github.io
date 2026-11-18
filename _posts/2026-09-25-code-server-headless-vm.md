@@ -49,7 +49,25 @@ sudo systemctl enable --now code-server@$USER
 `code-server@.service` is a template unit, so `code-server@mavi` runs
 code-server as the user `mavi`, starts it at boot and restarts it if it dies.
 One thing to know: the `.deb` doesn't add an apt repository, so
-`apt upgrade` won't update it. To upgrade, install a newer `.deb` the same way.
+`apt upgrade` won't update it. See [Upgrading](#upgrading) below.
+
+## Why not the Docker image?
+
+There's an official [`codercom/code-server`](https://hub.docker.com/r/codercom/code-server)
+image (published by Coder from the code-server repo; `linuxserver/code-server`
+is a separate community image), and upgrading would be just a `docker pull`.
+Mounting `~/work` into the container read-write is easy too. The catch is that
+only the *files* come from the VM. Everything VS Code runs, runs inside the
+container: the integrated terminal, git, the language servers, the debugger,
+the extensions. And the container is a bare Debian: no JDK, no Ruby, no mise, no
+Claude Code, no `~/.gitconfig`, no SSH keys. Red Hat's Java extension needs a
+JDK in there, Ruby LSP needs Ruby, and so on. I'd end up building and
+maintaining my own dev container image, and that's way more work than
+upgrading a `.deb` now and then.
+
+If all you want is the Markdown preview, the image is fine. Just publish the
+port as `-p 127.0.0.1:5000:8080`: a plain `-p 5000:8080` listens on all
+interfaces, and Docker's iptables rules bypass ufw.
 
 # Configure it: localhost only, with a password
 
@@ -163,6 +181,56 @@ A few notes:
   longer one (`<leader>w` vs `<leader>wd`, `<leader>c` vs `<leader>cf` in
   visual mode). It waits briefly for the next key, and that's good enough for
   me.
+
+# Upgrading
+
+There's no need to keep track of the installed version: dpkg already knows it
+(`dpkg-query -W code-server`). So the upgrade is a small script that compares
+it with the latest GitHub release, and if there's a newer one, downloads the
+`.deb`, checks it and installs it. Download
+[update-code-server](/files/code-server-headless-vm/update-code-server) to the
+VM, `chmod +x` it, and run it whenever you feel like it. It needs `jq`
+(`sudo apt install jq`).
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+installed=$(dpkg-query -W -f='${Version}' code-server 2>/dev/null || echo none)
+release=$(curl -fsSL https://api.github.com/repos/coder/code-server/releases/latest)
+latest=$(jq -r .tag_name <<<"$release"); latest=${latest#v}
+
+if [[ $installed == "$latest" ]]; then
+  echo "code-server $installed is up to date"; exit 0
+fi
+echo "Updating code-server $installed -> $latest"
+echo "Release notes: https://github.com/coder/code-server/releases/tag/v$latest"
+
+deb="code-server_${latest}_amd64.deb"
+digest=$(jq -r --arg n "$deb" '.assets[] | select(.name == $n) | .digest' <<<"$release")
+tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+curl -fL -o "$tmp/$deb" "https://github.com/coder/code-server/releases/download/v$latest/$deb"
+echo "${digest#sha256:}  $tmp/$deb" | sha256sum -c -
+
+echo "Installing new code-server from $tmp/$deb via sudo"
+sudo dpkg -i "$tmp/$deb"
+sudo systemctl daemon-reload
+sudo systemctl restart "code-server@$USER"
+```
+
+A few notes:
+
+- **The checksum.** GitHub's API lists a sha256 `digest` for every release
+  asset. If it's missing, `sha256sum -c` fails and nothing gets installed. This
+  catches a broken or tampered download. It doesn't catch a compromised
+  release, because the hash comes from the same GitHub that served the file.
+- **`daemon-reload`.** A new version may ship a changed `code-server@.service`,
+  and the package doesn't tell systemd about it. Without the reload, systemd
+  warns that the unit file changed on disk, and the restart would still use the
+  old unit definition.
+- **Run it by hand, not from cron.** The restart drops the open VS Code tabs
+  and their terminals, and code-server moves to a new VS Code often, so I like
+  to skim the release notes first.
 
 # Result
 

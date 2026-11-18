@@ -1,0 +1,27 @@
+#!/bin/bash
+# update-code-server: install the latest code-server .deb if it's newer than the installed one.
+# https://mvysny.github.io/code-server-headless-vm/
+set -euo pipefail
+
+installed=$(dpkg-query -W -f='${Version}' code-server 2>/dev/null || echo none)
+release=$(curl -fsSL https://api.github.com/repos/coder/code-server/releases/latest)
+latest=$(jq -r .tag_name <<<"$release"); latest=${latest#v}
+
+if [[ $installed == "$latest" ]]; then
+  echo "code-server $installed is up to date"; exit 0
+fi
+echo "Updating code-server $installed -> $latest"
+echo "Release notes: https://github.com/coder/code-server/releases/tag/v$latest"
+
+deb="code-server_${latest}_amd64.deb"
+digest=$(jq -r --arg n "$deb" '.assets[] | select(.name == $n) | .digest' <<<"$release")
+tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+curl -fL -o "$tmp/$deb" "https://github.com/coder/code-server/releases/download/v$latest/$deb"
+# fails (and stops the script) when GitHub has no digest for the asset
+echo "${digest#sha256:}  $tmp/$deb" | sha256sum -c -
+
+echo "Installing new code-server from $tmp/$deb via sudo"
+sudo dpkg -i "$tmp/$deb"
+# the package may ship a changed code-server@.service; make systemd pick it up
+sudo systemctl daemon-reload
+sudo systemctl restart "code-server@$USER"

@@ -31,7 +31,7 @@ title: Ubuntu Secure Boot, take 2
 > refuses the image, the boot stops, and there is no judgement call to get wrong.
 >
 > **What I run instead:**
-> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/) —
+> [ubuntu-systemd-boot-mok-shim](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim) —
 > a signed shim → systemd-boot → UKI chain, which is the [first article](../ubuntu-secure-boot/)'s
 > approach done properly. It uses no TPM at all.
 >
@@ -41,7 +41,7 @@ title: Ubuntu Secure Boot, take 2
 > only), which survives UKI rebuilds without re-enrollment and never touches PCR 7, 4 or 2. The
 > working notes, including a register-by-register breakdown and a fact-check of the PCR 7
 > brittleness claims, are in
-> [ideas/tpm2-auto-unlock.md](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/src/branch/master/ideas/tpm2-auto-unlock.md).
+> [design/ideas/tpm2-auto-unlock.md](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim/blob/master/design/ideas/tpm2-auto-unlock.md).
 > It is not solidified, and I'd rather say so than publish another recipe I have to retract.
 >
 > The rest of this article is still accurate and still useful: the `crypttab` wiring, the

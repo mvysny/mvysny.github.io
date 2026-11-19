@@ -20,7 +20,7 @@ for support to appear in GRUB. Therefore, I don't recommend this method.
 
 > **The easier way.** Encrypting `/boot` is one answer to the evil maid; *signing* everything
 > that boots is another, and on Ubuntu it's far less work. My
-> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/)
+> [ubuntu-systemd-boot-mok-shim](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim)
 > replaces GRUB with a signed shim → systemd-boot → UKI chain: the kernel, initrd and
 > command line are bundled into one Unified Kernel Image signed with a MOK enrolled through
 > shim, so a tampered initrd is refused before it runs, even though `/boot` stays unencrypted.

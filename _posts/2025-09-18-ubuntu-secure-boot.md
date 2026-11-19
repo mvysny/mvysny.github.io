@@ -26,7 +26,7 @@ The problem is step 3 - the `/boot` partition is unencrypted and initrd image ca
 > way to get there, and everything below is written against Ubuntu 25.10.
 >
 > The maintained solution is
-> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/):
+> [ubuntu-systemd-boot-mok-shim](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim):
 > the same shim → systemd-boot → UKI chain as below, but signed with a **MOK** enrolled
 > through shim rather than by replacing the firmware's own keys, and driven by a script that
 > keeps working across kernel and GRUB package updates. Start there.
@@ -172,7 +172,7 @@ You can verify that with `sudo bootctl status` and `sudo bootctl list`.
 > shim. Shim is already signed by Microsoft and already trusted by your firmware, and it
 > keeps its own key database that you can add to with `mokutil` — no firmware key is
 > touched, and the worst case is a key you have to enroll again.
-> [ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/)
+> [ubuntu-systemd-boot-mok-shim](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim)
 > does exactly that, and also handles the part this article misses: the
 > `grub-efi-amd64-signed` package overwrites `grubx64.efi` on every update, which quietly
 > puts GRUB back in the boot path unless an APT hook restores the signed systemd-boot.

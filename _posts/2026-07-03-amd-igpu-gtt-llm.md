@@ -77,7 +77,7 @@ For example, 28 GB → `28 × 262144 = 7340032` pages. Leave ~20% of RAM as head
 ## Applying it via /etc/kernel/cmdline (systemd-boot + Secure Boot)
 
 If you set up Secure Boot the way I describe in
-[ubuntu-systemd-boot-mok-shim](https://codeberg.org/mvysny/ubuntu-systemd-boot-mok-shim/), your kernel
+[ubuntu-systemd-boot-mok-shim](https://github.com/mvysny/ubuntu-systemd-boot-mok-shim), your kernel
 command line lives in `/etc/kernel/cmdline` and is *baked into each signed UKI*. There is no
 boot-time editing (that's the whole point of Secure Boot). So editing the file alone changes nothing —
 you must rebuild and re-sign the UKIs.
